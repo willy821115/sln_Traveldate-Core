@@ -18,4 +18,29 @@ main {
 padding: 0 10% 0 10%;
 }
 
+footer {
+    background-color: #155074;
+    color: #fff;
+    text-align: center;
+    padding: 10px; /* 保留原來的padding值 */
+    height: 200px;
+    margin-top: 20px; /* 添加margin-top值，將footer與其他元素分隔開 */
+    clear: both; /* 清除浮動 */
+    position: relative;
+}
+
+.social-icons {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+    .social-icons a {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
 
