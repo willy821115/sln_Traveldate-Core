@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "ForumList";
+}
+
+<img class="col p-0" src="~/Images/top_photo_01.png " class="opacity-75" />
+<div class="row border g-0 column-gap-5 justify-content-center">
+    <div class="col-3 border forum-block">
+        <div class="border p-3 mt-2 mb-2">
+            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center">
+                <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
+                <img class="write-icon-gif me-3" src="~/icons/icons8-pencil.gif" width="32" height="32">
+                我要發文
+            </a>
+        </div>
+        <div class="border p-3 mt-2 mb-2">
+            <span class="fs-4">搜尋文章</span>
+            <div class="controls-display-row search_container">
+                <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
+                <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
+                <input class="search-input" type="text" placeholder="請輸入文章標題">
+            </div>
+        </div>
+        <div class="border p-3 mt-2 mb-2">
+            <div class="filter_block">
+                <label class="fs-4 ">依地區搜尋 </label>
+                <div class="controls-display-row category-click">
+                    <span class="fs-5">台灣 </span>
+                    <div class="d-flex justify-content-end">
+                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                    </div>
+                </div>
+                <div class="ms-lg-4 filter-block-toggle">
+                    <ul class="list-unstyled m">
+                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                            <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                            <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                            <span>新北 </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border p-3 mt-2 mb-2">
+            <div class="filter_block">
+                <label class="fs-4 ">依類別搜尋</label>
+                <div class="controls-display-row category-click">
+                    <span class="fs-5">景點門票 </span>
+                    <div class="d-flex justify-content-end">
+                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                    </div>
+                </div>
+                <div class="ms-lg-4 filter-block-toggle">
+                    <ul class="list-unstyled m">
+
+                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                            <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                            <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                            <span>景點門票 </span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-8 border  forum-block">
+        <div class="border p-3 mt-2 mb-2">
+            <p class="fs-4">精選文章</p>
+            <div class="row border g-0 column-gap-5 justify-content-center pt-3 pb-3">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-inner ">
+                        @for (int i = 1; i < 7; i++)
+                        {
+                            bool isFirstItem = i == 1; // 判斷是否是第一次迴圈
+                            <div class="carousel-item @if (isFirstItem) {
+                        <text>active</text>
+}">
+                                <div class="d-flex row g-0 justify-content-center">
+                                    <div class="border p-3 me-4 col-5">
+                                        <a asp-action="ArticleView">
+                                            <p>文章標題 @i</p>
+                                            <div>
+                                                <img src="~/icons/icons8-person-100.png" width="32" height="32" />
+                                                <small class="text-body-secondary">
+                                                    <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : </span>
+                                                </small>
+                                                <small class="text-body-secondary">
+                                                    <span>#水上活動</span><span>#景點門票</span><span>#宜蘭</span>
+                                                </small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="border p-3 col-5">
+                                        @{
+                                            i++;
+                                        }
+                                        <p>文章標題 @i</p>
+                                        <div>
+                                            <img src="~/icons/icons8-person-100.png" width="32" height="32" />
+                                            <small class="text-body-secondary">
+                                                <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : </span>
+                                            </small>
+                                            <small class="text-body-secondary">
+                                                <span>#水上活動</span><span>#景點門票</span><span>#宜蘭</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="align-items-center row my-bg-primary my-img-circle  my-w50-h50"><span class="carousel-control-prev-icon col" aria-hidden="true"></span></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="align-items-center row my-bg-primary my-img-circle  my-w50-h50"><span class="carousel-control-next-icon col" aria-hidden="true"></span></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="border p-3 mt-2 mb-2">
+            <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
+                <span class=" fw-bolder ">排序 :  </span>
+                <span>　</span>
+                <a href="#" class=" fw-bolder">發文時間</a>
+                <span>　|　</span>
+                <a href="#" class=" fw-bolder">回覆數</a>
+                <span>　|　</span>
+                <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
+            </div>
+        </div>
+        @{
+            int it = 1;
+            while (it < 6)
+            {
+                <div class="d-flex row ml-0 mr-0 pt-2 pb-2  justify-content-center">
+                    <div class="border col-2 m-1">商品快照</div>
+                    <div class="border col-5 m-1">
+                        <p>文章標題 @it</p>
+                        <span>會員等級</span>
+                        <span> | 發文者</span>
+                        <span> | 發文時間</span>
+                    </div>
+                    <div class="border col-2 m-1">回覆數 : 0</div>
+                    <div class="border col-2 m-1">文章照片</div>
+                </div>
+                it++;
+            }
+        }
+        <div class="d-flex justify-content-center bg-transparent border-0">
+            <div class="col-7 d-flex justify-content-around">
+                @for (int i = 1; i < 7; i++)
+                {
+                    @*<input class="page-itme my-bg-secondary text-white rounded border border-secondary-subtle" type="button" value="@i " />*@
+                    <button type="button" class="btn btn-outline-secondary"> @i </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.4.1.js"></script>
+<script src="~/js/search_jq.js"></script>

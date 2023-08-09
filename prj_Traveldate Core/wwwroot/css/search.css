@@ -1,0 +1,213 @@
+﻿/****************************************共同區********************************************/
+body {
+    background-color: #DCE5E2;
+    /*background-color: #fff;*/
+}
+
+.filter_block,
+.forum-block > div {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #fff;
+    padding-bottom:10px;
+    /*background-color: #DCE5E2;*/
+}
+
+#arrow_bottom_down,
+.checkbox,
+.calendar-container,
+.calendar-gif,
+.search-icon-gif,
+.write-icon-gif,
+.insert-photo-gif {
+    display: none;
+}
+
+.search_container:hover .search-icon-static,
+.my-calendar:hover .calendar-static,
+.write-conatiner:hover .write-icon-static,
+.insert-photo-container:hover .insert-photo-static {
+    display: none;
+}
+
+.search_container:hover .search-icon-gif,
+.my-calendar:hover .calendar-gif,
+.write-conatiner:hover .write-icon-gif,
+.insert-photo-container:hover .insert-photo-gif {
+    display: inline-block;
+}
+/*文字顏色,背景顏色*/
+.my-text-primary {
+    color: #00000098;
+}
+
+.my-text-secondary {
+    color: #88A8BC;
+}
+.my-bg-primary {
+    background-color: #004B97;
+}
+
+.my-bg-secondary {
+    background-color: #88A8BC;
+}
+
+.category-click > span {
+    width: 80%;
+}
+
+.divide-line {
+    border-radius: 0;
+    border-bottom: 1px solid #dee1d9;
+    padding: 5px 0 5px 0;
+}
+
+.divide-line-both {
+    border-radius: 0;
+    border-bottom: 1px solid #dee1d9;
+    border-top: 1px solid #dee1d9;
+    padding: 5px 0 5px 0;
+}
+
+.my-w-80-percent {
+    width: 80%;
+}
+
+.sort {
+    padding: 5px 0 10px 0;
+}
+
+    .sort > a {
+        text-decoration: none;
+        color: #88A8BC;
+    }
+
+        .sort > a:visited {
+            color: #88A8BC;
+        }
+
+        .sort > a:hover {
+            color: #185ab6;
+        }
+.uncheckbox,
+.checkbox,
+input,
+.card,
+.my-calendar,
+.category-click,
+.write-conatiner,
+.insert-photo-container {
+    cursor: pointer;
+}
+
+.align-corner{
+    position:absolute;
+    bottom:5px;
+    width:100%;
+  
+}
+/*********************************************************************************************/
+/******************************************************Search區**************************************************************************/
+.selected-block {
+    background-color: #fff;
+}
+
+.controls-display-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.category-click {
+    padding: 0 0 10px 15px;
+}
+.my-calendar:hover .calendar-container {
+    display: block;
+    z-index: 100;
+    width: 620px;
+    height: 200px;
+}
+
+.search_container {
+    padding: 5px;
+    margin: 5px 10px 5px 10px;
+    align-items: center;
+    border: 1px #D0D0D0 solid;
+    border-radius: 5px;
+    width: 90%;
+    background-color: #fff;
+}
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.my-w50-h50 {
+    width: 50px;
+    height: 50px;
+}
+
+.calendar-container {
+    position: absolute;
+    z-index: 1;
+}
+.calendar_header {
+    background-color: #155074;
+}
+.calendar_header>h2 {
+    color:aliceblue;
+}
+/************card區*************/
+.card {
+    border-radius: 10px;
+}
+.card-body {
+    height: 200px;
+}
+
+.my-card-img {
+    height: 200px;
+}
+.card-text{
+    margin-bottom:0;
+}
+/*******************************/
+
+/***********星星區**************/
+.star-rating-container {
+    width: 50px; /* 調整容器的寬度 */
+    height: 10px; /* 調整容器的高度 */
+    overflow: hidden;
+   
+}
+
+.star-rating-div {
+    width: 0;
+    height: 10px;
+    background-color: #44dbe6; /* 設定矩形的初始背景顏色 */
+}
+
+.star-rating {
+    position: absolute; /* 將.star-rating設置為相對定位 */
+    top: 15px;
+    width: 50px; /* 調整容器的寬度 */
+}
+/*******************************/
+
+/*********************************************************************************************************************************************/
+
+
+
+
+/******************************************************揪團討論區**************************************************************************/
+.content-input {
+    height: 400px !important;
+}
+.my-img-circle {
+    border-radius: 50%;
+}
+.container > main > img {
+    width: 100%;
+}
+/**************************************************************************************************************************************/

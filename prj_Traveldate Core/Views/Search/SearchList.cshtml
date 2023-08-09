@@ -1,0 +1,244 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using prj_Traveldate_Core.Models;
+@using prj_Traveldate_Core.ViewModels;
+@model CSearchListViewModel
+@{
+    ViewData["Title"] = "SearchList";
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-3 border g-0 ps-2 pe-2 me-4">
+        <div class="filter_block ">
+            <div class="flex-column">
+                <label class="fs-4 pl-2 pt-2">篩選目的地</label>
+                @using (Html.BeginForm())
+                {
+                    <div class="controls-display-row search_container">
+                        <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
+                        <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
+                        <input type="text" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input class="btn btn-outline-secondary" type="submit" value="查詢" />
+                    </div>
+                }
+            </div>
+            @foreach (var city in Model.countryAndCities)
+            {
+                <div class="controls-display-row category-click">
+                    <span class="fs-5">@Html.DisplayFor(modelItem => city.country)</span>
+                    <div>
+                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                    </div>
+                </div>
+                <div class="ms-lg-4 filter-block-toggle">
+                    <ul class="list-unstyled m">
+                        @foreach (var t in city.citys)
+                        {
+                            <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
+                                <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                                <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                                <span>@Html.DisplayFor(modelItem => t)</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+        </div>
+        <div class="filter_block">
+            <label class="fs-4 pl-2 pt-2">所有商品類別</label>
+            @foreach (var c in Model.categoryAndTags)
+            {
+
+                <div class="controls-display-row category-click">
+                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+                    <div class="d-flex justify-content-end">
+                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                    </div>
+                </div>
+                <div class="ms-lg-4 filter-block-toggle">
+                    <ul class="list-unstyled m">
+                        @foreach (var t in c.tags.Distinct())
+                        {
+                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                                <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                                <span>@Html.DisplayFor(modelItem => t)</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <div class="my-calendar filter_block pt-2 pb-2">
+            <div class="d-flex align-items-center">
+                <img class="calendar-static ms-4 me-2" src="~/icons/icons8-calendar-32.png" />
+                <img class="calendar-gif ms-4 me-2" src="~/icons/icons8-calendar.gif" width="32" height="32" />
+                <span class="fs-4">篩選日期</span>
+            </div>
+            <div class="calendar-section calendar-container">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <div class="calendar calendar-first" id="calendar_first">
+                            <div class="calendar_header d-flex justify-content-center align-items-center">
+                                <button class="switch-month switch-left">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                                <span id="year_f" class="year"></span><span>年</span>
+                                <span id="month_f" class="month"></span><span>月</span>
+                                <button class="switch-month switch-right">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar_weekdays"></div>
+                            <div class="calendar_content"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="calendar calendar-second" id="calendar_second">
+                            <div class="calendar_header d-flex justify-content-center align-items-center">
+                                <button class="switch-month switch-left">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                                <span id="year_s" class="year"></span><span>年</span>
+                                <span id="month_s" class="month"></span><span>月</span>
+                                <button class="switch-month switch-right">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar_weekdays"></div>
+                            <div class="calendar_content"></div>
+                        </div>
+                    </div>
+                </div> <!-- End Row -->
+            </div> <!-- End Calendar -->
+        </div>
+        <div class="filter_block">
+            <label class="fs-4 ps-3 pt-1 form-label" for="customRange1">篩選價格</label>
+            <div class="mt-4">
+                <section class="range-slider range-container pb-3">
+                    <span class="output outputOne pl-1 pr-1"></span>
+                    <span class="output outputTwo pl-1 pr-1"></span>
+                    <span class="full-range"></span>
+                    <span class="incl-range"></span>
+                    <input id="rangeOne" name="rangeOne" value="@Model.filterProducts.Min(n=>n.price)" min="@Model.filterProducts.Min(n=>n.price)" max="@Model.filterProducts.Max(n=>n.price)" step="1" type="range">
+                    <input id="rangeTwo" name="rangeTwo" value="@Model.filterProducts.Max(n=>n.price)" min="@Model.filterProducts.Min(n=>n.price)" max="@Model.filterProducts.Max(n=>n.price)" step="1" type="range">
+                </section>
+                <div class="d-flex justify-content-center">
+                    <input id="btn_filter_price" class="btn btn-outline-secondary" type="button" value="搜尋" />
+                </div>
+            </div>
+        </div>
+        <div class="filter_block">
+            <div class="controls-display-row category-click pt-2">
+                <span class="fs-4">商品類型</span>
+                <div>
+                    <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                    <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                </div>
+            </div>
+            <div class="ms-lg-4 filter-block-toggle">
+                <ul class="list-unstyled m">
+                    @foreach (var type in Model.types.Distinct())
+                    {
+                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                            <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                            <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                            <span>@Html.DisplayFor(modelItem => type)</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8 border g-0 justify-content-end">
+        <div class="row g-0">
+            <div class="border col-12 filter_block">
+                <div class="divide-line pl-3">
+                    <span class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">項體驗行程</span>
+                    <div id="selected-checkboxes"></div>
+                </div>
+                <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
+                    <span class=" fw-bolder ">排序 : </span>
+                    <span>　</span>
+                    <a href="#" class=" fw-bolder">熱門程度</a>
+                    <span>　|　</span>
+                    <a href="#" class=" fw-bolder">用戶評價</a>
+                    <span>　|　</span>
+                    <a href="#" class=" fw-bolder">價格排序(低到高)</a>
+                </div>
+            </div>
+            @foreach (var item in Model.pages)
+            {
+                <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
+
+                string salesCount = "";
+                if (item.orederCount > 1000)
+                {
+
+                    salesCount = $"{item.orederCount / 1000} K+ 個已訂購";
+                }
+                else
+                {
+                    salesCount = $"{item.orederCount} 個已訂購";
+                }
+                <div class="card mb-3 col-12 p-0">
+                    <div class="row g-0">
+                        <div class="col-md-4 pr-0">
+                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid rounded-start my-card-img" alt="@item.productName">
+                        </div>
+                        <div class="col-md-8 pl-0">
+                            <div class="card-body">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.outlineForSearch) 商品列表中的outline for search</p>
+                                <p class="card-text">
+                                    <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
+                                    <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
+                                </p>
+                                <div class="row align-items-end">
+                                    <div class="col d-flex align-items-center">
+                                        <div class="star-rating-container me-2">
+                                            <div class="star-rating-div"></div>
+                                            <img class="star-rating" src="~/icons/star-rating.png">
+                                            <input type="hidden" id="rating-value" value="@item.commentAvgScore">
+                                        </div>
+                                        <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</small>
+                                        <small class="text-body-secondary"> | @salesCount</small>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="d-flex justify-content-center bg-transparent border-0">
+                <div class="col-7 d-flex justify-content-around">
+                    @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page }))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/jquery-3.4.1.js"></script>
+<script src="~/js/calender-main.js"></script>
+<script src="~/js/mutiRange.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
+<script src="~/calendar-03/calendar-03/js/popper.js"></script>
+<script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script>
+<script src="~/calendar-03/calendar-03/js/main.js"></script>
+<script src="~/js/search_jq.js"></script>
+<script src="~/js/search_rating.js"></script>
+

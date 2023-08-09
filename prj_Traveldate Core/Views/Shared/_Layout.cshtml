@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - prj_Traveldate_Core</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/prj_Traveldate_Core.styles.css" asp-append-version="true" />
+   
+    <link rel="stylesheet" href="~/css/PhotoStyle.css">
+    <link rel="stylesheet" href="~/css/ProgramStyle.css">
+    <link rel="stylesheet" href="~/css/CalendarStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xrW3VHgR0BXeG3xW1BLlM4/lnz5Bs6mV1KMd5fTXhO+UZmaJV6frFxDY6jXH+U/MkgeFFJdh9txbtozwY9TMw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/multiRange.css" rel="stylesheet" />
+    <link href="/css/calendar-style.css" rel="stylesheet" />
+    <link href="/css/search.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <link href="/css/nav.css" rel="stylesheet" />
+
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    
+    <!-- Custom fonts for this template-->
+    <link href="~/Template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link rel="stylesheet" href="~/css/MyCSS.css" />
+    <!-- Custom styles for this template-->
+    <link href="~/Template/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header class="myheader">
+        <div style="display: flex; align-items: center;">
+            <h1 style="margin-right: 20px;">
+                <a href="#home" style="text-decoration: none; color: #fff;">TravelDate</a>
+            </h1>
+            <div style="display: flex; align-items: center;">
+                <input type="text" placeholder="搜尋..." style="width: 400px;">
+                <button style="margin-left: 10px;">搜尋</button>
+            </div>
+            <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
+            <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
+        </div>
+    </header>
+
+    <nav class="mynav">
+        
+        <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
+        <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
+        <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
+        <a asp-area="" asp-controller="Search" asp-action="SearchList">門票</a>
+        <a asp-area="" asp-controller="Search" asp-action="SearchList">自助旅行</a>
+        <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
+        <a href="#contact-us">聯絡我們</a>
+    </nav>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - prj_Traveldate_Core - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @*Scripts.Render("~/bundles/jquery")*@
+   @* @Scripts.Render("~/bundles/bootstrap")*@
+    @*@RenderSection("scripts", required: false)*@
+    <!-- Bootstrap core JavaScript-->
+    @*<script src="~/Template/vendor/jquery/jquery.min.js"></script>*@
+    <script src="~/Template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    @*<script src="~/Template/vendor/jquery-easing/jquery.easing.min.js"></script>*@
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/Template/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/Template/vendor/chart.js/Chart.min.js"></script>
+
+
+    <script src="~/js/Myjs.js"></script>
+
+    
+    
+</body>
+</html>

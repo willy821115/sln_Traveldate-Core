@@ -1,0 +1,516 @@
+﻿
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div class="product-detail">
+    <div>
+        <div>
+            <span>台灣</span>
+            <span>></span>
+            <span>外島</span>
+            <span>></span>
+            <span>@Model.product.ProductName</span>
+        </div>
+    </div>
+
+    <div class="outer-wrapper">
+        <div class="s-wrap s-type-1" role="slider">
+            @if (Model.program.fPhotoList != null)
+            {
+                int photoCount = Model.program.fPhotoList.Count;
+                for (int i = 1; i <= photoCount; i++)
+                {
+                    <input type="radio" id="@("s-" + i)" name="slider-control" @(i == 1 ? "checked=\"checked\"" : "")>
+                }
+            }
+
+            <ul class="s-content">
+                @if (Model.program.fPhotoList != null)
+                {
+                    int index = 1;
+                    foreach (var photoBytes in Model.program.fPhotoList)
+                    {
+                        <li class="s-item s-item-@index">
+                            <img src="data:image/png;base64,@Convert.ToBase64String(photoBytes)" alt="Product Image" />
+                        </li>
+                        index++;
+                    }
+                }
+            </ul>
+
+            <div class="s-control">
+                @if (Model.program.fPhotoList != null)
+                {
+                    int photoCount = Model.program.fPhotoList.Count;
+                    for (int i = 1; i <= photoCount; i++)
+                    {
+                        <label class="s-c-@i" for="@("s-" + i)"></label>
+                    }
+                }
+            </div>
+
+            <div class="s-nav">
+                <label class="s-nav-1 left" for="s-1"></label>
+                <label class="s-nav-1 right" for="s-2"></label>
+                <label class="s-nav-2 left" for="s-1"></label>
+                <label class="s-nav-2 right" for="s-3"></label>
+                <label class="s-nav-3 left" for="s-2"></label>
+                <label class="s-nav-3 right" for="s-4"></label>
+                <label class="s-nav-4 left" for="s-3"></label>
+                <label class="s-nav-4 right" for="s-5"></label>
+                <label class="s-nav-5 left" for="s-4"></label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3>@Model.product.ProductName</h3>
+    </div>
+    <div class="plancal-container">
+        <div class="product-description">
+            <pre>@Model.product.Outline</pre>
+        </div>
+        <div class="card mb-3" style="width: 35%">
+            <div class="card-body" style="margin:5px auto">
+                <div class="price-container">
+                    <span>TWD</span>
+                    <span>1000</span>
+                    <span>起</span>
+                </div>
+                <a href="#booking-section" class="btn btn-primary btn-lg" style="width:100%;margin:5px 0; background-color:#155074;border:none">立即預訂</a>
+                <p class="card-text" style="margin-top:5px">狀態</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="plan-container">
+        <div class="be-comment-block">
+            <div class="comments-title"><p>旅客評價</p></div>
+            <div class="be-comment">
+                <div class="be-img-comment">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                </div>
+                <div class="comment-header">
+
+                    <span class="be-comment-name">古先生</span>
+                    <span class="be-comment-time">May 27, 2018</span>
+
+
+                </div>
+                <div class="comments-title">
+                    <span class="rating">
+                        <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                            </svg>
+                        </i>
+                        <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                            </svg>
+                        </i>
+                        <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                            </svg>
+                        </i>
+                        <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                            </svg>
+                        </i>
+                        <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                            </svg>
+                        </i>
+                    </span>
+                </div>
+                <div class="be-comment-text">
+                    <div class="be-comment-title">浮潛一生推</div>
+                    <p>
+                        蘭嶼的海真的好美好喜歡，下次真的希望還可以看到這麽漂亮的海洋和這麼豐富的海底生態，而且再次覺得無光害的蘭嶼，太適合觀星星了，一大片的星空真的是在台北想也想不到的場景，希望下次可以用照片紀錄下眼睛所看到的風景！
+                    </p>
+                    <img src="~/Images/lanyu01.jpg" alt="commentpic" class="comment-pic" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="plancal-container" id="booking-section">
+        <div class="calendar-container">
+            <div ng-app="app">
+                <div ng-controller="MainController">
+                    <div class="wrapp">
+                        <flex-calendar options="options" events="events"></flex-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="cal-container">
+                <div class="calendar">
+                    <button id="goToTodayBtn">回到今天</button>
+                    <input type="hidden" value="@Html.Raw(Json.Serialize(Model.program.fTripDate))" id="TripDate" />
+                    <div class="month">
+                        <i class="fa fa-angle-left prev-month-arrow" id="prevMonth"> < </i>
+                        <div class="date" id="currentMonthYear"></div>
+                        <i class="fa fa-angle-right next-month-arrow" id="nextMonth"> > </i>
+                    </div>
+                    <div class="weekdays">
+                        <div>SUN</div>
+                        <div>MON</div>
+                        <div>TUE</div>
+                        <div>WED</div>
+                        <div>THU</div>
+                        <div>FRI</div>
+                        <div>SAT</div>
+                    </div>
+                    <div class="days" id="calendarDays"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="calendar-container">
+            <div class="buy-content">
+                <span>@Model.product.PlanName</span>
+                <br />
+                <pre>@Model.product.PlanDescription</pre>
+                <a href="#toggleButton" id="toggleButton" class="btn btn-outline-dark">
+                    顯示可訂購日期
+                </a>
+            </div>
+            <div class="buy-content">
+                <ul>
+                    <li>最少成行人數：6人</li>
+                    <li>可報名人數：18人</li>
+                </ul>
+
+                <span id="minPeople"></span>
+                <br />
+                <div class="col-auto">
+                    <ul class="list-inline pb-3">
+                        <li class="list-inline-item text-right">
+                            <label>購買數量：</label>
+                            <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                        </li>
+                        <li class="list-inline-item"><button id="btn-minus">-</button></li>
+                        <li class="list-inline-item"><span id="var-value">1</span></li>
+                        <li class="list-inline-item"><button id="btn-plus">+</button></li>
+                    </ul>
+                </div>
+                <br />
+                <label>金額：1000</label>
+                <span id="price"></span>
+            </div>
+            <input type="submit" value="加入購物車" />
+            <input type="submit" value="立即購買" class="btn-danger" />
+        </div>
+    </div>
+
+    <div id="tripidContainer" class="detailplan-container" style="display: none;">
+        @for (int i = 0; i < Model.program.fTripDate.Count; i++)
+        {
+            var tripDate = Model.program.fTripDate[i];
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label>@tripDate</label>
+                            </div>
+                            <div class="col">
+                                <label>@Model.product.PlanName</label>
+                            </div>
+                            <div class="col">
+                                <label>價格：１０００</label>
+                            </div>
+                            <div class="col-auto">
+                                <ul class="list-inline pb-3">
+                                    <li class="list-inline-item text-right">
+                                        <label>購買數量：</label>
+                                        <input type="hidden" name="product-quanity" class="product-quanity" value="1">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <button class="btn-minus">-</button>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <span class="var-value">1</span>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <button class="btn-plus">+</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col d-flex justify-content-between">
+                                <div>
+                                    <input type="submit" value="加入購物車" />
+                                    <input type="submit" value="立即購買" class="btn-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="plan-container">
+        <div class="comments-title">
+            <p>商品詳細說明</p>
+        </div>
+        <hr />
+        <div class="comments-title">
+            <pre>@Model.product.Description</pre>
+        </div>
+    </div>
+    <div class="plan-container">
+        <div class="naccs">
+            <div class="comments-title"><p>行程說明</p></div>
+            <hr />
+            <div class="grid">
+                <div class="gc gc--1-of-3">
+                    <div class="menu">
+                        <div class="active"><span class="light"></span><span>第一天</span></div>
+                        <div><span class="light"></span><span>第二天</span></div>
+                        <div><span class="light"></span><span>第三天</span></div>
+                    </div>
+                </div>
+                <div class="gc gc--2-of-3">
+                    <ul class="nacc">
+                        <li class="active">
+                            <div>
+                                <p>
+                                    台東火車站至富岡漁港接駁->台東搭乘豪華客輪前往蘭嶼->抵達蘭嶼開元港->民宿專車接往住宿辦理 check in->騎車環島蘭嶼->在海岸邊欣賞美麗的蘭嶼日落->返回民宿
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p>
+                                    前往蘭嶼最佳欣賞日出地點->東清灣的朝陽景色與充滿部落風情的拼板舟 (自費行程、當地預約、現場報價)->從軍艦岩望出的視角，您可在此拍攝到日出從海面升起->蘭嶼浮潛->返回民宿
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <p>
+                                    民宿 check out->蘭嶼地下屋導覽->搭乘客輪回台東->台東富岡漁港至台東火車站接駁
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="plan-container">
+        <div class="comments-title">
+            <p>體驗地點</p>
+        </div>
+        <hr />
+        <div>
+            Google Map
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+
+
+    <script>
+
+        const toggleButton = document.getElementById('toggleButton');
+        const tripidContainer = document.getElementById('tripidContainer');
+
+        toggleButton.addEventListener('click', function () {
+            if (tripidContainer.style.display === 'none') {
+                tripidContainer.style.display = 'flex';
+            } else {
+                tripidContainer.style.display = 'none';
+            }
+        });
+
+
+
+
+
+        //Calendar
+        const prevMonthButton = document.getElementById('prevMonth');
+        const nextMonthButton = document.getElementById('nextMonth');
+        const currentMonthYear = document.getElementById('currentMonthYear');
+        const calendarDays = document.getElementById('calendarDays');
+        const goToTodayBtn = document.getElementById('goToTodayBtn');
+        goToTodayBtn.addEventListener('click', goToToday);
+
+        const availableDates = @Html.Raw(Json.Serialize(Model.program.fTripDate));
+        // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
+        // Event listeners for navigation buttons
+        prevMonthButton.addEventListener('click', showPreviousMonth);
+        nextMonthButton.addEventListener('click', showNextMonth);
+
+        // Initial display of current month
+        let currentDate = new Date();
+        showCalendar(currentDate);
+
+        // Function to display the calendar for a given month
+        function showCalendar(date) {
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            let firstDay = new Date(year, month, 1);
+            let lastDay = new Date(year, month + 1, 0);
+
+            // Update the month and year in the calendar header
+            currentMonthYear.textContent = `${getMonthName(month)} ${year}`;
+
+            // Clear the previous calendar days
+            calendarDays.innerHTML = '';
+
+            // Display the days of the current month
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                // Display previous month's days
+                let prevDate = new Date(year, month, -firstDay.getDay() + i + 1);
+                let dayElement = createDayElement(prevDate, 'prev-date');
+                calendarDays.appendChild(dayElement);
+            }
+
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                // Display current month's days
+                let currentDate = new Date(year, month, i);
+                let dayElement = createDayElement(currentDate, 'day');
+                calendarDays.appendChild(dayElement);
+            }
+
+            for (let i = lastDay.getDay() + 1; i <= 6; i++) {
+                // Display next month's days
+                let nextDate = new Date(year, month + 1, i - lastDay.getDay());
+                let dayElement = createDayElement(nextDate, 'next-date');
+                calendarDays.appendChild(dayElement);
+            }
+
+
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+
+        // Function to show the previous month in the calendar
+        function showPreviousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            showCalendar(currentDate);
+        }
+
+        // Function to show the next month in the calendar
+        function showNextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            showCalendar(currentDate);
+        }
+
+        // Function to go to today's date
+        function goToToday() {
+            currentDate = new Date();
+            showCalendar(currentDate);
+        }
+
+        // Function to create a day element for the calendar
+        function createDayElement(date, className) {
+            let dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.classList.add(className);
+            dayElement.textContent = date.getDate();
+
+
+            if (availableDates.includes(formatDate(date))) {
+                dayElement.classList.add('available-date');
+            }
+
+            if (date < new Date()) {
+                dayElement.classList.add('expired-date');
+            }
+
+
+
+            return dayElement;
+        }
+
+
+        // Helper function to get month name from month index (0 - 11)
+        function getMonthName(monthIndex) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return monthNames[monthIndex];
+        }
+
+        //商品每天行程JS
+        $(document).on("click", ".naccs .menu div", function () {
+            var numberIndex = $(this).index();
+
+            if (!$(this).is("active")) {
+                $(".naccs .menu div").removeClass("active");
+                $(".naccs ul li").removeClass("active");
+
+                $(this).addClass("active");
+                $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+
+                var listItemHeight = $(".naccs ul")
+                    .find("li:eq(" + numberIndex + ")")
+                    .innerHeight();
+                $(".naccs ul").height(listItemHeight + "px");
+            }
+        });
+
+
+        //
+        const minusButton = document.getElementById('btn-minus');
+        const plusButton = document.getElementById('btn-plus');
+        const valueSpan = document.getElementById('var-value');
+        const minPeopleSpan = document.getElementById('minPeople');
+        const priceSpan = document.getElementById('price');
+
+        // 初始值为 1
+        let value = 1;
+
+        // 监听 "+" 按钮点击事件
+        plusButton.addEventListener('click', function () {
+            value++;
+            valueSpan.textContent = value;
+            updatePriceAndMinPeople();
+        });
+
+        // 监听 "-" 按钮点击事件
+        minusButton.addEventListener('click', function () {
+            if (value > 1) {
+                value--;
+                valueSpan.textContent = value;
+                updatePriceAndMinPeople();
+            }
+        });
+
+        // 更新价格和最少成行人数
+        function updatePriceAndMinPeople() {
+            // 执行 AJAX 请求，获取价格和最少成行人数
+            // 请替换为您自己的 AJAX 请求代码
+            // 示例请求 URL：'/Program/GetPriceAndMinPeople?date=2023-08-16'
+            const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(clickedDay.textContent));
+            const url = `/Program/GetPriceAndMinPeople?date=${formatDate(selectedDate)}&quantity=${value}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // 更新页面上的价格和最少成行人数
+                    priceSpan.textContent = data.price;
+                    minPeopleSpan.textContent = data.minPeople;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+    </script>
+    }
+@*<script src="~/js/CalendarJS.js"></script>*@
+

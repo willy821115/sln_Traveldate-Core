@@ -1,0 +1,226 @@
+﻿@model prj_Traveldate_Core.Models.MyModels.COrderState
+@{
+    ViewData["Title"] = "List";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Dashboard/List">
+                <img src="~/icons/home.png" class="subicon" />
+                <span>首頁</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
+               aria-expanded="true" aria-controls="collapseCompany">
+                <img src="~/icons/company.png" class="subicon" />
+                <span>廠商專區</span>
+            </a>
+            <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Company/Edit">帳號管理</a>
+                </div>
+            </div>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <img src="~/icons/edit.png" class="subicon" />
+                <span>商品管理</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Product/List">商品列表</a>
+                    <a class="collapse-item" href="~/Product/Create">新增商品</a>
+                    <a class="collapse-item" href="~/Trip/List">商品行程</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnalyze"
+               aria-expanded="true" aria-controls="collapseAnalyze">
+                <img src="~/icons/company.png" class="subicon" />
+                <span>數據分析</span>
+            </a>
+            <div id="collapseAnalyze" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Analysis/SellAnalysis">銷售分析</a>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+            
+            <div class="container-fluid">
+                <h2>首頁</h2>
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            訂單數量
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">40,000</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            訂單總價
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            熱銷前三
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">蘭與一日遊</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                       
+                <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">訂單概況</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>產品日期</th>
+                            <th>訂購會員</th>
+                            <th>產品名稱</th>
+                            <th>庫存/剩餘人數</th>
+                        </tr>
+                    </thead>
+                    @*<tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot>*@
+                    <tbody>
+                        <tr>
+                            <td>2023/8/5</td>
+                            <td>郝有錢</td>
+                            <td>蘭嶼一日遊 </td>
+                            <td>5</td>
+
+                        </tr>
+                        @*@foreach (var item in Model) {
+                                <tr>
+                                    <td>
+                                        <div> @Html.DisplayFor(modelItem => item.productDate)</div>
+                                        <div> @Html.DisplayFor(modelItem => item.productType) </div>
+                                     </td>
+                                    <td>
+                                        <div>@Html.DisplayFor(modelItem => item.orderMember) </div>
+                                        <div> @Html.DisplayFor(modelItem => item.quantity) </div>
+                                    </td>
+                                    <td>
+                                        <div>@Html.DisplayFor(modelItem => item.productName)</div>
+                                    </td>
+                                    <td>
+                                        <div> @Html.DisplayFor(modelItem => item.stock)</div>
+                                    </td>
+                                     <td>
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                    </td>
+                                </tr>
+                            }*@
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+               
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+          </div>
+        <!-- End of Main Content -->
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+

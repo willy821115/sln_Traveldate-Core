@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewData["Title"] = "content3";
+}
+
+<h2>優惠卷</h2>
+<div>
+    <label for="productName">會員名稱:</label>
+    <input type="text" id="productName" name="productName" required>
+    <input type="submit" value="搜尋">
+</div>
+<div>
+    <label for="companyName">會員等級:</label>
+    <select id="companyName" name="companyName" required>
+        <option value="">請選擇會員等級</option>
+        <option value="等級A">A</option>
+        <option value="等級B">B</option>
+        <option value="等級C">C</option>
+        <!-- 在此添加其他公司名稱的選項 -->
+    </select>
+</div>
+
+
+<table>
+    <tr>
+        <th>會員名稱</th>
+        <th>優惠卷名稱</th>
+        <th>折扣</th>
+        <th>數量</th>
+    </tr>
+    <tr>
+        <td>葉大雄</td>
+        <td>父親節優惠卷</td>
+        <td>0.8</td>
+        <td>1</td>
+    </tr>
+
+</table>
+
+
+
+<div>
+    <label for="ticketName">輸入優惠卷名稱:</label>
+    <input type="text" id="ticketName" name="ticketName" required>
+    <br />
+    <label for="ticketdiscount">輸入折扣:</label>
+    <input type="text" id="ticketdiscount" name="ticketdiscount" required>
+    <br />
+    <label for="ticketQuantity">輸入數量:</label>
+    <input type="text" id="ticketQuantity" name="ticketQuantity" required>
+</div>
+
+<input type="submit" value="新增優惠卷">
+
+        @section Styles
+        {
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+
+        .sidebar {
+            width: 200px;
+            background-color: #F8FDCF;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-right: 20px;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #E2F6CA;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #78C1F3;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+            .sidebar button:hover {
+                background-color: #155074;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #9BE8D8;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            /* 設定按鈕的通用樣式，比如字體、邊框等 */
+            font-size: 16px;
+            /* 按鈕的內邊距（上下 10 像素，左右 10 像素） */
+            padding: 10px 20px;
+            /* 去除按鈕的邊框 */
+            border: none;
+            /* 設置滑鼠游標樣式為指針（表示可點擊） */
+            cursor: pointer;
+            /* 按鈕的圓角半徑為 10 像素 */
+            border-radius: 10px;
+            /* 藍色背景 */
+            background-color: #155074;
+            /* 文字顏色 */
+            color: #F8FDCF;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #78C1F3;
+            }
+
+
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+    </style>
+        }

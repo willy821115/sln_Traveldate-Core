@@ -1,0 +1,305 @@
+﻿@{
+    ViewBag.Title = "填寫資料與付款";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="cart_body">
+        <div class="Header">
+            <h3 class="Heading">填寫資料與付款</h3>
+        </div>
+        <div class="Steps">
+            <span id="Step_cart">購物車</span>><span id="Step_Confirm" class="Step_Current">填寫資料與付款</span>><span id="Step_Finish">訂購完成</span>
+        </div>
+        <div class="Confirm-All">
+            <div class="Confirm-Left">
+                <div class="accordion" id="accordionExample">
+                    <div class="Confirm-Container">
+                        <h2 class="accordion-header Confirm-Container-Title">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h4 class="title Confirm-Title">訂購人資料</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show">
+                            <div class="accordion-body Confirm-Container-Content">
+                                <div class="traveler-info">
+                                    <label for="lastname">　　　姓氏　</label>
+                                    <input type="text" name="lastname" id="lastname" size="10" value="王" disabled="disabled">
+                                    <br />
+                                    <label for="firstname">　　　名字　</label>
+                                    <input type="text" name="firstname" id="firstname" size="10" value="小明" disabled="disabled">
+                                    <br />
+                                    <label for="idnumber">身份證字號　</label>
+                                    <input type="text" name="idnumber" id="idnumber" size="20" value="A123456789" disabled="disabled">
+                                    <br />
+                                    <label for="phone">　聯絡電話　</label>
+                                    <input type="text" name="phone" id="phone" size="20" value="0919150982" disabled="disabled">
+                                    <br />
+                                    <label for="emailadd">　電子信箱　</label>
+                                    <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Confirm-Container">
+                        <h2 class="accordion-header Confirm-Container-Title">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                <h4 class="title Confirm-Title">商品詳情</h4>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <div class="Confirm-Prod-Info">
+                                    <div class="image-box" style="width:25%;">
+                                        <img src="~/images/8.jpg" />
+                                    </div>
+                                    <div style="width:70%;">
+                                        <h5 class="confirm-subtitle" style="margin:0.3em 0;">
+                                            澎湖兩天一夜
+                                        </h5>
+                                        <h6 class="subtitle">2023/07/31</h6>
+                                    </div>
+                                </div>
+                                <div class="Confirm-Container-Content">
+                                    <h5 class="confirm-subtitle">
+                                        旅客代表人
+                                    </h5>
+                                    <div class="radio-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_same" checked>
+                                            <label class="form-check-label" for="traveler_same">
+                                                同訂購人
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_choose">
+                                            <label class="form-check-label" for="traveler_choose">
+                                                自旅伴名單中選擇
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_input">
+                                            <label class="form-check-label" for="traveler_input">
+                                                自行填寫
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="Confirm-Container-Content">
+                                        <div class="traveler-info">
+                                            <label for="lastname">　　　姓氏　</label>
+                                            <input type="text" name="lastname" id="lastname" size="10" value="王" disabled="disabled">
+                                            <br />
+                                            <label for="firstname">　　　名字　</label>
+                                            <input type="text" name="firstname" id="firstname" size="10" value="小明" disabled="disabled">
+                                            <br />
+                                            <label for="idnumber">身份證字號　</label>
+                                            <input type="text" name="idnumber" id="idnumber" size="20" value="A123456789" disabled="disabled">
+                                            <br />
+                                            <label for="phone">　聯絡電話　</label>
+                                            <input type="text" name="phone" id="phone" size="20" value="0919150982" disabled="disabled">
+                                            <br />
+                                            <label for="emailadd">　電子信箱　</label>
+                                            <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
+                                        </div>
+                                    </div>
+                                    <h5 class="confirm-subtitle">
+                                        同行旅客
+                                    </h5>
+                                    <div class="radio-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose" checked>
+                                            <label class="form-check-label" for="traveler_choose">
+                                                自旅伴名單中選擇
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_input">
+                                            <label class="form-check-label" for="traveler_input">
+                                                自行填寫
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="Confirm-Container-Content">
+                                        <div class="traveler-info">
+                                            <label for="lastname">　　　姓氏　</label>
+                                            <input type="text" name="lastname" id="lastname" size="10">
+                                            <br />
+                                            <label for="firstname">　　　名字　</label>
+                                            <input type="text" name="firstname" id="firstname" size="10">
+                                            <br />
+                                            <label for="idnumber">身份證字號　</label>
+                                            <input type="text" name="idnumber" id="idnumber" size="20">
+                                            <br />
+                                            <label for="phone">　聯絡電話　</label>
+                                            <input type="text" name="phone" id="phone" size="20">
+                                            <br />
+                                            <label for="emailadd">　電子信箱　</label>
+                                            <input type="email" name="emailadd" id="emailadd" size="30">
+                                        </div>
+                                    </div>
+                                    <h5 class="confirm-subtitle">
+                                        特殊需求備註
+                                    </h5>
+                                    <textarea class="form-control" id="order_note" rows="3"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Confirm-Container">
+                        <h2 class="accordion-header Confirm-Container-Title">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                <span class="title Confirm-Title">使用點數及優惠</span>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <h5 class="confirm-subtitle">
+                                    使用優惠券
+                                </h5>
+                                <button type="button" class="btn Cart-Common-btn" data-bs-toggle="modal" data-bs-target="#couponModal">
+                                    選擇優惠券
+                                </button>
+                                <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">目前可使用的優惠券</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="confirm-coupon-content">
+                                                    <div style="width:80%;">
+                                                        <h5>
+                                                            夏日八折券
+                                                        </h5>
+                                                        <p>
+                                                            夏日八折優惠券
+                                                        </p>
+                                                        <h6>使用期限：2023.09.30</h6>
+                                                    </div>
+                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                </div>
+                                                <div class="confirm-coupon-content">
+                                                    <div style="width:80%;">
+                                                        <h5>
+                                                            畫展促銷
+                                                        </h5>
+                                                        <p>
+                                                            波隆那畫展限時折扣
+                                                        </p>
+                                                        <h6>使用期限：2023.09.30</h6>
+                                                    </div>
+                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                </div>
+                                                <div class="confirm-coupon-content">
+                                                    <div style="width:80%;">
+                                                        <h5>
+                                                            歡慶八八優惠券
+                                                        </h5>
+                                                        <p>
+                                                            歡慶父親節優惠折扣
+                                                        </p>
+                                                        <h6>使用期限：2023.08.31</h6>
+                                                    </div>
+                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不使用優惠券</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="confirm-subtitle">
+                                    使用點數折抵
+                                </h5>
+                                <div class="Confirm-Container-Content">
+                                    <h6 class="subtitle" style="margin-bottom:1em;">目前持有 209 點，1點可折抵1元。</h6>
+                                    <label for="usepoint">使用點數　</label>
+                                    <input type="text" name="usepoint" id="usepoint" size="10">
+                                </div>
+                                <h5 class="Confirm-summary">共可折抵 0 元</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Confirm-Container">
+                        <h2 class="accordion-header Confirm-Container-Title">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                <span class="title Confirm-Title">付款方式</span>
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse show">
+                            <div class="accordion-body Confirm-Container-Content">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_credit" checked>
+                                    <label class="form-check-label" for="payment_credit">
+                                        信用卡付款
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_linepay">
+                                    <label class="form-check-label" for="payment_linepay">
+                                        LINE Pay
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_jko">
+                                    <label class="form-check-label" for="payment_jko">
+                                        街口支付
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_cvs">
+                                    <label class="form-check-label" for="payment_cvs">
+                                        超商付款
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_paypal">
+                                    <label class="form-check-label" for="payment_paypal">
+                                        PayPal
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Confirm-Right">
+                <div class="Confirm-Container">
+                    <div class="Confirm-Container-Title">
+                        <img src="~/icons/186405_available_checkmark_done_icon.png" class="Confirm-Arrow" />
+                        <span class="title Confirm-Title">訂單明細</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div>
+                            <h5 class="confirm-subtitle" style="margin:0.3em 0;">
+                                澎湖兩天一夜 × 1
+                            </h5>
+                            <h6 class="subtitle">2023/07/31</h6>
+                            <h6 class="Confirm-subtotal">NTD 5999</h6>
+                        </div>
+                        <hr>
+                        <h6 class="Confirm-total">總金額 NTD 5999</h6>
+                        <h5 class="Confirm-earnpoint">共可獲得 60 點!!</h5>
+
+                    </div>
+                </div>
+                <input type="submit" class="checkoutButton" style="margin:1em auto;" value="確認付款" />
+                @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="cancelButton", style="margin:0 auto;"})
+
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
+
+}
+
+@section Scripts{
+    <script src="~/js/jsCart.js"></script>
+}

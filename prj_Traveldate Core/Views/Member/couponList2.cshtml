@@ -1,0 +1,71 @@
+﻿@model IEnumerable<prj_Traveldate_Core.ViewModels.couponListViewModel>
+
+@{
+    ViewData["Title"] = "couponList2";
+}
+
+<h1>couponList2</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                序
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.couponList.CouponListId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.couponList.CouponName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.couponList.Discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.couponList.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model =>model.couponList.DueDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+            foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item .couponList.CouponListId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.couponList.CouponName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.couponList.Discount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.couponList.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model =>item.couponList.DueDate)
+                    </th>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

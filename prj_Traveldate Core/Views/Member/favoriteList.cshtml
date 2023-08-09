@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewData["Title"] = "favoriteList";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div id="div1">
+                <div class="cell" id="div3">
+
+                    <ul style="position:static;padding-left:40px" class="list-group">
+                        <img src="~/icons/User profile - border vector image.png" style="width:180px;height:180px        />
+                        <li class="list-group-item menuItem" data-content="subItem1"></li>
+                    </ul>
+
+                    <ul style="padding-top:16px;text-align:center; border-color:white" class="list-group">
+                        <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
+                        <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                    </ul>
+
+                    <div style="padding-left:0px" class="cell" id="div2">
+                        <ul style="padding-top:24px" class="list-group">
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</td></li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"})</td></li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})</td</li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"})</td</li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})</td></li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})</td></li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})</td></li>
+                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</td></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右半邊 - 內容容器 -->
+        <div class="col-md-9">
+            <div id="rightPanel">
+                <table>
+                    <tr>
+                        <th class="col-md-3">名稱</th>
+                        <th class="col-md-7">說明</th>
+                        <th class="col-md-5">概述</th>
+                        <th class="col-md-3">移除</th>
+                    </tr>
+                    <tr class="height">
+                        <div class="collapse" id="collapseExample">
+                        <td ><div>宜蘭太平山二日遊｜翠峰湖＆太平山莊住宿一晚</div></td>
+                        <td ><div>餐廳同時段用餐人數至多50人，餐點改為盒餐，不提供合菜服務，用餐不併桌，安排梅花座、設置隔板，提供外帶服務。 入園全面配戴口罩，實施實聯制及體溫控管，額溫量測達攝氏37.5度以上者，婉拒入園。 入園人數達1,000人即啟動動態管制，官網首頁露出即時入園人數。當入園人數達800人時，行經太平山途中之公路總局6處電子看板，開始預告管制。</div></td>
+                        <td ><div>◎ 專業司導帶您從台北出發，無須接駁轉乘換車。見晴懷古步道為台灣唯一被CNN評點為全球最美28條小路◎  太平山過去稱為眠腦，是泰雅族語森林茂密之意，不僅蘊藏了豐富的森林資源，孕育出的生態樣貌更是多采多姿</div></td>
+                        <td ><div><input type="button" value="取消收藏" /></div></td>
+                    </tr>
+                    <tr class="height">
+                        <div class="collapse" id="collapseExample">
+                        <td ><div>花蓮鯉魚潭露營渡假村山水谷豪華露營</div></td>
+                        <td ><div>本園區與全新團隊於 108 年全面規劃，以打造國際性的豪華露營聖地為目標，籌備規劃並將能容納所有客群的設施、氛圍，全面整合，全新的《山水谷-豪華露營》包含兩種房型，有適合年輕人的豪華浪漫房型及三代同堂渡假房型。將顧客的所好，完全集聚一身。克服萬難打造了《全台灣首座》真正的水上豪華露營帳篷。只為了給予更新的豪華露營體驗。目標是希望提供一個能結合"渡假"、"遊憩"、"休閒"、"樂活"、"養生"的多元化三代同堂奢世界級豪華露營渡假村。"積極"、"誠信"、"創新"、"永續經營"，為本園區所有同仁為了來到這裡的每一為貴賓，所堅持秉持的公司宗旨。</div></td>
+                        <td ><div>◎  將五星級酒店該有的設施全搬到了帳篷裡面，只需一咖行李就能夠入住</div></td>
+                        <td ><div><input type="button" value="取消收藏" /></div></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    </div>
+@*    <script>
+            $(document).ready(function () {
+            // 點擊左側選單按鈕時觸發事件
+            $(".menuItem").click(function () {
+                var contentToShow = $(this).data("content");
+                // 在這裡可以根據 contentToShow 的值來加載相應的內容，可以使用 Ajax 請求或直接填充 HTML 內容
+                if (contentToShow === "basicInfo") {
+                    showBasicInfoContent();
+                } else if (contentToShow === "passwordChange") {
+                    showPasswordChangeContent();
+                } else if (contentToShow === "couponList") {
+                    showCouponListContent();
+                } else if (contentToShow === "addCompanion") {
+                    showAddCompanionContent();
+                } else if (contentToShow === "favoriteList") {
+                    showFavoriteListContent();
+                }   else if (contentToShow === "orderList") {
+                    showOrderListContent();
+                } else if (contentToShow === "commentList") {
+                    showCommentListListContent();
+                } else if (contentToShow === "subItem1") {
+                    showSubItem1Content();
+                } else if (contentToShow === "subItem2") {
+                    showSubItem2Content();
+                } else if (contentToShow === "subItem3") {
+                    showSubItem3Content();
+                }
+                // 在這裡可以處理其他按鈕對應的內容
+            });
+        });
+</script>*@
+
+
+@*<table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td scope="row">
+            <table border="1">
+                <tr>
+                    <td id="showbfq" height="20" align="top" onclick="if(bfq.style.display=='none'){bfq.style.display='';showbfq.innerText='优质';}
+ else{bfq.style.display='none';showbfq.innerText='点击更多';}">
+                        点击更多
+                    </td>
+                </tr>
+                <tr>
+                    <td height="80" align="center" name="bfq" id="bfq" style="display:none;">aaa</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1">
+                <tr>
+                    <td id="showbfq1" height="20" align="top" onclick="if(bfq1.style.display=='none'){bfq1.style.display='';showbfq1.innerText='优质';}
+ else{bfq1.style.display='none';showbfq1.innerText='点击更多';}">
+                        点击更多
+                    </td>
+                </tr>
+                <tr>
+                    <td height="80" align="center" name="bfq1" id="bfq1" style="display:none;">bbb</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1">
+                <tr>
+                    <td id="showbfq2" height="20" align="top" onclick="if(bfq2.style.display=='none'){bfq2.style.display='';showbfq2.innerText='优质';}
+ else{bfq2.style.display='none';showbfq2.innerText='点击更多';}">
+                        点击更多
+                    </td>
+                </tr>
+                <tr>
+                    <td height="80" align="center" name="bfq2" id="bfq2" style="display:none;">ccc</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>*@
+
+@section Styles
+{
+<style>
+    table {
+        width: 120%;
+        border-collapse: separate;
+        margin-top: 0px;
+        table-layout: fixed;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    height {
+        height: 10px;
+        max-height:10px
+    }
+
+    #rightPanel {
+        margin-left: 64px; /* Adjust the left margin to create space between rightPanel and the cells */
+    }
+    .black-link {
+        color: black;
+        text-decoration: none;
+    }
+    .black-link:hover{
+        color: #155074;
+       text-decoration: none;
+    }
+</style>
+}
+

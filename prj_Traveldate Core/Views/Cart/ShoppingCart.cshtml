@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "我的購物車";
+}
+@using (Html.BeginForm())
+{
+    <div class="cart_body">
+        <div class="Header">
+            <h3 class="Heading">我的購物車</h3>
+            <input type="hidden" name="id" value="3" />
+        </div>
+        <div class="Steps">
+            <span id="Step_cart" class="Step_Current">購物車</span>><span id="Step_Confirm">填寫資料與付款</span>><span id="Step_Finish">訂購完成</span>
+        </div>
+        <div class="Cart-Container" style="width: 75%;">
+            <div class="Cart-Items">
+                <div class="checkboxes">
+                    <input type="checkbox" id="prodcb" checked>
+                </div>
+                <div class="image-box">
+                    <img src="~/images/8.jpg" />
+                </div>
+                <div class="about">
+                    <h1 class="title">澎湖兩天一夜</h1>
+                    <h3 class="subtitle">2023/07/31</h3>
+                </div>
+                <div class="counter">
+                    <div class="mybtn">-</div>
+                    <div class="count">1</div>
+                    <div class="mybtn">+</div>
+                </div>
+                <div class="prices">
+                    <div class="save"><u>加入最愛</u></div>
+                    <div class="remove"><u>移除</u></div>
+                    <div class="amount">NTD 5999</div>
+                </div>
+            </div>
+            <div class="Cart-Items">
+                <div class="checkboxes">
+                    <input type="checkbox" id="prodcb">
+                </div>
+                <div class="image-box">
+                    <img src="~/images/9.jpg" />
+                </div>
+                <div class="about">
+                    <h1 class="title">澎湖三天兩夜</h1>
+                    <h3 class="subtitle">2023/08/31</h3>
+                </div>
+                <div class="counter">
+                    <div class="mybtn">-</div>
+                    <div class="count">1</div>
+                    <div class="mybtn">+</div>
+                </div>
+                <div class="prices">
+                    <div class="save"><u>加入最愛</u></div>
+                    <div class="remove"><u>移除</u></div>
+                    <div class="amount">NTD 7999</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="SelectAll">
+            <input type="checkbox" id="scales">
+            <label for="scales">全選</label>
+            <button class="smallbutton">刪除所有已選項目</button>
+        </div>
+        <div class="checkout">
+            <div>
+                <div class="totalPriceBox">
+                    <div>
+                        <div class="Subtotal">總金額</div>
+                        <div class="items">1 項商品</div>
+                    </div>
+                    <div class="total-amount">NTD 5999</div>
+                </div>
+                <h4 class="Confirm-summary" style="margin:0;text-align:end;">共可獲得 60 點!!</h4>
+            </div>
+            <input type="submit" class="checkoutButton" value="去結帳" />
+        </div>
+    </div>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
+
+}
+
+@section Scripts{
+    <script src="~/js/jsCart.js"></script>
+}
+

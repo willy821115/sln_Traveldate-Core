@@ -1,0 +1,59 @@
+﻿@model IEnumerable<prj_Traveldate_Core.Models.ProductList>
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>產品資料一覽表</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-hover">
+    <tr>
+        <th>
+            序號
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlanName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Outline)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlanDescription)
+        </th>
+        <th></th>
+    </tr>
+
+    @{
+        int count = 0;
+        foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlanName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Outline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlanDescription)
+                </td>
+                <td>
+                    @Html.ActionLink("查看商品", "Product", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+    }
+</table>
+

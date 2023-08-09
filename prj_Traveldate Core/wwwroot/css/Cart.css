@@ -1,0 +1,407 @@
+﻿
+* {
+    font-family: '微軟正黑體';
+}
+
+.cart_body {
+    margin: 0;
+    padding: 0;
+    /*background: linear-gradient(to bottom right, #E2F6CA, #9BE8D8);*/
+/*    height: 100vh;*/
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    align-items: center;
+}
+
+.Steps {
+    width: 75%;
+    margin: 1%;
+    color: #909090;
+}
+
+.Step_Current {
+    font-weight: bold;
+    color: #5AA6D9
+}
+
+.Cart-Container {
+    /*width: 75%;*/
+    /*height: 85%;*/
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    /*box-shadow: 0px 25px 40px #1687d933;*/
+    border: 5px solid #E2F6CA;
+    padding: 20px 0;
+}
+
+
+.Confirm-All {
+    width: 75%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Confirm-Left {
+    width: 58%;
+}
+
+.Confirm-Right {
+    width: 40%;
+    display:flex;
+    flex-direction:column;
+}
+
+.Confirm-Container-Title {
+    display: flex;
+    align-items:center;
+}
+
+.Confirm-Arrow {
+    height: 25px;
+    width: 25px;
+    margin: 1% 3%;
+}
+
+.Confirm-Title {
+}
+
+.Confirm-Container {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border: 5px solid #E2F6CA;
+    padding: 10px 0;
+    margin: 3% auto;
+    width:100%;
+}
+
+.Confirm-Container-Content {
+    margin: 1% 3%;
+}
+
+    .Confirm-Container-Content label {
+        margin: 1% 0;
+        color: #155074;
+        
+    }
+
+.accordion-button {
+    padding: 0 1rem;
+    color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+    .accordion-button:not(.collapsed) {
+        padding: 0 1rem;
+        color: transparent;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+.Cart-Common-btn {
+    margin: 0.3em 0;
+    width: 150px;
+    height: 50px;
+    border: none;
+    background: linear-gradient(to bottom right, #F8FDCF, #FAFBF1);
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #202020;
+}
+
+
+.confirm-coupon-content {
+    border-radius: 10px;
+    border: 1px solid #9BE8D8;
+    padding:1em 1.5em;
+    display:flex;
+    margin:1em;
+}
+
+.confirm-subtitle {
+    margin: 0.8em;
+    font-weight: 600;
+    color: #155047;
+}
+
+.Confirm-Prod-Info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#E2F6CA;
+    padding:0.8em;
+}
+
+.Confirm-summary {
+    margin: 5% 0 0 3%;
+    color: #800000;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+.Header {
+    margin: 1% 0;
+    width: 75%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Heading {
+    font-size: 30px;
+    font-weight: 700;
+    color: #155074;
+}
+
+.Action {
+    font-size: 14px;
+    font-weight: 600;
+    color: #E44C4C;
+    cursor: pointer;
+    border-bottom: 1px solid #E44C4C;
+}
+
+.Cart-Items {
+    margin: 2% auto;
+    width: 90%;
+    height: 100px;
+    /*height: 25%;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.image-box {
+    /* border: 1px solid red; */
+    width: 15%;
+    height: 100%;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.image-box img {
+    width: 100%;
+    object-fit: contain;
+}
+
+
+.about {
+    height: 100%;
+    width: 40%;
+}
+
+.title {
+    margin: 2% 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #155074;
+}
+
+.subtitle {
+    line-height: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #909090;
+}
+
+.counter {
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mybtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: #155074;
+    cursor: pointer;
+}
+
+.count {
+    font-size: 20px;
+    font-weight: 900;
+    color: #155074;
+}
+
+.prices {
+    width:20%;
+    height: 100%;
+    text-align: right;
+}
+
+.amount {
+    padding-top: 20px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #155074;
+}
+
+.save {
+    padding-top: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1687d9;
+    cursor: pointer;
+}
+
+.remove {
+    padding-top: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #E44C4C;
+    cursor: pointer;
+}
+
+
+.checkout {
+    margin: 1%;
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.totalPriceBox {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Subtotal {
+    font-size: 20px;
+    font-weight: 700;
+    color: #155074;
+    margin:2% 0;
+}
+
+.items {
+    font-size: 14px;
+    font-weight: 500;
+    color: #909090;
+    line-height: 10px;
+    text-align: center;
+}
+
+.total-amount {
+    margin-left: 1em;
+    font-size: 32px;
+    font-weight: 900;
+    color: #155074;
+}
+
+.checkoutButton {
+    margin: 3% 0;
+    width: 70%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(to bottom right, #78C1F3, #5AA6D9);
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #202020;
+}
+
+.SelectAll {
+    width: 68%;
+    text-align: start;
+    margin: 1%;
+}
+
+.smallbutton {
+    margin:1%;
+    border: 3px solid #78C1F3;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #202020;
+}
+
+.cancelButton {
+    margin: 3% 0;
+    width: 70%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(to bottom right, #c3c0c0, #909090);
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #202020;
+    text-align: center;
+    text-decoration: none;
+    line-height: 50px;
+}
+
+.Confirm-subtotal {
+    text-align: end;
+    font-size: 16px;
+    font-weight: 600;
+    color: #155074;
+}
+
+.Confirm-total {
+    text-align: end;
+    font-size: 20px;
+    font-weight: 600;
+    color: #155074;
+}
+
+.Complete-box {
+    width: 75%;
+    margin: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.Complete-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #155074;
+}
+
+.Complete-content {
+    color: #155074;
+    width:50%;
+    text-align:center;
+}
+
+.CommonButton {
+    display: block;
+    margin: 3% 0;
+    width: 70%;
+    height: 50px;
+    border: none;
+    background: linear-gradient(to bottom right, #F8FDCF, #E2F6CA);
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #202020;
+    text-align: center;
+    text-decoration: none;
+    line-height: 50px;
+}
+
+.Confirm-earnpoint {
+    margin: 0;
+    text-align: end;
+    color: #800000;
+    font-size: 16px;
+    font-weight: bold;
+}

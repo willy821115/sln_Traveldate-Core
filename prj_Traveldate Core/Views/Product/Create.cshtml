@@ -1,0 +1,258 @@
+﻿@model prj_Traveldate_Core.Models.ProductList
+
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Dashboard/List">
+                <img src="~/icons/home.png" class="subicon" />
+                <span>首頁</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
+               aria-expanded="true" aria-controls="collapseCompany">
+                <img src="~/icons/company.png" class="subicon" />
+                <span>廠商專區</span>
+            </a>
+            <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Company/Edit">帳號管理</a>
+                </div>
+            </div>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <img src="~/icons/edit.png" class="subicon" />
+                <span>商品管理</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Product/List">商品列表</a>
+                    <a class="collapse-item" href="~/Product/Create">新增商品</a>
+                    <a class="collapse-item" href="~/Trip/List">商品行程</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnalyze"
+               aria-expanded="true" aria-controls="collapseAnalyze">
+                <img src="~/icons/company.png" class="subicon" />
+                <span>數據分析</span>
+            </a>
+            <div id="collapseAnalyze" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="~/Analysis/SellAnalysis">銷售分析</a>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+            
+            <div class="container-fluid">
+                <h2>新增產品</h2>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                       
+                            @*<!-- Basic Card Example -->*@
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">基本資料</h6>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="form-group">
+                                        <label asp-for="ProductName" class="control-label"></label>
+                                        <input asp-for="ProductName" class="form-control" />
+                                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                                        </div>
+
+                                        <div class=" form-group">
+                                           <label class="control-label">產品類型</label>
+                                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
+                                               <option >門票</option>
+                                               <option>團體旅遊</option>
+                                               <option>自助旅行</option>
+                                           </select>
+                                        </div>
+
+                                    <div class=" form-group">
+                                        <label class="control-label">所在地區</label>
+                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                            <option >台北市</option>
+                                            <option>桃園市</option>
+                                            <option>新竹市</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Place" class="control-label"></label>
+                                        <input asp-for="Place" class="form-control" />
+                                        <span asp-validation-for="Place" class="text-danger"></span>
+                                    </div>
+                                                                                                 
+                                    </div>
+                                </div>
+
+                            @*<!-- Basic Card Example -->*@
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">產品標籤</h6>
+                                </div>
+                                <div class="card-body">
+                                    
+                                        
+                                    
+                                        <div class="controls-display-row category-click">
+                                             <span class="fs-5">觀光行程</span>
+                                           
+                                            </div>
+                                            <div class="ms-lg-4 filter-block-toggle">
+                                                 <ul class="list-unstyled m">
+                                                
+                                                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                        <input type="checkbox" />
+                                                        <span>半/一日遊</span>
+                                                    </li>
+
+                                                 <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                     <input type="checkbox" />
+                                                     <span>多日遊</span>
+                                                   </li>
+
+                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                <input type="checkbox" />
+                                                <span>單車旅遊</span>
+                                            </li>
+
+                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                <input type="checkbox" />
+                                                <span>遊船觀光</span>
+                                            </li>
+                                                
+                                            </ul>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                              
+                        
+                        <div class="col-md-12">
+                            @*<!-- Basic Card Example -->*@
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">產品描述</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label asp-for="OutlineForSearch" class="control-label"></label>
+                                        <input asp-for="OutlineForSearch" class="form-control" />
+                                        <span asp-validation-for="OutlineForSearch" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Outline" class="control-label"></label>
+                                        <input asp-for="Outline" class="form-control" />
+                                        <span asp-validation-for="Outline" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Description" class="control-label"></label>
+                                        <textarea name="Description" class="form-control col-lg-12"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">方案</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label asp-for="PlanName" class="control-label"></label>
+                                        <input asp-for="PlanName" class="form-control" />
+                                        <span asp-validation-for="PlanName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PlanDescription" class="control-label"></label>
+                                        <textarea name="PlanDescription" class="form-control col-lg-12"></textarea>
+                                        <span asp-validation-for="PlanDescription" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                         
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                  
+                </div>
+                </form>
+
+                <div>
+                    <a asp-action="List">取消</a>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+          </div>
+        <!-- End of Main Content -->
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

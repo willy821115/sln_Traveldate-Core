@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewData["Title"] = "content2";
+}
+
+<table>
+    <tr>
+        <th>客戶姓名</th>
+        <th>性別</th>
+        <th>出生日期</th>
+        <th>居住地區</th>
+        <th>手機號碼</th>
+        <th>EMAIL</th>
+        <th>密碼</th>
+
+    </tr>
+    <tr>
+        <td>XXX</td>
+        <td>男</td>
+        <td>1993/02/18</td>
+        <td>新北市</td>
+        <td>0982222222</td>
+        <td>EMAIL@gmail.com</td>
+        <td>123456</td>
+    </tr>
+</table>
+
+
+<table>
+    <tr>
+        <th>廠商名稱</th>
+        <th>電話</th>
+        <th>聯絡人姓名</th>
+        <th>聯絡人職稱</th>
+        <th>EMAIL</th>
+        <th>服務概述</th>
+
+    </tr>
+    <tr>
+        <td>XXXXX</td>
+        <td>26360999</td>
+        <td>川古夫</td>
+        <td>經理</td>
+        <td>EMAIL@gmail.com</td>
+        <td>
+            <details>
+                <summary>服務概述</summary>
+                這是服務概述。
+            </details>
+        </td>
+    </tr>
+</table>
+
+
+
+<table>
+    <tr>
+        <th>已停權列表</th>
+    </tr>
+    <tr>
+        <td>停權公司顯示區域</td>
+    </tr>
+</table>
+<div>
+    <input type="submit" value="停權">
+    <input type="submit" value="恢復">
+</div>
+
+@section Styles
+{
+    <style>
+        /* 設定全局樣式 */
+        body {
+            font-family: Arial, sans-serif; /* 設定字體 */
+            background-color: #f2f2f2; /* 設定背景顏色 */
+            padding: 20px; /* 設定整體內邊距 */
+        }
+
+        /* 左側側邊欄 */
+        .sidebar {
+            width: fit-content; /* 寬度自適應內容 */
+            background-color: #F8FDCF; /* 設定背景顏色 */
+            border: 1px solid #ccc; /* 設定邊框 */
+            border-radius: 10px; /* 設定圓角半徑 */
+            padding: 10px; /* 設定內邊距 */
+            margin-right: 20px; /* 設定與內容區域的右邊距 */
+        }
+
+        /* 右側內容區域 */
+        .content {
+            background-color: #E2F6CA; /* 設定背景顏色 */
+            border: 1px solid #ccc; /* 設定邊框 */
+            border-radius: 10px; /* 設定圓角半徑 */
+            padding: 20px; /* 設定內邊距 */
+        }
+
+        /* 左側側邊欄的標題樣式 */
+        .sidebar h3 {
+            margin-bottom: 20px; /* 設定底邊距 */
+        }
+
+
+
+        /* 表格樣式 */
+        table {
+            width: 100%; /* 表格寬度佔滿容器 */
+            border-collapse: collapse; /* 設定邊框合併 */
+            margin-bottom: 20px; /* 設定底邊距 */
+        }
+
+        /* 表格的表頭和內容樣式 */
+        th, td {
+            border: 1px solid #ccc; /* 設定邊框 */
+            padding: 8px; /* 設定內邊距 */
+            text-align: left; /* 設定文字居左對齊 */
+        }
+
+        /* 表格的表頭樣式 */
+        th {
+            background-color: #9BE8D8; /* 設定背景顏色 */
+        }
+
+        /* 表單元素樣式 - 文本框、數字輸入框、下拉選項、多行文本框 */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%; /* 寬度佔滿容器 */
+            padding: 8px; /* 設定內邊距 */
+            border: 1px solid #ccc; /* 設定邊框 */
+            border-radius: 10px; /* 設定圓角半徑 */
+            box-sizing: border-box; /* 設定盒模型為border-box，使寬高包括邊框和內邊距 */
+            margin-bottom: 10px; /* 設定底邊距 */
+        }
+
+        /* 按鈕樣式 */
+        input[type="submit"] {
+            font-size: 16px; /* 設定字體大小 */
+            padding: 10px 20px; /* 設定內邊距 */
+            border: none; /* 去除邊框 */
+            cursor: pointer; /* 設定滑鼠指針樣式為手型 */
+            border-radius: 10px; /* 設定圓角半徑 */
+            background-color: #155074; /* 設定背景顏色 */
+            color: #F8FDCF; /* 設定文字顏色 */
+        }
+
+            /* 按鈕樣式 - 滑鼠懸停時 */
+            input[type="submit"]:hover {
+                background-color: #78C1F3; /* 設定懸停時的背景顏色 */
+            }
+
+        /* 多行文本框的調整大小功能 */
+        textarea {
+            resize: vertical; /* 設定垂直調整大小 */
+            height: 100px; /* 設定初始高度 */
+        }
+    </style>
+}
+

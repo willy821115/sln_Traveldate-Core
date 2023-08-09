@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "CouponCreate";
+}
+
+<h1>CouponCreate</h1>
+<div class="container">
+    <h1>新增優惠券</h1>
+    <form action="/add_coupon" method="post">
+        <div class="form-group">
+            <label for="company_name">公司名稱：</label>
+            <input type="text" id="company_name" name="company_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="itinerary_name">行程名稱：</label>
+            <input type="text" id="itinerary_name" name="itinerary_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="coupon_name">優惠券名稱：</label>
+            <input type="text" id="coupon_name" name="coupon_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="coupon_content">優惠券內容：</label>
+            <textarea id="coupon_content" name="coupon_content" rows="4" cols="50" required></textarea>
+        </div>
+
+        <input type="submit" value="新增優惠券" class="styled-button">
+    </form>
+</div>
+
+@section Styles
+{
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .styled-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #0051ff71;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+            .styled-button:hover {
+                background-color: #003cff;
+            }
+    </style>
+}
