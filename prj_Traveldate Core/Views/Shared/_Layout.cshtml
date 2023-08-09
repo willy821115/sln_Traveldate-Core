@@ -46,27 +46,23 @@
 <body>
    
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList">prjTravelDate_core</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList"><img src="~/icons/logo_travel_text_3.png" width="200px" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
                         </li>
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
-                        </li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
                         </li>
@@ -82,22 +78,29 @@
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart">購物車</a>
                         </li>
-
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Program" asp-action="Product">專案</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
                         </li>
                         <li class="nav-item">
                             <a href="#contact-us">聯絡我們</a>
                         </li>
-
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     
-    <div class="container-fluid">
-        <main role="main" class="pb-3">
+    <div class="container-fluid p-0">
+        @await RenderSectionAsync("TopImage", required: false)
+        <main role="main" class="pb-3 mt-3">
             @RenderBody()
         </main>
     </div>

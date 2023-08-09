@@ -43,4 +43,27 @@ footer {
         margin-left: 10px;
     }
 
+/**************************************20230809導覽列新增樣式***********************************************************/
+.navbar {
+    background-color: #155074;
+}
 
+.nav-item > a,
+.navbar-brand {
+    text-decoration: none;
+    color: #FFFFF4;
+}
+
+    .nav-item > a:visited,
+    .navbar-brand:visited {
+        color: #FFFFF4;
+    }
+
+    .nav-item > a:hover,
+    .navbar-brand:hover {
+        color: #fff ;
+    }
+.nav-item{
+margin-right:5px;
+}
+/**************************************20230809導覽列新增樣式***********************************************************/
