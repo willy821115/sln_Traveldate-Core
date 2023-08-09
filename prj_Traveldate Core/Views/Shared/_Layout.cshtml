@@ -29,39 +29,74 @@
     <link href="~/Template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
-    <link rel="stylesheet" href="~/css/MyCSS.css" />
+   
     <!-- Custom styles for this template-->
     <link href="~/Template/css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+
+    <link rel="stylesheet" href="~/css/MyCSS.css" />
+
+    <link href="/css/multiRange.css" rel="stylesheet" />
+    <link href="/css/calendar-style.css" rel="stylesheet" />
+    <link href="/css/search.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header class="myheader">
-        <div style="display: flex; align-items: center;">
-            <h1 style="margin-right: 20px;">
-                <a href="#home" style="text-decoration: none; color: #fff;">TravelDate</a>
-            </h1>
-            <div style="display: flex; align-items: center;">
-                <input type="text" placeholder="搜尋..." style="width: 400px;">
-                <button style="margin-left: 10px;">搜尋</button>
-            </div>
-            <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
-            <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
-        </div>
-    </header>
+   
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList">prjTravelDate_core</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Search" asp-action="SearchList">門票</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Search" asp-action="SearchList">自助旅行</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart">購物車</a>
+                        </li>
 
-    <nav class="mynav">
-        
-        <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
-        <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
-        <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
-        <a asp-area="" asp-controller="Search" asp-action="SearchList">門票</a>
-        <a asp-area="" asp-controller="Search" asp-action="SearchList">自助旅行</a>
-        <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
-        <a href="#contact-us">聯絡我們</a>
-    </nav>
-    <div class="container">
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Program" asp-action="Product">專案</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact-us">聯絡我們</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
