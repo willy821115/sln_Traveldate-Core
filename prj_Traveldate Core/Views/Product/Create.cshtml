@@ -100,7 +100,7 @@
                                     <div class="card-body">
 
                                         <div class="form-group">
-                                        <label asp-for="ProductName" class="control-label"></label>
+                                        <label  class="control-label">產品名稱</label>
                                         <input asp-for="ProductName" class="form-control" />
                                         <span asp-validation-for="ProductName" class="text-danger"></span>
                                         </div>
@@ -124,7 +124,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label asp-for="Place" class="control-label"></label>
+                                        <label class="control-label">產品地址</label>
                                         <input asp-for="Place" class="form-control" />
                                         <span asp-validation-for="Place" class="text-danger"></span>
                                     </div>
@@ -185,19 +185,19 @@
                                 <div class="card-body">
 
                                     <div class="form-group">
-                                        <label asp-for="OutlineForSearch" class="control-label"></label>
+                                        <label class="control-label">搜尋頁大綱</label>
                                         <input asp-for="OutlineForSearch" class="form-control" />
                                         <span asp-validation-for="OutlineForSearch" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <label asp-for="Outline" class="control-label"></label>
+                                        <label class="control-label">大綱</label>
                                         <input asp-for="Outline" class="form-control" />
                                         <span asp-validation-for="Outline" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-group">
-                                        <label asp-for="Description" class="control-label"></label>
+                                        <label class="control-label">產品描述</label>
                                         <textarea name="Description" class="form-control col-lg-12"></textarea>
                                         <span asp-validation-for="Description" class="text-danger"></span>
                                     </div>
@@ -210,12 +210,12 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label asp-for="PlanName" class="control-label"></label>
+                                        <label class="control-label">方案名稱</label>
                                         <input asp-for="PlanName" class="form-control" />
                                         <span asp-validation-for="PlanName" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label asp-for="PlanDescription" class="control-label"></label>
+                                        <label class="control-label">方案描述</label>
                                         <textarea name="PlanDescription" class="form-control col-lg-12"></textarea>
                                         <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                     </div>
@@ -223,11 +223,13 @@
                                 </div>
                             </div>
 
-                        </div>
-                         
                             <div class="form-group">
                                 <input type="submit" value="Create" class="btn btn-primary" />
                             </div>
+
+                        </div>
+                         
+                            
                   
                 </div>
                 </form>
