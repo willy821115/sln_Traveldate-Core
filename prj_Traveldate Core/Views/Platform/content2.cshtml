@@ -3,88 +3,161 @@
     ViewData["Title"] = "content2";
 }
 
-<table>
-    <tr>
-        <th>客戶姓名</th>
-        <th>性別</th>
-        <th>出生日期</th>
-        <th>居住地區</th>
-        <th>手機號碼</th>
-        <th>EMAIL</th>
-        <th>密碼</th>
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-    </tr>
-    <tr>
-        <td>XXX</td>
-        <td>男</td>
-        <td>1993/02/18</td>
-        <td>新北市</td>
-        <td>0982222222</td>
-        <td>EMAIL@gmail.com</td>
-        <td>123456</td>
-    </tr>
-</table>
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content1">
+                <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content2">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content3">
+                <span>優惠券</span>
+            </a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <h2>停權管理</h2>
 
 
-<table>
-    <tr>
-        <th>廠商名稱</th>
-        <th>電話</th>
-        <th>聯絡人姓名</th>
-        <th>聯絡人職稱</th>
-        <th>EMAIL</th>
-        <th>服務概述</th>
+                <div class="row">
+                    <div class="col-md-12">
 
-    </tr>
-    <tr>
-        <td>XXXXX</td>
-        <td>26360999</td>
-        <td>川古夫</td>
-        <td>經理</td>
-        <td>EMAIL@gmail.com</td>
-        <td>
-            <details>
-                <summary>服務概述</summary>
-                這是服務概述。
-            </details>
-        </td>
-    </tr>
-</table>
+                        <table>
+                            <tr>
+                                <th>客戶姓名</th>
+                                <th>性別</th>
+                                <th>出生日期</th>
+                                <th>居住地區</th>
+                                <th>手機號碼</th>
+                                <th>EMAIL</th>
+                                <th>密碼</th>
+
+                            </tr>
+                            <tr>
+                                <td>XXX</td>
+                                <td>男</td>
+                                <td>1993/02/18</td>
+                                <td>新北市</td>
+                                <td>0982222222</td>
+                                <td>EMAIL@gmail.com</td>
+                                <td>123456</td>
+                            </tr>
+                        </table>
+
+
+                        <table>
+                            <tr>
+                                <th>廠商名稱</th>
+                                <th>電話</th>
+                                <th>聯絡人姓名</th>
+                                <th>聯絡人職稱</th>
+                                <th>EMAIL</th>
+                                <th>服務概述</th>
+
+                            </tr>
+                            <tr>
+                                <td>XXXXX</td>
+                                <td>26360999</td>
+                                <td>川古夫</td>
+                                <td>經理</td>
+                                <td>EMAIL@gmail.com</td>
+                                <td>
+                                    <details>
+                                        <summary>服務概述</summary>
+                                        這是服務概述。
+                                    </details>
+                                </td>
+                            </tr>
+                        </table>
 
 
 
-<table>
-    <tr>
-        <th>已停權列表</th>
-    </tr>
-    <tr>
-        <td>停權公司顯示區域</td>
-    </tr>
-</table>
-<div>
-    <input type="submit" value="停權">
-    <input type="submit" value="恢復">
+                        <table>
+                            <tr>
+                                <th>已停權列表</th>
+                            </tr>
+                            <tr>
+                                <td>停權公司顯示區域</td>
+                            </tr>
+                        </table>
+                        <div>
+                            <input type="submit" value="停權">
+                            <input type="submit" value="恢復">
+                        </div>
+
+
+
+
+                    </div>
+
+                    @*<!-- Basic Card Example -->*@
+
+
+                </div>
+
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
 </div>
+<!-- End of Page Wrapper -->
+
+
 
 @section Styles
 {
     <style>
-        /* 設定全局樣式 */
-        body {
-            font-family: Arial, sans-serif; /* 設定字體 */
-            background-color: #f2f2f2; /* 設定背景顏色 */
-            padding: 20px; /* 設定整體內邊距 */
-        }
+        
 
-        /* 左側側邊欄 */
-        .sidebar {
-            width: fit-content; /* 寬度自適應內容 */
-            background-color: #F8FDCF; /* 設定背景顏色 */
-            border: 1px solid #ccc; /* 設定邊框 */
-            border-radius: 10px; /* 設定圓角半徑 */
-            padding: 10px; /* 設定內邊距 */
-            margin-right: 20px; /* 設定與內容區域的右邊距 */
-        }
+       
 
         /* 右側內容區域 */
         .content {
@@ -94,10 +167,7 @@
             padding: 20px; /* 設定內邊距 */
         }
 
-        /* 左側側邊欄的標題樣式 */
-        .sidebar h3 {
-            margin-bottom: 20px; /* 設定底邊距 */
-        }
+        
 
 
 
