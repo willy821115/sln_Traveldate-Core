@@ -3,34 +3,31 @@
     ViewData["Title"] = "commentList";
 }
 
-<h1>commentList</h1>
+@*<h1>commentList</h1>*@
 
 <div class="container">
     <div class="row">
         <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
+                    <div class="cell d-flex flex-column">
+                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        <ul class="list-group lgmenu mt-3">
+                            <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
+                            <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                        </ul>
 
-                    <ul style="position:static;padding-left:40px" class="list-group">
-                        <img src="~/icons/User profile - border vector image.png" style="width:180px;height:180px          />
-                        <li class="list-group-item menuItem" data-content="subItem1"></li>
-                    </ul>
-
-                    <ul style="padding-top:16px;text-align:center; border-color:white" class="list-group">
-                        <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                        <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
-                    </ul>
-
-                    <div style="padding-left:0px" class="cell" id="div2">
-                        <ul style="padding-top:24px" class="list-group">
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</td></li>
+                    </div>
+                    <div class="cell" id="div2">
+                        <ul class="list-group lgmenu mt-4">
+                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
                         </ul>
                     </div>
                 </div>
@@ -39,7 +36,7 @@
         <!-- 右半邊 - 內容容器 -->
         <div class="col-md-8">
             <div id="rightPanel">
-                <table>
+                <table class ="table-hover">
                     <tr>
                         <th>商品名稱</th>
                         <th>標題</th>
@@ -52,7 +49,7 @@
                         <td>第一次體驗冷泉！</td>
                         <td>第一次嘗試冷泉，在炎熱的夏天裡非常舒服</td>
                         <td>4</td>
-                        <td><input type="button" value="移除評論"></button></td>
+                        <td><input type="button" value="移除評論" class="btn btn-outline-secondary btn-sm" /></td>
                     </tr>
                     <tr id="comment1" class="collapse">
                         <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
@@ -62,7 +59,7 @@
                         <td>整體感受不錯</td>
                         <td>很好玩，推薦喜愛心豔陽的朋友。夏天太陽很大，要注意防曬</td>
                         <td>5</td>
-                        <td><input type="button" value="移除評論"></button></td>
+                        <td><input type="button" value="移除評論" class="btn btn-outline-secondary btn-sm" /></td>
                     </tr>
                     <tr id="comment2" class="collapse">
                         <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
@@ -72,7 +69,7 @@
                         <td>安全性很高，值得參加遊</td>
                         <td>我和先生參加的活動是雙人獨木舟，阿湯老師解釋很清楚，進行活動很安全，很棒的體驗。有機會下次會再參加。</td>
                         <td>5</td>
-                        <td><input type="button" value="移除評論"></button></td>
+                        <td><input type="button" value="移除評論" class="btn btn-outline-secondary btn-sm" /></td>
                     </tr>
                     <tr id="comment3" class="collapse">
                         <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
@@ -80,38 +77,11 @@
                 </table>
             </div>
         </div>
-
     </div>
+</div>
 
     @section Styles
     {
-    <style>
-    table {
-        width: 120%;
-        border-collapse: separate;
-        margin-top: 0px;
-        table-layout: fixed;
-        word-break: break-all;
-    }
-    th, td {
-        padding: 10px;
-        text-align: start;
-        word-break: break-all;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    #rightPanel {
-        margin-left: 64px; /* Adjust the left margin to create space between rightPanel and the cells */
-    }
-    .black-link {
-        color: black;
-        text-decoration: none;
-    }
-    .black-link:hover{
-        color: #155074;
-       text-decoration: none;
-    }
-</style>
+            <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 

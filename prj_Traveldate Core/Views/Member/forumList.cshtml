@@ -8,27 +8,24 @@
         <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
+                    <div class="cell d-flex flex-column">
+                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        <ul class="list-group lgmenu mt-3">
+                            <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
+                            <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                        </ul>
 
-                    <ul style="position:static;padding-left:40px" class="list-group">
-                        <img src="~/icons/User profile - border vector image.png" style="width:180px;height:180px/>
-                        <li class="list-group-item menuItem" data-content="subItem1"></li>
-                    </ul>
-
-                    <ul style="padding-top:16px;text-align:center; border-color:white" class="list-group">
-                        <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                        <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
-                    </ul>
-
-                    <div style="padding-left:0px" class="cell" id="div2">
-                        <ul style="padding-top:24px" class="list-group">
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</td></li>
+                    </div>
+                    <div class="cell" id="div2">
+                        <ul class="list-group lgmenu mt-4">
+                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
                         </ul>
                     </div>
                 </div>
@@ -37,7 +34,7 @@
         <!-- 右半邊 - 內容容器 -->
         <div class="col-md-9">
             <div id="rightPanel">
-                <table>
+                <table class="table-hover">
                     <tr>
                         <th>序號</th>
                         <th>行程名稱</th>
@@ -46,7 +43,6 @@
                         <th>熱度</th>
                         <th>觀看數</th>
                         <th class="col-md-5">行程敘述</th>
-
                     </tr>
                     <tr>
                         <td>序號1</td>
@@ -55,8 +51,7 @@
                         <td>2023-09-22</td>
                         <td>87</td>
                         <td>435</td>
-                        <td><TextArea rows="5" cols="45">行程：見晴懷古步道 → 檜木原始林步道 → 鐵杉林自然步道 → 雲海咖啡館 → 觀景平台 → 蹦蹦車 → 鳩子澤溫泉煮蛋</TextArea> </td>
-
+                        <td><p>行程：見晴懷古步道 → 檜木原始林步道 → 鐵杉林自然步道 → 雲海咖啡館 → 觀景平台 → 蹦蹦車 → 鳩子澤溫泉煮蛋</p> </td>
                     </tr>
                     <tr>
                         <td>序號2</td>
@@ -65,9 +60,9 @@
                         <td>2023-09-25</td>
                         <td>55</td>
                         <td>275</td>
-                        <td><TextArea rows="5" cols="45">Day1：雲霧步道 → 雪霸休閒農場 → 大鹿林道西線 → 觀霧山莊 → 下午茶 → 雪霸農場自助晚餐
+                        <td><p>Day1：雲霧步道 → 雪霸休閒農場 → 大鹿林道西線 → 觀霧山莊 → 下午茶 → 雪霸農場自助晚餐
 Day2：野馬瞰山 → 午餐農場自理 → 雪霸農場當季DIY → 雪霸農場自助晚餐
-Day3：野馬瞰山森林浴 → 午餐自理 → 返程</TextArea> </td>
+Day3：野馬瞰山森林浴 → 午餐自理 → 返程</p> </td>
                     </tr>
                     <tr>
                         <td>序號3</td>
@@ -76,8 +71,8 @@ Day3：野馬瞰山森林浴 → 午餐自理 → 返程</TextArea> </td>
                         <td>2023-10-02</td>
                          <td>34</td>
                         <td>170</td>
-                        <td><TextArea rows="5" cols="45">Day1：大崙山賞銀杏/茶園 → 能高瀑布 → 民宿 → 多肉秘境(中正店) → 埔里地母廟 → 18°c巧克力工房 → 妮娜巧克力城堡
-Day2：日月潭月老廟 → 日月潭自行車步道 → 向山旋懸臂式觀景台 → 東星屋景點餐廳</TextArea> </td>
+                        <td><p>Day1：大崙山賞銀杏/茶園 → 能高瀑布 → 民宿 → 多肉秘境(中正店) → 埔里地母廟 → 18°c巧克力工房 → 妮娜巧克力城堡
+Day2：日月潭月老廟 → 日月潭自行車步道 → 向山旋懸臂式觀景台 → 東星屋景點餐廳</p> </td>
 
                     </tr>
                 </table>
@@ -85,40 +80,11 @@ Day2：日月潭月老廟 → 日月潭自行車步道 → 向山旋懸臂式觀
         </div>
 
     </div>
+    </div>
+
 
     @section Styles
     {
-    <style>
-    table {
-        width: 120%;
-        border-collapse: separate;
-        margin-top: 0px;
-        table-layout: fixed;
-        word-break: break-all;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: start;
-        word-break: break-all;
-    }
-
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    #rightPanel {
-        margin-left: 64px; /* Adjust the left margin to create space between rightPanel and the cells */
-    }
-    .black-link {
-        color: black;
-        text-decoration: none;
-    }
-    .black-link:hover{
-        color: #155074;
-       text-decoration: none;
-    }
-</style>
+    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 

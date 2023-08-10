@@ -3,35 +3,30 @@
     ViewData["Title"] = "basicInfo";
 }
 
-<h1>basicInfo</h1>
+@*<h1>basicInfo</h1>*@
 <div class="container">
     <div class="row">
-                <div class="col-md-3">
+        <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
+                    <div class="cell d-flex flex-column">
+                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        <ul class="list-group lgmenu mt-3">
+                            <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
+                            <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                        </ul>
 
-                    <ul style="position:static;padding-left:40px" class="list-group">
-                        <img src="~/icons/User profile - border vector image.png" style="width:180px;height:180px     />
-                        <li class="list-group-item menuItem" data-content="subItem1"></li>
-                    </ul>
-
-                    <ul style="padding-top:16px;text-align:center; border-color:white" class="list-group">
-                        <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                        <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
-                    </ul>
-
-
-
-                    <div style="padding-left:0px" class="cell" id="div2">
-                        <ul style="padding-top:24px" class="list-group">
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</td></li>
+                    </div>
+                    <div class="cell" id="div2">
+                        <ul class="list-group lgmenu mt-4">
+                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
                         </ul>
                     </div>
                 </div>
@@ -48,27 +43,14 @@
                     <div class="form-group"><label for="txtRegion">地區</label><select id="txtRegion" class="form-control"><option value="">請選擇</option><option value="台北市">台北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option><option value="台中市">台中市</option><option value="台南市">台南市</option><option value="高雄市">高雄市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option><option value="基隆市">基隆市</option><option value="新竹市">新竹市</option><option value="嘉義市">嘉義市</option></select></div>
                     <div class="form-group"><label for="txtPhoneNumber">手機號碼</label><input type="text" id="txtPhoneNumber" class="form-control" /></div>
                     <div class="form-group"><label for="txtEmail">聯絡信箱</label><input type="text" id="txtEmail" class="form-control" /></div>
-                    <div class="form-group"><button type="button" class="btn btn-primary">儲存</button></div>
+                <div class="form-group"><button type="button" class="btn btn-outline-secondary">儲存</button></div>
                 </div>
             </div>
-
-    </div>
+     </div>
+</div>
     
     @section Styles
     {
-    <style>
-    #rightPanel {
-        margin-left: 64px; /* Adjust the left margin to create space between rightPanel and the cells */
-    }
-    .black-link {
-        color: black;
-        text-decoration: none;
-    }
-    .black-link:hover{
-        color: #155074;
-       text-decoration: none;
-    }
-
-</style>
+    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 

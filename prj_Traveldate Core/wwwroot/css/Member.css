@@ -1,0 +1,81 @@
+﻿*{
+    padding:0;
+    margin:0;
+}
+
+.black-link {
+    color: #00000098;
+    text-decoration: none;
+}
+
+    .black-link:hover {
+        color: #155074;
+        text-decoration: none;
+    }
+
+.lgmenu>li {
+    text-align: center;
+}
+
+.lgmenu > .menuItem{
+    width:100%;
+}
+
+
+#rightPanel {
+    margin-left: 2em; /* Adjust the left margin to create space between rightPanel and the cells */
+}
+
+
+.black-link2 {
+    color: white;
+    text-decoration: none;
+}
+
+    .black-link2:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    margin-top: 0px;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+th, td {
+    padding: 10px;
+    text-align: start;
+    word-break: break-all;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+height {
+    height: 10px;
+    max-height: 10px
+}
+
+.userIcon {
+    width: 120px;
+    height: 120px;
+    margin:auto;
+}
+
+.Member {
+    padding-top: 16px;
+    text-align: center;
+    border-color: white
+}
+
+.btnfff {
+    color: #6c757d;
+}
+
+    .btnfff:hover {
+        color: #fff;
+    }
