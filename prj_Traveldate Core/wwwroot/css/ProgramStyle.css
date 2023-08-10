@@ -50,16 +50,16 @@ h3 {
 
 .plancal-container {
     width: 100%;
-    /*border: 1px solid black;*/
+     /*border: 1px solid black;*/
     border-radius: 10px;
     margin: 5px auto;
     display: flex; /*
     background-color: antiquewhite*/
 }
 
-.calendar-container{
+.lendar-container{
     width:50%;
-    margin:20px;/*
+     margin:20px;/*
     border:1px solid black*/
 }
 
@@ -123,7 +123,7 @@ h3 {
     font-size:22px;
     margin-bottom:20px;
 }
-.calendar-container pre {
+.lendar-container pre {
     white-space: pre-wrap;
     margin:15px 0;
 }

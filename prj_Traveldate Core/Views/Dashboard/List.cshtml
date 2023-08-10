@@ -90,15 +90,15 @@
                 <div class="row">
 
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card border-left-primary shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        <div class="cardTitle font-weight-bold text-primary text-uppercase mb-1">
                                             訂單數量
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">40,000</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">40,000</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -109,15 +109,15 @@
                     </div>
 
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
                                             訂單總價
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">$215,000</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -127,15 +127,15 @@
                         </div>
                     </div>
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="col-xl-8 col-md-6 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
                                             熱銷前三
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">蘭與一日遊</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">蘭與一日遊</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -223,4 +223,14 @@
 
 </div>
 <!-- End of Page Wrapper -->
+@section Styles{
 
+<style>
+    .cardTitle{
+    font-size:25px;
+    }
+    .cardContent{
+            font-size: 30px;
+    }
+</style>
+}
