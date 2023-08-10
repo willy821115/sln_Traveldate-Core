@@ -7,6 +7,9 @@
     ViewData["Title"] = "SearchList";
 }
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/search_rating.css" />
+}
 
 <div class="row justify-content-center">
     <div class="col-3 border g-0 ps-2 pe-2 me-4">
@@ -89,8 +92,10 @@
                                 <button class="switch-month switch-left">
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
+                                <div class="d-flex align-items-center">
                                 <span id="year_f" class="year"></span><span>年</span>
-                                <span id="month_f" class="month"></span><span>月</span>
+                                    <span id="month_f" class="month"></span><span>月</span>
+                                </div>
                                 <button class="switch-month switch-right">
                                     <i class="fa fa-chevron-right"></i>
                                 </button>
@@ -105,8 +110,10 @@
                                 <button class="switch-month switch-left">
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
+                                <div class="d-flex align-items-center">
                                 <span id="year_s" class="year"></span><span>年</span>
-                                <span id="month_s" class="month"></span><span>月</span>
+                                    <span id="month_s" class="month"></span><span>月</span>
+                                </div>
                                 <button class="switch-month switch-right">
                                     <i class="fa fa-chevron-right"></i>
                                 </button>
@@ -203,8 +210,8 @@
                                 </p>
                                 <div class="row align-items-end">
                                     <div class="col d-flex align-items-center">
-                                        <div class="star-rating-container me-2">
-                                            <div class="star-rating-div"></div>
+                                        <div class="rectangle-container me-2 d-flex position-relative">
+                                            <div class="rectangle"></div>
                                             <img class="star-rating" src="~/icons/star-rating.png">
                                             <input type="hidden" id="rating-value" value="@item.commentAvgScore">
                                         </div>
@@ -229,16 +236,19 @@
     </div>
 </div>
 
+@section Scripts{
+    @*<script src="~/js/jquery-3.4.1.js"></script>*@
+    <script src="~/js/calender-main.js"></script>
+    <script src="~/js/mutiRange.js"></script>
+   @* <script src="~/Scripts/jquery.validate.min.js"></script>*@
+    @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
+    <script src="~/calendar-03/calendar-03/js/popper.js"></script>
+    <script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script>
+    <script src="~/calendar-03/calendar-03/js/main.js"></script>
+    <script src="~/js/search_jq.js"></script>
+    <script src="~/js/search_rating.js"></script>
+}
 
-<script src="~/js/jquery-3.4.1.js"></script>
-<script src="~/js/calender-main.js"></script>
-<script src="~/js/mutiRange.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
-<script src="~/calendar-03/calendar-03/js/popper.js"></script>
-<script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script>
-<script src="~/calendar-03/calendar-03/js/main.js"></script>
-<script src="~/js/search_jq.js"></script>
-<script src="~/js/search_rating.js"></script>
+
 

@@ -9,6 +9,7 @@ $(".category-click").on('click', function () {
 
 //////////////////////////////////////////////////checkbox跟標籤button連動/////////////////////////////////////////////////////////////////
 var isFirstButton = true;
+
 var cleanAll = $('<button>', {
     text: 'X',
     value: "cleanAll",
@@ -16,10 +17,10 @@ var cleanAll = $('<button>', {
     class: "btn btn-outline-secondary mr-1",
     click: function () {
         $('#selected-checkboxes').empty(); // 清除全部按鈕
-        isFirstButton = true; // 重設為第一次新增狀態
         $('.uncheckbox').show();
         $('.checkbox').hide();
         $('.calendar-container').find('.selected').remove();
+        isFirstButton = true; // 重設為第一次新增狀態
     }
 });
 
@@ -46,6 +47,7 @@ $('.uncheckbox').on('click', function () {
     $('#selected-checkboxes').append(button); // 將按鈕追加到id為displayText的元素中
     if ($('#selected-checkboxes').children('button').length === 1) {
         $('#selected-checkboxes').empty(); // 清除全部按鈕
+        isFirstButton = true;
     }
     });
 
