@@ -1,38 +1,35 @@
-﻿<section>
-    @*<div style="position: absolute; top: 0; left: 0; width: 100%; text-align: center; padding: 20px; background-color: rgba(255, 255, 255, 0.7);">
-        <h3 style="margin: 0; padding: 0;">歡迎來到TravelDate</h3>
+﻿
+@section TopImage{
+    <section class="mt-0 pl-0 pr-0">
+        @*<div style="position: absolute; top: 0; left: 0; width: 100%; text-align: center; padding: 20px; background-color: rgba(255, 255, 255, 0.7);">
+    <h3 style="margin: 0; padding: 0;">歡迎來到TravelDate</h3>
     </div>*@
-
-    <div class="search-container">
-        <input type="text" placeholder="搜尋..." style="width: 800px; height: 25px;"> <!-- 調整搜尋欄的高度 -->
-        <button style="margin-left: 0; height: 32px;">搜尋</button> <!-- 調整搜尋按鈕的高度 -->
-    </div>
-
-    <!-- 輪播圖容器 -->
-    <div id="swiper-container" class="swiper-container">
-        <div class="swiper-wrapper">
-            <!-- 輪播圖內容 -->
-            <div class="swiper-slide">
-                <img src="~/images/首頁.jpg" alt="圖片1">
+        @*<div class="search-container">
+            <input type="text" placeholder="搜尋..." style="width: 800px; height: 25px;"> <!-- 調整搜尋欄的高度 -->
+            <button style="margin-left: 0; height: 32px;">搜尋</button> <!-- 調整搜尋按鈕的高度 -->
+        </div>*@
+        <!-- 輪播圖容器 -->
+        <div id="swiper-container" class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- 輪播圖內容 -->
+                <div class="swiper-slide">
+                    <img src="~/images/首頁.jpg" alt="圖片1">
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/images/首頁2.jpg" alt="圖片2">
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/images/首頁3.jpg" alt="圖片3">
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/images/首頁4.jpg" alt="圖片4">
+                </div>
             </div>
-            <div class="swiper-slide">
-                <img src="~/images/首頁2.jpg" alt="圖片2">
-            </div>
-            <div class="swiper-slide">
-                <img src="~/images/首頁3.jpg" alt="圖片3">
-            </div>
-            <div class="swiper-slide">
-                <img src="~/images/首頁4.jpg" alt="圖片4">
-            </div>
+            <!-- 添加分頁器 -->
+            <div class="swiper-pagination"></div>
         </div>
-        <!-- 添加分頁器 -->
-        <div class="swiper-pagination"></div>
-    </div>
-
-
-
-</section>
-
+    </section>
+}
 
 <section class="hot-destinations-section" id="hot-destinations-section">
     <h2>熱門行程</h2>
@@ -42,7 +39,6 @@
             <div class="destination-info">
                 <p style="text-align: left">澎湖|一日遊 | 吉貝暢玩水上活動＆來回船票 </p>
                 <p>價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-
             </div>
         </div>
         <div class="destination-item">
@@ -173,7 +169,6 @@
         
     </div>
 </section>
-
 
 
 

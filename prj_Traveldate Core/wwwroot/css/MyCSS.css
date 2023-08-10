@@ -14,7 +14,7 @@
 max-width:50%;
 }
 
-main {
+.main {
 padding: 0 10% 0 10%;
 }
 
@@ -43,13 +43,23 @@ footer {
         margin-left: 10px;
     }
 
-.search_box {
-    padding: 5px;
-    margin: 5px 10px 5px 10px;
-    align-items: center;
-    border: 1px #D0D0D0 solid;
-    border-radius: 5px;
-    background-color: #fff;
+
+.nav-item > a,
+.navbar-brand {
+    text-decoration: none;
+    color: #FFFFF4;
 }
 
+    .nav-item > a:visited,
+    .navbar-brand:visited {
+        color: #FFFFF4;
+    }
 
+    .nav-item > a:hover,
+    .navbar-brand:hover {
+        color: #fff ;
+    }
+.nav-item{
+margin-right:5px;
+}
+/**************************************20230809導覽列新增樣式***********************************************************/
