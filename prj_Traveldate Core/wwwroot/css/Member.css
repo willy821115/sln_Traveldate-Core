@@ -3,6 +3,8 @@
     margin:0;
 }
 
+
+
 .black-link {
     color: #00000098;
     text-decoration: none;
@@ -13,12 +15,24 @@
         text-decoration: none;
     }
 
-.lgmenu>li {
+.lgmenu > li {
     text-align: center;
+    font-size: medium;
+    font-weight: 600;
 }
 
-.lgmenu > .menuItem{
+.lgmenu > .menuItem:hover {
+    background-color: whitesmoke;
+}
+
+.lgmenu > .menuItem:first-child{
     width:100%;
+    border-radius:10px 10px 0 0;
+}
+
+.lgmenu > .menuItem:last-child {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
 }
 
 
@@ -71,11 +85,3 @@ height {
     text-align: center;
     border-color: white
 }
-
-.btnfff {
-    color: #6c757d;
-}
-
-    .btnfff:hover {
-        color: #fff;
-    }
