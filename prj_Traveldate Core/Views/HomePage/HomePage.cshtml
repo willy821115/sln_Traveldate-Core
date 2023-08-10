@@ -8,6 +8,12 @@
             <input type="text" placeholder="搜尋..." style="width: 800px; height: 25px;"> <!-- 調整搜尋欄的高度 -->
             <button style="margin-left: 0; height: 32px;">搜尋</button> <!-- 調整搜尋按鈕的高度 -->
         </div>*@
+        <form class="d-flex justify-content-center">
+            <div class="search-container w-50 ">
+                <input type="text" name="txtKeyword" class="search-input rounded-left" style="height:37.6px;" placeholder="搜尋...">
+                <input type="submit" value="搜尋" class="btn my-btn-primary"> <!-- 調整搜尋按鈕的高度 -->
+            </div>
+        </form>
         <!-- 輪播圖容器 -->
         <div id="swiper-container" class="swiper-container">
             <div class="swiper-wrapper">
@@ -226,8 +232,8 @@
             justify-content: center;
             position: absolute; /* 將搜尋欄位置固定 */
             top: 120px; /* 將搜尋欄固定在最上方 */
-            left: 0; /* 將搜尋欄固定在最左方 */
-            width: 100%; /* 搜尋欄佔滿整個寬度 */
+            /*left: 0; /* 將搜尋欄固定在最左方 */
+            /*width: 100%; /* 搜尋欄佔滿整個寬度 */
             height: 400px; /* 調整搜尋欄高度為輪播圖高度的2倍 */
             z-index: 1; /* 將搜尋欄設置為最上層，蓋過輪播圖 */
         }

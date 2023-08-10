@@ -15,9 +15,11 @@
 max-width:50%;
 }
 
-.main {
-padding: 0 10% 0 10%;
-}
+/********亞芝-20230810-直接到class在main標籤上**********/
+/******* 如果要更動導覽列下面的寬度改layout(<main role="main" class="pb-3 mt-3 col-10">)中的col-10**********/
+/*main {*/
+/*padding: 0 10% 0 10%;*/
+/*}*/
 
 footer {
     background-color: #155074;
@@ -44,7 +46,7 @@ footer {
         margin-left: 10px;
     }
 
-
+/**************************************20230809導覽列新增樣式***********************************************************/
 .nav-item > a,
 .navbar-brand {
     text-decoration: none;
@@ -60,7 +62,14 @@ footer {
     .navbar-brand:hover {
         color: #fff ;
     }
-.nav-item{
-margin-right:5px;
+
+.navbar {
+    background-color: #155074;
 }
 /**************************************20230809導覽列新增樣式***********************************************************/
+
+
+
+
+
+

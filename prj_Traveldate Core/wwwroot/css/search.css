@@ -45,7 +45,8 @@ body {
     color: #88A8BC;
 }
 .my-bg-primary {
-    background-color: #004B97;
+    /*background-color: #004B97;*/
+    background-color: #155074;
 }
 
 .my-bg-secondary {
@@ -211,3 +212,34 @@ input,
     width: 100%;
 }
 /**************************************************************************************************************************************/
+
+
+/**************************************20230810新增my-btn-primary***********************************************************/
+:root {
+    --bs-btn-color: #FFFFF4;
+    --bs-btn-bg: #155074;
+    --bs-btn-border-color: #155074;
+    --bs-btn-hover-color: #FFFFF4;
+    --bs-btn-hover-bg: #5a8edb;
+    --bs-btn-hover-border-color: #5a8edb;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #FFFFF4;
+    --bs-btn-active-bg: #5a8edb;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #FFFFF4;
+    --bs-btn-disabled-bg: #155074;
+    --bs-btn-disabled-border-color: #155074;
+}
+
+.my-btn-primary {
+    color: var(--bs-btn-color);
+    background-color: var(--bs-btn-bg);
+    border-color: var(--bs-btn-border-color);
+}
+
+    .my-btn-primary:hover {
+        color: var(--bs-btn-hover-color);
+        background-color: var(--bs-btn-hover-bg);
+        border-color: var(--bs-btn-hover-border-color);
+    }
