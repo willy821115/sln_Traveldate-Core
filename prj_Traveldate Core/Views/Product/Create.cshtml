@@ -89,35 +89,36 @@
                 <h2>新增產品</h2>
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="col-md-12">
-                       
-                            @*<!-- Basic Card Example -->*@
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">基本資料</h6>
-                                    </div>
-                                    <div class="card-body">
+                
+                    <div class="row">
+                        <div class="col-md-6">
 
-                                        <div class="form-group">
-                                        <label  class="control-label">產品名稱</label>
+                            @*<!-- Basic Card Example -->*@
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label class="control-label">產品名稱</label>
                                         <input asp-for="ProductName" class="form-control" />
                                         <span asp-validation-for="ProductName" class="text-danger"></span>
-                                        </div>
+                                    </div>
 
-                                        <div class=" form-group">
-                                           <label class="control-label">產品類型</label>
-                                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
-                                               <option >門票</option>
-                                               <option>團體旅遊</option>
-                                               <option>自助旅行</option>
-                                           </select>
-                                        </div>
+                                    <div class=" form-group">
+                                        <label class="control-label">產品類型</label>
+                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                            <option>門票</option>
+                                            <option>團體旅遊</option>
+                                            <option>自助旅行</option>
+                                        </select>
+                                    </div>
 
                                     <div class=" form-group">
                                         <label class="control-label">所在地區</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            <option >台北市</option>
+                                            <option>台北市</option>
                                             <option>桃園市</option>
                                             <option>新竹市</option>
                                         </select>
@@ -128,35 +129,37 @@
                                         <input asp-for="Place" class="form-control" />
                                         <span asp-validation-for="Place" class="text-danger"></span>
                                     </div>
-                                                                                                 
-                                    </div>
+
                                 </div>
+                            </div>
+                        </div>
 
                             @*<!-- Basic Card Example -->*@
+                        <div class="col-md-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">產品標籤</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">產品標籤</h6>
                                 </div>
                                 <div class="card-body">
-                                    
-                                        
-                                    
-                                        <div class="controls-display-row category-click">
-                                             <span class="fs-5">觀光行程</span>
-                                           
-                                            </div>
-                                            <div class="ms-lg-4 filter-block-toggle">
-                                                 <ul class="list-unstyled m">
-                                                
-                                                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                        <input type="checkbox" />
-                                                        <span>半/一日遊</span>
-                                                    </li>
 
-                                                 <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                     <input type="checkbox" />
-                                                     <span>多日遊</span>
-                                                   </li>
+
+
+                                    <div class="controls-display-row category-click">
+                                        <span class="fs-5">觀光行程</span>
+
+                                    </div>
+                                    <div class="ms-lg-4 filter-block-toggle">
+                                        <ul class="list-unstyled m">
+
+                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                <input type="checkbox" />
+                                                <span>半/一日遊</span>
+                                            </li>
+
+                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                <input type="checkbox" />
+                                                <span>多日遊</span>
+                                            </li>
 
                                             <li class=" d-flex align-items-center divide-line my-w-80-percent">
                                                 <input type="checkbox" />
@@ -167,20 +170,26 @@
                                                 <input type="checkbox" />
                                                 <span>遊船觀光</span>
                                             </li>
-                                                
-                                            </ul>
-                                        </div>
-                                    
+
+                                        </ul>
+                                    </div>
+
                                 </div>
                             </div>
+
                         </div>
-                              
+                            
                         
+
+
+                    </div>
+                    
+                        <div class="row">
                         <div class="col-md-12">
                             @*<!-- Basic Card Example -->*@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">產品描述</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">產品描述</h6>
                                 </div>
                                 <div class="card-body">
 
@@ -206,7 +215,7 @@
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">方案</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">方案</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -228,10 +237,13 @@
                             </div>
 
                         </div>
+
+                        </div>
+                      
                          
                             
                   
-                </div>
+                
                 </form>
 
                 <div>
@@ -262,6 +274,10 @@
     <style>
         .card-body {
             height: unset;
+        }
+
+        .cardTitle {
+            font-size: 25px;
         }
     </style>
  }
