@@ -18,8 +18,8 @@
         <div class="Cart-Container" style="width: 75%;">
             <div class="Cart-Items">
                 <div class="checkboxes">
-                    <img class="uncheckbox" id="cb1" src="~/icons/icons8-unchecked-32.png" />
-                    <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                    <img class="uncheckbox CartIconbtn" id="cb1" src="~/icons/icons8-unchecked-32.png" />
+                    <img class="checkbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
                     <input type="checkbox" id="prodcb">
                 </div>
                 <div class="image-box">
@@ -30,21 +30,22 @@
                     <h3 class="subtitle">2023/07/31</h3>
                 </div>
                 <div class="counter">
-                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn" id="cartMinus">
+                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
                     <div class="count">1</div>
-                    <img src="~/icons/icons8-plus-48.png" class="CartIconbtn" id="cartPlus">
+                    <img src="~/icons/icons8-plus-48.png" class="CartIconbtn cartPlus">
                 </div>
                 <div class="prices">
-                    <img src="~/icons/icons8-edit-48.png" class="CartIconbtn">
-                    <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn">
-                    <img src="~/icons/icons8-close-48.png" class="CartIconbtn">
+                    <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit">
+                    <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
+                    <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
+                    <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
                     <div class="amount">NTD 5999</div>
                 </div>
             </div>
             <div class="Cart-Items">
                 <div class="checkboxes">
-                    <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
-                    <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                    <img class="uncheckbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
+                    <img class="checkbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
                     <input type="checkbox" id="prodcb">
                 </div>
                 <div class="image-box">
@@ -55,25 +56,26 @@
                     <h3 class="subtitle">2023/08/31</h3>
                 </div>
                 <div class="counter">
-                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn" id="cartMinus">
+                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
                     <div class="count">1</div>
-                    <img src="~/icons/icons8-plus-48.png" class="CartIconbtn" id="cartPlus">
+                    <img src="~/icons/icons8-plus-48.png" class="CartIconbtn cartPlus">
                 </div>
                 <div class="prices">
-                    <img src="~/icons/icons8-edit-48.png" class="CartIconbtn">
-                    <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn">
-                    <img src="~/icons/icons8-close-48.png" class="CartIconbtn">
+                    <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit">
+                    <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
+                    <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
+                    <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
                     <div class="amount">NTD 7999</div>
                 </div>
             </div>
 
         </div>
-        <div class="SelectAll">
+        <div class="SelectAll mb-0">
             <img class="uncheckall CartIconbtn" src="~/icons/icons8-uncheck-all-48.png" />
             <img class="checkall CartIconbtn" src="~/icons/icons8-check-all-48.png" />
             <input type="checkbox" id="selectall">
             <label for="selectall" class="mr-2">全選</label>
-            <button type="button" class="btn btn-outline-secondary">刪除所有已選項目</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm">刪除所有已選項目</button>
         </div>
         <div class="checkout">
             <div>
@@ -83,15 +85,18 @@
                         <div class="items">1 項商品</div>
                     </div>
                     <div class="d-flex align-items-center flex-column">
-                        <span class="badge badge-info">可獲得 60 點!</span>
+                        <span class="badge badge-light">可獲得 60 點!</span>
                         <div class="total-amount ml-2 mr-2">NTD 5999</div>
                     </div>
                 </div>
             </div>
-            <input type="submit" class="checkoutButton" value="去結帳" />
+            <input type="submit" class="mt-2 btn btn-secondary btn-lg col-4" value="去結帳" />
         </div>
     </div>
 }
+
+
+
 
 @section Styles{
     <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
@@ -99,12 +104,9 @@
 }
 
 @section Scripts{
-    <script src="~/js/jquery-3.4.1.js"></script>
     <script src="~/js/jsCart.js"></script>
+    <script src="~/js/jquery-3.4.1.js"></script>
 
-    <script>
 
-        
-    </script>
 }
 

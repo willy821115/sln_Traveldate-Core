@@ -80,8 +80,13 @@
     line-height: 50px;
 }
 
-#prodcb, #selectall, .checkall {
+#prodcb, #selectall, .checkall, .cartUnlike {
     display: none;
+}
+
+.CartIcon {
+    width: 32px;
+    height: 32px;
 }
 
 .CartIconbtn {
@@ -89,6 +94,16 @@
     height: 32px;
     cursor: pointer;
 }
+
+    .CartIconbtn:hover {
+        opacity: 0.7;
+    }
+
+.form-check-input:checked {
+    background-color: #155074;
+    border-color: #155074;
+}
+
 /***麵包屑*************************************************************/
 .Steps {
     width: 75%;
@@ -218,17 +233,7 @@
     color: #155074;
 }
 
-.checkoutButton {
-    margin: 3% 0;
-    width: 70%;
-    height: 50px;
-    border: none;
-    background: linear-gradient(to bottom right, #78C1F3, #5AA6D9);
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #202020;
-}
+
 
 .SelectAll {
     width: 68%;
@@ -236,15 +241,7 @@
     margin: 1%;
 }
 
-.smallbutton {
-    margin: 1%;
-    border: 3px solid #78C1F3;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: #202020;
-}
+
 /***填資料*************************************************************/
 .Confirm-All {
     width: 75%;
@@ -280,7 +277,6 @@
 .Confirm-Container {
     background-color: #FFFFFF;
     border-radius: 10px;
-    border: 5px solid #E2F6CA;
     padding: 10px 0;
     margin: 3% auto;
     width: 100%;
@@ -315,10 +311,11 @@
     padding: 1em 1.5em;
     display: flex;
     margin: 1em;
+    align-items: center
 }
 
 .confirm-subtitle {
-    margin: 0.8em;
+    font-size:large;
     font-weight: 600;
     color: #155047;
 }
@@ -327,8 +324,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #E2F6CA;
-    padding: 0.8em;
+    background-color: whitesmoke;
+    padding: 0.5em;
 }
 
 .Confirm-summary {
@@ -338,11 +335,8 @@
     font-weight: bold;
 }
 .Confirm-earnpoint {
-    margin: 0;
-    text-align: end;
-    color: #800000;
-    font-size: 16px;
-    font-weight: bold;
+    float: right;
+    margin-right: 1em;
 }
 
 .Confirm-subtotal {
@@ -357,6 +351,11 @@
     font-size: 20px;
     font-weight: 600;
     color: #155074;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
 }
 /***完成頁*************************************************************/
 .Complete-box {
@@ -379,3 +378,34 @@
     text-align: center;
 }
 
+
+
+/********************************/
+.imgComplete {
+    animation: zy 2.5s .15s linear infinite;
+    animation: zy 2.5s .15s linear infinite;
+    animation: zy 2.5s .15s linear infinite;
+    animation: zy 2.5s .15s linear infinite;
+}
+
+    @-webkit-keyframes zy {
+        10% {
+            transform: rotate(8deg);
+        }
+
+        20% {
+            transform: rotate(-3deg);
+        }
+
+        30% {
+            transform: rotate(2deg);
+        }
+
+        40% {
+            transform: rotate(-2deg);
+        }
+
+        50%, 100% {
+            transform: rotate(@deg);
+        }
+    }

@@ -64,10 +64,11 @@
                                         <h6 class="subtitle">2023/07/31</h6>
                                     </div>
                                 </div>
+                                <div class="confirm-subtitle mt-3 mb-3 d-flex ">
+                                    <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
+                                    旅客代表人
+                                </div>
                                 <div class="Confirm-Container-Content">
-                                    <h5 class="confirm-subtitle">
-                                        旅客代表人
-                                    </h5>
                                     <div class="radio-group">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_same" checked>
@@ -106,9 +107,10 @@
                                             <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
                                         </div>
                                     </div>
-                                    <h5 class="confirm-subtitle">
+                                    <div class="confirm-subtitle mt-3 mb-3 d-flex ">
+                                        <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                         同行旅客
-                                    </h5>
+                                    </div>
                                     <div class="radio-group">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose" checked>
@@ -141,9 +143,10 @@
                                             <input type="email" name="emailadd" id="emailadd" size="30">
                                         </div>
                                     </div>
-                                    <h5 class="confirm-subtitle">
+                                    <div class="confirm-subtitle mt-3 mb-3 d-flex ">
+                                        <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                         特殊需求備註
-                                    </h5>
+                                    </div>
                                     <textarea class="form-control" id="order_note" rows="3"></textarea>
                                 </div>
 
@@ -158,10 +161,11 @@
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse show">
                             <div class="accordion-body">
-                                <h5 class="confirm-subtitle">
+                                <div class="confirm-subtitle mt-3 mb-3 d-flex ">
+                                    <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                     使用優惠券
-                                </h5>
-                                <button type="button" class="btn CommonButton" data-bs-toggle="modal" data-bs-target="#couponModal">
+                                </div>
+                                <button type="button" class="btn btn-outline-secondary ml-4" data-bs-toggle="modal" data-bs-target="#couponModal">
                                     選擇優惠券
                                 </button>
                                 <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -182,7 +186,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.09.30</h6>
                                                     </div>
-                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
                                                 </div>
                                                 <div class="confirm-coupon-content">
                                                     <div style="width:80%;">
@@ -194,7 +198,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.09.30</h6>
                                                     </div>
-                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
                                                 </div>
                                                 <div class="confirm-coupon-content">
                                                     <div style="width:80%;">
@@ -206,7 +210,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.08.31</h6>
                                                     </div>
-                                                    <button type="button" class="btn Cart-Common-btn" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -215,9 +219,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h5 class="confirm-subtitle">
+                                <div class="confirm-subtitle mt-3 mb-3 d-flex ">
+                                    <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                     使用點數折抵
-                                </h5>
+                                </div>
                                 <div class="Confirm-Container-Content">
                                     <h6 class="subtitle" style="margin-bottom:1em;">目前持有 209 點，1點可折抵1元。</h6>
                                     <label for="usepoint">使用點數　</label>
@@ -286,13 +291,12 @@
                         </div>
                         <hr>
                         <h6 class="Confirm-total">總金額 NTD 5999</h6>
-                        <h5 class="Confirm-earnpoint">共可獲得 60 點!!</h5>
+                        <span class="badge bg-secondary Confirm-earnpoint">共可獲得 60 點!</span>
 
                     </div>
                 </div>
-                <input type="submit" class="checkoutButton" style="margin:1em auto;" value="確認付款" />
-                @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="cancelButton", style="margin:0 auto;"})
-
+                <input type="submit" class="btn btn-secondary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
+                @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
             </div>
 
         </div>
