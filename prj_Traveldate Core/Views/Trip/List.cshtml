@@ -94,10 +94,10 @@
                                 <h6 class="m-0 font-weight-bold text-primary">搜尋</h6>
                             </div>
                             <div class="card-body">
-                                <input type="text" /><input type="submit" value="搜尋" />
+                                <input type="text" class="search_box" /><input type="submit" value="搜尋" class="btn btn-outline-secondary" />
                                 <div>
                                     <label>產品類型</label>
-                                    <select>
+                                    <select class="search_box">
                                         <option>門票</option>
                                         <option>團體旅遊</option>
                                         <option>自助旅行</option>
@@ -141,7 +141,7 @@
                                         <td>System Architect</td>
                                         <td>Edinburgh </td>
                                         <td>
-                                            @Html.ActionLink("新增", "Create","Trip", new { /*id=item.PrimaryKey */ },new {@class="btn btn-primary"}) |
+                                            @Html.ActionLink("新增", "Create","Trip", new { /*id=item.PrimaryKey */ },new {@class="btn btn-primary"}) 
                                         </td>
                                     </tr>
                                     @*@foreach (var item in Model) {
@@ -260,6 +260,11 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
-
+@section Styles{
+    <style>
+        .card-body {
+            height: unset;
+        }
+    </style>
+ }
 

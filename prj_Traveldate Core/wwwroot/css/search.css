@@ -45,7 +45,8 @@ body {
     color: #88A8BC;
 }
 .my-bg-primary {
-    background-color: #004B97;
+    /*background-color: #004B97;*/
+    background-color: #155074;
 }
 
 .my-bg-secondary {
@@ -175,24 +176,23 @@ input,
 /*******************************/
 
 /***********星星區**************/
-.star-rating-container {
-    width: 50px; /* 調整容器的寬度 */
-    height: 10px; /* 調整容器的高度 */
-    overflow: hidden;
-   
+/*.star-rating-container {
+    width: 50px;*/ /* 調整容器的寬度 */
+    /*height: 10px;*/ /* 調整容器的高度 */
+    /*overflow: hidden;
 }
 
 .star-rating-div {
     width: 0;
     height: 10px;
-    background-color: #44dbe6; /* 設定矩形的初始背景顏色 */
-}
+    background-color: #44dbe6;*/ /* 設定矩形的初始背景顏色 */
+/*}
 
-.star-rating {
-    position: absolute; /* 將.star-rating設置為相對定位 */
-    top: 15px;
-    width: 50px; /* 調整容器的寬度 */
-}
+.search-star-rating {
+    position: absolute;*/ /* 將.star-rating設置為絕對定位 */
+    /*top:0;
+    width: 50px;*/ /* 調整容器的寬度 */
+/*}*/
 /*******************************/
 
 /*********************************************************************************************************************************************/
@@ -211,3 +211,34 @@ input,
     width: 100%;
 }
 /**************************************************************************************************************************************/
+
+
+/**************************************20230810新增my-btn-primary***********************************************************/
+:root {
+    --bs-btn-color: #F8FDCF;
+    --bs-btn-bg: #155074;
+    --bs-btn-border-color: #155074;
+    --bs-btn-hover-color: #F8FDCF;
+    --bs-btn-hover-bg: #5a8edb;
+    --bs-btn-hover-border-color: #5a8edb;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #F8FDCF;
+    --bs-btn-active-bg: #5a8edb;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #F8FDCF;
+    --bs-btn-disabled-bg: #155074;
+    --bs-btn-disabled-border-color: #155074;
+}
+
+.my-btn-primary {
+    color: var(--bs-btn-color);
+    background-color: var(--bs-btn-bg);
+    border-color: var(--bs-btn-border-color);
+}
+
+    .my-btn-primary:hover {
+        color: var(--bs-btn-hover-color);
+        background-color: var(--bs-btn-hover-bg);
+        border-color: var(--bs-btn-hover-border-color);
+    }

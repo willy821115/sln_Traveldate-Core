@@ -9,16 +9,20 @@
             <h3 class="Heading">訂購完成</h3>
         </div>
         <div class="Steps">
-            <span id="Step_cart">購物車</span>><span id="Step_Confirm">填寫資料與付款</span>><span id="Step_Finish" class="Step_Current">訂購完成</span>
+            <ol class="breadcrumb">
+                <li id="Step_cart" class="breadcrumb-item">購物車</li>
+                <li id="Step_Confirm" class="breadcrumb-item">填寫資料與付款</li>
+                <li id="Step_Finish" class="breadcrumb-item Step_Current">訂購完成</li>
+            </ol>
         </div>
         <div class="Complete-box">
-            <img src="~/icons/verified.gif" style="width:200px;">
-            <h4 class="Complete-title">謝謝您的訂購！</h4>
+            <img src="~/icons/beach-vacation.png" class="imgComplete" style="width:200px;">
+            <h4 class="Complete-title">感謝您的訂購！</h4>
             <div class="Complete-content">
                 <p>感謝您透過Traveldate訂購新的旅程。<br>已將您的訂購內容傳送至 <span style="color:#800000;font-weight:600;">hello.wang@gmail.com</span>，或可於「會員專區」＞「我的訂單」中確認訂購內容。<br>Traveldate祝您旅途愉快！</p>
-                @Html.ActionLink("我的訂單","MyOrder","Member",null,new {@class="CommonButton", style="margin:0 auto;"})
+                @Html.ActionLink("我的訂單","MyOrder","Member",null,new {@class="mt-2 btn btn-outline-secondary btn-lg col-4", style="margin:0 auto;"})
                 <br>
-                @Html.ActionLink("回到首頁","Index","Home",null,new {@class="CommonButton", style="margin:0 auto;"})
+                @Html.ActionLink("回到首頁","Index","Home",null,new {@class="mt-2 btn btn-outline-secondary btn-lg col-4", style="margin:0 auto;"})
             </div>
         </div>
     </div>

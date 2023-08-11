@@ -3,99 +3,163 @@
     ViewData["Title"] = "content1";
 }
 
-<h2>商品審核</h2>
-<div>
-    <label for="productName">產品名稱:</label>
-    <input type="text" id="productName" name="productName" required>
-    <input type="submit" value="搜尋">
-</div>
-<div>
-    <label for="companyName">公司名稱:</label>
-    <select id="companyName" name="companyName" required>
-        <option value="">請選擇公司名稱</option>
-        <option value="公司A">公司A</option>
-        <option value="公司B">公司B</option>
-        <option value="公司C">公司C</option>
-        <!-- 在此添加其他公司名稱的選項 -->
-    </select>
-</div>
-<div>
-    <label for="state">目前狀態:</label>
-    <select id="state" name="state" required>
-        <option value="">請選擇目前狀態</option>
-        <option value="未審核">未審核</option>
-        <option value="已審核">已審核</option>
-        <option value="審核未過">審核未過</option>
 
-        <!-- 在此添加其他狀態的選項 -->
-    </select>
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content1">
+                  <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content2">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content3">
+                <span>優惠券</span>
+            </a>
+        </li>
+        
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <h2>商品審核</h2>
+                
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        <div>
+                            <label for="productName">產品名稱:</label>
+                            <input type="text" id="productName" name="productName" required>
+                            <input type="submit" value="搜尋">
+                        </div>
+                        <div>
+                            <label for="companyName">公司名稱:</label>
+                            <select id="companyName" name="companyName" required>
+                                <option value="">請選擇公司名稱</option>
+                                <option value="公司A">公司A</option>
+                                <option value="公司B">公司B</option>
+                                <option value="公司C">公司C</option>
+                                <!-- 在此添加其他公司名稱的選項 -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="state">目前狀態:</label>
+                            <select id="state" name="state" required>
+                                <option value="">請選擇目前狀態</option>
+                                <option value="未審核">未審核</option>
+                                <option value="已審核">已審核</option>
+                                <option value="審核未過">審核未過</option>
+
+                                <!-- 在此添加其他狀態的選項 -->
+                            </select>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>產品名稱</th>
+                                <th>商品地區</th>
+                                <th>商品詳情</th>
+                                <th>商品類型</th>
+                                <th>審核狀態</th>
+                            </tr>
+                            <tr>
+                                <td>顯示商品名稱</td>
+                                <td>顯示商品地區</td>
+                                <td>
+                                    <details>
+                                        <summary>顯示商品詳情</summary>
+                                        這是商品1的詳情描述。
+                                    </details>
+                                </td>
+                                <td>顯示商品類型</td>
+                                <td>未審核</td>
+                            </tr>
+                            <tr>
+                                <td>顯示商品名稱</td>
+                                <td>顯示商品地區</td>
+                                <td>
+                                    <details>
+                                        <summary>顯示商品詳情</summary>
+                                        這是商品2的詳情描述。
+                                    </details>
+                                </td>
+                                <td>顯示商品類型</td>
+                                <td>未審核</td>
+                            </tr>
+                        </table>
+                        <div>
+                            <input type="submit" value="審核通過">
+                            <input type="submit" value="審核未通過">
+                        </div>
+
+
+
+                            
+                        </div>
+
+                        @*<!-- Basic Card Example -->*@
+                        
+
+                     </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
 </div>
-<table>
-    <tr>
-        <th>產品名稱</th>
-        <th>商品地區</th>
-        <th>商品詳情</th>
-        <th>商品類型</th>
-        <th>審核狀態</th>
-    </tr>
-    <tr>
-        <td>顯示商品名稱</td>
-        <td>顯示商品地區</td>
-        <td>
-            <details>
-                <summary>顯示商品詳情</summary>
-                這是商品1的詳情描述。
-            </details>
-        </td>
-        <td>顯示商品類型</td>
-        <td>未審核</td>
-    </tr>
-    <tr>
-        <td>顯示商品名稱</td>
-        <td>顯示商品地區</td>
-        <td>
-            <details>
-                <summary>顯示商品詳情</summary>
-                這是商品2的詳情描述。
-            </details>
-        </td>
-        <td>顯示商品類型</td>
-        <td>未審核</td>
-    </tr>
-</table>
-<div>
-    <input type="submit" value="審核通過">
-    <input type="submit" value="審核未通過">
-</div>
+<!-- End of Page Wrapper -->
+
+
+
+
+
 
 @section Styles
 {
     <style>
-        /* body元素的樣式 */
-        body {
-            /* 設置字體為Arial或sans-serif（如果Arial不可用，則使用系統預設的sans-serif字體） */
-            font-family: Arial, sans-serif;
-            /* 設置背景顏色為#f2f2f2 */
-            background-color: #f2f2f2;
-            /* 設置內邊距為20像素 */
-            padding: 20px;
-        }
-
-        /* 用於側邊欄的樣式 */
-        .sidebar {
-            /* 設置寬度為200像素 */
-            width: 200px;
-            /* 設置背景顏色為#F8FDCF */
-            background-color: #F8FDCF;
-            /* 設置邊框為1像素的灰色(#ccc)實線 */
-            border: 1px solid #ccc;
-            /* 設置圓角邊框半徑為10像素 */
-            border-radius: 10px;
-            /* 設置內邊距為10像素 */
-            padding: 10px;
-            /* 設置與右邊元素的間距為20像素 */
-            margin-right: 20px;
-        }
+       
+        
 
         /* 用於主內容區域的樣式 */
         .content {
@@ -111,41 +175,7 @@
             padding: 20px;
         }
 
-        /* 側邊欄中標題的樣式 */
-        .sidebar h3 {
-            /* 設置標題底部外邊距為20像素 */
-            margin-bottom: 20px;
-        }
-
-        /* 側邊欄中按鈕的樣式 */
-        .sidebar button {
-            /* 使按鈕成為塊級元素（寬度佔滿父元素） */
-            display: block;
-            /* 設置按鈕寬度為100% */
-            width: 100%;
-            /* 設置按鈕內邊距為10像素 */
-            padding: 10px;
-            /* 設置按鈕底部外邊距為10像素 */
-            margin-bottom: 10px;
-            /* 設置按鈕背景顏色為#78C1F3 */
-            background-color: #78C1F3;
-            /* 設置文字顏色為白色 */
-            color: #fff;
-            /* 去除按鈕的邊框 */
-            border: none;
-            /* 設置圓角邊框半徑為10像素 */
-            border-radius: 10px;
-            /* 設置滑鼠游標樣式為指針（表示可點擊） */
-            cursor: pointer;
-            /* 設置文字靠左對齊 */
-            text-align: left;
-        }
-
-            /* 側邊欄中按鈕在懸停時的樣式 */
-            .sidebar button:hover {
-                /* 設置按鈕背景顏色為#155074 */
-                background-color: #155074;
-            }
+        
 
         /* 表格的樣式 */
         table {

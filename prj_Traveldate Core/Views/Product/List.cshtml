@@ -92,14 +92,14 @@
                                 <h6 class="m-0 font-weight-bold text-primary">搜尋</h6>
                             </div>
                             <div class="card-body">
-                                <input type="text" /><input type="submit" value="搜尋" />
+                                <input type="text" class="search_box" /><input type="submit" value="搜尋" class="btn btn-outline-secondary" />
                                 <div>
                                     <label>產品類型</label>
-                                    <select>
+                                    <select class="search_box">
                                         <option>門票</option>
                                     </select>
                                     <label>審核狀態</label>
-                                    <select>
+                                    <select class="search_box">
                                         <option>已通過</option>
                                     </select>
                                 </div>
@@ -145,12 +145,12 @@
                                         <td>團體旅行</td>
                                         <td>台東縣 </td>
                                         <td>已審核</td>
-                                        <td>上架</td>
                                         <td>12</td>
+                                        <td>上架</td>
                                         <td>
-                                            @Html.ActionLink("修改", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"}) |
-                                            @Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"}) |
-                                            @Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"}) |
+                                            @Html.ActionLink("修改", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})  
+                                            @Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})  
+                                            @Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})  
                                         </td>
 
                                     </tr>
@@ -198,4 +198,10 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
+@section Styles{
+    <style>
+        .card-body {
+            height: unset;
+        }
+    </style>
+ }

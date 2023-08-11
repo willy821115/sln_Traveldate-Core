@@ -8,27 +8,24 @@
         <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
+                    <div class="cell d-flex flex-column">
+                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        <ul class="list-group lgmenu mt-3">
+                            <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
+                            <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                        </ul>
 
-                    <ul style="position:static;padding-left:40px" class="list-group">
-                        <img src="~/icons/User profile - border vector image.png" style="width:180px;height:180px         />
-                        <li class="list-group-item menuItem" data-content="subItem1"></li>
-                    </ul>
-
-                    <ul style="padding-top:16px;text-align:center; border-color:white" class="list-group">
-                        <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                        <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
-                    </ul>
-
-                    <div style="padding-left:0px" class="cell" id="div2">
-                        <ul style="padding-top:24px" class="list-group">
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"})</td</li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})</td></li>
-                            <li class="list-group-item menuItem"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</td></li>
+                    </div>
+                    <div class="cell" id="div2">
+                        <ul class="list-group lgmenu mt-4">
+                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
                         </ul>
                     </div>
                 </div>
@@ -37,7 +34,7 @@
         <!-- 右半邊 - 內容容器 -->
         <div class="col-md-8">
             <div id="rightPanel">
-                <table>
+                <table class="table-hover">
                     <tr>
                         <th>序號</th>
                         <th>評論</th>
@@ -48,7 +45,7 @@
                     </tr>
                     <tr>
                         <td>序號1</td>
-                        <td><button>@Html.ActionLink("評論", "addcomment","Member","","")</button></td>
+                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn btn-outline-secondary btn-sm"})</td>
                         <td>蘭嶼三天兩夜</td>
                         <td>2023-06-19</td>
                         <td>2023-06-26</td>
@@ -56,7 +53,7 @@
                     </tr>
                     <tr>
                         <td>序號2</td>
-                        <td><button>@Html.ActionLink("評論", "addcomment","Member","","")</button></td>
+                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn btn-outline-secondary btn-sm"})</td>
                         <td>澎湖一日遊</td>
                         <td>2023-07-06</td>
                         <td>2023-07-15</td>
@@ -64,7 +61,7 @@
                     </tr>
                     <tr>
                         <td>序號3</td>
-                        <td><button>@Html.ActionLink("評論", "addcomment","Member","","")</button></td>
+                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn btn-outline-secondary btn-sm"})</td>
                         <td>宜蘭太平山二日遊</td>
                         <td>2023-07-15</td>
                         <td>2023-07-30</td>
@@ -75,40 +72,13 @@
         </div>
 
     </div>
+</div>
+
+<styles>
+
+</styles>
 
     @section Styles
     {
-    <style>
-    table {
-        width: 120%;
-        border-collapse: separate;
-        margin-top: 0px;
-        table-layout: fixed;
-        word-break: break-all;
+    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
-
-    th, td {
-        padding: 10px;
-        text-align: start;
-        word-break: break-all;
-    }
-
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    #rightPanel {
-        margin-left: 64px; /* Adjust the left margin to create space between rightPanel and the cells */
-    }
-    .black-link {
-        color: black;
-        text-decoration: none;
-    }
-    .black-link:hover{
-        color: #155074;
-       text-decoration: none;
-    }
-</style>
-    }
-

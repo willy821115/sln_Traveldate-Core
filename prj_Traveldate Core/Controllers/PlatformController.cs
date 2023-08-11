@@ -4,11 +4,7 @@ namespace prj_Traveldate_Core.Controllers
 {
     public class PlatformController : Controller
     {
-        public IActionResult EmployeePlatform()
-        {
-            return View();
-        }
-
+       
         public ActionResult content1()
         {
             return View();

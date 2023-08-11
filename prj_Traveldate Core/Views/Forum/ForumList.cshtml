@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "ForumList";
 }
+@section TopImage{
+    <img class="col p-0" src="~/Images/top_photo_01.png " class="opacity-75" height="400"/>
+}
 
-<img class="col p-0" src="~/Images/top_photo_01.png " class="opacity-75" />
-<div class="row border g-0 column-gap-5 justify-content-center">
+<div class="row border g-0 column-gap-5 justify-content-center main">
     <div class="col-3 border forum-block">
         <div class="border p-3 mt-2 mb-2">
             <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center">
@@ -67,8 +69,8 @@
     </div>
     <div class="col-8 border  forum-block">
         <div class="border p-3 mt-2 mb-2">
-            <p class="fs-4">精選文章</p>
-            <div class="row border g-0 column-gap-5 justify-content-center pt-3 pb-3">
+            <p class="fs-4 divide-line">精選文章</p>
+            <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
                 <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-inner ">
                         @for (int i = 1; i < 7; i++)
@@ -78,7 +80,7 @@
                         <text>active</text>
 }">
                                 <div class="d-flex row g-0 justify-content-center">
-                                    <div class="border p-3 me-4 col-5">
+                                    <div class="border rounded p-3 me-4 col-5">
                                         <a asp-action="ArticleView">
                                             <p>文章標題 @i</p>
                                             <div>
@@ -92,7 +94,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="border p-3 col-5">
+                                        <div class="border rounded p-3 col-5">
                                         @{
                                             i++;
                                         }
