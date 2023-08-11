@@ -8,10 +8,12 @@
             <input type="text" placeholder="搜尋..." style="width: 800px; height: 25px;"> <!-- 調整搜尋欄的高度 -->
             <button style="margin-left: 0; height: 32px;">搜尋</button> <!-- 調整搜尋按鈕的高度 -->
         </div>*@
-        <form class="d-flex justify-content-center">
-            <div class="search-container w-50 ">
-                <input type="text" name="txtKeyword" class="search-input rounded-left" style="height:37.6px;" placeholder="搜尋...">
-                <input type="submit" value="搜尋" class="btn my-btn-primary"> <!-- 調整搜尋按鈕的高度 -->
+        <form>
+            <div class="search-container w-100">
+                <div class="d-flex justify-content-center w-50 position-relative">
+                    <input type="text" name="txtKeyword" class="search-input rounded" placeholder="搜尋...">
+                    <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"> <!-- 調整搜尋按鈕的高度 -->
+                </div>
             </div>
         </form>
         <!-- 輪播圖容器 -->
@@ -225,9 +227,13 @@
             object-fit: cover;
         }
 
+        
         /* 响應式樣式 */
 
-
+        /*搜尋樣式*/
+        .search-container>div{
+            height:50px;
+        }
         .search-container {
             display: flex;
             align-items: center;
@@ -240,6 +246,13 @@
             z-index: 1; /* 將搜尋欄設置為最上層，蓋過輪播圖 */
         }
 
+        .search-input{
+            position:absolute;
+            left:5px;
+            bottom:0;
+            top:0;
+            width:95%;
+        }
 
         /* 底部樣式 */
         
@@ -311,7 +324,7 @@
             transition: opacity 0.3s, transform 0.3s;
             border-radius: 0 0 10px 10px;
         }
-
+        
         .fill-block{
             position: absolute;
             top: 0;

@@ -9,6 +9,7 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/search_rating.css" />
+
 }
 
 <div class="row justify-content-center">
@@ -18,14 +19,15 @@
                 <label class="fs-4 pl-2 pt-2">篩選目的地</label>
                 @using (Html.BeginForm())
                 {
-                    <div class="controls-display-row search_container">
+                    <div class="d-flex align-items-center search_container position-relative">
                         <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                         <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
                         <input type="text" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
+                        <input class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" />
                     </div>
-                    <div class="d-flex justify-content-center">
+                    @*<div class="d-flex justify-content-center">
                         <input class="btn btn-outline-secondary" type="submit" value="查詢" />
-                    </div>
+                    </div>*@
                 }
             </div>
             @foreach (var city in Model.countryAndCities)
@@ -197,13 +199,15 @@
                 }
                 <div class="card mb-3 col-12 p-0">
                     <div class="row g-0">
-                        <div class="col-md-4 pr-0">
-                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid rounded-start my-card-img" alt="@item.productName">
+                        <div class="col-md-4 pr-0 ">
+                            <div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">
+                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid" alt="@item.productName">
+                            </div>
                         </div>
                         <div class="col-md-8 pl-0">
                             <div class="card-body">
                                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.outlineForSearch) 商品列表中的outline for search</p>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
                                 <p class="card-text">
                                     <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
                                     <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>

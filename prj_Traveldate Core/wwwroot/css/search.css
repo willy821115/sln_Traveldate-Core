@@ -49,6 +49,11 @@ body {
     background-color: #155074;
 }
 
+.bg-for-fill {
+    /*background-color: #004B97;*/
+    background-color: #A3D1D1;
+}
+
 .my-bg-secondary {
     background-color: #88A8BC;
 }
@@ -130,7 +135,7 @@ input,
 }
 
 .search_container {
-    padding: 5px;
+    padding:5px;
     margin: 5px 10px 5px 10px;
     align-items: center;
     border: 1px #D0D0D0 solid;
@@ -163,15 +168,13 @@ input,
 .card {
     border-radius: 10px;
 }
-.card-body {
-    /*height: 200px;*/
+.my-rounded-start{
+    border-radius:10px 0 0 10px;
 }
 
-.my-card-img {
-    /*height: 200px;*/
-}
-.card-text{
-    margin-bottom:0;
+
+.card-text {
+    margin-bottom: 0;
 }
 /*******************************/
 
@@ -242,3 +245,11 @@ input,
         background-color: var(--bs-btn-hover-bg);
         border-color: var(--bs-btn-hover-border-color);
     }
+
+.btn-dock-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+}
