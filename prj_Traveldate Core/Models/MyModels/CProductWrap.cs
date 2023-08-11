@@ -82,11 +82,11 @@
             set { _prod.OutlineForSearch = value; }
         }
 
-        public string? Place
-        {
-            get { return _prod.Place; }
-            set { _prod.Place = value; }
-        }
+        //public string? Place
+        //{
+        //    get { return _prod.Place; }
+        //    set { _prod.Place = value; }
+        //}
         public DateTime date { get; set; }
 
         public string orderMember { get; set; }
