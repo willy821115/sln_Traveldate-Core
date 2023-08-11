@@ -37,7 +37,5 @@ public partial class Company
 
     public bool? Enable { get; set; }
 
-    public virtual ICollection<CouponList> CouponLists { get; set; } = new List<CouponList>();
-
     public virtual ICollection<ProductList> ProductLists { get; set; } = new List<ProductList>();
 }

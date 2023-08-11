@@ -248,14 +248,10 @@ public partial class TraveldateContext : DbContext
             entity.ToTable("CouponList");
 
             entity.Property(e => e.CouponListId).HasColumnName("CouponListID");
-            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
             entity.Property(e => e.CouponName).HasMaxLength(50);
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Company).WithMany(p => p.CouponLists)
-                .HasForeignKey(d => d.CompanyId)
-                .HasConstraintName("FK_優惠券清單_公司資料表1");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Employee>(entity =>

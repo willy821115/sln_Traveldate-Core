@@ -11,15 +11,13 @@ public partial class CouponList
 
     public decimal? Discount { get; set; }
 
-    public int? CompanyId { get; set; }
-
     public byte[]? Photo { get; set; }
 
     public string? Description { get; set; }
 
     public DateTime? DueDate { get; set; }
 
-    public virtual Company? Company { get; set; }
+    public string? ImagePath { get; set; }
 
     public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
