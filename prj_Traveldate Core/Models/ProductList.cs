@@ -29,7 +29,7 @@ public partial class ProductList
 
     public string? OutlineForSearch { get; set; }
 
-    public string? Place { get; set; }
+    public string? Address { get; set; }
 
     public virtual CityList? City { get; set; }
 
