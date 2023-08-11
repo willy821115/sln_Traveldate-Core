@@ -15,7 +15,7 @@
         text-decoration: none;
     }
 
-.lgmenu > li {
+.leftarea > li {
     text-align: center;
     font-size: medium;
     font-weight: 600;
@@ -25,12 +25,12 @@
     background-color: whitesmoke;
 }
 
-.lgmenu > .menuItem:first-child{
-    width:100%;
-    border-radius:10px 10px 0 0;
+.leftarea > .menuItem:first-child {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
 }
 
-.lgmenu > .menuItem:last-child {
+.leftarea > .menuItem:last-child {
     width: 100%;
     border-radius: 0 0 10px 10px;
 }
@@ -63,6 +63,7 @@ th, td {
     padding: 10px;
     text-align: start;
     word-break: break-all;
+    border: 1px solid whitesmoke;
 }
 
 th {

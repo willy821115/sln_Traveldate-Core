@@ -6,21 +6,21 @@
 @*<h1>帳號設定</h1>
 *@
 
-<div class="container">
+<div class="container ml-0 mr-0 g-0">
     <div class="row">
-        <div class="col-md-3">
-            <div id="div1">
+        <div class="col-3">
+            <div>
                 <div  class="cell" id="div3">
                     <div class="cell d-flex flex-column">
                         <img src="~/icons/User profile - border vector image.png" class="userIcon" />
-                        <ul class="list-group lgmenu mt-3">
+                        <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
                             <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
                         </ul>
 
                     </div>
                     <div class="cell" id="div2">
-                        <ul class="list-group lgmenu mt-4">
+                        <ul class="list-group leftarea lgmenu mt-3">
                             <li class="list-group-item menuItem" >@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                             <li class="list-group-item menuItem" >@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem" >@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <!-- 右半邊 - 內容容器 -->
-        <div class="col-md-8">
+        <div class="col-9">
             <div id="rightPanel">
                 <!-- 這裡會顯示根據左邊所選擇的按鈕而改變的內容 -->
             </div>
