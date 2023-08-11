@@ -164,11 +164,11 @@ input,
     border-radius: 10px;
 }
 .card-body {
-    height: 200px;
+    /*height: 200px;*/
 }
 
 .my-card-img {
-    height: 200px;
+    /*height: 200px;*/
 }
 .card-text{
     margin-bottom:0;
