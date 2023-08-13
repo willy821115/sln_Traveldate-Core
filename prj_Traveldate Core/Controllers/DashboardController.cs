@@ -25,10 +25,10 @@ namespace prj_Traveldate_Core.Controllers
 
           
             COrderState cOrderState = new COrderState();
+            cOrderState.ProductDetail = new List<CProductDetailViewModel>();
             foreach (var order in orderdetails) 
             {
-                cOrderState.ProductDetail = new List<CProductDetailViewModel>();
-                CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
+                 CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
                 cProductDetailViewModel.productDate = order.date.Value.Date.ToString();
                 cProductDetailViewModel.Phone = order.Phone;
                 cProductDetailViewModel.productType = order.productType;
