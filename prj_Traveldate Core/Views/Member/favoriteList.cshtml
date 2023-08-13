@@ -3,21 +3,21 @@
     ViewData["Title"] = "favoriteList";
 }
 
-<div class="container">
+<div class="container mt-2">
     <div class="row">
         <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
                         <img src="~/icons/User profile - border vector image.png" class="userIcon" />
-                        <ul class="list-group lgmenu mt-3">
+                        <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
                             <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
                         </ul>
 
                     </div>
                     <div class="cell" id="div2">
-                        <ul class="list-group lgmenu mt-4">
+                        <ul class="list-group leftarea lgmenu mt-3">
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                             <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
@@ -33,6 +33,7 @@
         </div>
         <!-- 右半邊 - 內容容器 -->
         <div class="col-md-9">
+            <h3 class="mb-4">收藏清單</h3>
             <div id="rightPanel">
                 <table class ="table-hover">
                     <tr>
@@ -45,13 +46,13 @@
                         <td ><div>宜蘭太平山二日遊｜翠峰湖＆太平山莊住宿一晚</div></td>
                         <td ><div>餐廳同時段用餐人數至多50人，餐點改為盒餐，不提供合菜服務，用餐不併桌，安排梅花座、設置隔板，提供外帶服務。 入園全面配戴口罩，實施實聯制及體溫控管，額溫量測達攝氏37.5度以上者，婉拒入園。 入園人數達1,000人即啟動動態管制，官網首頁露出即時入園人數。當入園人數達800人時，行經太平山途中之公路總局6處電子看板，開始預告管制。</div></td>
                         <td ><div>◎ 專業司導帶您從台北出發，無須接駁轉乘換車。見晴懷古步道為台灣唯一被CNN評點為全球最美28條小路◎  太平山過去稱為眠腦，是泰雅族語森林茂密之意，不僅蘊藏了豐富的森林資源，孕育出的生態樣貌更是多采多姿</div></td>
-                        <td><div><input type="button" value="取消收藏" class="btn btn-outline-secondary btn-sm" /></div></td>
+                        <td><div><input type="button" value="取消收藏" class="btn my-btn-primary btn-sm" /></div></td>
                     </tr>
                     <tr class="height">
                         <td ><div>花蓮鯉魚潭露營渡假村山水谷豪華露營</div></td>
                         <td ><div>本園區與全新團隊於 108 年全面規劃，以打造國際性的豪華露營聖地為目標，籌備規劃並將能容納所有客群的設施、氛圍，全面整合，全新的《山水谷-豪華露營》包含兩種房型，有適合年輕人的豪華浪漫房型及三代同堂渡假房型。將顧客的所好，完全集聚一身。克服萬難打造了《全台灣首座》真正的水上豪華露營帳篷。只為了給予更新的豪華露營體驗。目標是希望提供一個能結合"渡假"、"遊憩"、"休閒"、"樂活"、"養生"的多元化三代同堂奢世界級豪華露營渡假村。"積極"、"誠信"、"創新"、"永續經營"，為本園區所有同仁為了來到這裡的每一為貴賓，所堅持秉持的公司宗旨。</div></td>
                         <td ><div>◎  將五星級酒店該有的設施全搬到了帳篷裡面，只需一咖行李就能夠入住</div></td>
-                        <td><div><input type="button" value="取消收藏" class="btn btn-outline-secondary btn-sm" /></div></td>
+                        <td><div><input type="button" value="取消收藏" class="btn my-btn-primary btn-sm" /></div></td>
                     </tr>
 
                 </table>

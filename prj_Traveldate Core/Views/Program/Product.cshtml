@@ -63,26 +63,29 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="mt-2">
         <h3>@Model.product.ProductName</h3>
     </div>
-    <div class="plancal-container">
-        <div class="product-description">
+    <div class="plancal-container mb-3">
+        <div class="product-description m-auto">
             <ul>
                 @foreach (var detail in Model.program.fOutline)
                 {
-                    <li>@detail</li>
+                    if (!string.IsNullOrEmpty(detail))  //加個判斷避免顯示時多出空行
+                    {
+                        <li>@detail</li>
+                    }
                 }
             </ul>
         </div>
-        <div class="card mb-3" style="width: 35%; box-shadow:8px 8px 3px rgba(0, 0, 0, 0.5);">
-            <div class="card-body" style="margin:5px auto">
+        <div class="card m-auto" style="width: 35%; /*box-shadow:8px 8px 3px rgba(0, 0, 0, 0.5);*/">
+            <div class="card-body" style="width:80%; margin:5px auto;">
                 <div class="price-container">
                     <span>TWD</span>
                     <span>1000</span>
                     <span>起</span>
                 </div>
-                <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;">立即預訂</a>
+                <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 <p class="card-text" style="margin-top:5px">狀態</p>
             </div>
         </div>
@@ -149,12 +152,12 @@
             
             <div class="cal-container">
                 <div class="calendar">
-                    <button id="goToTodayBtn">回到今天</button>
+                    <button id="goToTodayBtn" class="btn btn-outline-dark">回到今天</button>
                     <input type="hidden" value="@Html.Raw(Json.Serialize(Model.program.fTripDate))" id="TripDate" />
                     <div class="month">
-                        <i class="fa fa-angle-left prev-month-arrow" id="prevMonth"> < </i>
+                        <i class="fa fa-angle-left prev-month-arrow" id="prevMonth">  </i>
                         <div class="date" id="currentMonthYear"></div>
-                        <i class="fa fa-angle-right next-month-arrow" id="nextMonth"> > </i>
+                        <i class="fa fa-angle-right next-month-arrow" id="nextMonth">  </i>
                     </div>
                     <div class="weekdays">
                         <div>SUN</div>
@@ -177,11 +180,14 @@
                 <ul>
                     @foreach (var detail in Model.program.fPlanDescription)
                     {
-                        <li>@detail</li>
+                        if (!string.IsNullOrEmpty(detail))  //加個判斷避免顯示時多出空行
+                        {
+                            <li>@detail</li>
+                        }
                     }
                 </ul>
                 <a href="#toggleButton" id="toggleButton" class="btn btn-outline-dark" style="margin-left:10px">
-                    顯示可訂購日期
+                    顯示所有可訂購日期
                 </a>
             </div>
             <div class="buy-content">
@@ -190,20 +196,20 @@
                     <li>可報名人數：18人</li>
                 </ul>
                 <div class="col">
-                    <ul class="list-inline pb-3">
-                        <li class="list-inline-item text-right">
-                            <label>購買數量：</label>
-                            <input type="hidden" name="product-quanity" id="product-quanity" value="1">
-                        </li>
-                        <li class="list-inline-item"><button id="btn-minus">-</button></li>
-                        <li class="list-inline-item"><span id="var-value">1</span></li>
-                        <li class="list-inline-item"><button id="btn-plus">+</button></li>
-                    </ul> 
-                    <label>金額：1000</label>
+                        <ul class="list-inline">
+                            <li class="list-inline-item text-right">
+                                <label style="font-size:22px">購買數量：</label>
+                                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                            </li>
+                            <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-minus">－</button></li>
+                            <li class="list-inline-item"><span id="var-value" class="ml-3 mr-3">1</span></li>
+                            <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-plus">＋</button></li>
+                        </ul>
+                    <label style="font-size:22px">金額：1000</label>
                 </div>
-                <div style="margin:15px 0 10px 0px">
-                    <button class="btn my-btn-primary">加入購物車</button>
-                    <button class="btn my-btn-primary">立即購買</button>
+                <div class="m-3">
+                    <button class="btn btn-outline-dark btn-lg mr-3">加入購物車</button>
+                    <button class="btn my-btn-primary btn-lg">立即購買</button>
                 </div>
             </div>
         </div>
@@ -257,7 +263,7 @@
         }
     </div>
 
-    <div class="plan-container">
+    <div class="plan-container p-4">
         <div class="comments-title">
             <p>商品詳細說明</p>
         </div>

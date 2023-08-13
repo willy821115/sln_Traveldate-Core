@@ -30,10 +30,13 @@
                     <h3 class="subtitle">2023/07/31</h3>
                 </div>
                 <div class="counter">
-                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus">－</span>
+                    <div class="count">1</div>
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
+@*                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
                     <div class="count">1</div>
                     <img src="~/icons/icons8-plus-48.png" class="CartIconbtn cartPlus">
-                </div>
+*@                </div>
                 <div class="prices">
                     <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit">
                     <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
@@ -56,9 +59,9 @@
                     <h3 class="subtitle">2023/08/31</h3>
                 </div>
                 <div class="counter">
-                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus">－</span>
                     <div class="count">1</div>
-                    <img src="~/icons/icons8-plus-48.png" class="CartIconbtn cartPlus">
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
                 </div>
                 <div class="prices">
                     <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit">
@@ -75,7 +78,7 @@
             <img class="checkall CartIconbtn" src="~/icons/icons8-check-all-48.png" />
             <input type="checkbox" id="selectall">
             <label for="selectall" class="mr-2">全選</label>
-            <button type="button" class="btn btn-outline-secondary btn-sm">刪除所有已選項目</button>
+            <span class="btn btn-outline-dark btn-sm">刪除所有已選項目</span>
         </div>
         <div class="checkout">
             <div>
@@ -90,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="mt-2 btn btn-secondary btn-lg col-4" value="去結帳" />
+            <input type="submit" class="mt-2 btn my-btn-primary btn-lg col-4" value="去結帳" />
         </div>
     </div>
 }
@@ -107,6 +110,11 @@
     <script src="~/js/jsCart.js"></script>
     <script src="~/js/jquery-3.4.1.js"></script>
 
+    <script>
+        $('.cartDele').on('click', function () {
+            $(this).closest('.Cart-Items').fadeOut();
+        })
+    </script>
 
 }
 

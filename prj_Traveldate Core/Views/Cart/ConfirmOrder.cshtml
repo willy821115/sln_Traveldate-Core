@@ -28,16 +28,16 @@
                             <div class="accordion-body Confirm-Container-Content">
                                 <div class="traveler-info">
                                     <label for="lastname">　　　姓氏　</label>
-                                    <input type="text" name="lastname" id="lastname" size="10" value="王" disabled="disabled">
+                                    <input type="text" name="lastname" id="lastname" size="30" value="王" disabled="disabled">
                                     <br />
                                     <label for="firstname">　　　名字　</label>
-                                    <input type="text" name="firstname" id="firstname" size="10" value="小明" disabled="disabled">
+                                    <input type="text" name="firstname" id="firstname" size="30" value="小明" disabled="disabled">
                                     <br />
                                     <label for="idnumber">身份證字號　</label>
-                                    <input type="text" name="idnumber" id="idnumber" size="20" value="A123456789" disabled="disabled">
+                                    <input type="text" name="idnumber" id="idnumber" size="30" value="A123456789" disabled="disabled">
                                     <br />
                                     <label for="phone">　聯絡電話　</label>
-                                    <input type="text" name="phone" id="phone" size="20" value="0919150982" disabled="disabled">
+                                    <input type="text" name="phone" id="phone" size="30" value="0919150982" disabled="disabled">
                                     <br />
                                     <label for="emailadd">　電子信箱　</label>
                                     <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
@@ -92,25 +92,27 @@
                                     <div class="Confirm-Container-Content">
                                         <div class="traveler-info">
                                             <label for="lastname">　　　姓氏　</label>
-                                            <input type="text" name="lastname" id="lastname" size="10" value="王" disabled="disabled">
+                                            <input type="text" name="lastname" id="lastname" size="30" value="王" disabled="disabled">
                                             <br />
                                             <label for="firstname">　　　名字　</label>
-                                            <input type="text" name="firstname" id="firstname" size="10" value="小明" disabled="disabled">
+                                            <input type="text" name="firstname" id="firstname" size="30" value="小明" disabled="disabled">
                                             <br />
                                             <label for="idnumber">身份證字號　</label>
-                                            <input type="text" name="idnumber" id="idnumber" size="20" value="A123456789" disabled="disabled">
+                                            <input type="text" name="idnumber" id="idnumber" size="30" value="A123456789" disabled="disabled">
                                             <br />
                                             <label for="phone">　聯絡電話　</label>
-                                            <input type="text" name="phone" id="phone" size="20" value="0919150982" disabled="disabled">
+                                            <input type="text" name="phone" id="phone" size="30" value="0919150982" disabled="disabled">
                                             <br />
                                             <label for="emailadd">　電子信箱　</label>
                                             <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
                                         </div>
                                     </div>
+                                    </div>
                                     <div class="confirm-subtitle mt-3 mb-3 d-flex ">
                                         <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                         同行旅客
                                     </div>
+                                <div class="Confirm-Container-Content">
                                     <div class="radio-group">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose" checked>
@@ -128,28 +130,29 @@
                                     <div class="Confirm-Container-Content">
                                         <div class="traveler-info">
                                             <label for="lastname">　　　姓氏　</label>
-                                            <input type="text" name="lastname" id="lastname" size="10">
+                                            <input type="text" name="lastname" id="lastname" size="30">
                                             <br />
                                             <label for="firstname">　　　名字　</label>
-                                            <input type="text" name="firstname" id="firstname" size="10">
+                                            <input type="text" name="firstname" id="firstname" size="30">
                                             <br />
                                             <label for="idnumber">身份證字號　</label>
-                                            <input type="text" name="idnumber" id="idnumber" size="20">
+                                            <input type="text" name="idnumber" id="idnumber" size="30">
                                             <br />
                                             <label for="phone">　聯絡電話　</label>
-                                            <input type="text" name="phone" id="phone" size="20">
+                                            <input type="text" name="phone" id="phone" size="30">
                                             <br />
                                             <label for="emailadd">　電子信箱　</label>
                                             <input type="email" name="emailadd" id="emailadd" size="30">
                                         </div>
                                     </div>
+                                    </div>
                                     <div class="confirm-subtitle mt-3 mb-3 d-flex ">
                                         <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                         特殊需求備註
                                     </div>
+                                <div class="Confirm-Container-Content">
                                     <textarea class="form-control" id="order_note" rows="3"></textarea>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -165,7 +168,7 @@
                                     <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
                                     使用優惠券
                                 </div>
-                                <button type="button" class="btn btn-outline-secondary ml-4" data-bs-toggle="modal" data-bs-target="#couponModal">
+                                <button type="button" class="btn my-btn-primary ml-4" data-bs-toggle="modal" data-bs-target="#couponModal">
                                     選擇優惠券
                                 </button>
                                 <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -295,7 +298,7 @@
 
                     </div>
                 </div>
-                <input type="submit" class="btn btn-secondary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
+                <input type="submit" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
                 @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
             </div>
 

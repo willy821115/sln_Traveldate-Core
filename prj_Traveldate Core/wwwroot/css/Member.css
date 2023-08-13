@@ -3,7 +3,10 @@
     margin:0;
 }
 
-
+h3 {
+    margin-top:1em;
+    color: #00000098;
+}
 
 .black-link {
     color: #00000098;
@@ -17,8 +20,6 @@
 
 .leftarea > li {
     text-align: center;
-    font-size: medium;
-    font-weight: 600;
 }
 
 .lgmenu > .menuItem:hover {

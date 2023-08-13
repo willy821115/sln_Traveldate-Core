@@ -93,7 +93,7 @@ h3 {
 }
 
     .price-container span {
-        font-size: 20px;
+        font-size: 24px;
         margin: 0px 5px;
     }
 
@@ -236,7 +236,7 @@ h3 {
 }*/
 
 .grid {
-    list-style: none;
+    style: none;
     margin-left: -40px;
 }
 
@@ -330,3 +330,7 @@ ul.nacc {
         ul.nacc li p {
             margin: 0;
         }
+
+pre {
+    color:gray;
+}
