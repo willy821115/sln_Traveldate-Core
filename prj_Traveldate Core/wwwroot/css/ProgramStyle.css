@@ -20,6 +20,7 @@
 }
 
 
+
 h3 {
     margin-bottom: 5px;
 }
@@ -32,6 +33,7 @@ h3 {
     display: flex;
     flex-direction: column; 
     background-color: white;
+    padding:10px 10px 15px 15px;
 }
 
 .detailplan-container {
@@ -64,9 +66,10 @@ h3 {
 }
 
 .buy-content {
-    width:80%;
+    width: 80%;
     /*border: 1px solid black;*/
-    margin-bottom:15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .product-description {
@@ -83,10 +86,10 @@ h3 {
     border: 1px solid black;*/
 }
 
-.product-description pre{
-    margin-top:10px;
+.product-description li{
+    margin:15px auto;
     width:100%;
-    white-space:pre-wrap;
+    color:black;
 }
 
     .price-container span {
@@ -120,12 +123,13 @@ h3 {
 
 .buy-content span{
     font-weight:bold;
-    font-size:22px;
+    font-size:24px;
     margin-bottom:20px;
+    margin-left:10px;
 }
-.lendar-container pre {
-    white-space: pre-wrap;
+.lendar-container ul {
     margin:15px 0;
+    margin-left:0px;
 }
 
 .comments-title {
@@ -150,6 +154,8 @@ h3 {
     width: 80%;
     border: 1px solid #7a8192;
 }
+
+ 
 
     .be-img-comment {
         width: 60px;

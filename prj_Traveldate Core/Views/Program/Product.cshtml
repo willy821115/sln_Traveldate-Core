@@ -68,16 +68,21 @@
     </div>
     <div class="plancal-container">
         <div class="product-description">
-            <pre>@Model.product.Outline</pre>
+            <ul>
+                @foreach (var detail in Model.program.fOutline)
+                {
+                    <li>@detail</li>
+                }
+            </ul>
         </div>
-        <div class="card mb-3" style="width: 35%">
+        <div class="card mb-3" style="width: 35%; box-shadow:8px 8px 3px rgba(0, 0, 0, 0.5);">
             <div class="card-body" style="margin:5px auto">
                 <div class="price-container">
                     <span>TWD</span>
                     <span>1000</span>
                     <span>起</span>
                 </div>
-                <a href="#booking-section" class="btn btn-primary btn-lg" style="width:100%;margin:5px 0; background-color:#155074;border:none">立即預訂</a>
+                <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;">立即預訂</a>
                 <p class="card-text" style="margin-top:5px">狀態</p>
             </div>
         </div>
@@ -139,7 +144,7 @@
     </div>
 
 
-    <div class="plancal-container" id="booking-section">
+    <div class="plancal-container" id="booking-section" style="background-color:white">
         <div class="lendar-container">
             
             <div class="cal-container">
@@ -168,9 +173,14 @@
         <div class="lendar-container">
             <div class="buy-content">
                 <span>@Model.product.PlanName</span>
-                <br />
-                <pre>@Model.product.PlanDescription</pre>
-                <a href="#toggleButton" id="toggleButton" class="btn btn-outline-dark">
+                <br />   
+                <ul>
+                    @foreach (var detail in Model.program.fPlanDescription)
+                    {
+                        <li>@detail</li>
+                    }
+                </ul>
+                <a href="#toggleButton" id="toggleButton" class="btn btn-outline-dark" style="margin-left:10px">
                     顯示可訂購日期
                 </a>
             </div>
@@ -179,10 +189,7 @@
                     <li>最少成行人數：6人</li>
                     <li>可報名人數：18人</li>
                 </ul>
-
-                <span id="minPeople"></span>
-                <br />
-                <div class="col-auto">
+                <div class="col">
                     <ul class="list-inline pb-3">
                         <li class="list-inline-item text-right">
                             <label>購買數量：</label>
@@ -191,14 +198,14 @@
                         <li class="list-inline-item"><button id="btn-minus">-</button></li>
                         <li class="list-inline-item"><span id="var-value">1</span></li>
                         <li class="list-inline-item"><button id="btn-plus">+</button></li>
-                    </ul>
+                    </ul> 
+                    <label>金額：1000</label>
                 </div>
-                <br />
-                <label>金額：1000</label>
-                <span id="price"></span>
+                <div style="margin:15px 0 10px 0px">
+                    <button class="btn my-btn-primary">加入購物車</button>
+                    <button class="btn my-btn-primary">立即購買</button>
+                </div>
             </div>
-            <input type="submit" value="加入購物車" />
-            <input type="submit" value="立即購買" class="btn-danger" />
         </div>
     </div>
 
@@ -239,8 +246,8 @@
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    <input type="submit" value="加入購物車" />
-                                    <input type="submit" value="立即購買" class="btn-danger" />
+                                    <button class="btn my-btn-primary">加入購物車</button>
+                                    <button class="btn my-btn-primary">立即購買</button>
                                 </div>
                             </div>
                         </div>
@@ -304,9 +311,7 @@
             <p>體驗地點</p>
         </div>
         <hr />
-        <div>
-            Google Map
-        </div>
+        <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
     </div>
 
 </div>
@@ -315,6 +320,42 @@
 
     <script>
 
+        // Load Google Maps API
+        const googleMapsScript = document.createElement("script");
+        googleMapsScript.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBbcL3X1HudqP8Ej1YhYQlzE9Oy3frc-rc&callback=initMap";
+        document.head.appendChild(googleMapsScript);
+
+        const addressData = @Html.Raw(Json.Serialize(Model.product.Address));
+        console.log(addressData)
+
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 23.6978, lng: 120.9605 },
+                zoom: 8,
+            });
+
+            showMarkersOnMap();
+        }
+
+        function showMarkersOnMap() {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: addressData[0] }, (results, status) => {
+                if (status === 'OK' && results.length > 0) {
+                    const location = results[0].geometry.location;
+                    new google.maps.Marker({
+                        position: location,
+                        map: map,
+                    });
+                }
+            });
+        }
+        
+
+
+
+        //click all TripID
         const toggleButton = document.getElementById('toggleButton');
         const tripidContainer = document.getElementById('tripidContainer');
 
@@ -485,25 +526,7 @@
             }
         });
 
-        // 更新价格和最少成行人数
-        function updatePriceAndMinPeople() {
-            // 执行 AJAX 请求，获取价格和最少成行人数
-            // 请替换为您自己的 AJAX 请求代码
-            // 示例请求 URL：'/Program/GetPriceAndMinPeople?date=2023-08-16'
-            const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(clickedDay.textContent));
-            const url = `/Program/GetPriceAndMinPeople?date=${formatDate(selectedDate)}&quantity=${value}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // 更新页面上的价格和最少成行人数
-                    priceSpan.textContent = data.price;
-                    minPeopleSpan.textContent = data.minPeople;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        }
-
+       
     </script>
     }
 @*<script src="~/js/CalendarJS.js"></script>*@

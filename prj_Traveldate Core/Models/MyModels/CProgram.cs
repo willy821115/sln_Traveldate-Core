@@ -4,5 +4,8 @@
     {
         public List<byte[]> fPhotoList { get; set; }
         public List<string> fTripDate { get; set; }
+        public List<string> fOutline { get; set; }
+        public List<string> fPlanDescription { get; set; }
+
     }
 }
