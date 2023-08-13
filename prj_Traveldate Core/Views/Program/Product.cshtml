@@ -304,9 +304,7 @@
             <p>體驗地點</p>
         </div>
         <hr />
-        <div>
-            Google Map
-        </div>
+        <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
     </div>
 
 </div>
@@ -314,7 +312,43 @@
 
 
     <script>
+        
+        // Load Google Maps API
+        const googleMapsScript = document.createElement("script");
+        googleMapsScript.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBbcL3X1HudqP8Ej1YhYQlzE9Oy3frc-rc&callback=initMap";
+        document.head.appendChild(googleMapsScript);
 
+        const addressData = @Html.Raw(Json.Serialize(Model.product.Address));
+        console.log(addressData)
+
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 23.6978, lng: 120.9605 },
+                zoom: 8,
+            });
+
+            showMarkersOnMap();
+        }
+
+        function showMarkersOnMap() {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: addressData[0] }, (results, status) => {
+                if (status === 'OK' && results.length > 0) {
+                    const location = results[0].geometry.location;
+                    new google.maps.Marker({
+                        position: location,
+                        map: map,
+                    });
+                }
+            });
+        }
+        
+
+
+
+        //click all TripID
         const toggleButton = document.getElementById('toggleButton');
         const tripidContainer = document.getElementById('tripidContainer');
 
@@ -485,25 +519,7 @@
             }
         });
 
-        // 更新价格和最少成行人数
-        function updatePriceAndMinPeople() {
-            // 执行 AJAX 请求，获取价格和最少成行人数
-            // 请替换为您自己的 AJAX 请求代码
-            // 示例请求 URL：'/Program/GetPriceAndMinPeople?date=2023-08-16'
-            const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(clickedDay.textContent));
-            const url = `/Program/GetPriceAndMinPeople?date=${formatDate(selectedDate)}&quantity=${value}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // 更新页面上的价格和最少成行人数
-                    priceSpan.textContent = data.price;
-                    minPeopleSpan.textContent = data.minPeople;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        }
-
+       
     </script>
     }
 @*<script src="~/js/CalendarJS.js"></script>*@

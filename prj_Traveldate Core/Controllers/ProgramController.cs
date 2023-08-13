@@ -2,6 +2,7 @@
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -20,6 +21,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fTripDate = pf.loadTrip((int)id);
             vm.product.PlanName = pf.loadPlan((int)id);
             vm.product.PlanDescription = pf.loadPlanDescri((int)id);
+            vm.product.Address= pf.loadAddress((int)id);
 
             return View(vm);
         }
@@ -30,5 +32,13 @@ namespace prj_Traveldate_Core.Controllers
                         select p;
             return View(datas);
         }
+
+        public IActionResult Address(int id)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var address = db.ProductLists.Where(p => p.ProductId == id).Select(p => p.Address).ToList();
+            return Json(address);
+        }
+
     }
 }

@@ -43,6 +43,14 @@ namespace prj_Traveldate_Core.Models.MyModels
             return formattedDates;
         }
 
+
+        public string loadAddress(int id)
+        {
+            var address = db.ProductLists.Where(p=>p.ProductId==id).Select(p => p.Address).FirstOrDefault();
+            return address;
+        }
+
+
         public string loadPlan(int id)
         {
             //Load 方案名稱

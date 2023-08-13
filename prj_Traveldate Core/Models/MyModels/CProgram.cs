@@ -4,5 +4,6 @@
     {
         public List<byte[]> fPhotoList { get; set; }
         public List<string> fTripDate { get; set; }
+        
     }
 }
