@@ -16,12 +16,12 @@ namespace prj_Traveldate_Core.Controllers
             ProgramViewModel vm = new ProgramViewModel();
             vm.program.fPhotoList = pf.loadPhoto((int)id);
             vm.product.ProductName = pf.loadTitle((int)id);
-            vm.product.Outline = pf.loadOutline((int)id);
             vm.product.Description = pf.loadDescription((int)id);
             vm.program.fTripDate = pf.loadTrip((int)id);
             vm.product.PlanName = pf.loadPlan((int)id);
-            vm.product.PlanDescription = pf.loadPlanDescri((int)id);
+            vm.program.fPlanDescription = pf.LoadPlanDescri((int)id);
             vm.product.Address= pf.loadAddress((int)id);
+            vm.program.fOutline = pf.loadOutlineDetails((int)id);
 
             return View(vm);
         }

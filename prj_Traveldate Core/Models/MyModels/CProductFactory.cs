@@ -23,10 +23,17 @@ namespace prj_Traveldate_Core.Models.MyModels
             return productName?.ToString();
         }
 
-        public string loadOutline(int id)
+        public List<string> loadOutlineDetails(int id)
         {
             var outline = db.ProductLists.Where(p => p.ProductId == id).Select(p => p.Outline).FirstOrDefault();
-            return outline?.ToString();
+
+            if (outline != null)
+            {
+                string[] outlineDetails = outline.Split('\n');
+                return outlineDetails.ToList(); // 将分割后的数组转换为列表并返回
+            }
+
+            return new List<string>(); // 返回空列表
         }
 
         public string loadDescription(int id)
@@ -58,13 +65,18 @@ namespace prj_Traveldate_Core.Models.MyModels
             return planName;
         }
 
-            //Load 方案內容
-            
-            public string loadPlanDescri(int id)
+        //Load 方案內容
+
+        public List<string> LoadPlanDescri(int id)
+        {
+            var planDescription = db.ProductLists.Where(p => p.ProductId == id).Select(p => p.PlanDescription).FirstOrDefault();
+            if (planDescription != null)
             {
-                var planDescription =db.ProductLists.Where(p => p.ProductId == id).Select(p => p.PlanDescription).FirstOrDefault();
-                return planDescription;
+                string[] planDetails = planDescription.Split('\n');
+                return planDetails.ToList(); 
             }
+            return new List<string>(); // 返回空列表
+        }
 
         public int loadPrice(int id)
         {
