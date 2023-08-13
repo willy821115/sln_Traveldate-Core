@@ -1,4 +1,4 @@
-﻿
+﻿@model List< prj_Traveldate_Core.Models.MyModels.CProductWrap>
 @{
     ViewData["Title"] = "List";
 }
@@ -123,60 +123,39 @@
                                         <th>產品名稱</th>
                                         <th>產品類型</th>
                                         <th>所在城市</th>
-                                        <th>庫存/可報名人數</th>
                                         <th>產品狀態</th>
                                         <th>上/下架</th>
                                         <th>動作</th>
                                     </tr>
                                 </thead>
-                                @*<tfoot>
-                                <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                                </tr>
-                                </tfoot>*@
+                                
                                 <tbody>
-                                    <tr>
-                                        <td>蘭嶼一日遊</td>
-                                        <td>團體旅行</td>
-                                        <td>台東縣 </td>
-                                        <td>已審核</td>
-                                        <td>12</td>
-                                        <td>上架</td>
-                                        <td>
-                                            @Html.ActionLink("修改", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})  
-                                            @Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})  
-                                            @Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})  
-                                        </td>
 
-                                    </tr>
-                                    @*@foreach (var item in Model) {
+                                   @foreach (var item in Model) {
                                     <tr>
-                                    <td>
-                                    <div> @Html.DisplayFor(modelItem => item.productDate)</div>
-                                    <div> @Html.DisplayFor(modelItem => item.productType) </div>
-                                    </td>
-                                    <td>
-                                    <div>@Html.DisplayFor(modelItem => item.orderMember) </div>
-                                    <div> @Html.DisplayFor(modelItem => item.quantity) </div>
-                                    </td>
-                                    <td>
-                                    <div>@Html.DisplayFor(modelItem => item.productName)</div>
-                                    </td>
-                                    <td>
-                                    <div> @Html.DisplayFor(modelItem => item.stock)</div>
-                                    </td>
-                                    <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                    </td>
+                                          <td>
+                                            <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
+                                         </td>
+                                        <td>
+                                            <div>@Html.DisplayFor(modelItem => item.productType)</div>
+                                        </td>
+                                        <td>
+                                            <div> @Html.DisplayFor(modelItem => item.cityName)</div>
+                                        </td>
+                                            <td>
+                                                <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
+                                            </td>
+                                        <td>
+                                             @Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})
+                                            @Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})
+                                        </td>
+                                        <td>
+                                                @Html.ActionLink("修改", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                        </td>
                                     </tr>
-                                    }*@
+                                    }
+
+                                    
 
                                 </tbody>
                             </table>
