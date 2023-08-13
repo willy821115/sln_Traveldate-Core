@@ -88,62 +88,74 @@
             <div class="container-fluid">
                 <h2>首頁</h2>
                 <div class="row">
+                    
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="cardTitle font-weight-bold text-primary text-uppercase mb-1">
+                                                訂單數量
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent"> @Html.DisplayFor(modelItem => modelItem.orderQuantity)</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-2 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="cardTitle font-weight-bold text-primary text-uppercase mb-1">
-                                            訂單數量
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
+                                                訂單總價
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">@Html.DisplayFor(modelItem => modelItem.turnover)</div>
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">40,000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-2 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
-                                            訂單總價
+                    
+                    
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
+                                                熱銷前三
+                                            </div>
+                                            @foreach (string p in Model.top3product)
+                                            {
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">@p</div>
+                                                <hr />
+                                            }
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">$215,000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-8 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="cardTitle font-weight-bold text-success text-uppercase mb-1">
-                                            熱銷前三
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 cardContent">蘭嶼一日遊</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    
+                
+                
+                    
                 </div>
                        
                 <div class="card shadow mb-4">
@@ -156,7 +168,7 @@
                     <thead>
                         <tr>
                             <th>產品日期</th>
-                            <th>訂購會員</th>
+                            <th>訂購會員手機</th>
                             <th>產品名稱</th>
                             <th>庫存/剩餘人數</th>
                         </tr>
@@ -172,22 +184,16 @@
                             </tr>
                         </tfoot>*@
                     <tbody>
-                        <tr>
-                            <td>2023/8/5</td>
-                            <td>郝有錢</td>
-                            <td>蘭嶼一日遊 </td>
-                            <td>5</td>
-
-                        </tr>
-                        @*@foreach (var item in Model) {
+                       
+                        @foreach (var item in Model.ProductDetail) {
                                 <tr>
                                     <td>
                                         <div> @Html.DisplayFor(modelItem => item.productDate)</div>
                                         <div> @Html.DisplayFor(modelItem => item.productType) </div>
                                      </td>
                                     <td>
-                                        <div>@Html.DisplayFor(modelItem => item.orderMember) </div>
-                                        <div> @Html.DisplayFor(modelItem => item.quantity) </div>
+                                        <div>@Html.DisplayFor(modelItem => item.Phone) </div>
+                                        
                                     </td>
                                     <td>
                                         <div>@Html.DisplayFor(modelItem => item.productName)</div>
@@ -195,13 +201,9 @@
                                     <td>
                                         <div> @Html.DisplayFor(modelItem => item.stock)</div>
                                     </td>
-                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                                    </td>
+                                     
                                 </tr>
-                            }*@
+                            }
 
                     </tbody>
                 </table>
@@ -226,11 +228,11 @@
 @section Styles{
 
 <style>
-    .cardTitle{
+   /* .cardTitle{
     font-size:20px;
     }
     .cardContent{
             font-size: 25px;
-    }
+    }*/
 </style>
 }
