@@ -1,0 +1,37 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@foreach (var reply in Model.replys)
+{
+    <div class="d-flex divide-line-top" id="reply-@reply.ReplyId">
+        <div>
+            @if (reply.Member.Photo != null)
+            {
+                <img src="data:image/jpg;base64,@Convert.ToBase64String(reply.Member.Photo)" class="my-w100-h100" alt="@reply.MemberId">
+            }
+            else
+            {
+                if (reply.Member.Gender == "男")
+                {
+                    <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
+                }
+                else
+                {
+                    <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
+                }
+            }
+
+        </div>
+        <div class="col">
+            <h4>@reply.Member.LastName@reply.Member.FirstName</h4>
+            <div>
+                <span>回覆日期 : @reply.ReplyTime.ToString()</span>
+            </div>
+            <div>
+                <p>@reply.Content</p>
+            </div>
+        </div>
+    </div>
+}

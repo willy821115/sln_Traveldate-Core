@@ -1,40 +1,42 @@
-﻿@model prj_Traveldate_Core.Models.ForumList
-
+﻿@model List<Trip>
 @{
     ViewData["Title"] = "Create";
 }
 
-
-<div class="row justify-content-center bg-white rounded-3">
-    <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
-    <div class="col-9 ">
-
+<div class="row justify-content-center pb-4">
+    <div class="col-10 bg-white rounded-3 p-4">
+        <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group fs-5">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label class="control-label"></label>
+                <input class="form-control" />
+                @*<span asp-validation-for="Title" class="text-danger"></span>*@
             </div>
             <p class="fs-5">選擇商品與日期</p>
             <div class="d-flex">
                 <div class="form-group col-5 pl-0">
-                    <select class="form-select form-select-md mb-3" aria-label="Large select example">
-                        <option selected>請選擇商品</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <input class="form-select form-select-md mb-3"  id="selectTrip" placeholder="請選擇商品">
+                    <div>
+                        <ul class="list-group" id="trips">
+                            <li class="list-group-item">1</li>
+                            <li class="list-group-item">2</li>
+                            <li class="list-group-item">3</li>
+                        </ul>
+                    </div>
                 </div>
+            
+     
                 <div class="form-group col-4 ">
-                    <select class="form-select form-select-md mb-3" aria-label="Large select example">
-                        <option selected>請選擇日期</option>
+                    <select id="selectDate" class="form-select form-select-md mb-3" aria-label="Large select example">
+                        <option selected >請選擇日期</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div>
+                    <span id="price">$799</span>
                 </div>
                 <div class="form-group col-2">
                     <input type="button" value="確定" class="btn btn-secondary" />
@@ -42,14 +44,14 @@
             </div>
 
             <div class="form-group col-5 pl-0 fs-5">
-                <label asp-for="DueDate" class="control-label">截團日期</label>
-                <input asp-for="DueDate" class="form-control" />
-                <span asp-validation-for="DueDate" class="text-danger"></span>
+                <label class="control-label">截團日期</label>
+                <input class="form-control" />
+                
             </div>
             <div class="form-group fs-5">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control content-input"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label class="control-label"></label>
+                <textarea class="form-control content-input"></textarea>
+                
             </div>
             <div class="form-group d-flex justify-content-between">
                 <div class="insert-photo-container">
@@ -71,10 +73,23 @@
 <div>
     <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">返回文章列表</a>
 </div>
-
+<button id="btn-test"></button>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        const btntest = document.querySelector('#btn-test');
+        const selectTrip = document.querySelector('#selectTrip');
+        selectTrip.addEventListener('input',()=>{
+            loadTrips();
+        })
+        async function loadTrips(){
+            const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")`)
+            const trips = await resopnse.json();
+            console.log(trips)
+        }
+        btntest.addEventListener('click',()=>loadTrips())
+    </script>
 }
 

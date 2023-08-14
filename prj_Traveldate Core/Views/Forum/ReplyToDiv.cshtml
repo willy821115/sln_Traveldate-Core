@@ -1,0 +1,20 @@
+﻿
+
+<div id="my-reply" class="d-flex divide-line-top col bg-white pt-2 pb-2">
+        <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.Photo)" class="my-w100-h100" alt="@Model.FirstName">
+    <div class="col">
+        <h4>@Model.LastName@Model.FirstName</h4>
+        <div>
+            <textarea id="replyContent" name="Content" type="text" class="form-control reply-input" placeholder="留言..."></textarea>
+        </div>
+        <div class="d-flex justify-content-end pt-1">
+            <input id="btnSubmit" class="btn my-btn-primary mr-1" type="submit" value="送出"/>
+            <input class="btn btn-secondary "type="reset" value="取消" />
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+    </script>
+}

@@ -1,8 +1,29 @@
-﻿@{
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CForumListViewModel
+@{
     ViewData["Title"] = "ForumList";
 }
 @section TopImage{
     <img class="col p-0" src="~/Images/top_photo_01.png " class="opacity-75" height="400"/>
+}
+@section Styles{
+    <style>
+        .my-article-item{
+            display:flex;
+            flex-direction:row;
+            margin:0 0 5px 0;
+            justify-content:center;
+            background:#fff;
+            border-radius:10px;
+            padding: 5px 0 5px 0;
+        }
+
+        .my-article-item>div>p{
+            margin:0 0 3px 0;
+        }
+
+
+    </style>
 }
 
 <div class="row border g-0 column-gap-5 justify-content-center main">
@@ -77,8 +98,7 @@
                         {
                             bool isFirstItem = i == 1; // 判斷是否是第一次迴圈
                             <div class="carousel-item @if (isFirstItem) {
-                        <text>active</text>
-}">
+                        <text>active</text>}">
                                 <div class="d-flex row g-0 justify-content-center">
                                     <div class="border rounded p-3 me-4 col-5">
                                         <a asp-action="ArticleView">
@@ -113,6 +133,7 @@
                             </div>
                         }
                     </div>
+                    
                     <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="align-items-center row my-bg-primary my-img-circle  my-w50-h50"><span class="carousel-control-prev-icon col" aria-hidden="true"></span></span>
                         <span class="visually-hidden">Previous</span>
@@ -124,7 +145,7 @@
                 </div>
             </div>
         </div>
-        <div class="border p-3 mt-2 mb-2">
+        <div class="border p-2 mt-2 mb-2">
             <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                 <span class=" fw-bolder ">排序 :  </span>
                 <span>　</span>
@@ -135,24 +156,23 @@
                 <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
             </div>
         </div>
-        @{
-            int it = 1;
-            while (it < 6)
-            {
-                <div class="d-flex row ml-0 mr-0 pt-2 pb-2  justify-content-center">
-                    <div class="border col-2 m-1">商品快照</div>
-                    <div class="border col-5 m-1">
-                        <p>文章標題 @it</p>
-                        <span>會員等級</span>
-                        <span> | 發文者</span>
-                        <span> | 發文時間</span>
-                    </div>
-                    <div class="border col-2 m-1">回覆數 : 0</div>
-                    <div class="border col-2 m-1">文章照片</div>
+   
+        @foreach(var article in Model.forumList)
+        {
+            <a asp-action="ArticleView" asp-route-id="@article.ForumListId"
+               class="my-article-item">
+                <div class="border col-2 m-1">商品快照</div>
+                <div class="border col-5 m-1">
+                    <p>@article.Title</p>
+                    <span class="small">會員等級</span>
+                    <span class="small"> | 發文者</span>
+                    <span class="small"> | 發文時間</span>
                 </div>
-                it++;
+                <div class="border col-2 m-1">回覆數 : @article.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+                    <div class="border col-2 m-1">商品快照</div>
+            </a>
             }
-        }
+    
         <div class="d-flex justify-content-center bg-transparent border-0">
             <div class="col-7 d-flex justify-content-around">
                 @for (int i = 1; i < 7; i++)

@@ -518,11 +518,17 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.ReplyId).HasColumnName("ReplyID");
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.ReplyTime).HasColumnType("datetime");
             entity.Property(e => e.ReplyToId).HasColumnName("ReplyToID");
 
             entity.HasOne(d => d.ForumList).WithMany(p => p.ReplyLists)
                 .HasForeignKey(d => d.ForumListId)
                 .HasConstraintName("FK_ReplyList_ForumList");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.ReplyLists)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_ReplyList_Member");
 
             entity.HasOne(d => d.ReplyTo).WithMany(p => p.InverseReplyTo)
                 .HasForeignKey(d => d.ReplyToId)

@@ -9,7 +9,12 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/search_rating.css" />
-
+    <style>
+        .card-body{
+            height:250px;
+            padding:15px;
+        }
+    </style>
 }
 
 <div class="row justify-content-center">
@@ -200,8 +205,9 @@
                 <div class="card mb-3 col-12 p-0">
                     <div class="row g-0">
                         <div class="col-md-4 pr-0 ">
-                            <div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">
-                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid" alt="@item.productName">
+                            @*<div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">*@
+                            <div class="overflow-hidden my-rounded-start h-100">
+                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100" alt="@item.productName">
                             </div>
                         </div>
                         <div class="col-md-8 pl-0">

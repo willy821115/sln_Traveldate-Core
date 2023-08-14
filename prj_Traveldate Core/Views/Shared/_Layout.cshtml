@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - prj_Traveldate_Core</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/prj_Traveldate_Core.styles.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/prj_Traveldate_Core.styles.css" asp-append-version="true" />*@
+   
    
     <link rel="stylesheet" href="~/css/PhotoStyle.css">
     <link rel="stylesheet" href="~/css/ProgramStyle.css">
@@ -15,15 +16,15 @@
     
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/multiRange.css" rel="stylesheet" />
-    <link href="/css/calendar-style.css" rel="stylesheet" />
-    <link href="/css/search.css" rel="stylesheet" />
+    <link href="~/css/multiRange.css" rel="stylesheet" />
+    <link href="~/css/calendar-style.css" rel="stylesheet" />
+    <link href="~/css/search.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
     <link href="/css/nav.css" rel="stylesheet" />
 
-    <script src="~/js/modernizr-2.8.3.js"></script>
+    @*<script src="~/js/modernizr-2.8.3.js"></script>*@
     
     <!-- Custom fonts for this template-->
     <link href="~/Template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -37,21 +38,21 @@
 
 
     <link rel="stylesheet" href="~/css/MyCSS.css" />
-    <link href="/css/multiRange.css" rel="stylesheet" />
-    <link href="/css/calendar-style.css" rel="stylesheet" />
-    <link href="/css/search.css" rel="stylesheet" />
+    <link href="~/css/multiRange.css" rel="stylesheet" />
+    <link href="~/css/calendar-style.css" rel="stylesheet" />
+    <link href="~/css/search.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow fixed-top">
             <div class="container-fluid justify-content-start">
                 <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList"><img src="~/icons/logo_travel_text_3.png" width="200px" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="d-flex row w-75 pr-5 pl-5">
+                <div class="d-flex row w-75 pl-5">
                     <div class="navbar-collapse collapse d-sm-inline-flex divide-line ">
                         <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item mr-5">
@@ -87,22 +88,24 @@
                 </ul>
                 </div>
                 </div>
-                <ul class="navbar-nav flex-grow-1  justify-content-center">
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Login" asp-action="Login"><img src="~/icons/icons8-login-48.png"width="32"/></a>
+               
+                <ul class="navbar-nav flex-grow-1  justify-content-center w-25">
+                    <li class="nav-item mr-2">
+                        <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="" asp-controller="Login" asp-action="CompanyLogin"><img src="~/icons/icons8-setting-48.png" width="32" /></a>
+                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart">購物車</a>
                     </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart"><img src="~/icons/icons8-trolley-48.png"  width="32"/></a>
-                    </li>
-                </ul>
+                    </ul>
+              
             </div>
         </nav>
     </header>
     
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 nav-height-mt">
         @await RenderSectionAsync("TopImage", required: false)
         <div class="d-flex justify-content-center">
         <main role="main" class="pb-3 mt-3 col-9">
