@@ -142,6 +142,12 @@
                                         <input asp-for="Address" class="form-control" />
                                         <span asp-validation-for="Address" class="text-danger"></span>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label">輪播圖</label>
+                                        <input type="file" class="form-control" id="photoInput" multiple/>
+                                        
+                                    </div>
+                                     
 
                                 </div>
                             </div>
@@ -154,38 +160,26 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">產品標籤</h6>
                                 </div>
                                 <div class="card-body">
-
-
-
-                                    <div class="controls-display-row category-click">
-                                        <span class="fs-5">觀光行程</span>
-
-                                    </div>
-                                    <div class="ms-lg-4 filter-block-toggle">
+                                    @foreach (var c in Model.categoryAndTags)
+                                    {
+                                         <div class="controls-display-row category-click">
+                                        <span class="fs-5">@c.category</span>
+                                     </div>
+                                         <div class="ms-lg-4 filter-block-toggle">
                                         <ul class="list-unstyled m">
-
-                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                            @foreach(var t in c.tags.Distinct())
+                                                {
+                                                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
                                                 <input type="checkbox" />
-                                                <span>半/一日遊</span>
+                                                <span>@t</span>
                                             </li>
-
-                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                <input type="checkbox" />
-                                                <span>多日遊</span>
-                                            </li>
-
-                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                <input type="checkbox" />
-                                                <span>單車旅遊</span>
-                                            </li>
-
-                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                <input type="checkbox" />
-                                                <span>遊船觀光</span>
-                                            </li>
+                                                 }
 
                                         </ul>
                                     </div>
+                                    }
+                                   
+                                   
 
                                 </div>
                             </div>
