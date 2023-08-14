@@ -124,10 +124,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public List<string> loadTypes()
         {
             TraveldateContext db = new TraveldateContext();
-            List<string> list = new List<string>();
-            IEnumerable<string> datas_types = db.ProductLists
-             .Select(t => t.ProductType.ProductType).Distinct();
-            list.AddRange(datas_types);
+             var list= db.ProductTypeLists.Select(p=>p.ProductType).ToList();
             return list;
         }
 
