@@ -84,6 +84,78 @@ namespace prj_Traveldate_Core.Models.MyModels
             return (int)planPrice;
         }
 
+        public List<CCategoryAndTags> loadCategories()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<CCategoryAndTags> list = new List<CCategoryAndTags>();
+
+            var data_category = db.ProductTagLists
+                .GroupBy(c => c.ProductTagDetails.ProductCategory.ProductCategoryName)
+                .Select(g =>
+                new
+                {
+                    category = g.Key,
+                    tag = g.Select(t => t.ProductTagDetails.ProductTagDetailsName)
+                });
+            foreach (var i in data_category)
+            {
+                CCategoryAndTags x = new CCategoryAndTags();
+                x.category = i.category;
+                x.tags = i.tag;
+                list.Add(x);
+            }
+            return list;
+        }
+
+        public List<CCountryAndCity> loadCountry()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<CCountryAndCity> list = new List<CCountryAndCity>();
+            var data_region = db.ProductLists
+                
+                .GroupBy(r => r.City.Country.Country)
+                .Select(g => new
+                {
+                    country = g.Key,
+                    citys = g.Select(c => c.City.City).Distinct()
+                });
+
+            foreach (var c in data_region)
+            {
+                CCountryAndCity x = new CCountryAndCity();
+                x.country = c.country;
+                x.citys = c.citys.Select(city =>
+                {
+                    if (city.Trim().Substring(city.Length - 1, 1) == "縣" || city.Trim().Substring(city.Length - 1, 1) == "市")
+                    {
+                        return city.Substring(0, city.Length - 1);
+                    }
+                    return city;
+                }).ToList();
+                list.Add(x);
+            }
+            return list;
+        }
+
+        public List<string> loadTypes()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<string> list = new List<string>();
+            IEnumerable<string> datas_types = db.ProductLists
+             .Select(t => t.ProductType.ProductType);
+            list.AddRange(datas_types);
+            return list;
+        }
+
+        public int TripStock(int tripID)
+        {
+            TraveldateContext _db = new TraveldateContext();
+
+            var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.TripDetails.Count, max = s.MaxNum }).FirstOrDefault();
+            int stock = (int)q.max - (int)q.orders;
+            return stock;
+        }
+
 
     }
 }
