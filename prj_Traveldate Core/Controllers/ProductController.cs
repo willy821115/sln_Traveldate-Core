@@ -35,7 +35,13 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            CProductWrap list = new CProductWrap();
+            CProductFactory factory = new CProductFactory();
+            list.categoryAndTags = factory.loadCategories();
+            list.countries = factory.loadCountries();
+            list.cities = factory.loadCities();
+            list.types = factory.loadTypes();
+            return View(list);
         }
     }
 }

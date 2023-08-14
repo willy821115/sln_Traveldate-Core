@@ -82,7 +82,7 @@
             set { _prod.OutlineForSearch = value; }
         }
 
-        public string? Adress
+        public string? Address
         {
             get { return _prod.Address; }
             set { _prod.Address = value; }
@@ -93,6 +93,15 @@
         public string? productType { get; set; }
 
         public string? productStatus { get; set;}
+
+        public List<CCategoryAndTags> categoryAndTags { get; set;}
+
+        public  List<string>? countries { get; set; }
+
+        public List<string>? cities { get; set; }
+
+        public List<string> types { get; set; }
+
 
     }
 }

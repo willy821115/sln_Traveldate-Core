@@ -107,33 +107,17 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-        public List<CCountryAndCity> loadCountry()
+        public List<string> loadCountries()
         {
             TraveldateContext db = new TraveldateContext();
-            List<CCountryAndCity> list = new List<CCountryAndCity>();
-            var data_region = db.ProductLists
-                
-                .GroupBy(r => r.City.Country.Country)
-                .Select(g => new
-                {
-                    country = g.Key,
-                    citys = g.Select(c => c.City.City).Distinct()
-                });
+            List<string> list = db.CountryLists.Select(c=>c.Country).ToList();
+            return list;
+        }
 
-            foreach (var c in data_region)
-            {
-                CCountryAndCity x = new CCountryAndCity();
-                x.country = c.country;
-                x.citys = c.citys.Select(city =>
-                {
-                    if (city.Trim().Substring(city.Length - 1, 1) == "縣" || city.Trim().Substring(city.Length - 1, 1) == "市")
-                    {
-                        return city.Substring(0, city.Length - 1);
-                    }
-                    return city;
-                }).ToList();
-                list.Add(x);
-            }
+        public List<string> loadCities()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<string> list = db.CityLists.Select(c => c.City).ToList();
             return list;
         }
 
@@ -142,7 +126,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             TraveldateContext db = new TraveldateContext();
             List<string> list = new List<string>();
             IEnumerable<string> datas_types = db.ProductLists
-             .Select(t => t.ProductType.ProductType);
+             .Select(t => t.ProductType.ProductType).Distinct();
             list.AddRange(datas_types);
             return list;
         }
