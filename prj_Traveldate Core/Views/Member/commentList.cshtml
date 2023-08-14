@@ -39,20 +39,32 @@
             <div id="rightPanel">
                 <table class ="table-hover">
                     <tr>
+                        <th>序號</th>
+@*                      <th>商品ID/th>*@
                         <th>商品名稱</th>
                         <th>標題</th>
                         <th>內容</th>
                         <th>您的評分</th>
+                        <th>評論日期</th>
                         <th>移除</th>
                     </tr>
+
+                   @{
+                    int count = 0;
+                    foreach (var item in Model) {
+                    count++;
                     <tr data-toggle="collapse" data-target="#comment1">
-                        <td>蘭嶼三天兩夜</td>
-                        <td>第一次體驗冷泉！</td>
-                        <td>第一次嘗試冷泉，在炎熱的夏天裡非常舒服</td>
-                        <td>4</td>
+                        <td>@count</td>
+@*                      <td>@item.ProductId</td>*@
+                        <td>@item.ProductName</td>
+                        <td>@item.Title</td>
+                        <td>@item.Content</td>
+                        <td>@item.CommentScore</td>
+                        <td>@item.Date.ToString("yyyy-MM-dd")</td>
                         <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
                     </tr>
-                    <tr id="comment1" class="collapse">
+                    }
+@*                    <tr id="comment1" class="collapse">
                         <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
                     </tr>
                     <tr data-toggle="collapse" data-target="#comment2">
@@ -74,7 +86,8 @@
                     </tr>
                     <tr id="comment3" class="collapse">
                         <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
-                    </tr>
+                    </tr>*@
+                    }
                 </table>
             </div>
         </div>

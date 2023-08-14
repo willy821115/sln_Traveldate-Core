@@ -1,9 +1,36 @@
-﻿@model IEnumerable<prj_Traveldate_Core.Models.Member>
+﻿
+
 @{
-    ViewData["Title"] = "basicInfo";
+    ViewData["Title"] = "couponList3";
 }
 
-@*<h1>basicInfo</h1>*@
+@*<h1>couponList3</h1>*@
+
+@*<table>
+    <thead>
+        <tr>
+            <th>Coupon List ID</th>
+            <th>Coupon Name</th>
+            <th>Discount</th>
+            <th>Description</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CouponListId</td>
+                <td>@item.CouponName</td>
+                <td>@item.Discount</td>
+                <td>@item.Description</td>
+                <td>@item.DueDate</td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+@*================================================================================================================*@
 <div class="container mt-2">
     <div class="row">
         <div class="col-md-3">
@@ -32,50 +59,35 @@
                 </div>
             </div>
         </div>
-
-            <!-- 右半邊 - 內容容器 -->
-        <div class="col-md-8">
+        <!-- 右半邊 - 內容容器 -->
+        <div class="col-md-9">
+            <h3 class="mb-4">優惠券清單</h3>
             <div id="rightPanel">
-                @foreach (var member in Model)
-                {
-                    <div class="form-group">
-                        <label for="txtLastName">名</label>
-                        <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtFirstName">姓</label>
-                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />
-                    </div>
-                    <div>
-                        <label for="txtGender">性別</label>
-                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txtBirthDate">出生日期</label>
-                        @{
-                            //DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
-                            string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
-                        }
-                        <input type="text" id="txtBirthDate" class="form-control" value=@member.BirthDate />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtPhoneNumber">手機號碼</label>
-                        <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtEmail">聯絡信箱</label>
-                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn my-btn-primary">儲存</button>
-                    </div>
-                }
+                <table class="col-md-9 table-hover">
+                    <tr>
+@*                        <th>Coupon List ID</th>*@
+                        <th>優惠券名稱</th>
+                        <th>折扣</th>
+                        <th>描述</th>
+                        <th>到期日</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+@*                            <td>@item.CouponListId</td>*@
+                            <td>@item.CouponName</td>
+                            <td>@item.Discount</td>
+                            <td>@item.Description</td>
+                            <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
-     </div>
+
+    </div>
 </div>
-    
+
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
@@ -99,7 +111,7 @@
     </div>
 </div>
 
-    @section Styles
+@section Styles
     {
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
