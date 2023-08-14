@@ -39,6 +39,7 @@ h3 {
 
 #rightPanel {
     margin-left: 2em; /* Adjust the left margin to create space between rightPanel and the cells */
+    border-radius: 10px;
 }
 
 
@@ -58,6 +59,7 @@ h3 {
     margin-top: 0px;
     table-layout: fixed;
     word-break: break-all;
+    border-radius: 10px;
 }
 
 th, td {
@@ -65,6 +67,7 @@ th, td {
     text-align: start;
     word-break: break-all;
     border: 1px solid whitesmoke;
+    border-radius: 10px;
 }
 
 th {
@@ -85,5 +88,19 @@ height {
 .Member {
     padding-top: 16px;
     text-align: center;
-    border-color: white
+    border-color: white;
+    border-radius: 10px;
+}
+
+.col-md-9 {
+    background-color: white;
+    border-radius: 10px;
+}
+.col-md-8 {
+    background-color: white;
+    border-radius:10px;
+}
+.carousel-inner {
+    margin-top: 1em;
+    border-radius: 10px;
 }

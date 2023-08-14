@@ -5,14 +5,16 @@ namespace prj_Traveldate_Core.Controllers
 {
     public class MemberController : Controller
     {
+        TraveldateContext context = new TraveldateContext();
         public IActionResult Index() //左側欄
         {
             return View();
         }
         public IActionResult basicInfo() //基本資料設定
         {
-            //Models.IndexController S ;
-            return View();
+            var datas = from mm in context.Members where mm.MemberId == 1 select mm;
+
+            return View(datas);
         }
         public IActionResult passwordChange() //密碼更改
         {
@@ -24,11 +26,11 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult couponList2(int? id) //優惠券清單
         {
-            TraveldateContext db = new TraveldateContext();
-            var datas = from m in db.Members
-                        join c in db.Coupons
+            
+            var datas = from m in context.Members
+                        join c in context.Coupons
                         on m.MemberId equals c.MemberId
-                        join cl in db.CouponLists
+                        join cl in context.CouponLists
                         on c.CouponListId equals cl.CouponListId
                         where m.MemberId == c.MemberId
                         select new { cl.CouponListId, cl.CouponName, cl.Discount, cl.Description, cl.DueDate };
