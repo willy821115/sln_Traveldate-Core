@@ -162,25 +162,27 @@
                                 <div class="card-body">
                                     @foreach (var c in Model.categoryAndTags)
                                     {
-                                         <div class="controls-display-row category-click">
-                                        <span class="fs-5">@c.category</span>
-                                     </div>
-                                         <div class="ms-lg-4 filter-block-toggle">
-                                        <ul class="list-unstyled m">
-                                            @foreach(var t in c.tags.Distinct())
+
+                                        <div class="controls-display-row category-click">
+                                            <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+                                            <div class="d-flex justify-content-end">
+                                                <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                                                <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                                            </div>
+                                        </div>
+                                        <div class="ms-lg-4 filter-block-toggle">
+                                            <ul class="list-unstyled m">
+                                                @foreach (var t in c.tags.Distinct())
                                                 {
                                                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                <input type="checkbox" />
-                                                <span>@t</span>
-                                            </li>
-                                                 }
-
-                                        </ul>
-                                    </div>
+                                                        <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                                                        <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                                                        <span>@Html.DisplayFor(modelItem => t)</span>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
                                     }
-                                   
-                                   
-
                                 </div>
                             </div>
 

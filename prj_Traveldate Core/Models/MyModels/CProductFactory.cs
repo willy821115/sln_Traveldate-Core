@@ -89,13 +89,13 @@ namespace prj_Traveldate_Core.Models.MyModels
             TraveldateContext db = new TraveldateContext();
             List<CCategoryAndTags> list = new List<CCategoryAndTags>();
 
-            var data_category = db.ProductTagLists
-                .GroupBy(c => c.ProductTagDetails.ProductCategory.ProductCategoryName)
+            var data_category = db.ProductTagDetails
+                .GroupBy(c => c.ProductCategory.ProductCategoryName)
                 .Select(g =>
                 new
                 {
                     category = g.Key,
-                    tag = g.Select(t => t.ProductTagDetails.ProductTagDetailsName)
+                    tag = g.Select(t => t.ProductTagDetailsName)
                 });
             foreach (var i in data_category)
             {
