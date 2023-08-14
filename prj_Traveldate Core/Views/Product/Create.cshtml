@@ -175,8 +175,7 @@
                                                 @foreach (var t in c.tags.Distinct())
                                                 {
                                                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                        <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
-                                                        <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                                                       <input type="checkbox"/>
                                                         <span>@Html.DisplayFor(modelItem => t)</span>
                                                     </li>
                                                 }
@@ -310,6 +309,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/search_jq.js"></script>
 }
 @section Styles{
     <style>
