@@ -84,6 +84,62 @@ namespace prj_Traveldate_Core.Models.MyModels
             return (int)planPrice;
         }
 
+        public List<CCategoryAndTags> loadCategories()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<CCategoryAndTags> list = new List<CCategoryAndTags>();
+
+            var data_category = db.ProductTagLists
+                .GroupBy(c => c.ProductTagDetails.ProductCategory.ProductCategoryName)
+                .Select(g =>
+                new
+                {
+                    category = g.Key,
+                    tag = g.Select(t => t.ProductTagDetails.ProductTagDetailsName)
+                });
+            foreach (var i in data_category)
+            {
+                CCategoryAndTags x = new CCategoryAndTags();
+                x.category = i.category;
+                x.tags = i.tag;
+                list.Add(x);
+            }
+            return list;
+        }
+
+        public List<string> loadCountries()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<string> list = db.CountryLists.Select(c=>c.Country).ToList();
+            return list;
+        }
+
+        public List<string> loadCities()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<string> list = db.CityLists.Select(c => c.City).ToList();
+            return list;
+        }
+
+        public List<string> loadTypes()
+        {
+            TraveldateContext db = new TraveldateContext();
+            List<string> list = new List<string>();
+            IEnumerable<string> datas_types = db.ProductLists
+             .Select(t => t.ProductType.ProductType).Distinct();
+            list.AddRange(datas_types);
+            return list;
+        }
+
+        public int TripStock(int tripID)
+        {
+            TraveldateContext _db = new TraveldateContext();
+
+            var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.TripDetails.Count, max = s.MaxNum }).FirstOrDefault();
+            int stock = (int)q.max - (int)q.orders;
+            return stock;
+        }
+
 
     }
 }

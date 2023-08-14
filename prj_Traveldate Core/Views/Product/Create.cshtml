@@ -1,4 +1,4 @@
-﻿@model prj_Traveldate_Core.Models.ProductList
+﻿@model prj_Traveldate_Core.Models.MyModels.CProductWrap
 
 @{
     ViewData["Title"] = "Create";
@@ -109,18 +109,31 @@
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            <option>門票</option>
-                                            <option>團體旅遊</option>
-                                            <option>自助旅行</option>
+                                           @foreach(string type in Model.types)
+                                            {
+                                                <option>@type</option>
+                                            }
+
                                         </select>
                                     </div>
 
                                     <div class=" form-group">
-                                        <label class="control-label">所在地區</label>
+                                        <label class="control-label">所在國家</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            <option>台北市</option>
-                                            <option>桃園市</option>
-                                            <option>新竹市</option>
+                                            @foreach (string type in Model.countries)
+                                            {
+                                                <option>@type</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class=" form-group">
+                                        <label class="control-label">所在城市</label>
+                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                            @foreach (string type in Model.cities)
+                                            {
+                                                <option>@type</option>
+                                            }
                                         </select>
                                     </div>
 
@@ -231,6 +244,38 @@
 
                                 </div>
                             </div>
+
+                            
+                                @*<!-- Basic Card Example -->*@
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">行程詳情</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <label class="control-label">照片</label>
+                                        <input type="file" class="form-control" id="photoInput" />
+                                        <label class="control-label">行程描述</label>
+                                        <textarea class="col-lg-12" id="descriptionInput"></textarea>
+                                        <button type="button" id="addButton" class="form-control">新增</button>
+                                    </div>
+                                </div>
+
+
+                           
+
+                            
+                                @*<!-- Basic Card Example -->*@
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">現有行程</h6>
+                                    </div>
+                                    <div class="card-body" id="contentContainer">
+                                    </div>
+                                </div>
+
+
+                            
+
 
                             <div class="form-group">
                                 <input type="submit" value="Create" class="btn btn-primary" />

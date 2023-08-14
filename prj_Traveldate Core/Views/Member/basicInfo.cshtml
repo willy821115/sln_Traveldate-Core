@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<prj_Traveldate_Core.Models.Member>
 @{
     ViewData["Title"] = "basicInfo";
 }
@@ -34,22 +34,71 @@
         </div>
 
             <!-- 右半邊 - 內容容器 -->
-            <div class="col-md-9">
-            <h3 class="mb-4">基本資料設定</h3>
-                <div id="rightPanel">
-                    <div class="form-group"><label for="txtLastName">名</label><input type="text" id="txtLastName" class="form-control" /></div>
-                    <div class="form-group"><label for="txtFirstName">姓</label><input type="text" id="txtFirstName" class="form-control" /></div>
-                    <div class="form-group"><label for="txtGender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select></div>
-                    <div class="form-group"><label for="txtBirthDate">出生日期</label><input type="date" id="txtBirthDate" class="form-control" /></div>
-                    <div class="form-group"><label for="txtRegion">地區</label><select id="txtRegion" class="form-control"><option value="">請選擇</option><option value="台北市">台北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option><option value="台中市">台中市</option><option value="台南市">台南市</option><option value="高雄市">高雄市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option><option value="基隆市">基隆市</option><option value="新竹市">新竹市</option><option value="嘉義市">嘉義市</option></select></div>
-                    <div class="form-group"><label for="txtPhoneNumber">手機號碼</label><input type="text" id="txtPhoneNumber" class="form-control" /></div>
-                    <div class="form-group"><label for="txtEmail">聯絡信箱</label><input type="text" id="txtEmail" class="form-control" /></div>
-                <div class="form-group"><button type="button" class="btn my-btn-primary">儲存</button></div>
-                </div>
+        <div class="col-md-8">
+            <div id="rightPanel">
+                @foreach (var member in Model)
+                {
+                    <div class="form-group">
+                        <label for="txtLastName">名</label>
+                        <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtFirstName">姓</label>
+                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />
+                    </div>
+                    <div>
+                        <label for="txtGender">性別</label>
+                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtBirthDate">出生日期</label>
+                        @{
+                            //DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
+                            string formattedBirthDate = member.BirthDate.Value.ToString();
+                        }
+                        <input type="text" id="txtBirthDate" class="form-control" value="formattedBirthDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPhoneNumber">手機號碼</label>
+                        <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">聯絡信箱</label>
+                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn my-btn-primary">儲存</button>
+                    </div>
+                }
             </div>
+        </div>
      </div>
 </div>
     
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/177/1500/300" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/442/1500/300" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/440/1500/300" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/583/1500/300" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
+        </div>
+    </div>
+</div>
+
     @section Styles
     {
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
