@@ -82,7 +82,13 @@
             set { _prod.OutlineForSearch = value; }
         }
 
-     public string? cityName { get; set; }
+        public string? Adress
+        {
+            get { return _prod.Address; }
+            set { _prod.Address = value; }
+        }
+
+        public string? cityName { get; set; }
 
         public string? productType { get; set; }
 
