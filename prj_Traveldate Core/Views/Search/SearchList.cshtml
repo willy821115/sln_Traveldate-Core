@@ -207,7 +207,15 @@
                         <div class="col-md-4 pr-0 ">
                             @*<div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">*@
                             <div class="overflow-hidden my-rounded-start h-100">
-                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100" alt="@item.productName">
+                                @if (item.photo != null)
+                                {
+                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100 w-100" alt="@item.productName">
+                                }
+                                else{
+
+                                    <img src="~/icons/Logo_traveldate.png" class="img-fluid h-100" alt="@item.productName">
+                                    }
+
                             </div>
                         </div>
                         <div class="col-md-8 pl-0">

@@ -23,7 +23,6 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Create()
         {
-           
             List<Trip> trips= _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).ToList();
             return View(trips);
         }
@@ -71,12 +70,19 @@ namespace prj_Traveldate_Core.Controllers
         //發文選擇商品
         public IActionResult selectTrips()
         {
-            var t = _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).Select(t=>t.Product.ProductName).Distinct().ToList();
-            //CCreatArticleViewModel vm = new CCreatArticleViewModel();
-            //vm.trips = _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).Include(t => t.Product).ToList();
-        
-            //vm.prods = vm.trips.Select(t => t.Product).Distinct().ToList();
-            return Json(t);
+            List<string> trips = new List<string>();
+            //if (string.IsNullOrEmpty(txtKeyword))
+            //{
+               
+               
+            //    return Json(trips);
+            //}
+            //trips = _context.Trips
+            //        .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
+            //        .Where(t => t.Product.ProductName.ToUpper().StartsWith(txtKeyword.ToUpper()))
+            //        .Select(t => t.Product.ProductName).Distinct().ToList();
+            trips = _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).Select(t => t.Product.ProductName).Distinct().ToList();
+            return Json(trips);
         }
 
 
