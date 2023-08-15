@@ -8,6 +8,8 @@ namespace prj_Traveldate_Core.ViewModels
         public List<CTripWrap> cTripWraps { get; set; }
         public List<CProductWrap> cProductWraps { get; set; }
 
+        public List<string> types { get; set; }
+
         public int TripStock(int tripID)
         {
             TraveldateContext _db = new TraveldateContext();

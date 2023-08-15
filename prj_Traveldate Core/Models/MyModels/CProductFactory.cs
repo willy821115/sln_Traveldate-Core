@@ -120,7 +120,12 @@ namespace prj_Traveldate_Core.Models.MyModels
             List<string> list = db.CityLists.Select(c => c.City).ToList();
             return list;
         }
-
+        public List<string> loadStauts()
+        {
+            TraveldateContext db = new TraveldateContext();
+            var list = db.Statuses.Select(p => p.Status1).ToList();
+            return list;
+        }
         public List<string> loadTypes()
         {
             TraveldateContext db = new TraveldateContext();
@@ -131,10 +136,16 @@ namespace prj_Traveldate_Core.Models.MyModels
         public int TripStock(int tripID)
         {
             TraveldateContext _db = new TraveldateContext();
-
-            var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Count, max = s.MaxNum }).FirstOrDefault();
+             var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Count, max = s.MaxNum }).FirstOrDefault();
             int stock = (int)q.max - (int)q.orders;
             return stock;
+        }
+
+        public int TripDays(int productID) 
+        {
+            TraveldateContext _db = new TraveldateContext();
+            var q = _db.TripDetails.Where(t=>t.Product.ProductId==productID).Count();
+            return q;
         }
 
 
