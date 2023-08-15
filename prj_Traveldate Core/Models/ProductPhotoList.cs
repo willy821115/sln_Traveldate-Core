@@ -11,11 +11,7 @@ public partial class ProductPhotoList
 
     public byte[]? Photo { get; set; }
 
-    public bool? OnSlide { get; set; }
-
     public string? ImagePath { get; set; }
 
     public virtual ProductList? Product { get; set; }
-
-    public virtual ICollection<TripDetail> TripDetails { get; set; } = new List<TripDetail>();
 }

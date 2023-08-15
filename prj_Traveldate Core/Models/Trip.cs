@@ -26,6 +26,4 @@ public partial class Trip
     public virtual ProductList Product { get; set; } = null!;
 
     public virtual ICollection<ScheduleList> ScheduleLists { get; set; } = new List<ScheduleList>();
-
-    public virtual ICollection<TripDetail> TripDetails { get; set; } = new List<TripDetail>();
 }

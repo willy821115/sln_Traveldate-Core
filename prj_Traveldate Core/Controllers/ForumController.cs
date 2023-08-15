@@ -35,7 +35,7 @@ namespace prj_Traveldate_Core.Controllers
             }
             CArticleViewModel vm = new CArticleViewModel();
             vm.forum = _context.ForumLists.Find(id);
-            vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r=>r.Member).ToList(); ;
+            vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.member = _context.Members.Find(6);
             return View(vm);
         }
