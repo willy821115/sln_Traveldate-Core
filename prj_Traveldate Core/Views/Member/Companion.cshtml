@@ -1,9 +1,10 @@
-﻿@model IEnumerable<prj_Traveldate_Core.Models.Member>
+﻿
 @{
-    ViewData["Title"] = "basicInfo";
+    ViewData["Title"] = "Companion";
 }
 
-@*<h1>basicInfo</h1>*@
+<h1>Companion</h1>
+
 <div class="container mt-2">
     <div class="row">
         <div class="col-md-3">
@@ -32,51 +33,62 @@
                 </div>
             </div>
         </div>
-
-            <!-- 右半邊 - 內容容器 -->
+        <!-- 右半邊 - 內容容器 -->
         <div class="col-md-9">
-            <h3 class="mb-4">基本資料設定</h3>
+            <h3 class="mb-4">常用旅客</h3>
             <div id="rightPanel">
-                @foreach (var member in Model)
-                {
-                    <div class="form-group">
-                        <label for="txtLastName">名</label>
-                        <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtFirstName">姓</label>
-                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />
-                    </div>
-                    <div>
-                        <label for="txtGender">性別</label>
-                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />
-                    </div>
+                <table class="table-hover">
+                    <tr>
+                        <th>序號</th>
+                        <th>名</th>
+                        <th>姓</th>
+                        <th>出生日期</th>
+                        <th>手機號碼</th>
+                    </tr>
 
-                    <div class="form-group">
-                        <label for="txtBirthDate">出生日期</label>
-                        @{
-                            //DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
-                            string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
+                    @{
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr data-toggle="collapse" data-target="#comment1">
+                                <td>@count</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.BirthDate.ToString("yyyy-MM-dd")</td>
+                                <td>@item.Phone</td>
+                            </tr>
                         }
-                        <input type="text" id="txtBirthDate" class="form-control" value=@member.BirthDate />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtPhoneNumber">手機號碼</label>
-                        <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />
-                    </div>
-                    <div class="form-group">
-                        <label for="txtEmail">聯絡信箱</label>
-                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn my-btn-primary">儲存</button>
-                    </div>
-                }
+                        @*                    <tr id="comment1" class="collapse">
+                    <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
+                    </tr>
+                    <tr data-toggle="collapse" data-target="#comment2">
+                    <td>澎湖一日遊</td>
+                    <td>整體感受不錯</td>
+                    <td>很好玩，推薦喜愛心豔陽的朋友。夏天太陽很大，要注意防曬</td>
+                    <td>5</td>
+                    <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
+                    </tr>
+                    <tr id="comment2" class="collapse">
+                    <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
+                    </tr>
+                    <tr data-toggle="collapse" data-target="#comment3">
+                    <td>宜蘭太平山二日遊</td>
+                    <td>安全性很高，值得參加遊</td>
+                    <td>我和先生參加的活動是雙人獨木舟，阿湯老師解釋很清楚，進行活動很安全，很棒的體驗。有機會下次會再參加。</td>
+                    <td>5</td>
+                    <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
+                    </tr>
+                    <tr id="comment3" class="collapse">
+                    <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
+                    </tr>*@
+                    }
+                </table>
             </div>
         </div>
-     </div>
+    </div>
 </div>
-    
+
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
@@ -100,8 +112,7 @@
     </div>
 </div>
 
-    @section Styles
+@section Styles
     {
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
-
