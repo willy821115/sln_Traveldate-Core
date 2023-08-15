@@ -47,5 +47,7 @@ public partial class ProductList
 
     public virtual Status? Status { get; set; }
 
+    public virtual ICollection<TripDetail> TripDetails { get; set; } = new List<TripDetail>();
+
     public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
 }

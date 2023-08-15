@@ -18,7 +18,7 @@ namespace prj_Traveldate_Core.ViewModels
         {
         TraveldateContext _db=new TraveldateContext();
 
-            var q = _db.Trips.Where(s => s.TripId == tripID).Select(s =>new {orders= s.TripDetails.Count, max=s.MaxNum}).FirstOrDefault();
+            var q = _db.Trips.Where(s => s.TripId == tripID).Select(s =>new {orders= s.OrderDetails.Count, max=s.MaxNum}).FirstOrDefault();
             int stock = (int)q.max - (int)q.orders;
             return stock;
         }

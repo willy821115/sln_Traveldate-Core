@@ -13,15 +13,15 @@ public partial class ReplyList
 
     public string? Content { get; set; }
 
-    public int? MemberId { get; set; }
+    public int MemberId { get; set; }
 
-    public DateTime? ReplyTime { get; set; }
+    public DateTime Replytime { get; set; }
 
     public virtual ForumList? ForumList { get; set; }
 
     public virtual ICollection<ReplyList> InverseReplyTo { get; set; } = new List<ReplyList>();
 
-    public virtual Member? Member { get; set; }
+    public virtual Member Member { get; set; } = null!;
 
     public virtual ReplyList? ReplyTo { get; set; }
 }

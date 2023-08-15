@@ -7,15 +7,13 @@ public partial class TripDetail
 {
     public int TripDetailId { get; set; }
 
-    public int? TripId { get; set; }
+    public int? ProductId { get; set; }
 
     public string? TripDetail1 { get; set; }
 
-    public int? ProductPhotoListId { get; set; }
-
     public int? TripDay { get; set; }
 
-    public virtual ProductPhotoList? ProductPhotoList { get; set; }
+    public string? ImagePath { get; set; }
 
-    public virtual Trip? Trip { get; set; }
+    public virtual ProductList? Product { get; set; }
 }

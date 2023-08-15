@@ -75,6 +75,8 @@ public partial class TraveldateContext : DbContext
 
     public virtual DbSet<TripDetail> TripDetails { get; set; }
 
+    public virtual DbSet<TripDetailPhotoList> TripDetailPhotoLists { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Traveldate;Integrated Security=True;Trust Server Certificate=True");
@@ -519,8 +521,8 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.ReplyId).HasColumnName("ReplyID");
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.ReplyTime).HasColumnType("datetime");
             entity.Property(e => e.ReplyToId).HasColumnName("ReplyToID");
+            entity.Property(e => e.Replytime).HasColumnType("datetime");
 
             entity.HasOne(d => d.ForumList).WithMany(p => p.ReplyLists)
                 .HasForeignKey(d => d.ForumListId)
@@ -528,6 +530,7 @@ public partial class TraveldateContext : DbContext
 
             entity.HasOne(d => d.Member).WithMany(p => p.ReplyLists)
                 .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ReplyList_Member");
 
             entity.HasOne(d => d.ReplyTo).WithMany(p => p.InverseReplyTo)
@@ -588,17 +591,22 @@ public partial class TraveldateContext : DbContext
             entity.ToTable("TripDetail");
 
             entity.Property(e => e.TripDetailId).HasColumnName("TripDetailID");
-            entity.Property(e => e.ProductPhotoListId).HasColumnName("ProductPhotoListID");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.TripDetail1).HasColumnName("TripDetail");
-            entity.Property(e => e.TripId).HasColumnName("TripID");
 
-            entity.HasOne(d => d.ProductPhotoList).WithMany(p => p.TripDetails)
-                .HasForeignKey(d => d.ProductPhotoListId)
-                .HasConstraintName("FK_TripDetail_ProductPhotoList");
+            entity.HasOne(d => d.Product).WithMany(p => p.TripDetails)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_TripDetail_ProductList");
+        });
 
-            entity.HasOne(d => d.Trip).WithMany(p => p.TripDetails)
-                .HasForeignKey(d => d.TripId)
-                .HasConstraintName("FK_TripDetail_Trip");
+        modelBuilder.Entity<TripDetailPhotoList>(entity =>
+        {
+            entity.ToTable("TripDetailPhotoList");
+
+            entity.Property(e => e.TripDetailPhotoListId).HasColumnName("TripDetailPhotoListID");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
+            entity.Property(e => e.TripDetailId).HasColumnName("TripDetailID");
         });
 
         OnModelCreatingPartial(modelBuilder);
