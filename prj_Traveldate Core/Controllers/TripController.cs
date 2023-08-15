@@ -59,5 +59,10 @@ CProductFactory cProductFactory = new CProductFactory();
         {
             return View();
         }
+
+        public IActionResult Edit() 
+        { 
+            return View(); 
+        }
     }
 }

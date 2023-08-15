@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.Collections.Generic;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -41,6 +42,17 @@ namespace prj_Traveldate_Core.Controllers
             return View(model);
         }
         public IActionResult Create()
+        {
+            CProductWrap list = new CProductWrap();
+            CProductFactory factory = new CProductFactory();
+            list.categoryAndTags = factory.loadCategories();
+            list.countries = factory.loadCountries();
+            list.cities = factory.loadCities();
+            list.types = factory.loadTypes();
+            return View(list);
+        }
+
+        public IActionResult Edit() 
         {
             CProductWrap list = new CProductWrap();
             CProductFactory factory = new CProductFactory();
