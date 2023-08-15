@@ -8,12 +8,14 @@
 }
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/search_rating.css" />
+    <link href="~/css/calendar-style.css" rel="stylesheet" />
+    <link href="~/css/search_rating.css" rel="stylesheet" />
     <style>
         .card-body{
-            height:250px;
-            padding:15px;
+            padding: 15px;
+            height: 250px;
         }
+        
     </style>
 }
 
@@ -22,17 +24,15 @@
         <div class="filter_block ">
             <div class="flex-column">
                 <label class="fs-4 pl-2 pt-2">篩選目的地</label>
-                <form asp-action="sortBy" asp-controller="Search">
+                @using (Html.BeginForm())
+                {
                     <div class="d-flex align-items-center search_container position-relative">
                         <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                         <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
-                        <input type="text" id="txtKeyword" class="search-input" placeholder="搜尋目的地">
+                        <input type="text" id="txtKeyword" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
                         <input  id="btnSearch" class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" />
                     </div>
-                    @*<div class="d-flex justify-content-center">
-                        <input class="btn btn-outline-secondary" type="submit" value="查詢" />
-                    </div>*@
-                </form>
+              }
             </div>
             @foreach (var city in Model.countryAndCities)
             {
@@ -174,7 +174,7 @@
         <div class="row g-0">
             <div class="border col-12 filter_block">
                 <div class="divide-line pl-3">
-                    <span class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">項體驗行程</span>
+                    <span id="filter-total" class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">項體驗行程</span>
                     <div id="selected-checkboxes"></div>
                 </div>
                 <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
@@ -188,36 +188,38 @@
                 </div>
             </div>
             <div id="filterBody">
- @foreach (var item in Model.filterProducts)
+              
+            @foreach (var item in Model.filterProducts)
             {
-                
                 string salesCount = "";
                 if (item.orederCount > 1000)
                 {
-
                     salesCount = $"{item.orederCount / 1000} K+ 個已訂購";
                 }
                 else
                 {
                     salesCount = $"{item.orederCount} 個已訂購";
                 }
-                    <a>
-                        <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
-                <div class="card mb-3 col-12 p-0">
-                    <div class="row g-0">
-                        <div class="col-md-4 pr-0 ">
-                            @*<div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">*@
-                            <div class="overflow-hidden my-rounded-start h-100">
+                    
+              <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
+              <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
+                        <div class="card mb-3 col-12 p-0">
+                        <div class="row g-0">
+                           <div class="col-md-4 pr-0 ">
                                 @if (item.photo != null)
                                 {
-                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100 w-100" alt="@item.productName">
-                                }
-                                else{
-
-                                    <img src="~/icons/Logo_traveldate.png" class="img-fluid h-100" alt="@item.productName">
-                                    }
-
-                            </div>
+                                        <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
+                                         <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250"/>
+                                     </div>
+                                 }
+                                        
+                                else
+                                  {
+                                      <div class="overflow-hidden my-rounded-start my-bg-primary d-flex justify-content-center">
+                                            <img src="~/icons/Logo_traveldate.png" alt="@item.productName" height="250" />
+                                       </div>
+                                  }
+                                   
                         </div>
                         <div class="col-md-8 pl-0">
                             <div class="card-body">
@@ -245,14 +247,15 @@
                         </div>
                     </div>
                 </div>
-    </a>
-            }
+                    </a>
+                    }
+                
             </div>
-            <div class="d-flex justify-content-center bg-transparent border-0">
+            @* <div class="d-flex justify-content-center bg-transparent border-0">
                 <div class="col-7 d-flex justify-content-around">
                     @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page }))
                 </div>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
@@ -290,46 +293,39 @@
         }
         //////////////////////////////////////3種排序///////////////////////////////////////////
         //by熱門
-        const sortByHot = document.querySelector('#sortByHot');
-        sortByHot.addEventListener('click',()=>{
-            fetch('@Url.Action("sortBy", "Search")?status=hot', {
+        //排序/篩選載入資料
+        function loadData(status) {
+            fetch('@Url.Action("sortBy", "Search")?' + status, {
                 method: 'GET',
             })
                 .then(response => response.text())
                 .then(data => {
                     $('#filterBody').html(data); // 更新畫面
-                    starRating()
-                });
-        })
+                    starRating() //重新載入星星
+                })
+        } 
+        const sortByHot = document.querySelector('#sortByHot');
+        sortByHot.addEventListener('click',()=>{
+                loadData("status=hot")})
         //by評價
         const sortByCommet = document.querySelector('#sortByCommet');
         sortByCommet.addEventListener('click', () => {
-            fetch('@Url.Action("sortBy", "Search")?status=comment', {
-                method: 'GET',
-            })
-                .then(response => response.text())
-                .then(data => {
-                    $('#filterBody').html(data); // 更新畫面
-                    starRating()
-                });
+            loadData("status=comment")
         })
         //by價格
         const sortByPrice = document.querySelector('#sortByPrice');
         sortByPrice.addEventListener('click', () => {
-            fetch('@Url.Action("sortBy", "Search")?status=price', {
-                method: 'GET',
-            })
-                .then(response => response.text())
-                .then(data => {
-                    $('#filterBody').html(data); // 更新畫面
-                    starRating()
-                });
+            loadData("status=price")
         })
+        // //by keyword
+        // const btnSearch = document.querySelector('#btnSearch');
+        // const keyword = document.querySelector('#txtKeyword');
+        // btnSearch.addEventListener('click', () => {
+        //     loadData("txtKeyword=" + keyword.value)
+        // })
     </script>
-    <script>
-        const btnSearch = document.querySelector('#btnSearch');
-        btnSearch.addEventListener('click',)
-    </script>
+    
+
 }
 
 

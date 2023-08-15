@@ -43,6 +43,8 @@ public partial class TraveldateContext : DbContext
 
     public virtual DbSet<LevelList> LevelLists { get; set; }
 
+    public virtual DbSet<LikeList> LikeLists { get; set; }
+
     public virtual DbSet<Member> Members { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -312,6 +314,26 @@ public partial class TraveldateContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("LevelID");
             entity.Property(e => e.Level).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<LikeList>(entity =>
+        {
+            entity.HasKey(e => e.LikeId);
+
+            entity.ToTable("LikeList");
+
+            entity.Property(e => e.LikeId).HasColumnName("LikeID");
+            entity.Property(e => e.ForumId).HasColumnName("ForumID");
+            entity.Property(e => e.IsLike).HasColumnName("isLike");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+
+            entity.HasOne(d => d.Forum).WithMany(p => p.LikeLists)
+                .HasForeignKey(d => d.ForumId)
+                .HasConstraintName("FK_LikeList_ForumList");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.LikeLists)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_LikeList_Member");
         });
 
         modelBuilder.Entity<Member>(entity =>
