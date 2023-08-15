@@ -265,6 +265,57 @@
                                     <h6 class="m-0 font-weight-bold text-primary">現有行程</h6>
                                 </div>
                                 <div class="card-body" id="contentContainer">
+                                    <ul id="sortable">
+                                        <li id="ui-state-default">
+                                            <div class="card mb-3">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src="~/images/東清秘境-蘭嶼.png" class="img-fluid rounded-start" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <div class="modal-header">
+                                                                <h5 class="card-title">第1天</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <p class="card-text">清澈深藍的海水顏色是蘭嶼海域獨有，一年四季都可找到適合潛點的蘭嶼，裙狀珊瑚礁環繞，海底地形變化複雜，黑潮支流更帶來了眾多的迴游魚類。透明清澈的水質，長年維持能見度 30 - 50 公尺。低度的人為開發、達悟族人永續經營的精神讓蘭嶼的水域仍然保持豐富的海洋生態，小丑魚尼莫、藍刀鯛多莉、大型龍王鯛甚至是魔鬼魟都悠遊在這片海域。讓專業教練帶領你，學習水肺潛水的基本技巧，揹上氣瓶潛進潛進蘭嶼獨有魔力的湛藍海水。</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li id="ui-state-default">
+                                            <div class="card mb-3">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src="~/images/促銷3.jpg" class="img-fluid rounded-start" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <div class="modal-header">
+                                                                <h5 class="card-title">第2天</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <p class="card-text">蘭嶼有著特殊的地理位置，豐富的水中生態、海上景觀、透明清澈的海面、一望無際的藍天，每年隨黑潮而來的飛魚，更是孕育了神秘且深度的達悟精神。當地的口說文化，沒有紙筆紀錄，口耳相傳，只有跟著當地教練一同深入蘭嶼，才能認識道地的蘭嶼精神。希望藉由提升旅遊品質，帶給旅人們最深度的一趟旅行，讓蘭嶼的文化之美，在旅人心中傳承且發芽。</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    
+
+                                    
+
                                 </div>
                             </div>
 
@@ -305,6 +356,20 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            $(function () {
+                $("#sortable").sortable({
+                    revert: true
+                });
+                $("#draggable").draggable({
+                    connectToSortable: "#sortable",
+                    helper: "clone",
+                    revert: "invalid"
+                });
+                $("ul, li").disableSelection();
+            });
+        </script>
     }
     <script src="~/js/search_jq.js"></script>
 }
