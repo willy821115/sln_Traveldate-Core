@@ -37,7 +37,7 @@
             <div id="rightPanel">
                 <table class ="table-hover">
                     <tr>
-                        <th class="col-md-2">序號</th>
+                        <th class="col-md-2"></th>
                         <th class="col-md-3">名稱</th>
                         <th class="col-md-4">說明</th>
                         <th class="col-md-4">概述</th>
@@ -45,16 +45,16 @@
                     </tr>
 
                     @{
-                        int count = 0;
+                        //int count = 0;
                         foreach (var item in Model)
                         {
-                            count++;
+                            //count++;
                     <tr class="height">
-                            <td>@count</td>
+                                <td>●</td>
                             <td><div>@item.ProductName</div></td>
                             <td><div>@item.Description</div></td>
                             <td><div>@item.Outline</div></td>
-                        <td><div><input type="button" value="取消收藏" class="btn my-btn-primary btn-sm" /></div></td>
+                                <td><div><input type="submit" value="取消收藏" class="btn my-btn-primary btn-sm" /></div></td>
                     </tr>
                     }
 

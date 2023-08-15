@@ -20,10 +20,9 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas);
         }
-        public IActionResult passwordChange() //密碼更改
+        public IActionResult passwordChange() //密碼更改V
         {
-            //if(txtNewPassword!= txCheckPassword)
-            return View();
+                return View();
         }
         public IActionResult couponList(int? id = 1) //優惠券清單V
         {
@@ -61,8 +60,28 @@ namespace prj_Traveldate_Core.Controllers
         //    return View(datas);
 
         //}
-        public IActionResult addCompanion() //新增旅伴資料
+        public IActionResult showCompanion(int? id = 1) //新增旅伴資料
         {
+            var datas = from m in context.Members
+                        join cm in context.Companions
+                        on m.MemberId equals cm.MemberId
+                        where m.MemberId == id
+                        select new CCompanionViewModel
+                        {
+                            LastName = cm.LastName,
+                            FirstName = cm.FirstName,
+                            Phone = cm.Phone,
+                            BirthDate = cm.BirthDate,
+                        };
+            return View(datas);
+        }
+
+        /*public IActionResult addCompanion(Companion cm) *///新增旅伴資料
+       public IActionResult addCompanion()
+        {
+            //int MemberId = 1;
+            //context.Companions.Add(cm);
+            //context.SaveChanges();
             return View();
         }
         public IActionResult favoriteList(int? id = 1) //收藏清單V

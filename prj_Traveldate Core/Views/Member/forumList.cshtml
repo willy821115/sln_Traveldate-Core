@@ -37,8 +37,8 @@
             <div id="rightPanel">
                 <table class="table-hover">
                     <tr>
-                        <th>序號</th>
-                     @*<th>ForumListId</th>*@
+                        <th></th>
+                        @*<th>ForumListId</th>*@
                         <th>行程名稱</th>
                         <th>發布日期</th>
                         <th>截止日期</th>
@@ -47,11 +47,11 @@
                         <th class="col-md-5">行程敘述</th>
                     </tr>
                    @{
-                    int count = 0;
+                    //int count = 0;
                     foreach (var item in Model) {
-                    count++;
+                    //count++;
                     <tr>
-                            <td>@count</td>
+                                <td>●</td>
                         @* <td>@item.ForumListId</td>*@
                             <td>@item.Title</td>
                             <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
