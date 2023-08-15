@@ -38,50 +38,68 @@
                 <table class="table-hover">
                     <tr>
                         <th>序號</th>
+                     @*<th>ForumListId</th>*@
                         <th>行程名稱</th>
-                        <th>出發日期</th>
+                        <th>發布日期</th>
                         <th>截止日期</th>
                         <th>熱度</th>
                         <th>觀看數</th>
                         <th class="col-md-5">行程敘述</th>
                     </tr>
+                   @{
+                    int count = 0;
+                    foreach (var item in Model) {
+                    count++;
                     <tr>
-                        <td>序號1</td>
-                        <td>太平山輕鬆健走一日團</td>
-                        <td>2023-09-18</td>
-                        <td>2023-09-22</td>
-                        <td>87</td>
-                        <td>435</td>
-                        <td><p>行程：見晴懷古步道 → 檜木原始林步道 → 鐵杉林自然步道 → 雲海咖啡館 → 觀景平台 → 蹦蹦車 → 鳩子澤溫泉煮蛋</p> </td>
+                            <td>@count</td>
+                        @* <td>@item.ForumListId</td>*@
+                            <td>@item.Title</td>
+                            <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
+                            <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.Likes</td>
+                            <td>@item.Watches</td>
+                            <td>@item.Content</td>
                     </tr>
-                    <tr>
-                        <td>序號2</td>
-                        <td>雪霸休閒農場3天2夜</td>
-                        <td>2023-09-29</td>
-                        <td>2023-09-25</td>
-                        <td>55</td>
-                        <td>275</td>
-                        <td><p>Day1：雲霧步道 → 雪霸休閒農場 → 大鹿林道西線 → 觀霧山莊 → 下午茶 → 雪霸農場自助晚餐
-Day2：野馬瞰山 → 午餐農場自理 → 雪霸農場當季DIY → 雪霸農場自助晚餐
-Day3：野馬瞰山森林浴 → 午餐自理 → 返程</p> </td>
-                    </tr>
-                    <tr>
-                        <td>序號3</td>
-                        <td>南投2日遊</td>
-                        <td>2023-10-06</td>
-                        <td>2023-10-02</td>
-                         <td>34</td>
-                        <td>170</td>
-                        <td><p>Day1：大崙山賞銀杏/茶園 → 能高瀑布 → 民宿 → 多肉秘境(中正店) → 埔里地母廟 → 18°c巧克力工房 → 妮娜巧克力城堡
-Day2：日月潭月老廟 → 日月潭自行車步道 → 向山旋懸臂式觀景台 → 東星屋景點餐廳</p> </td>
+                    }
+                    
 
-                    </tr>
+//                    <tr>
+//                        <td>序號1</td>
+//                        <td>太平山輕鬆健走一日團</td>
+//                        <td>2023-09-18</td>
+//                        <td>2023-09-22</td>
+//                        <td>87</td>
+//                        <td>435</td>
+//                        <td><p>行程：見晴懷古步道 → 檜木原始林步道 → 鐵杉林自然步道 → 雲海咖啡館 → 觀景平台 → 蹦蹦車 → 鳩子澤溫泉煮蛋</p> </td>
+//                    </tr>
+//                    <tr>
+//                        <td>序號2</td>
+//                        <td>雪霸休閒農場3天2夜</td>
+//                        <td>2023-09-29</td>
+//                        <td>2023-09-25</td>
+//                        <td>55</td>
+//                        <td>275</td>
+//                        <td><p>Day1：雲霧步道 → 雪霸休閒農場 → 大鹿林道西線 → 觀霧山莊 → 下午茶 → 雪霸農場自助晚餐
+//Day2：野馬瞰山 → 午餐農場自理 → 雪霸農場當季DIY → 雪霸農場自助晚餐
+//Day3：野馬瞰山森林浴 → 午餐自理 → 返程</p> </td>
+//                    </tr>
+//                    <tr>
+//                        <td>序號3</td>
+//                        <td>南投2日遊</td>
+//                        <td>2023-10-06</td>
+//                        <td>2023-10-02</td>
+//                         <td>34</td>
+//                        <td>170</td>
+//                        <td><p>Day1：大崙山賞銀杏/茶園 → 能高瀑布 → 民宿 → 多肉秘境(中正店) → 埔里地母廟 → 18°c巧克力工房 → 妮娜巧克力城堡
+//Day2：日月潭月老廟 → 日月潭自行車步道 → 向山旋懸臂式觀景台 → 東星屋景點餐廳</p> </td>
+
+//                    </tr>
+                        }                   
                 </table>
             </div>
         </div>
-
     </div>
-    </div>
+</div>
 
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">

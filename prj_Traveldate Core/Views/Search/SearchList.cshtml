@@ -181,14 +181,15 @@
                 <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                     <span class=" fw-bolder ">排序 : </span>
                     <span>　</span>
-                    <a href="#" class=" fw-bolder">熱門程度</a>
+                    <a id="sortByHot" href="#" class=" fw-bolder">熱門程度</a>
                     <span>　|　</span>
-                    <a href="#" class=" fw-bolder">用戶評價</a>
+                    <a id="sortByCommet" href="#" class=" fw-bolder">用戶評價</a>
                     <span>　|　</span>
-                    <a href="#" class=" fw-bolder">價格排序(低到高)</a>
+                    <a id="sortByPrice" href="#" class=" fw-bolder">價格排序(低到高)</a>
                 </div>
             </div>
-            @foreach (var item in Model.pages)
+            <div id="filterBody">
+ @foreach (var item in Model.filterProducts)
             {
                 <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
 
@@ -207,7 +208,15 @@
                         <div class="col-md-4 pr-0 ">
                             @*<div class="overflow-hidden my-rounded-start h-100 d-flex flex-column justify-content-center bg-for-fill">*@
                             <div class="overflow-hidden my-rounded-start h-100">
-                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100" alt="@item.productName">
+                                @if (item.photo != null)
+                                {
+                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" class="img-fluid h-100 w-100" alt="@item.productName">
+                                }
+                                else{
+
+                                    <img src="~/icons/Logo_traveldate.png" class="img-fluid h-100" alt="@item.productName">
+                                    }
+
                             </div>
                         </div>
                         <div class="col-md-8 pl-0">
@@ -237,6 +246,7 @@
                     </div>
                 </div>
             }
+            </div>
             <div class="d-flex justify-content-center bg-transparent border-0">
                 <div class="col-7 d-flex justify-content-around">
                     @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page }))
@@ -258,6 +268,80 @@
     <script src="~/calendar-03/calendar-03/js/main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
+
+    <script>
+        const sortByHot = document.querySelector('#sortByHot');
+        sortByHot.addEventListener('click',()=>{
+            fetch('@Url.Action("sortByHot", "Search")', {
+                method: 'GET',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#filterBody').html(data); // 更新畫面
+                    const maxValue = 5;
+                    const minValue = 0;
+                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
+
+                    // 獲取所有的 star-rating-div 元素
+                    const rectangles = document.querySelectorAll(".rectangle");
+
+                    // 遍歷所有的 star-rating-div 元素並設置寬度
+                    rectangles.forEach(rectangle => {
+                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
+                        const width = (value - minValue) * unitWidth;
+                        rectangle.style.width = width + "px";
+                    });
+                });
+        })
+
+        const sortByCommet = document.querySelector('#sortByCommet');
+        sortByCommet.addEventListener('click', () => {
+            fetch('@Url.Action("sortByComment", "Search")', {
+                method: 'GET',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#filterBody').html(data); // 更新畫面
+                    const maxValue = 5;
+                    const minValue = 0;
+                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
+
+                    // 獲取所有的 star-rating-div 元素
+                    const rectangles = document.querySelectorAll(".rectangle");
+
+                    // 遍歷所有的 star-rating-div 元素並設置寬度
+                    rectangles.forEach(rectangle => {
+                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
+                        const width = (value - minValue) * unitWidth;
+                        rectangle.style.width = width + "px";
+                    });
+                });
+        })
+
+        const sortByPrice = document.querySelector('#sortByPrice');
+        sortByPrice.addEventListener('click', () => {
+            fetch('@Url.Action("sortByPrice", "Search")', {
+                method: 'GET',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#filterBody').html(data); // 更新畫面
+                    const maxValue = 5;
+                    const minValue = 0;
+                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
+
+                    // 獲取所有的 star-rating-div 元素
+                    const rectangles = document.querySelectorAll(".rectangle");
+
+                    // 遍歷所有的 star-rating-div 元素並設置寬度
+                    rectangles.forEach(rectangle => {
+                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
+                        const width = (value - minValue) * unitWidth;
+                        rectangle.style.width = width + "px";
+                    });
+                });
+        })
+    </script>
 }
 
 

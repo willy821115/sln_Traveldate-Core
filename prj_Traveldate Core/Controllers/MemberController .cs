@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.VisualBasic;
 using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.ViewModels;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -10,7 +14,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             return View();
         }
-        public IActionResult basicInfo() //基本資料設定
+        public IActionResult basicInfo() //基本資料設定V
         {
             var datas = from mm in context.Members where mm.MemberId == 1 select mm;
 
@@ -18,47 +22,109 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult passwordChange() //密碼更改
         {
+            //if(txtNewPassword!= txCheckPassword)
             return View();
         }
-        public IActionResult couponList() //優惠券清單
+        public IActionResult couponList(int? id = 1) //優惠券清單V
         {
-            return View();
-        }
-        public IActionResult couponList2(int? id) //優惠券清單
-        {
-            
             var datas = from m in context.Members
                         join c in context.Coupons
                         on m.MemberId equals c.MemberId
                         join cl in context.CouponLists
                         on c.CouponListId equals cl.CouponListId
-                        where m.MemberId == c.MemberId
-                        select new { cl.CouponListId, cl.CouponName, cl.Discount, cl.Description, cl.DueDate };
-            return View(datas.ToString());
+                        where m.MemberId == id
+                        select new couponListViewModel
+                        {
+                            CouponListId = cl.CouponListId,
+                            CouponName = cl.CouponName,
+                            Discount = cl.Discount,
+                            Description = cl.Description,
+                            DueDate = cl.DueDate
+                        };
+            return View(datas);
         }
+        //public IActionResult couponList3(int? id = 1) //優惠券清單
+        //{
+        //    var datas = from m in context.Members
+        //                join c in context.Coupons
+        //                on m.MemberId equals c.MemberId
+        //                join cl in context.CouponLists
+        //                on c.CouponListId equals cl.CouponListId
+        //                where m.MemberId == id
+        //                select new couponListViewModel
+        //                { CouponListId=cl.CouponListId,
+        //                    CouponName = cl.CouponName,
+        //                    Discount = cl.Discount,
+        //                    Description = cl.Description,
+        //                    DueDate = cl.DueDate 
+        //                };
+        //    return View(datas);
+
+        //}
         public IActionResult addCompanion() //新增旅伴資料
         {
             return View();
         }
-        public IActionResult favoriteList() //收藏清單
+        public IActionResult favoriteList(int? id = 1) //收藏清單V
         {
-            return View();
+            var datas = from m in context.Members
+                        join f in context.Favorites
+                        on m.MemberId equals f.MemberId
+                        join pl in context.ProductLists
+                        on f.ProductId equals pl.ProductId
+                        where m.MemberId == id
+                        select new CfavoriteListViewModel
+                        {
+                            ProductName = pl.ProductName,
+                            Description = pl.Description,
+                            Outline = pl.Outline,
+                        };
+            return View(datas.Distinct());
         }
         public IActionResult orderList() //會員訂單
         {
             return View();
         }
-        public IActionResult commentList() //我的評論
+        public IActionResult commentList(int? id = 1) //我的評論V
+        {
+            var datas = from m in context.Members
+                        join cm in context.CommentLists
+                        on m.MemberId equals cm.MemberId
+                        join pl in context.ProductLists
+                        on cm.ProductId equals pl.ProductId
+                        where m.MemberId == id
+                        select new CcommentListViewModel
+                        {
+                            Title = cm.Title,
+                            Content = cm.Content,
+                            CommentScore = cm.CommentScore,
+                            Date = cm.Date,
+                            ProductName = pl.ProductName
+                        };
+            return View(datas);
+        }
+        public IActionResult addcomment() //添加評論V
         {
             return View();
         }
-        public IActionResult addcomment() //添加評論
+        public IActionResult forumList(int? id = 1) //我的揪團V
         {
-            return View();
-        }
-        public IActionResult forumList() //我的揪團
-        {
-            return View();
+            var datas = from m in context.Members
+                        join fl in context.ForumLists
+                        on m.MemberId equals fl.MemberId
+                        where m.MemberId == id
+                        select new CForumListViewModel2
+                        {
+                            ForumListId = fl.ForumListId,
+                            Title = fl.Title,
+                            DueDate = fl.DueDate,
+                            ReleaseDatetime = fl.ReleaseDatetime,
+                            Likes = fl.Likes,
+                            Watches = fl.Watches,
+                            Content = fl.Content
+                        };
+            return View(datas);
         }
     }
 }
+

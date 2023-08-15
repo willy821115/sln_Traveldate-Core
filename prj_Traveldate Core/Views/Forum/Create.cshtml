@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+@section Styles{
+    
+}
 <div class="row justify-content-center pb-4">
     <div class="col-10 bg-white rounded-3 p-4">
         <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
@@ -16,17 +18,14 @@
             <p class="fs-5">選擇商品與日期</p>
             <div class="d-flex">
                 <div class="form-group col-5 pl-0">
-                    <input class="form-select form-select-md mb-3"  id="selectTrip" placeholder="請選擇商品">
-                    <div>
-                        <ul class="list-group" id="trips">
-                            <li class="list-group-item">1</li>
-                            <li class="list-group-item">2</li>
-                            <li class="list-group-item">3</li>
-                        </ul>
-                    </div>
+                    @* <input name="txtKeyword" class="form-select form-select-md" id="selectTrip" placeholder="請選擇商品"> *@
+                   @*  <div class="grid gap-3 col d-flex" id="divTrip"> *@
+                    <input class="form-control" list="tripOpts" id="selectTrip" placeholder="請選擇商品">
+                    <datalist id="tripOpts">
+                            
+                    </datalist>
                 </div>
-            
-     
+                
                 <div class="form-group col-4 ">
                     <select id="selectDate" class="form-select form-select-md mb-3" aria-label="Large select example">
                         <option selected >請選擇日期</option>
@@ -37,6 +36,7 @@
                 </div>
                 <div>
                     <span id="price">$799</span>
+                    <span id="test"></span>
                 </div>
                 <div class="form-group col-2">
                     <input type="button" value="確定" class="btn btn-secondary" />
@@ -79,17 +79,53 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        const btntest = document.querySelector('#btn-test');
-        const selectTrip = document.querySelector('#selectTrip');
-        selectTrip.addEventListener('input',()=>{
+        // const btntest = document.querySelector('#btn-test');
+         const selectTrip = document.querySelector('#selectTrip');
+        const tripOpts = document.querySelector('#tripOpts');
+       
+        selectTrip.addEventListener('focus',()=>{
             loadTrips();
         })
+      
         async function loadTrips(){
-            const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")`)
-            const trips = await resopnse.json();
-            console.log(trips)
-        }
-        btntest.addEventListener('click',()=>loadTrips())
+                const resopnse = await fetch('@Url.Content("~/Forum/selectTrips")')
+                const datas = await resopnse.json();
+                if (datas != null) {
+                const trip = datas.map(trip => `<option id="selTrip" value="${trip}">${trip}</option>`)
+                tripOpts.innerHTML = trip.join("");
+                }
+            }
+       
+        const selTrip = document.querySelector('#selTrip');
+        const testElement = document.querySelector('#test');
+
+        selTrip.addEventListener('change',() => {
+            const selectedOption = selTrip.options[selTrip.selectedIndex];
+            testElement.textContent = selectedOption.textContent;
+        });
+                  // selectTrip.addEventListener('input', () => {
+                //      KeywordMatch();
+                // })
+        // async function KeywordMatch() {
+        //     const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?txtKeyword=${selectTrip.value}`)
+        //     const datas = await resopnse.json();
+        //     if (datas != null) {
+        //         const trip = datas.map(trip => `<li class="list-group-item list-group-item-action border p-2">${trip}</li>`)
+        //         divTrip.innerHTML = trip.join("");
+        //     }
+        // }
+
+        // async function loadTripsWithKeyword() {
+        //     const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")`)
+        //     const datas = await resopnse.json();
+        //     if (datas != null) {
+        //         const trip = datas.map(trip => `<li class="list-group-item list-group-item-action border p-2">${trip}</li>`)
+        //         divTrip.innerHTML = trip.join("");
+        //     }
+        // }
+        
+
+        // btntest.addEventListener('click',()=>loadTrips())
     </script>
 }
 

@@ -37,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Forum}/{action=ForumList}/{id?}");
+    pattern: "{controller=Search}/{action=SearchList}/{id?}");
 
 app.Run();
