@@ -12,8 +12,8 @@ namespace prj_Traveldate_Core.Models.MyModels
         public int OrderCount(int companyID) 
         {
         TraveldateContext _db=new TraveldateContext();
-            var q = _db.Trips.Where(p => p.Product.CompanyId == companyID).Select(p => p.OrderDetails.Count).FirstOrDefault();
-            return q;
+            var q = _db.OrderDetails.Where(p => p.Trip.Product.CompanyId == companyID);
+            return q.Count();
         }
 
         public decimal Turnover(int companyID)
