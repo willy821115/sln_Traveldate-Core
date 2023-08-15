@@ -190,8 +190,7 @@
             <div id="filterBody">
  @foreach (var item in Model.filterProducts)
             {
-                <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
-
+                
                 string salesCount = "";
                 if (item.orederCount > 1000)
                 {
@@ -202,6 +201,8 @@
                 {
                     salesCount = $"{item.orederCount} 個已訂購";
                 }
+                    <a>
+                        <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
                 <div class="card mb-3 col-12 p-0">
                     <div class="row g-0">
                         <div class="col-md-4 pr-0 ">
@@ -244,6 +245,7 @@
                         </div>
                     </div>
                 </div>
+    </a>
             }
             </div>
             <div class="d-flex justify-content-center bg-transparent border-0">
