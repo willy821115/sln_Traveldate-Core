@@ -22,18 +22,17 @@
         <div class="filter_block ">
             <div class="flex-column">
                 <label class="fs-4 pl-2 pt-2">篩選目的地</label>
-                @using (Html.BeginForm())
-                {
+                <form asp-action="sortBy" asp-controller="Search">
                     <div class="d-flex align-items-center search_container position-relative">
                         <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                         <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
-                        <input type="text" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
-                        <input class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" />
+                        <input type="text" id="txtKeyword" class="search-input" placeholder="搜尋目的地">
+                        <input  id="btnSearch" class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" />
                     </div>
                     @*<div class="d-flex justify-content-center">
                         <input class="btn btn-outline-secondary" type="submit" value="查詢" />
                     </div>*@
-                }
+                </form>
             </div>
             @foreach (var city in Model.countryAndCities)
             {
@@ -191,8 +190,7 @@
             <div id="filterBody">
  @foreach (var item in Model.filterProducts)
             {
-                <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
-
+                
                 string salesCount = "";
                 if (item.orederCount > 1000)
                 {
@@ -203,6 +201,8 @@
                 {
                     salesCount = $"{item.orederCount} 個已訂購";
                 }
+                    <a>
+                        <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
                 <div class="card mb-3 col-12 p-0">
                     <div class="row g-0">
                         <div class="col-md-4 pr-0 ">
@@ -245,6 +245,7 @@
                         </div>
                     </div>
                 </div>
+    </a>
             }
             </div>
             <div class="d-flex justify-content-center bg-transparent border-0">
@@ -262,85 +263,72 @@
     <script src="~/js/mutiRange.js"></script>
    @* <script src="~/Scripts/jquery.validate.min.js"></script>*@
     @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
-    <script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
+   @*  <script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
+    <script src="~/js/"></script>
     <script src="~/calendar-03/calendar-03/js/popper.js"></script>
-    <script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script>
-    <script src="~/calendar-03/calendar-03/js/main.js"></script>
+    <script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script> *@
+    <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
 
     <script>
+        //為了把星星的js檔當非同步執行時,再重載到畫面上
+        function starRating() {
+            const maxValue = 5;
+            const minValue = 0;
+            const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
+
+            // 獲取所有的 star-rating-div 元素
+            const rectangles = document.querySelectorAll(".rectangle");
+
+            // 遍歷所有的 star-rating-div 元素並設置寬度
+            rectangles.forEach(rectangle => {
+                const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
+                const width = (value - minValue) * unitWidth;
+                rectangle.style.width = width + "px";
+            });
+        }
+        //////////////////////////////////////3種排序///////////////////////////////////////////
+        //by熱門
         const sortByHot = document.querySelector('#sortByHot');
         sortByHot.addEventListener('click',()=>{
-            fetch('@Url.Action("sortByHot", "Search")', {
+            fetch('@Url.Action("sortBy", "Search")?status=hot', {
                 method: 'GET',
             })
                 .then(response => response.text())
                 .then(data => {
                     $('#filterBody').html(data); // 更新畫面
-                    const maxValue = 5;
-                    const minValue = 0;
-                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
-
-                    // 獲取所有的 star-rating-div 元素
-                    const rectangles = document.querySelectorAll(".rectangle");
-
-                    // 遍歷所有的 star-rating-div 元素並設置寬度
-                    rectangles.forEach(rectangle => {
-                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
-                        const width = (value - minValue) * unitWidth;
-                        rectangle.style.width = width + "px";
-                    });
+                    starRating()
                 });
         })
-
+        //by評價
         const sortByCommet = document.querySelector('#sortByCommet');
         sortByCommet.addEventListener('click', () => {
-            fetch('@Url.Action("sortByComment", "Search")', {
+            fetch('@Url.Action("sortBy", "Search")?status=comment', {
                 method: 'GET',
             })
                 .then(response => response.text())
                 .then(data => {
                     $('#filterBody').html(data); // 更新畫面
-                    const maxValue = 5;
-                    const minValue = 0;
-                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
-
-                    // 獲取所有的 star-rating-div 元素
-                    const rectangles = document.querySelectorAll(".rectangle");
-
-                    // 遍歷所有的 star-rating-div 元素並設置寬度
-                    rectangles.forEach(rectangle => {
-                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
-                        const width = (value - minValue) * unitWidth;
-                        rectangle.style.width = width + "px";
-                    });
+                    starRating()
                 });
         })
-
+        //by價格
         const sortByPrice = document.querySelector('#sortByPrice');
         sortByPrice.addEventListener('click', () => {
-            fetch('@Url.Action("sortByPrice", "Search")', {
+            fetch('@Url.Action("sortBy", "Search")?status=price', {
                 method: 'GET',
             })
                 .then(response => response.text())
                 .then(data => {
                     $('#filterBody').html(data); // 更新畫面
-                    const maxValue = 5;
-                    const minValue = 0;
-                    const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
-
-                    // 獲取所有的 star-rating-div 元素
-                    const rectangles = document.querySelectorAll(".rectangle");
-
-                    // 遍歷所有的 star-rating-div 元素並設置寬度
-                    rectangles.forEach(rectangle => {
-                        const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
-                        const width = (value - minValue) * unitWidth;
-                        rectangle.style.width = width + "px";
-                    });
+                    starRating()
                 });
         })
+    </script>
+    <script>
+        const btnSearch = document.querySelector('#btnSearch');
+        btnSearch.addEventListener('click',)
     </script>
 }
 
