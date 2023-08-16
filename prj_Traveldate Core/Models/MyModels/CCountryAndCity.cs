@@ -2,7 +2,7 @@
 {
     public class CCountryAndCity
     {
-        public string country { get; set; }
-        public IEnumerable<string> citys { get; set; }
+        public string? country { get; set; }
+        public IEnumerable<string>? citys { get; set; } 
     }
 }

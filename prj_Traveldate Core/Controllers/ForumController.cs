@@ -18,8 +18,16 @@ namespace prj_Traveldate_Core.Controllers
      //////////////////////////////// /////////////////////////////////MVC/ ////////////////////////////////////////////////////////////////
         public IActionResult ForumList(CForumListViewModel vm)
         {
-            vm.forumList= _context.ForumLists.ToList();
+            CFilteredProductFactory factory = new CFilteredProductFactory();
+           vm.regions = factory.qureyFilterCountry();
+           vm.forumList = _context.ForumLists.ToList();
             vm.replyList = _context.ReplyLists.ToList();
+            vm.members = _context.Members.Include(m=>m.ForumLists).ToList();
+            vm.level = _context.LevelLists.Include(l=>l.Members).ToList();
+            //item.photo = db.ProductPhotoLists.Where(p => item.productID == p.ProductId).Select(p => p.Photo).FirstOrDefault();
+            
+            var ddd = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s=>s.Trip.Product.ProductId).ToList();
+            vm.prodPhoto = _context.ProductPhotoLists.Where(p=>ddd.Contains((int)p.ProductId)).ToList();
             return View(vm);
         }
         public IActionResult Create()
@@ -94,19 +102,26 @@ namespace prj_Traveldate_Core.Controllers
         }
 
             //////////////////////////// //////////////////////////////////PartialComponenet///// //////////////////////////////////////////////////////////////
-            //回覆的框框
+            //ArticleView的回覆的框框
             public IActionResult ReplyToDiv(Member userId) 
         {
             var member = _context.Members.Find(userId);
             return PartialView(member);
         }
-        //該文章的全部回覆
+        //ArticleView的該文章的全部回覆
         public IActionResult Replied(int? id)
         {
             CArticleViewModel vm = new CArticleViewModel();
             vm.forum = _context.ForumLists.Find(id);
-            //vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList(); 
+            vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList(); 
             return PartialView(vm);
+        }
+        //ForumList的篩選欄(地區)
+        public IActionResult Region()
+        {
+            CFilteredProductFactory factory = new CFilteredProductFactory();
+            List<CCountryAndCity> regions = factory.qureyFilterCountry();
+            return PartialView(regions);
         }
     }
 }

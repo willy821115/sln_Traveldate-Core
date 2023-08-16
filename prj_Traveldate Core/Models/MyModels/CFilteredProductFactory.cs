@@ -4,16 +4,18 @@ namespace prj_Traveldate_Core.Models.MyModels
 {
     public class CFilteredProductFactory
     {
-
         List<int> confirmedId = null;
+        TraveldateContext db = null;
+        public CFilteredProductFactory() 
+        {
+            db = new TraveldateContext();
+            confirmedId = db.Trips
+               .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false)
+               .Select(n => n.ProductId).ToList();
+        }
+        
         public List<CFilteredProductItem> qureyFilterProductsInfo()
         {
-            TraveldateContext db = new TraveldateContext();
-            
-             confirmedId = db.Trips
-                .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false)
-                .Select(n => n.ProductId).ToList();
-
             
             var datas = db.Trips.Where(t => confirmedId.Contains(t.ProductId)).GroupBy(t => t.ProductId)
                 .Select(g =>

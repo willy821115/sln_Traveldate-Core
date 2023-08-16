@@ -16,20 +16,20 @@
             background:#fff;
             border-radius:10px;
             padding: 5px 0 5px 0;
+            height:100px;
         }
 
         .my-article-item>div>p{
             margin:0 0 3px 0;
         }
 
-
     </style>
 }
 
-<div class="row border g-0 column-gap-5 justify-content-center main">
-    <div class="col-3 border forum-block">
-        <div class="border p-3 mt-2 mb-2">
-            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center">
+<div class="row g-0 column-gap-5 justify-content-center main">
+    <div class="col-3 forum-block">
+        <div class="p-3 mt-2 mb-2">
+            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary">
                 <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
                 <img class="write-icon-gif me-3" src="~/icons/icons8-pencil.gif" width="32" height="32">
                 我要發文
@@ -43,28 +43,11 @@
                 <input class="search-input" type="text" placeholder="請輸入文章標題">
             </div>
         </div>
-        <div class="border p-3 mt-2 mb-2">
-            <div class="filter_block">
-                <label class="fs-4 ">依地區搜尋 </label>
-                <div class="controls-display-row category-click">
-                    <span class="fs-5">台灣 </span>
-                    <div class="d-flex justify-content-end">
-                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
-                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
-                    </div>
-                </div>
-                <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled m">
-                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                            <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
-                            <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                            <span>新北 </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="p-3 mt-2 mb-2">
+                @* <partial name="@Url.Content("~/Forum/Region")"></partial> *@
+            @Html.Partial("Region",Model.regions)
         </div>
-        <div class="border p-3 mt-2 mb-2">
+        <div class="p-3 mt-2 mb-2">
             <div class="filter_block">
                 <label class="fs-4 ">依類別搜尋</label>
                 <div class="controls-display-row category-click">
@@ -76,7 +59,6 @@
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
                     <ul class="list-unstyled m">
-
                         <li class=" d-flex align-items-center divide-line my-w-80-percent">
                             <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                             <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
@@ -88,7 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="col-8 border  forum-block">
+    <div class="col-8 forum-block">
         <div class="border p-3 mt-2 mb-2">
             <p class="fs-4 divide-line">精選文章</p>
             <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
@@ -101,16 +83,18 @@
                         <text>active</text>}">
                                 <div class="d-flex row g-0 justify-content-center">
                                     <div class="border rounded p-3 me-4 col-5">
-                                        <a asp-action="ArticleView">
-                                            <p>文章標題 @i</p>
-                                            <div>
-                                                <img src="~/icons/icons8-person-100.png" width="32" height="32" />
-                                                <small class="text-body-secondary">
-                                                    <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : </span>
+                                            <a asp-action="ArticleView" class="text-secondary">
+                                            <p class="fs-4">文章標題 @i</p>
+                                            <div class="d-flex align-items-end">
+                                                <img src="~/icons/icons8-person-100.png" width="64" height="64" />
+                                                <div>
+                                                <small class="text-body-secondary d-block">
+                                                    <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : 1000</span>
                                                 </small>
-                                                <small class="text-body-secondary">
+                                                     <small class="text-body-secondary d-block">
                                                     <span>#水上活動</span><span>#景點門票</span><span>#宜蘭</span>
                                                 </small>
+                                                </div>
                                             </div>
                                         </a>
                                     </div>
@@ -118,16 +102,20 @@
                                         @{
                                             i++;
                                         }
-                                        <p>文章標題 @i</p>
-                                        <div>
-                                            <img src="~/icons/icons8-person-100.png" width="32" height="32" />
-                                            <small class="text-body-secondary">
-                                                <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : </span>
-                                            </small>
-                                            <small class="text-body-secondary">
-                                                <span>#水上活動</span><span>#景點門票</span><span>#宜蘭</span>
-                                            </small>
-                                        </div>
+                                        <a asp-action="ArticleView" class="text-secondary">
+                                            <p class="fs-4">文章標題 @i</p>
+                                            <div class="d-flex align-items-end">
+                                                    <img src="~/icons/icons8-person-100.png" width="64" height="64" />
+                                                    <div>
+                                                    <small class="text-body-secondary d-block">
+                                                        <span>發文者</span><span> | 發文時間 : 2023/07/30</span><span> | 回覆數 : 1000</span>
+                                                    </small>
+                                                         <small class="text-body-secondary d-block">
+                                                        <span>#水上活動</span><span>#景點門票</span><span>#宜蘭</span>
+                                                    </small>
+                                                    </div>
+                                                </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -156,20 +144,32 @@
                 <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
             </div>
         </div>
-   
-        @foreach(var article in Model.forumList)
+        
+        @foreach(var article in Model.forumList.OrderBy(f=>f.DueDate))
         {
-            <a asp-action="ArticleView" asp-route-id="@article.ForumListId">
-               class="my-article-item">
+            <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
                 <div class="border col-2 m-1">商品快照</div>
-                <div class="border col-5 m-1">
-                    <p>@article.Title</p>
-                    <span class="small">會員等級</span>
-                    <span class="small"> | 發文者</span>
-                    <span class="small"> | 發文時間</span>
+                <div class="border col-5 m-1 d-flex row p-0">
+                        <p class="pt-1">@article.Title</p>
+                    <div class="d-flex align-items-end">
+                    <span class="small">@article.Member.Level.Level</span>
+                        <span class="small"> | @article.Member.LastName@article.Member.FirstName</span>
+                        <span class="small"> | 發文時間 : @article.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                    </div>
                 </div>
-                <div class="border col-2 m-1">回覆數 : @article.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
-                    <div class="border col-2 m-1">商品快照</div>
+                <div class="border col-2 m-1 pt-1">回覆數 : @article.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+                    <div class="border col-2 m-1">
+                    <p class="pt-1">截團日期 : </p>
+                    @if (article.DueDate.HasValue && (article.DueDate.Value - DateTime.Now).TotalDays < 30)
+                    {
+                       <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24"height="24"/><p class="fs-5 text-danger">@article.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                    }
+                    else{
+                        <p class="fs-5 my-text-secondary">@article.DueDate.Value.ToString("yyyy/MM/d")</p>
+                        }
+
+                </div>
+                       
             </a>
             }
     

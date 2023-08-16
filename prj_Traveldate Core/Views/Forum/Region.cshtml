@@ -1,0 +1,27 @@
+﻿@using prj_Traveldate_Core.Models.MyModels;
+@model List<CCountryAndCity>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@foreach (var city in Model)
+{
+    <div class="controls-display-row category-click">
+        <span class="fs-5">@Html.DisplayFor(modelItem => city.country)</span>
+        <div>
+            <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+            <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+        </div>
+    </div>
+    <div class="ms-lg-4 filter-block-toggle">
+        <ul class="list-unstyled m">
+            @foreach (var t in city.citys)
+            {
+                <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
+                    <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                    <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                    <span>@Html.DisplayFor(modelItem => t)</span>
+                </li>
+            }
+        </ul>
+    </div>
+}

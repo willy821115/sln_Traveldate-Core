@@ -15,7 +15,7 @@ var cleanAll = $('<button>', {
     value: "cleanAll",
     id: "btn-clean-all",
     class: "btn btn-outline-secondary mr-1",
-    click: function cleanAllFunt() {
+    click: function() {
         $('#selected-checkboxes').empty(); // 清除全部按鈕
         $('.uncheckbox').show();
         $('.checkbox').hide();
@@ -28,7 +28,7 @@ $('.uncheckbox').on('click', function () {
     if (isFirstButton) {
         $('#selected-checkboxes').append(cleanAll);
         isFirstButton = false;
-        cleanAllFunt();
+       
     }
     
     var originalCheckbox= $(this).hide();
