@@ -11,8 +11,8 @@
         <form>
             <div class="search-container w-100">
                 <div class="d-flex justify-content-center w-50 position-relative">
-                    <input type="text" name="txtKeyword" class="search-input rounded" placeholder="搜尋...">
-                    <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"> <!-- 調整搜尋按鈕的高度 -->
+                    <input type="text" name="txtKeyword" class="search-input rounded p-0" placeholder="搜尋..."/>
+                    <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"/> <!-- 調整搜尋按鈕的高度 -->
                 </div>
             </div>
         </form>
@@ -247,11 +247,13 @@
         }
 
         .search-input{
-            position:absolute;
-            left:5px;
+            /*202308017 移除 position:absolute 避免搜尋按鈕沒有對其*/
+            /*position:absolute;*/
+          /*  left:5px;*/
             bottom:0;
             top:0;
-            width:95%;
+            width:100%;
+            overflow:hidden;
         }
 
         /* 底部樣式 */

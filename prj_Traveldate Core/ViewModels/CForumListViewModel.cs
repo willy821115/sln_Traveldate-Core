@@ -13,5 +13,6 @@ namespace prj_Traveldate_Core.ViewModels
         public List<Member>? members { get; set; }
         public List<LevelList>? level { get; set; }
         public List<ProductPhotoList>? prodPhoto { get; set; }
+        public List<CCategoryAndTags> categories { get; set; } = new List<CCategoryAndTags>();
     }
 }
