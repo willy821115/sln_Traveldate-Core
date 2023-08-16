@@ -390,6 +390,7 @@
         goToTodayBtn.addEventListener('click', goToToday);
 
         const availableDates = @Html.Raw(Json.Serialize(Model.program.fTripDate));
+        const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -481,6 +482,32 @@
             return dayElement;
         }
 
+        // function createDayElement(date, className) {
+        //     let dayElement = document.createElement('div');
+        //     dayElement.className = 'day';
+        //     dayElement.classList.add(className);
+
+        //     let dayContent = document.createElement('div');
+        //     dayContent.textContent = date.getDate();
+
+        //     if (availableDates.includes(formatDate(date))) {
+        //         dayElement.classList.add('available-date');
+        //         const priceElement = document.createElement('div');
+        //         const formattedDate = formatDate(date);
+        //         const priceIndex = availableDates.indexOf(formattedDate);
+        //         if (priceIndex !== -1) {
+        //             priceElement.textContent = '$' + price[priceIndex];
+        //         }
+        //         dayContent.appendChild(priceElement);
+        //     }
+
+        //     if (date < new Date()) {
+        //         dayElement.classList.add('expired-date');
+        //     }
+        //     dayElement.appendChild(dayContent);
+        //     return dayElement;
+        // }
+
 
         // Helper function to get month name from month index (0 - 11)
         function getMonthName(monthIndex) {
@@ -488,12 +515,26 @@
             return monthNames[monthIndex];
         }
 
+        const selectedDateClass = 'select-date';
+        let selectedDateElement = null;
+
         calendarDays.addEventListener('click', function (event) {
             const target = event.target;
             if (target.classList.contains('day')) {
                 const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(target.textContent));
-                if (availableDates.includes(formatDate(clickedDate))) {
-                    target.classList.toggle('selected-date');
+                const formattedClickedDate = formatDate(clickedDate);
+
+                if (availableDates.includes(formattedClickedDate)) {
+                    if (selectedDateElement) {
+                        selectedDateElement.classList.remove(selectedDateClass);
+                    }
+
+                    if (selectedDateElement !== target) {
+                        selectedDateElement = target;
+                        target.classList.add(selectedDateClass);
+                    } else {
+                        selectedDateElement = null;
+                    }
                 }
             }
         });

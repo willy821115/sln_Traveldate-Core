@@ -30,7 +30,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             if (outline != null)
             {
                 string[] outlineDetails = outline.Split('\n');
-                return outlineDetails.ToList(); // 将分割后的数组转换为列表并返回
+                return outlineDetails.ToList(); 
             }
 
             return new List<string>(); // 返回空列表
@@ -103,6 +103,15 @@ namespace prj_Traveldate_Core.Models.MyModels
                             select m.LastName).FirstOrDefault();
             return commember;
         }
+
+
+        //loadTripPrice
+        public List<decimal?> loadPlanprice(int id)
+        {
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
+            return price;
+        }
+
 
 
         public List<CCategoryAndTags> loadCategories()

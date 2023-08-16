@@ -24,6 +24,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fOutline = pf.loadOutlineDetails((int)id);
             vm.city.City = pf.loadCity((int)id);
             vm.member.LastName=pf.loadCommentMem((int)id);
+            vm.program.fPlanPrice = pf.loadPlanprice((int)id);
 
             return View(vm);
         }
