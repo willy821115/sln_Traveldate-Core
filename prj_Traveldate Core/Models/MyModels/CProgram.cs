@@ -6,6 +6,7 @@
         public List<string> fTripDate { get; set; }
         public List<string> fOutline { get; set; }
         public List<string> fPlanDescription { get; set; }
+        public List<decimal?> fPlanPrice { get; set; }
 
     }
 }

@@ -13,5 +13,10 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas);
         }
+
+        public IActionResult Password() 
+        {
+        return View();
+        }
     }
 }

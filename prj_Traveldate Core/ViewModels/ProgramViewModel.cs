@@ -7,6 +7,12 @@ namespace prj_Traveldate_Core.ViewModels
     {
         private ProductList _prod = null;
         private CProgram _cprogram = null;
+        private CityList _city = null;
+        private CommentList _commentlist = null;
+        private Member _member = null;
+
+
+
         public ProductList product
         {
             get { return _prod; }
@@ -17,10 +23,31 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _cprogram; }
             set { _cprogram = value; }
         }
+        public CityList city
+        {
+            get { return _city; }
+            set { _city = value; }
+        }
+        public CommentList commentlist
+        {
+            get { return _commentlist; }
+            set { _commentlist = value; }
+        }
+
+        public Member member
+        {
+            get { return _member; }
+            set { _member = value; }
+        }
+
+
         public ProgramViewModel()
         {
             _prod = new ProductList();
             _cprogram = new CProgram();
+            _city = new CityList();
+            _commentlist = new CommentList();
+            _member = new Member();
         }
     }
 }

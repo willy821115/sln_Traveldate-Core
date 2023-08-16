@@ -30,7 +30,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             if (outline != null)
             {
                 string[] outlineDetails = outline.Split('\n');
-                return outlineDetails.ToList(); // 将分割后的数组转换为列表并返回
+                return outlineDetails.ToList(); 
             }
 
             return new List<string>(); // 返回空列表
@@ -83,6 +83,36 @@ namespace prj_Traveldate_Core.Models.MyModels
             var planPrice = db.Trips.Where(p => p.ProductId == id).Select(t=>t.UnitPrice).FirstOrDefault();
             return (int)planPrice;
         }
+
+        //Product的縣市顯示再tilte label
+        public string loadCity(int id)
+        {
+            var city = (from p in db.ProductLists
+                        join c in db.CityLists on p.CityId equals c.CityId
+                        where p.ProductId == id
+                        select c.City).FirstOrDefault();
+            return city;
+        }
+
+        //Comment
+        public string loadCommentMem(int id)
+        {
+            var commember = (from c in db.CommentLists
+                            join m in db.Members on c.MemberId equals m.MemberId
+                            where c.ProductId == id
+                            select m.LastName).FirstOrDefault();
+            return commember;
+        }
+
+
+        //loadTripPrice
+        public List<decimal?> loadPlanprice(int id)
+        {
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
+            return price;
+        }
+
+
 
         public List<CCategoryAndTags> loadCategories()
         {

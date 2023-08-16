@@ -1,4 +1,6 @@
-﻿@{
+﻿@model prj_Traveldate_Core.ViewModels.CShoppingCartViewModel
+
+@{
     ViewBag.Title = "我的購物車";
 }
 @using (Html.BeginForm())
@@ -16,7 +18,8 @@
             </ol>
         </div>
         <div class="Cart-Container ">
-            <div class="Cart-Items">
+            <div>
+ @*           <div class="Cart-Items">
                 <div class="checkboxes">
                     <img class="uncheckbox CartIconbtn" id="cb1" src="~/icons/icons8-unchecked-32.png" />
                     <img class="checkbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
@@ -32,11 +35,11 @@
                 <div class="counter">
                     <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus">－</span>
                     <div class="count">1</div>
-                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>*@
 @*                    <img src="~/icons/icons8-minus-48.png" class="CartIconbtn cartMinus">
                     <div class="count">1</div>
                     <img src="~/icons/icons8-plus-48.png" class="CartIconbtn cartPlus">
-*@                </div>
+*@@*                </div>
                 <div class="prices">
                     <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit">
                     <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
@@ -44,7 +47,10 @@
                     <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
                     <div class="amount">NTD 5999</div>
                 </div>
+            </div>*@
             </div>
+            @foreach(var item in Model.cartitems)
+            {
             <div class="Cart-Items">
                 <div class="checkboxes">
                     <img class="uncheckbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
@@ -52,15 +58,15 @@
                     <input type="checkbox" id="prodcb">
                 </div>
                 <div class="image-box">
-                    <img src="~/images/9.jpg" />
+                        <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" />
                 </div>
                 <div class="about">
-                    <h1 class="title">宜蘭太平山二日遊｜翠峰湖＆太平山莊住宿一晚</h1>
-                    <h3 class="subtitle">2023/08/31</h3>
+                    <h1 class="title">@item.planName</h1>
+                        <h3 class="subtitle">@item.date</h3>
                 </div>
                 <div class="counter">
                     <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus">－</span>
-                    <div class="count">1</div>
+                    <div class="count">@item.quantity</div>
                     <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
                 </div>
                 <div class="prices">
@@ -68,7 +74,7 @@
                     <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
                     <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
                     <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
-                    <div class="amount">NTD 7999</div>
+                        <div class="mt-2"><span class="amount">NTD </span><span class="amount">@item.unitPrice</span></div>
                 </div>
                 <div class="modal fade" id="EditCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -81,7 +87,7 @@
                                 <div class="confirm-coupon-content">
                                     <div style="width:80%;">
                                         <h5>
-                                            宜蘭太平山二日遊｜翠峰湖＆太平山莊住宿一晚
+                                                @item.planName
                                         </h5>
                                         <p>
                                             目前可訂購時間：
@@ -97,7 +103,7 @@
                     </div>
                 </div>
             </div>
-
+            }
         </div>
         <div class="SelectAll m-4">
             <img class="uncheckall CartIconbtn" src="~/icons/icons8-uncheck-all-48.png" />
