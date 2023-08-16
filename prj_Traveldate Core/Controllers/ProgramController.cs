@@ -22,6 +22,8 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fPlanDescription = pf.LoadPlanDescri((int)id);
             vm.product.Address= pf.loadAddress((int)id);
             vm.program.fOutline = pf.loadOutlineDetails((int)id);
+            vm.city.City = pf.loadCity((int)id);
+            vm.member.LastName=pf.loadCommentMem((int)id);
 
             return View(vm);
         }

@@ -8,7 +8,7 @@
         <div>
             <span>台灣</span>
             <span>></span>
-            <span>外島</span>
+            <span>@Model.city.City</span>
             <span>></span>
             <span>@Model.product.ProductName</span>
         </div>
@@ -67,7 +67,7 @@
         <h3>@Model.product.ProductName</h3>
     </div>
     <div class="plancal-container mb-3">
-        <div class="product-description m-auto">
+        <div class="product-description">
             <ul>
                 @foreach (var detail in Model.program.fOutline)
                 {
@@ -100,8 +100,13 @@
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
                 </div>
                 <div class="comment-header">
-
-                    <span class="be-comment-name">古先生</span>
+                    @if(Model.member.LastName != null)
+                    {
+                        <span class="be-comment-name">@Model.member.LastName 先生</span>
+                    }else{
+                        <span class="be-comment-name">古先生</span>
+                    }
+                    
                     <span class="be-comment-time">May 27, 2018</span>
 
 
@@ -208,8 +213,8 @@
                     <label style="font-size:22px">金額：1000</label>
                 </div>
                 <div class="m-3">
-                    <button class="btn btn-outline-dark btn-lg mr-3">加入購物車</button>
-                    <button class="btn my-btn-primary btn-lg">立即購買</button>
+                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn btn-outline-dark btn-lg">加入購物車</a>
+                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
                 </div>
             </div>
         </div>
@@ -234,26 +239,23 @@
                                 <label>價格：１０００</label>
                             </div>
                             <div class="col-auto">
-                                <ul class="list-inline pb-3">
-                                    <li class="list-inline-item text-right">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
                                         <label>購買數量：</label>
-                                        <input type="hidden" name="product-quanity" class="product-quanity" value="1">
                                     </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn-minus">-</button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <span class="var-value">1</span>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn-plus">+</button>
-                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-auto">
+                                <ul class="list-inline pb-3">
+                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm">－</button></li>
+                                    <li class="list-inline-item"><span class="ml-3 mr-3">1</span></li>
+                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm">＋</button></li>
                                 </ul>
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    <button class="btn my-btn-primary">加入購物車</button>
-                                    <button class="btn my-btn-primary">立即購買</button>
+                                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn btn-outline-dark">加入購物車</a>
+                                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary">立即購買</a>
                                 </div>
                             </div>
                         </div>
@@ -542,6 +544,30 @@
                 updatePriceAndMinPeople();
             }
         });
+
+        //commentpic
+        var image = document.getElementById('commentpic');
+        image.addEventListener('mouseover', function () {
+            image.style.cursor = 'url("/icons/search_zoom.png"), auto';
+        });
+
+        image.addEventListener('mouseout', function () {
+            image.style.cursor = 'auto';
+        });
+
+        var isEnlarged = false;
+        image.addEventListener('click', function () {
+            if (isEnlarged) {
+                image.style.width = '80px';
+                image.style.height = '60px';
+            } else {
+                image.style.width = '600px';
+                image.style.height = '400px';
+            }
+            isEnlarged = !isEnlarged;
+        });
+
+
 
        
     </script>

@@ -84,6 +84,27 @@ namespace prj_Traveldate_Core.Models.MyModels
             return (int)planPrice;
         }
 
+        //Product的縣市顯示再tilte label
+        public string loadCity(int id)
+        {
+            var city = (from p in db.ProductLists
+                        join c in db.CityLists on p.CityId equals c.CityId
+                        where p.ProductId == id
+                        select c.City).FirstOrDefault();
+            return city;
+        }
+
+        //Comment
+        public string loadCommentMem(int id)
+        {
+            var commember = (from c in db.CommentLists
+                            join m in db.Members on c.MemberId equals m.MemberId
+                            where c.ProductId == id
+                            select m.LastName).FirstOrDefault();
+            return commember;
+        }
+
+
         public List<CCategoryAndTags> loadCategories()
         {
             TraveldateContext db = new TraveldateContext();

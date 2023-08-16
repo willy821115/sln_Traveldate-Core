@@ -75,8 +75,8 @@ h3 {
 .product-description {
     height: 100%;
     font-size: 18px;
-    margin-right:10px;
-    width: 64%; /**//*
+    margin-right:14px;
+    width: 64%; /*
     border: 1px solid black;*/
 }
 
@@ -87,7 +87,7 @@ h3 {
 }
 
 .product-description li{
-    margin:15px auto;
+    margin:18px auto;
     width:100%;
     color:black;
 }
@@ -332,4 +332,8 @@ ul.nacc {
 
 pre {
     color:gray;
+}
+
+.menu span{
+    font-size:16px;
 }
