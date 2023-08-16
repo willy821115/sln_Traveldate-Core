@@ -100,7 +100,7 @@
 
         public List<string>? cities { get; set; }
 
-        public List<string> types { get; set; }
+        public List<string>? types { get; set; }
 
 
     }

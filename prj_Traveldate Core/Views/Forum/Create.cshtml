@@ -20,10 +20,14 @@
                 <div class="form-group col-5 pl-0">
                     @* <input name="txtKeyword" class="form-select form-select-md" id="selectTrip" placeholder="請選擇商品"> *@
                    @*  <div class="grid gap-3 col d-flex" id="divTrip"> *@
-                    <input class="form-control" list="tripOpts" id="selectTrip" placeholder="請選擇商品">
+                    @*<input class="form-control" list="tripOpts" id="selectTrip" placeholder="請選擇商品">
                     <datalist id="tripOpts">
                             
-                    </datalist>
+                    </datalist>*@
+                    <input name="keyword" class="form-control form-select form-select-md" id="inputTrip" placeholder="請選擇商品" />
+                    <div id="divTrip" class="rounded">
+
+                    </div>
                 </div>
                 
                 <div class="form-group col-4 ">
@@ -79,53 +83,40 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        // const btntest = document.querySelector('#btn-test');
-         const selectTrip = document.querySelector('#selectTrip');
-        const tripOpts = document.querySelector('#tripOpts');
+        const inputTrip = document.querySelector('#inputTrip');
+        const divTrip = document.querySelector('#divTrip');
        
-        selectTrip.addEventListener('focus',()=>{
+        const test = document.querySelector('#test');
+        inputTrip.addEventListener('focus', () => {
             loadTrips();
         })
-      
-        async function loadTrips(){
-                const resopnse = await fetch('@Url.Content("~/Forum/selectTrips")')
-                const datas = await resopnse.json();
-                if (datas != null) {
-                const trip = datas.map(trip => `<option id="selTrip" value="${trip}">${trip}</option>`)
-                tripOpts.innerHTML = trip.join("");
-                }
+  
+        inputTrip.addEventListener('input',()=>{
+            loadTrips(inputTrip.value);
+        })
+
+        async function loadTrips(keyword) {
+            const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?keyword=${keyword}`)
+            const datas = await resopnse.json();
+            if (datas != null) {
+            const trips = datas.map(trip => {
+                const { productName, productId } = trip
+                return (
+                    `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems">${productName}</a>`
+                )
+            })
+                divTrip.innerHTML = trips.join("");
+                const tripOptItems = document.querySelectorAll('.tripOptItems');
+                    tripOptItems.forEach(tripItem => {
+                        tripItem.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const clickedTrip = e.target.textContent;
+                            test.textContent = clickedTrip;
+                            divTrip.innerHTML = "";
+                        });
+                    })
             }
-       
-        const selTrip = document.querySelector('#selTrip');
-        const testElement = document.querySelector('#test');
-
-        selTrip.addEventListener('change',() => {
-            const selectedOption = selTrip.options[selTrip.selectedIndex];
-            testElement.textContent = selectedOption.textContent;
-        });
-                  // selectTrip.addEventListener('input', () => {
-                //      KeywordMatch();
-                // })
-        // async function KeywordMatch() {
-        //     const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?txtKeyword=${selectTrip.value}`)
-        //     const datas = await resopnse.json();
-        //     if (datas != null) {
-        //         const trip = datas.map(trip => `<li class="list-group-item list-group-item-action border p-2">${trip}</li>`)
-        //         divTrip.innerHTML = trip.join("");
-        //     }
-        // }
-
-        // async function loadTripsWithKeyword() {
-        //     const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")`)
-        //     const datas = await resopnse.json();
-        //     if (datas != null) {
-        //         const trip = datas.map(trip => `<li class="list-group-item list-group-item-action border p-2">${trip}</li>`)
-        //         divTrip.innerHTML = trip.join("");
-        //     }
-        // }
-        
-
-        // btntest.addEventListener('click',()=>loadTrips())
+        }
     </script>
 }
 

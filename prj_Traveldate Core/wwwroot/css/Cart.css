@@ -7,7 +7,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 .Cart-Common-btn {
     margin: 0.3em 0;
@@ -22,7 +22,7 @@
 }
 .Header {
     margin: 1% 0;
-    width: 75%;
+    /*width: 75%;*/
     height: 10%;
     display: flex;
     justify-content: space-between;
@@ -107,7 +107,8 @@
 
 /***麵包屑*************************************************************/
 .Steps {
-    width: 75%;
+    /*width: 75%;*/
+    text-align:left;
 }
 
 .Step_Current {
@@ -142,7 +143,7 @@
 
 .title {
     margin: 2% 0;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 800;
     color: #155074;
 }
@@ -237,15 +238,14 @@
 
 
 .SelectAll {
-    width: 68%;
+    width: 80%;
     text-align: start;
-    margin: 1%;
 }
 
 
 /***填資料*************************************************************/
 .Confirm-All {
-    width: 75%;
+    /*width: 75%;*/
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -23,6 +23,8 @@ public partial class ForumList
 
     public virtual ICollection<ArticlePhoto> ArticlePhotos { get; set; } = new List<ArticlePhoto>();
 
+    public virtual ICollection<LikeList> LikeLists { get; set; } = new List<LikeList>();
+
     public virtual Member? Member { get; set; }
 
     public virtual ICollection<ReplyList> ReplyLists { get; set; } = new List<ReplyList>();

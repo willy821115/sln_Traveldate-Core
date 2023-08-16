@@ -47,6 +47,8 @@ public partial class Member
 
     public virtual LevelList? Level { get; set; }
 
+    public virtual ICollection<LikeList> LikeLists { get; set; } = new List<LikeList>();
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<ReplyList> ReplyLists { get; set; } = new List<ReplyList>();

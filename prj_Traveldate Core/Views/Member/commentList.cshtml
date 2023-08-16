@@ -39,7 +39,7 @@
             <div id="rightPanel">
                 <table class ="table-hover">
                     <tr>
-                        <th>序號</th>
+                        <th></th>
 @*                      <th>商品ID/th>*@
                         <th>商品名稱</th>
                         <th>標題</th>
@@ -50,18 +50,18 @@
                     </tr>
 
                    @{
-                    int count = 0;
+                    //int count = 0;
                     foreach (var item in Model) {
-                    count++;
+                    //count++;
                     <tr data-toggle="collapse" data-target="#comment1">
-                        <td>@count</td>
+                        <td>●</td>
 @*                      <td>@item.ProductId</td>*@
                         <td>@item.ProductName</td>
                         <td>@item.Title</td>
                         <td>@item.Content</td>
                         <td>@item.CommentScore</td>
                         <td>@item.Date.ToString("yyyy-MM-dd")</td>
-                        <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
+                        <td><input type="submit" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
                     </tr>
                     }
 @*                    <tr id="comment1" class="collapse">

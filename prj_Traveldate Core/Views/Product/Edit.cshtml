@@ -1,8 +1,8 @@
 ﻿@model prj_Traveldate_Core.Models.MyModels.CProductWrap
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -84,12 +84,12 @@
         <div id="content">
 
             <!-- Begin Page Content -->
-            
+
             <div class="container-fluid">
                 <h2>新增產品</h2>
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+
                     <div class="row">
                         <div class="col-md-6">
 
@@ -109,7 +109,7 @@
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                           @foreach(string type in Model.types)
+                                            @foreach (string type in Model.types)
                                             {
                                                 <option>@type</option>
                                             }
@@ -144,16 +144,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">輪播圖</label>
-                                        <input type="file" class="form-control" id="photoInput" multiple/>
-                                        
+                                        <input type="file" class="form-control" id="photoInput" multiple />
+
                                     </div>
-                                     
+
 
                                 </div>
                             </div>
                         </div>
 
-                            @*<!-- Basic Card Example -->*@
+                        @*<!-- Basic Card Example -->*@
                         <div class="col-md-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -175,7 +175,7 @@
                                                 @foreach (var t in c.tags.Distinct())
                                                 {
                                                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                       <input type="checkbox"/>
+                                                        <input type="checkbox" />
                                                         <span>@Html.DisplayFor(modelItem => t)</span>
                                                     </li>
                                                 }
@@ -186,13 +186,13 @@
                             </div>
 
                         </div>
-                            
-                        
+
+
 
 
                     </div>
-                    
-                        <div class="row">
+
+                    <div class="row">
                         <div class="col-md-12">
                             @*<!-- Basic Card Example -->*@
                             <div class="card shadow mb-4">
@@ -240,59 +240,111 @@
                                 </div>
                             </div>
 
-                            
-                                @*<!-- Basic Card Example -->*@
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">行程詳情</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <label class="control-label">照片</label>
-                                        <input type="file" class="form-control" id="photoInput" />
-                                        <label class="control-label">行程描述</label>
-                                        <textarea class="col-lg-12" id="descriptionInput"></textarea>
-                                        <button type="button" id="addButton" class="form-control">新增</button>
-                                    </div>
+
+                            @*<!-- Basic Card Example -->*@
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">行程詳情</h6>
                                 </div>
-
-
-                           
-
-                            
-                                @*<!-- Basic Card Example -->*@
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">現有行程</h6>
-                                    </div>
-                                    <div class="card-body" id="contentContainer">
-                                    </div>
+                                <div class="card-body">
+                                    <label class="control-label">照片</label>
+                                    <input type="file" class="form-control" id="photoInput" />
+                                    <label class="control-label">行程描述</label>
+                                    <textarea class="col-lg-12" id="descriptionInput"></textarea>
+                                    <button type="button" id="addButton" class="form-control">新增</button>
                                 </div>
+                            </div>
 
 
-                            
+
+
+
+                            @*<!-- Basic Card Example -->*@
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">現有行程</h6>
+                                </div>
+                                <div class="card-body" id="contentContainer">
+                                    <ul id="sortable">
+                                        <li id="ui-state-default">
+                                            <div class="card mb-3">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src="~/images/東清秘境-蘭嶼.png" class="img-fluid rounded-start" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <div class="modal-header">
+                                                                <h5 class="card-title">第1天</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <p class="card-text">清澈深藍的海水顏色是蘭嶼海域獨有，一年四季都可找到適合潛點的蘭嶼，裙狀珊瑚礁環繞，海底地形變化複雜，黑潮支流更帶來了眾多的迴游魚類。透明清澈的水質，長年維持能見度 30 - 50 公尺。低度的人為開發、達悟族人永續經營的精神讓蘭嶼的水域仍然保持豐富的海洋生態，小丑魚尼莫、藍刀鯛多莉、大型龍王鯛甚至是魔鬼魟都悠遊在這片海域。讓專業教練帶領你，學習水肺潛水的基本技巧，揹上氣瓶潛進潛進蘭嶼獨有魔力的湛藍海水。</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li id="ui-state-default">
+                                            <div class="card mb-3">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src="~/images/促銷3.jpg" class="img-fluid rounded-start" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <div class="modal-header">
+                                                                <h5 class="card-title">第2天</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <p class="card-text">蘭嶼有著特殊的地理位置，豐富的水中生態、海上景觀、透明清澈的海面、一望無際的藍天，每年隨黑潮而來的飛魚，更是孕育了神秘且深度的達悟精神。當地的口說文化，沒有紙筆紀錄，口耳相傳，只有跟著當地教練一同深入蘭嶼，才能認識道地的蘭嶼精神。希望藉由提升旅遊品質，帶給旅人們最深度的一趟旅行，讓蘭嶼的文化之美，在旅人心中傳承且發芽。</p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    
+
+                                    
+
+                                </div>
+                            </div>
+
+
+
 
 
                             <div class="form-group">
-                                <input type="submit" value="新增" class="btn btn-primary" />
-                                <a asp-action="List" class="btn btn-primary">取消</a>
+                                <input type="submit" value="Create" class="btn btn-primary" />
                             </div>
 
                         </div>
 
-                        </div>
-                      
-                         
-                            
-                  
-                
+                    </div>
+
+
+
+
+
                 </form>
 
-              
+                <div>
+                    <a asp-action="List">取消</a>
+                </div>
 
             </div>
             <!-- /.container-fluid -->
 
-          </div>
+        </div>
         <!-- End of Main Content -->
 
 
@@ -301,13 +353,24 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
-
-
-
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+        <script>
+            $(function () {
+                $("#sortable").sortable({
+                    revert: true
+                });
+                $("#draggable").draggable({
+                    connectToSortable: "#sortable",
+                    helper: "clone",
+                    revert: "invalid"
+                });
+                $("ul, li").disableSelection();
+            });
+        </script>
+    }
     <script src="~/js/search_jq.js"></script>
 }
 @section Styles{
@@ -321,3 +384,4 @@
         }
     </style>
  }
+

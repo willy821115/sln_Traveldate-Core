@@ -10,9 +10,15 @@ namespace prj_Traveldate_Core.Controllers
     {
         CFilteredProductFactory _products = new CFilteredProductFactory();
         CSearchListViewModel _vm = new CSearchListViewModel();
-        public IActionResult SearchList(CKeywordViewModel keyword, int? page)
+        
+        public SearchController()
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+        }
+
+        public IActionResult SearchList(CKeywordViewModel keyword, int? page)
+        {
+             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
             if (!string.IsNullOrEmpty(keyword.txtKeyword))
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().Where(p => p.productName.Contains(keyword.txtKeyword)).ToList();
@@ -21,26 +27,31 @@ namespace prj_Traveldate_Core.Controllers
             _vm.countryAndCities = _products.qureyFilterCountry();  //商品國家&縣市,左邊篩選列
             _vm.types = _products.qureyFilterTypes();//商品類型,左邊篩選列
 
-            int pageSize = 5;
-            int pageNumber = page ?? 1;
-            //vm.pages = new PagedList<CFilteredProductItem>(vm.filterProducts, pageNumber, pageSize);
-            _vm.pages = new StaticPagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize, _vm.filterProducts.Count);
+            //int pageSize = 5;
+            //int pageNumber = page ?? 1;
+            //_vm.pages = new PagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize);
+            //_vm.pages = new StaticPagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize, _vm.filterProducts.Count);
             return View(_vm);
         }
-        public IActionResult sortByHot()
+        public IActionResult sortBy(string status)
         {
-            _vm.filterProducts = _products.qureyFilterProductsInfo().OrderByDescending(p=>p.orederCount).ToList();//商品cards;
-            return PartialView(_vm);
-        }
-        public IActionResult sortByComment()
-        {
-            _vm.filterProducts = _products.qureyFilterProductsInfo().OrderByDescending(p => p.commentAvgScore).ToList();//商品cards;
-            return PartialView(_vm);
-        }
-        public IActionResult sortByPrice()
-        {
-            _vm.filterProducts = _products.qureyFilterProductsInfo().OrderBy(p => p.price).ToList();//商品cards;
-            return PartialView(_vm);
+                if (status == "hot")
+                {
+                    _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.orederCount).ToList();//商品cards;
+                    return PartialView(_vm);
+                }
+                if (status == "comment")
+                {
+                    _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.commentAvgScore).ToList();//商品cards;
+                    return PartialView(_vm);
+                }
+                if (status == "price")
+                {
+                    _vm.filterProducts = _vm.filterProducts.OrderBy(p => p.price).ToList();//商品cards;
+                    return PartialView(_vm);
+                }
+                return PartialView(_vm);
+            }
         }
     }
-}
+

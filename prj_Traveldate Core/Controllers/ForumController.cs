@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.Drawing;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -68,27 +69,33 @@ namespace prj_Traveldate_Core.Controllers
             return Content(reply.ReplyId.ToString().Trim());
         }
         //發文選擇商品
-        public IActionResult selectTrips()
+        public IActionResult selectTrips(string? keyword)
         {
-            List<string> trips = new List<string>();
-            //if (string.IsNullOrEmpty(txtKeyword))
-            //{
-               
-               
-            //    return Json(trips);
-            //}
-            //trips = _context.Trips
-            //        .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
-            //        .Where(t => t.Product.ProductName.ToUpper().StartsWith(txtKeyword.ToUpper()))
-            //        .Select(t => t.Product.ProductName).Distinct().ToList();
-            trips = _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).Select(t => t.Product.ProductName).Distinct().ToList();
+            
+            if (!string.IsNullOrEmpty(keyword) && keyword!="undefined")
+            {
+                var filterdtrips = _context.Trips
+                    .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
+                    .Where(t=>t.Product.ProductName.Contains(keyword))
+                    .Select(t => new { t.Product.ProductName, t.Product.ProductId })
+                    .Distinct().ToList();
+                return Json(filterdtrips);
+            }
+            var trips = _context.Trips
+                .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
+                .Select(t => new { t.Product.ProductName, t.Product.ProductId }).Distinct().ToList();
             return Json(trips);
         }
+        //選到的發文商品的日期
+        public IActionResult selectDate(int? id)
+        {
+            var dates = _context.Trips.Where(t=>t.ProductId==id).Select(t=>t.Date.Value.ToString("yyyy/MM/dd")).ToList();
+            return Json(dates);
+        }
 
-
-        //////////////////////////// //////////////////////////////////PartialComponenet///// //////////////////////////////////////////////////////////////
-        //回覆的框框
-        public IActionResult ReplyToDiv(Member userId) 
+            //////////////////////////// //////////////////////////////////PartialComponenet///// //////////////////////////////////////////////////////////////
+            //回覆的框框
+            public IActionResult ReplyToDiv(Member userId) 
         {
             var member = _context.Members.Find(userId);
             return PartialView(member);

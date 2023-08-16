@@ -1,4 +1,4 @@
-﻿@model List< prj_Traveldate_Core.Models.MyModels.CProductWrap>
+﻿@model prj_Traveldate_Core.ViewModels.CProductListViewModel
 @{
     ViewData["Title"] = "List";
 }
@@ -96,11 +96,17 @@
                                 <div>
                                     <label>產品類型</label>
                                     <select class="search_box">
-                                        <option>門票</option>
+                                        @foreach (string type in Model.types )
+                                        {
+                                            <option>@type</option>
+                                        }
                                     </select>
                                     <label>審核狀態</label>
                                     <select class="search_box">
-                                        <option>已通過</option>
+                                        @foreach (string status in Model.status)
+                                        {
+                                            <option>@status</option>
+                                        }
                                     </select>
                                 </div>
                                
@@ -124,6 +130,7 @@
                                         <th>產品類型</th>
                                         <th>所在城市</th>
                                         <th>產品狀態</th>
+                                        <th>銷售狀態</th>
                                         <th>上/下架</th>
                                         <th>動作</th>
                                     </tr>
@@ -131,7 +138,7 @@
                                 
                                 <tbody>
 
-                                   @foreach (var item in Model) {
+                                   @foreach (var item in Model.list) {
                                     <tr>
                                           <td>
                                             <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
@@ -145,12 +152,23 @@
                                             <td>
                                                 <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
                                             </td>
+                                            <td>
+                                                @if ((bool)item.Discontinued)
+                                                {
+                                                    <div> 下架</div>
+                                                }
+                                                else
+                                                {
+                                                    <div> 上架</div>
+                                                }
+                                            </td>
                                         <td>
-                                             @Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})
-                                            @Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})
+                                                <div>@Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})</div>
+                                                <div>@Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})</div>
+                                            
                                         </td>
                                         <td>
-                                                @Html.ActionLink("修改", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                                @Html.ActionLink("修改", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
                                         </td>
                                     </tr>
                                     }
