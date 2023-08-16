@@ -39,6 +39,7 @@
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="~/Company/Edit">帳號管理</a>
+                    <a class="collapse-item" href="~/Company/Password">更改密碼</a>
                 </div>
             </div>
         </li>
@@ -95,14 +96,14 @@
                                 <input type="text" class="search_box" /><input type="submit" value="搜尋" class="btn btn-outline-secondary" />
                                 <div>
                                     <label>產品類型</label>
-                                    <select class="search_box">
+                                    <select class="form-select">
                                         @foreach (string type in Model.types )
                                         {
                                             <option>@type</option>
                                         }
                                     </select>
                                     <label>審核狀態</label>
-                                    <select class="search_box">
+                                    <select class="form-select">
                                         @foreach (string status in Model.status)
                                         {
                                             <option>@status</option>
