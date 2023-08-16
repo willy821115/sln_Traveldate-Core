@@ -123,6 +123,7 @@
 
 /***購物車*************************************************************/
 .Cart-Container {
+    width: 100%;
     background-color: #FFFFFF;
     border-radius: 10px;
     padding: 20px 0;
