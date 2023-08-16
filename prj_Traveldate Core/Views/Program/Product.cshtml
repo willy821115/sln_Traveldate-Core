@@ -140,7 +140,7 @@
                     <p>
                         蘭嶼的海真的好美好喜歡，下次真的希望還可以看到這麽漂亮的海洋和這麼豐富的海底生態，而且再次覺得無光害的蘭嶼，太適合觀星星了，一大片的星空真的是在台北想也想不到的場景，希望下次可以用照片紀錄下眼睛所看到的風景！
                     </p>
-                    <img src="~/Images/lanyu01.jpg" alt="commentpic" class="comment-pic" />
+                    <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="commentpic" />
                 </div>
             </div>
         </div>
@@ -315,6 +315,7 @@
     <div class="plan-container">
         <div class="comments-title">
             <p>體驗地點</p>
+            <pre>地址：@Model.product.Address</pre>
         </div>
         <hr />
         <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
@@ -337,23 +338,24 @@
         let map;
 
         function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 23.6978, lng: 120.9605 },
-                zoom: 8,
-            });
-
-            showMarkersOnMap();
-        }
-
-        function showMarkersOnMap() {
             const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ address: addressData[0] }, (results, status) => {
-                if (status === 'OK' && results.length > 0) {
-                    const location = results[0].geometry.location;
+            geocoder.geocode({ address: addressData }, (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    const latitude = results[0].geometry.location.lat();
+                    const longitude = results[0].geometry.location.lng();
+                    const Latlng = new google.maps.LatLng(latitude, longitude);
+
+                    map = new google.maps.Map(document.getElementById("map"), {
+                        center: Latlng, 
+                        zoom: 12,
+                    });
+
                     new google.maps.Marker({
-                        position: location,
+                        position: Latlng,
                         map: map,
                     });
+                } else {
+                    console.error(status);
                 }
             });
         }
@@ -474,9 +476,6 @@
             if (date < new Date()) {
                 dayElement.classList.add('expired-date');
             }
-
-
-
             return dayElement;
         }
 
@@ -486,6 +485,18 @@
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             return monthNames[monthIndex];
         }
+
+        calendarDays.addEventListener('click', function (event) {
+            const target = event.target;
+            if (target.classList.contains('day')) {
+                const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(target.textContent));
+                if (availableDates.includes(formatDate(clickedDate))) {
+                    target.classList.toggle('selected-date');
+                }
+            }
+        });
+
+
 
         //商品每天行程JS
         $(document).on("click", ".naccs .menu div", function () {

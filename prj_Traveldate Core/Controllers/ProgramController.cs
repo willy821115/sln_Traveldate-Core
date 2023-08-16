@@ -25,13 +25,13 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(vm);
         }
-        public IActionResult List()
-        {
-            TraveldateContext db = new TraveldateContext();
-            var datas = from p in db.ProductLists
-                        select p;
-            return View(datas);
-        }
+        //public IActionResult List()
+        //{
+        //    TraveldateContext db = new TraveldateContext();
+        //    var datas = from p in db.ProductLists
+        //                select p;
+        //    return View(datas);
+        //}
 
         public IActionResult Address(int id)
         {
