@@ -31,8 +31,8 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public string? ProductName
         {
-            get { return _productList.Description; }
-            set { _productList.Description = value; }
+            get { return _productList.ProductName; }
+            set { _productList.ProductName = value; }
         }
         public string? Description
         {
@@ -41,8 +41,13 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public string? Outline
         {
-            get { return _productList.Description; }
-            set { _productList.Description = value; }
+            get { return _productList.Outline; }
+            set { _productList.Outline = value; }
+        }
+        public string? OutlineForSearch
+        {
+            get { return _productList.OutlineForSearch; }
+            set { _productList.OutlineForSearch = value; }
         }
         public int ProductId
         {

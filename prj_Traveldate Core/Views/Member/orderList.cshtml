@@ -38,38 +38,55 @@
             <div id="rightPanel">
                 <table class="table-hover">
                     <tr>
-                        <th>序號</th>
+                        <th></th>
                         <th>評論</th>
-                        <th>商品名稱</th>
                         <th>訂購日期</th>
                         <th>行程日期</th>
-                        <th>商品敘述</th>
+                        @*<th>行程描述</th>*@
                     </tr>
-                    <tr>
-                        <td>序號1</td>
-                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                        <td>蘭嶼三天兩夜</td>
-                        <td>2023-06-19</td>
-                        <td>2023-06-26</td>
-                        <td>蘭嶼三天兩夜</td>
-                    </tr>
-                    <tr>
-                        <td>序號2</td>
-                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                        <td>澎湖一日遊</td>
-                        <td>2023-07-06</td>
-                        <td>2023-07-15</td>
-                        <td>水上八合一無限遊玩</td>
-                    </tr>
-                    <tr>
-                        <td>序號3</td>
-                        <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                        <td>宜蘭太平山二日遊</td>
-                        <td>2023-07-15</td>
-                        <td>2023-07-30</td>
-                        <td>雙人房</td>
-                    </tr>
-                </table>
+
+                    @{
+                        //int count = 0;
+                        foreach (var item in Model)
+                        {
+                            //count++;
+                            <tr>
+                                <td>●</td>
+     
+                                <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
+                                <td>@item.Datetime</td>
+                                <td>@item.Date.ToString("yyyy-MM-dd")</td>
+
+                            </tr>
+                        }
+
+
+                    //  <tr>
+                    //    <td>序號1</td>
+                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
+                    //    <td>蘭嶼三天兩夜</td>
+                    //    <td>2023-06-19</td>
+                    //    <td>2023-06-26</td>
+                    //    <td>蘭嶼三天兩夜</td>
+                    //</tr>
+                    // <tr>
+                    //    <td>序號2</td>
+                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
+                    //    <td>澎湖一日遊</td>
+                    //    <td>2023-07-06</td>
+                    //    <td>2023-07-15</td>
+                    //    <td>水上八合一無限遊玩</td>
+                    //</tr>
+                    //<tr>
+                    //    <td>序號3</td>
+                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
+                    //    <td>宜蘭太平山二日遊</td>
+                    //    <td>2023-07-15</td>
+                    //    <td>2023-07-30</td>
+                    //    <td>雙人房</td>
+                    //</tr>
+                        }
+                 </table>
             </div>
         </div>
 

@@ -10,7 +10,7 @@ namespace prj_Traveldate_Core.Controllers
     public class MemberController : Controller
     {
         TraveldateContext context = new TraveldateContext();
-        public IActionResult Index() //左側欄
+        public IActionResult Index() //左側欄V
         {
             return View();
         }
@@ -42,25 +42,16 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-        //public IActionResult couponList3(int? id = 1) //優惠券清單
-        //{
-        //    var datas = from m in context.Members
-        //                join c in context.Coupons
-        //                on m.MemberId equals c.MemberId
-        //                join cl in context.CouponLists
-        //                on c.CouponListId equals cl.CouponListId
-        //                where m.MemberId == id
-        //                select new couponListViewModel
-        //                { CouponListId=cl.CouponListId,
-        //                    CouponName = cl.CouponName,
-        //                    Discount = cl.Discount,
-        //                    Description = cl.Description,
-        //                    DueDate = cl.DueDate 
-        //                };
-        //    return View(datas);
 
-        //}
-        public IActionResult showCompanion(int? id = 1) //新增旅伴資料
+        /*public IActionResult addCompanion(Companion cm) *///新增旅伴資料
+        public IActionResult addCompanion() //新增旅伴資料
+        {
+            //int MemberId = 1;
+            //context.Companions.Add(cm);
+            //context.SaveChanges();
+            return View();
+        }
+        public IActionResult showCompanion(int? id = 1) //顯示常用旅客
         {
             var datas = from m in context.Members
                         join cm in context.Companions
@@ -75,34 +66,47 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-
-        /*public IActionResult addCompanion(Companion cm) *///新增旅伴資料
-       public IActionResult addCompanion()
-        {
-            //int MemberId = 1;
-            //context.Companions.Add(cm);
-            //context.SaveChanges();
-            return View();
-        }
         public IActionResult favoriteList(int? id = 1) //收藏清單V
         {
-            var datas = from m in context.Members
+            var datas = from pl in context.ProductLists
                         join f in context.Favorites
-                        on m.MemberId equals f.MemberId
-                        join pl in context.ProductLists
-                        on f.ProductId equals pl.ProductId
+                        on pl.ProductId equals f.ProductId
+                        join m in context.Members
+                        on f.MemberId equals m.MemberId
                         where m.MemberId == id
                         select new CfavoriteListViewModel
                         {
                             ProductName = pl.ProductName,
-                            Description = pl.Description,
+                            //Description = pl.Description,
                             Outline = pl.Outline,
+
                         };
             return View(datas.Distinct());
         }
-        public IActionResult orderList() //會員訂單
+        public IActionResult orderList(int? id = 1) //會員訂單
         {
-            return View();
+            var datas = from tripde in context.TripDetails
+                        join trip in context.Trips
+                        on tripde.ProductId equals trip.ProductId
+                        join orderde in context.OrderDetails
+                        on trip.TripId equals orderde.TripId
+
+                        join order in context.Orders
+                        on orderde.OrderId equals order.OrderId
+
+                        join m in context.Members
+                        on order.MemberId equals m.MemberId
+
+                        where m.MemberId == id
+                        select new COrdersViewModel
+                        {
+                            OrderId = orderde.OrderId,
+                            Date = trip.Date,
+                            Datetime = order.Datetime,
+                            //TripDetaill = tripde.TripDetaill,
+                        };
+
+            return View(datas.Distinct());
         }
         public IActionResult commentList(int? id = 1) //我的評論V
         {
@@ -122,6 +126,7 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
+
         public IActionResult addcomment() //添加評論V
         {
             return View();

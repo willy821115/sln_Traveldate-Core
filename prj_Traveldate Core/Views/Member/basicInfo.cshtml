@@ -40,11 +40,11 @@
                 @foreach (var member in Model)
                 {
                     <div class="form-group">
-                        <label for="txtLastName">名</label>
+                        <label for="txtLastName">姓</label>
                         <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />
                     </div>
                     <div class="form-group">
-                        <label for="txtFirstName">姓</label>
+                        <label for="txtFirstName">名</label>
                         <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />
                     </div>
                     <div>
@@ -58,7 +58,7 @@
                             //DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
                             string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
                         }
-                        <input type="text" id="txtBirthDate" class="form-control" value=@member.BirthDate />
+                        <input type="text" id="date" class="form-control" value=@member.BirthDate />
                     </div>
                     <div class="form-group">
                         <label for="txtPhoneNumber">手機號碼</label>
