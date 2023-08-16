@@ -8,12 +8,15 @@ namespace prj_Traveldate_Core.Controllers
 {
     public class SearchController : Controller
     {
-        CFilteredProductFactory _products = new CFilteredProductFactory();
-        CSearchListViewModel _vm = new CSearchListViewModel();
+        CFilteredProductFactory _products = null;
+        CSearchListViewModel _vm = null;
         
         public SearchController()
         {
+            _vm = new CSearchListViewModel();
+            _products = new CFilteredProductFactory();
             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+           
         }
 
         public IActionResult SearchList(CKeywordViewModel keyword, int? page)

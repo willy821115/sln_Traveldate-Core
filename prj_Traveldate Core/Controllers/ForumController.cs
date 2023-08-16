@@ -24,10 +24,9 @@ namespace prj_Traveldate_Core.Controllers
             vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m=>m.ForumLists).ToList();
             vm.level = _context.LevelLists.Include(l=>l.Members).ToList();
-            //item.photo = db.ProductPhotoLists.Where(p => item.productID == p.ProductId).Select(p => p.Photo).FirstOrDefault();
-            
-            var ddd = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s=>s.Trip.Product.ProductId).ToList();
-            vm.prodPhoto = _context.ProductPhotoLists.Where(p=>ddd.Contains((int)p.ProductId)).ToList();
+            vm.categories = factory.qureyFilterCategories();
+            var tripId = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s=>s.Trip.Product.ProductId).ToList();
+            vm.prodPhoto = _context.ProductPhotoLists.Where(p=>tripId.Contains((int)p.ProductId)).ToList();
             return View(vm);
         }
         public IActionResult Create()
@@ -122,6 +121,13 @@ namespace prj_Traveldate_Core.Controllers
             CFilteredProductFactory factory = new CFilteredProductFactory();
             List<CCountryAndCity> regions = factory.qureyFilterCountry();
             return PartialView(regions);
+        }
+        //ForumList的篩選欄(地區)
+        public IActionResult Category()
+        {
+            CFilteredProductFactory factory = new CFilteredProductFactory();
+            List<CCategoryAndTags> categories = factory.qureyFilterCategories();
+            return PartialView(categories);
         }
     }
 }

@@ -48,26 +48,7 @@
             @Html.Partial("Region",Model.regions)
         </div>
         <div class="p-3 mt-2 mb-2">
-            <div class="filter_block">
-                <label class="fs-4 ">依類別搜尋</label>
-                <div class="controls-display-row category-click">
-                    <span class="fs-5">景點門票 </span>
-                    <div class="d-flex justify-content-end">
-                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
-                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
-                    </div>
-                </div>
-                <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled m">
-                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                            <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
-                            <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                            <span>景點門票 </span>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
+            @Html.Partial("Category",Model.categories)
         </div>
     </div>
     <div class="col-8 forum-block">
