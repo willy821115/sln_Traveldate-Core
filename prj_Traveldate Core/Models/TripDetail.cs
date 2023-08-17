@@ -9,7 +9,7 @@ public partial class TripDetail
 
     public int? ProductId { get; set; }
 
-    public string? TripDetaill { get; set; }
+    public string? TripDetail1 { get; set; }
 
     public int? TripDay { get; set; }
 

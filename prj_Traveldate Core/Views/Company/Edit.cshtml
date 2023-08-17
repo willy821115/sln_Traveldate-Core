@@ -226,21 +226,7 @@
                                     </div>
                                 </div>
 
-                                @*<!-- Basic Card Example -->*@
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary cardTitle">帳號</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label class="control-label">密碼更改</label>
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 
                                 <input type="submit" value="確認並儲存" class="btn btn-success" />
                             </div>
