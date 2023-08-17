@@ -113,7 +113,7 @@
 
 .Step_Current {
     font-weight: bold;
-    color: #5AA6D9
+    color: #3888BD;
 }
 
 .breadcrumb{
@@ -246,7 +246,7 @@
 
 /***填資料*************************************************************/
 .Confirm-All {
-    /*width: 75%;*/
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -327,8 +327,12 @@
     justify-content: space-between;
     align-items: center;
     background-color: whitesmoke;
-    padding: 0.5em;
+    border-radius:10px;
 }
+    .Confirm-Prod-Info .prodbox {
+        width: 70%;
+        margin:0.5em;
+    }
 
 .Confirm-summary {
     margin: 5% 0 0 3%;
@@ -358,6 +362,13 @@
 .form-check {
     display: flex;
     align-items: center;
+}
+
+.noCoupon {
+    color:dimgray;
+    text-align:center;
+    margin-top:2em;
+    margin-bottom:2em;
 }
 /***完成頁*************************************************************/
 .Complete-box {
