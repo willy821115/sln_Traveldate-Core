@@ -118,14 +118,11 @@
     font-size:18px;
 }
 
-    .available-date:hover {
-        color: #fff;
-        background-color: #155074;
-    }
+  
 
 .select-date {
     background-color: #155074;
-    color: #fff;
+    color: #fff !important;
 }
 
 .days .content {
@@ -141,6 +138,10 @@
     font-size:14px;
 }
 
+.available-date:hover .price, .available-date:hover {
+    color: #fff !important;
+    background-color: #155074;
+}
 
    /* .calendar .days .prev-date,
     .calendar .days .next-date {

@@ -534,11 +534,19 @@
                 if (availableDates.includes(formattedClickedDate)) {
                     if (selectedDateElement) {
                         selectedDateElement.classList.remove(selectedDateClass);
+                        const priceElement = selectedDateElement.querySelector('.price');
+                        if (priceElement) {
+                            priceElement.classList.remove(selectedDateClass);
+                        }
                     }
 
                     if (selectedDateElement !== target) {
                         selectedDateElement = target;
                         target.classList.add(selectedDateClass);
+                        const priceElement = target.querySelector('.price');
+                        if (priceElement) {
+                            priceElement.classList.add(selectedDateClass);
+                        }
                     } else {
                         selectedDateElement = null;
                     }
