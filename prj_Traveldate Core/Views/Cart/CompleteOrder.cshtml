@@ -6,7 +6,7 @@
 {
     <div class="cart_body">
         <div class="Header">
-            <h3 class="Heading">訂購完成</h3>
+            <h3 class="Heading">@ViewData["Title"]</h3>
         </div>
         <div class="Steps">
             <ol class="breadcrumb">
@@ -19,7 +19,7 @@
             <img src="~/icons/beach-vacation.png" class="imgComplete" style="width:200px;">
             <h4 class="Complete-title">感謝您的訂購！</h4>
             <div class="Complete-content">
-                <p>感謝您透過Traveldate訂購新的旅程。<br>已將您的訂購內容傳送至 <span style="color:#800000;font-weight:600;">P987654321@gamil.com</span>，或可於「會員專區」＞「我的訂單」中確認訂購內容。<br>Traveldate祝您旅途愉快！</p>
+                <p>感謝您透過Traveldate訂購新的旅程。<br>已將您的訂購內容傳送至 <span style="color:#800000;font-weight:600;">@ViewData["email"]</span>，或可於<span class="Step_Current">「會員專區」</span>＞<span class="Step_Current">「我的訂單」</span>中確認訂購內容。<br>Traveldate祝您旅途愉快！</p>
                 @Html.ActionLink("我的訂單","orderList","Member",null,new {@class="mt-2 btn my-btn-primary btn-lg col-4", style="margin:0 auto;"})
                 <br>
                 @Html.ActionLink("回到首頁","HomePage","HomePage",null,new {@class="mt-2 btn btn-outline-dark btn-lg col-4", style="margin:0 auto;"})

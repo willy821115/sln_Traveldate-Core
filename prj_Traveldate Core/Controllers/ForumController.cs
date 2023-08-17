@@ -52,6 +52,8 @@ namespace prj_Traveldate_Core.Controllers
             vm.forum = _context.ForumLists.Find(id);
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.member = _context.Members.Find(6);
+            vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+           
             return View(vm);
         }
         //////////////////////////////// /////////////////////////////////Api/ ////////////////////////////////////////////////////////////////

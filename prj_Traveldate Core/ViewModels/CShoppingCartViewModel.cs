@@ -6,6 +6,6 @@ namespace prj_Traveldate_Core.ViewModels
     public class CShoppingCartViewModel
     {
         public List<CCartItem> cartitems { get; set; }
-        public List<ProductList> recommends { get; set; }
+        public List<int> recommends { get; set; } //ProductID
     }
 }

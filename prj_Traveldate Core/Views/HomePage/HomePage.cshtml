@@ -1,4 +1,4 @@
-﻿
+﻿@model prj_Traveldate_Core.ViewModels.CHomePresent
 @section TopImage{
     <section class="mt-0 pl-0 pr-0">
         @*<div style="position: absolute; top: 0; left: 0; width: 100%; text-align: center; padding: 20px; background-color: rgba(255, 255, 255, 0.7);">
@@ -14,7 +14,7 @@
                     <input type="text" name="txtKeyword" class="search-input rounded p-0" placeholder="搜尋..."/>
                     <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"/> <!-- 調整搜尋按鈕的高度 -->
                 </div>
-            </div>
+            </div>      
         </form>
         <!-- 輪播圖容器 -->
         <div id="swiper-container" class="swiper-container">
@@ -42,7 +42,20 @@
 <section class="hot-destinations-section " id="hot-destinations-section">
     <h2>熱門行程</h2>
     <div class="destination-container">
-        <div class="destination-item">
+      @*   @foreach(var p in Model.popularList)
+            {
+                <div class="destination-item">
+                    <img src="~/images/@p.ImagePath" alt="目的地" />
+                    <div class="fill-block">
+                        <div class="destination-info">
+                            <p style="text-align: left">@p.productName</p>
+                            <p>單價:@p.unitPrice 評價：@p.commentScore</p>
+                        </div>
+                    </div>
+                </div>
+
+            } *@
+            <div class="destination-item">
             <img src="~/images/熱門1.jpg" alt="目的地1" />
             <div class="fill-block">
             <div class="destination-info">
@@ -194,8 +207,11 @@
 
         <div class="hot-place-item">
             <img src="~/images/城市1.jpg" alt="城市1">
-            <div class="caption">台北</div>
+                <div class="caption">台北</div>
         </div>
+
+
+            
 
         <div class="hot-place-item">
             <img src="~/images/城市2.jpg" alt="城市2">
@@ -409,7 +425,7 @@
         .hot-place-item {
             width: 200px;
             height: 300px;
-            border-radius: 10px; /* 圖片的邊角圓弧 */
+            
             overflow: hidden; /* 隱藏圖片的溢出部分，以顯示圓弧效果 */
             font-size: 16px; /* 設置子元素的 font-size 為適當的值 */
         }
@@ -419,6 +435,7 @@
                 height: 100%;
                 object-fit: cover;
                 margin: 5px;
+                border-radius: 10px 
             }
 
             .hot-place-item:hover {
@@ -434,12 +451,13 @@
         .caption {
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 100%;
+            left: 2%;
+            width: 98%;
             background-color: rgba(0, 0, 0, 0.5);
             color: #fff;
             padding: 10px;
             opacity: 0;
+
             transform: translateY(100%);
             transition: opacity 0.3s, transform 0.3s;
         }
@@ -487,7 +505,8 @@
                 transition: background-color 0.3s; /* 添加平滑過渡效果 */
             }
 
-        
+            /*-------------------------------------------*/
+     
 
     </style>
         }
@@ -507,24 +526,7 @@
             slidesPerView: 1, // 每次只顯示一張圖片
         });
 
-        //城市
 
-        // 取得所有熱門地區項目元素
-        const hotPlaceItems = document.querySelectorAll('.hot-place-item');
-
-        // 添加滑鼠移入事件處理程序
-        hotPlaceItems.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                // 滑鼠移到圖片上時，調整圖片寬度為 300px
-                item.style.width = '300px';
-            });
-
-            // 添加滑鼠移出事件處理程序
-            item.addEventListener('mouseout', () => {
-                // 滑鼠移出圖片時，恢復圖片原本的寬度
-                item.style.width = '200px';
-            });
-        });
 
     </script>
         
