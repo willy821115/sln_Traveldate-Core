@@ -44,7 +44,7 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public int OrderId { get; set; }
         public DateTime? Date { get; set; }
-        public DateTime? Datetime { get; set; }
+        public string? Datetime { get; set; }
         public string? TripDetaill { get; set; }
         public int ProductId { get; set; }
         public string? ProductName { get; set; }
