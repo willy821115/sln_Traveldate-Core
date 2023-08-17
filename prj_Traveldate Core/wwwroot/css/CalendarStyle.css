@@ -104,7 +104,7 @@
 }
 
 .day {
-    color: #155074;
+    color: #9D9D9D;
 }
 
 .expired-date {
@@ -126,6 +126,19 @@
 .select-date {
     background-color: #155074;
     color: #fff;
+}
+
+.days .content {
+    text-align:center;
+}
+
+.days p{
+    margin:0px;
+}
+
+.days .price {
+    color: #155074;
+    font-size:14px;
 }
 
 
