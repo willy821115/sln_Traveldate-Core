@@ -18,12 +18,6 @@
             <p class="fs-5">選擇商品與日期</p>
             <div class="d-flex">
                 <div class="form-group col-5 pl-0">
-                    @* <input name="txtKeyword" class="form-select form-select-md" id="selectTrip" placeholder="請選擇商品"> *@
-                   @*  <div class="grid gap-3 col d-flex" id="divTrip"> *@
-                    @*<input class="form-control" list="tripOpts" id="selectTrip" placeholder="請選擇商品">
-                    <datalist id="tripOpts">
-                            
-                    </datalist>*@
                     <input name="keyword" class="form-control form-select form-select-md" id="inputTrip" placeholder="請選擇商品" />
                     <div id="divTrip" class="rounded">
 
@@ -31,16 +25,12 @@
                 </div>
                 
                 <div class="form-group col-4 ">
-                    <select id="selectDate" class="form-select form-select-md mb-3" aria-label="Large select example">
-                        <option selected >請選擇日期</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <input class="form-control form-select form-select-md" id="inputTripDate" placeholder="請選擇日期" />
+                    <div id="divTripDate" class="rounded">
+                    </div>
                 </div>
                 <div>
-                    <span id="price">$799</span>
-                    <span id="test"></span>
+                    <span class="fs-5" id="showPrice"></span>
                 </div>
                 <div class="form-group col-2">
                     <input type="button" value="確定" class="btn btn-secondary" />
@@ -77,23 +67,29 @@
 <div>
     <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">返回文章列表</a>
 </div>
-<button id="btn-test"></button>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        //把trip名字放在畫面上
         const inputTrip = document.querySelector('#inputTrip');
+        const inputTripDate = document.querySelector('#inputTripDate');
         const divTrip = document.querySelector('#divTrip');
-       
-        const test = document.querySelector('#test');
+        const divTripDate = document.querySelector('#divTripDate');
+        const showPrice = document.querySelector('#showPrice');
         inputTrip.addEventListener('focus', () => {
             loadTrips();
+            inputTripDate.value = "";
         })
   
         inputTrip.addEventListener('input',()=>{
             loadTrips(inputTrip.value);
+            inputTripDate.value = "";
         })
+
+        
 
         async function loadTrips(keyword) {
             const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?keyword=${keyword}`)
@@ -102,7 +98,7 @@
             const trips = datas.map(trip => {
                 const { productName, productId } = trip
                 return (
-                    `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems">${productName}</a>`
+                        `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems">${productName}</a>`
                 )
             })
                 divTrip.innerHTML = trips.join("");
@@ -111,10 +107,37 @@
                         tripItem.addEventListener('click', (e) => {
                             e.preventDefault();
                             const clickedTrip = e.target.textContent;
-                            test.textContent = clickedTrip;
+                        const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
+                        inputTripDate.addEventListener('focus', () => {
+                            loadTripDate(productId);
+                        })
                             divTrip.innerHTML = "";
+                            inputTrip.value = clickedTrip;
                         });
                     })
+            }
+        }
+
+        async function loadTripDate(productId) {
+            const response = await fetch(`@Url.Content("~/Forum/selectDate")?id=${productId}`)
+            const datas = await response.json();
+            if (datas != null) {
+                const dates = datas.map(date => {
+                    const {  price,tripDate } = date
+                    return (
+                        `<a asp-action="selectDate" asp-route-id="${price}" class="list-group-item list-group-item-action dateOptItems">${tripDate}</a>`
+                    )
+                })
+                divTripDate.innerHTML = dates.join("")
+                const dateOptItems = document.querySelectorAll('.dateOptItems');
+                dateOptItems.forEach(dateItem => {
+                    dateItem.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        inputTripDate.value = e.target.textContent;
+                        showPrice.innerText = '$  ' + dateItem.getAttribute('asp-route-id');
+                        divTripDate.innerHTML = "";
+                    })
+                })
             }
         }
     </script>

@@ -1,25 +1,35 @@
 ﻿$('.uncheckbox').on('click', function () {
     $(this).hide();
-    $(this).next('.checkbox').show();
+    $(this).prev('.checkbox').show();
+    $('.uncheckall').hide();
+    $('.uncheckall').prev('.checkall').show();
+    $(this).closest('.Cart-Items').removeClass("cartChecked");
+    calculateTotalPrice();
 });
 
 $('.checkbox').on('click', function () {
     $(this).hide();
-    $(this).prev('.uncheckbox').show();
+    $(this).next('.uncheckbox').show();
+    $(this).closest('.Cart-Items').addClass("cartChecked");
+    calculateTotalPrice();
 });
 
 $('.uncheckall').on('click', function () {
     $(this).hide();
-    $(this).next('.checkall').show();
+    $(this).prev('.checkall').show();
     $('.Cart-Items .uncheckbox').hide();
     $('.Cart-Items .checkbox').show();
+    $('.Cart-Items').removeClass("cartChecked");
+    calculateTotalPrice();
 });
 
 $('.checkall').on('click', function () {
     $(this).hide();
-    $(this).prev('.uncheckall').show();
+    $(this).next('.uncheckall').show();
     $('.Cart-Items .uncheckbox').show();
     $('.Cart-Items .checkbox').hide();
+    $('.Cart-Items').addClass("cartChecked");
+    calculateTotalPrice();
 });
 
 $('.cartLike').on('click', function () {
@@ -34,7 +44,7 @@ $('.cartUnlike').on('click', function () {
 
 function calculateTotalPrice() {
     let totalPrice = 0;
-    $('.itemprice').each(function () {
+    $('.cartChecked').find('.itemprice').each(function () {
         let price = Number($(this).text());
         totalPrice += price;
     });
@@ -72,8 +82,14 @@ $('.cartPlus').click(function () {
 });
 
 $('.cartDele').on('click', function () {
+    $(this).closest('.Cart-Items').removeClass("cartChecked");
     $(this).closest('.Cart-Items').fadeOut();
     calculateTotalPrice();
+    $(this).closest('.Cart-Items').remove();
+})
+
+$('#usepoint').on('input', function () {
+    $(this).closest('.Confirm-Container-Content').next('.Confirm-summary').text("共可折抵 " + $('#usepoint').val() +" 元");
 })
 
 
