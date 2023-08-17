@@ -210,10 +210,10 @@
                             <li class="list-inline-item"><span id="var-value" class="ml-3 mr-3">1</span></li>
                             <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-plus">＋</button></li>
                         </ul>
-                    <label style="font-size:22px">金額：1000</label>
+                    <label style="font-size:22px">金額：4500</label>
                 </div>
                 <div class="m-3">
-                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn btn-outline-dark btn-lg">加入購物車</a>
+                    <div id="addtocart" class="btn btn-outline-dark btn-lg">加入購物車</div>
                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
                 </div>
             </div>
@@ -236,7 +236,7 @@
                                 <label>@Model.product.PlanName</label>
                             </div>
                             <div class="col">
-                                <label>價格：１０００</label>
+                                <label>價格：4500</label>
                             </div>
                             <div class="col-auto">
                                 <ul class="list-inline">
@@ -254,7 +254,7 @@
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn btn-outline-dark">加入購物車</a>
+                                    <div class="btn btn-outline-dark">加入購物車</div>
                                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary">立即購買</a>
                                 </div>
                             </div>
@@ -465,48 +465,55 @@
         }
 
         // Function to create a day element for the calendar
-        function createDayElement(date, className) {
-            let dayElement = document.createElement('div');
-            dayElement.className = 'day';
-            dayElement.classList.add(className);
-            dayElement.textContent = date.getDate();
-
-
-            if (availableDates.includes(formatDate(date))) {
-                dayElement.classList.add('available-date');
-            }
-
-            if (date < new Date()) {
-                dayElement.classList.add('expired-date');
-            }
-            return dayElement;
-        }
-
         // function createDayElement(date, className) {
         //     let dayElement = document.createElement('div');
         //     dayElement.className = 'day';
         //     dayElement.classList.add(className);
+        //     dayElement.textContent = date.getDate();
 
-        //     let dayContent = document.createElement('div');
-        //     dayContent.textContent = date.getDate();
 
         //     if (availableDates.includes(formatDate(date))) {
         //         dayElement.classList.add('available-date');
-        //         const priceElement = document.createElement('div');
-        //         const formattedDate = formatDate(date);
-        //         const priceIndex = availableDates.indexOf(formattedDate);
-        //         if (priceIndex !== -1) {
-        //             priceElement.textContent = '$' + price[priceIndex];
-        //         }
-        //         dayContent.appendChild(priceElement);
         //     }
 
         //     if (date < new Date()) {
         //         dayElement.classList.add('expired-date');
         //     }
-        //     dayElement.appendChild(dayContent);
         //     return dayElement;
         // }
+
+        function createDayElement(date, className) {
+            let dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.classList.add(className);
+
+            let content = document.createElement('div');
+            content.className = 'content';
+            let daycontent = document.createElement('p');
+            daycontent.textContent = date.getDate();
+            content.appendChild(daycontent);
+
+            if (availableDates.includes(formatDate(date))) {
+                dayElement.classList.add('available-date');
+                const formattedDate = formatDate(date);
+                const priceIndex = availableDates.indexOf(formattedDate);
+                if (priceIndex !== -1) {
+                    let priceSpan = document.createElement('p');
+                    priceSpan.className = 'price';
+                    priceSpan.textContent = '$' + price[priceIndex];
+                    content.appendChild(priceSpan);
+                }
+            }
+
+            if (date < new Date()) {
+                dayElement.classList.add('expired-date');
+            }
+          
+            dayElement.appendChild(content);
+            
+            return dayElement;
+        }
+
 
 
         // Helper function to get month name from month index (0 - 11)
@@ -608,6 +615,11 @@
             isEnlarged = !isEnlarged;
         });
 
+        //加購物車
+        const addCart = document.getElementById('addtocart');
+        addCart.addEventListener('click',function(){
+            swal('已加入購物車!', '', 'success');
+        })
 
 
        

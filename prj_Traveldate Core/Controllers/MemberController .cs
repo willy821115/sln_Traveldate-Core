@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.ViewModels;
+using System.Globalization;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -85,27 +86,30 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult orderList(int? id = 1) //會員訂單
         {
-            var datas = from tripde in context.TripDetails
-                        join trip in context.Trips
-                        on tripde.ProductId equals trip.ProductId
-                        join orderde in context.OrderDetails
-                        on trip.TripId equals orderde.TripId
+            //var datas = from tripde in context.TripDetails
+            //            join trip in context.Trips
+            //            on tripde.ProductId equals trip.ProductId
+            //            join orderde in context.OrderDetails
+            //            on trip.TripId equals orderde.TripId
 
-                        join order in context.Orders
-                        on orderde.OrderId equals order.OrderId
+            //            join order in context.Orders
+            //            on orderde.OrderId equals order.OrderId
 
-                        join m in context.Members
-                        on order.MemberId equals m.MemberId
+            //            join m in context.Members
+            //            on order.MemberId equals m.MemberId
 
-                        where m.MemberId == id
-                        select new COrdersViewModel
-                        {
-                            OrderId = orderde.OrderId,
-                            Date = trip.Date,
-                            Datetime = order.Datetime,
-                            //TripDetaill = tripde.TripDetaill,
-                        };
+            //            where m.MemberId == id
+            //            select new COrdersViewModel
+            //            {
+            //                OrderId = orderde.OrderId,
+            //                Date = trip.Date,
+            //                Datetime = order.Datetime,
+            //                //TripDetaill = tripde.TripDetaill,
+            //            };
 
+            var datas = from o in context.OrderDetails
+                        where o.Order.Member.MemberId == id
+                        select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
             return View(datas.Distinct());
         }
         public IActionResult commentList(int? id = 1) //我的評論V
