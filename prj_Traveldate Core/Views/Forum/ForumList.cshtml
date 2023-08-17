@@ -126,27 +126,30 @@
             </div>
         </div>
         
-        @foreach(var article in Model.forumList.OrderBy(f=>f.DueDate))
+        @foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
         {
             <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
-                <div class="border col-2 m-1">商品快照</div>
+
+                <div class="border col-2 m-1">商品照片
+                    @* <img class="img-thumbnail" src="data:image/jpg;base64,@Convert.ToBase64String(article.Trip.Product.ProductPhotoLists.Where(p=>p.Photo== Model.prodPhoto.FirstOrDefault(s=>s.prodId==article.Trip.ProductId)) )" /> *@</div>
+                
                 <div class="border col-5 m-1 d-flex row p-0">
-                        <p class="pt-1">@article.Title</p>
+                        <p class="pt-1">@article.ForumList.Title</p>
                     <div class="d-flex align-items-end">
-                    <span class="small">@article.Member.Level.Level</span>
-                        <span class="small"> | @article.Member.LastName@article.Member.FirstName</span>
-                        <span class="small"> | 發文時間 : @article.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                    <span class="small">@article.ForumList.Member.Level.Level</span>
+                        <span class="small"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                        <span class="small"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
                     </div>
                 </div>
-                <div class="border col-2 m-1 pt-1">回覆數 : @article.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+                <div class="border col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
                     <div class="border col-2 m-1">
                     <p class="pt-1">截團日期 : </p>
-                    @if (article.DueDate.HasValue && (article.DueDate.Value - DateTime.Now).TotalDays < 30)
+                    @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
                     {
-                       <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24"height="24"/><p class="fs-5 text-danger">@article.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                        <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
                     }
                     else{
-                        <p class="fs-5 my-text-secondary">@article.DueDate.Value.ToString("yyyy/MM/d")</p>
+                        <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
                         }
 
                 </div>

@@ -43,5 +43,13 @@ namespace prj_Traveldate_Core.Controllers
             return Json(address);
         }
 
+        public IActionResult Test(int? id)
+        {
+            CProductFactory pf = new CProductFactory();
+            ProgramViewModel vm = new ProgramViewModel();
+            vm.program.fforumAddress = pf.loadForumAddress((int)id);
+            return View(vm);
+        }
+
     }
 }

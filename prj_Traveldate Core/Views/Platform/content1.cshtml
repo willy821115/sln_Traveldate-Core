@@ -83,7 +83,7 @@
                             <select id="state" name="state" required>
                                 <option value="">請選擇目前狀態</option>
                                 <option value="未審核">未審核</option>
-                                <option value="已審核">已審核</option>
+                                <option value="已通過">已審核</option>
                                 <option value="審核未過">審核未過</option>
 
                                 <!-- 在此添加其他狀態的選項 -->
@@ -96,7 +96,9 @@
                                 <th>商品詳情</th>
                                 <th>商品類型</th>
                                 <th>審核狀態</th>
+                                <th>審核動作</th>
                             </tr>
+
                             <tr>
                                 <td>顯示商品名稱</td>
                                 <td>顯示商品地區</td>
@@ -108,7 +110,12 @@
                                 </td>
                                 <td>顯示商品類型</td>
                                 <td>未審核</td>
+                                <td>
+                                    @Html.ActionLink("通過","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                    @Html.ActionLink("未過","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                </td>
                             </tr>
+
                             <tr>
                                 <td>顯示商品名稱</td>
                                 <td>顯示商品地區</td>
@@ -120,12 +127,13 @@
                                 </td>
                                 <td>顯示商品類型</td>
                                 <td>未審核</td>
+                                <td>
+                                    @Html.ActionLink("通過","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                    @Html.ActionLink("未過","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                </td>
                             </tr>
                         </table>
-                        <div>
-                            <input type="submit" value="審核通過">
-                            <input type="submit" value="審核未通過">
-                        </div>
+
 
 
 

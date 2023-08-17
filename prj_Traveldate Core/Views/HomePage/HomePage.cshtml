@@ -14,7 +14,7 @@
                     <input type="text" name="txtKeyword" class="search-input rounded p-0" placeholder="搜尋..."/>
                     <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"/> <!-- 調整搜尋按鈕的高度 -->
                 </div>
-            </div>
+            </div>      
         </form>
         <!-- 輪播圖容器 -->
         <div id="swiper-container" class="swiper-container">
@@ -78,7 +78,7 @@
             <img src="~/images/熱門3.jpg" alt="目的地1">
             <div class="fill-block">
             <div class="destination-info">
-                <p style="text-align: left">新北｜福隆沙雕藝術季「迪士尼百年慶典」包車參觀</p>
+                <p style="text-align: left">新北｜福隆沙雕藝術季「迪士尼百年慶典」參觀</p>
                 <p>價格:$1000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
             </div>
         </div>
@@ -116,6 +116,51 @@
     </div>
 
 </section>
+
+
+
+    <section class="hot-destinations-section" id="hot-destinations-section">
+        <h2>TOP旅遊行程</h2>
+
+        <div class="destination-container">
+
+
+            <div class="destination-item">
+                <img src="~/images/促銷1.jpg" alt="目的地1">
+                <div class="fill-block">
+                    <div class="destination-info">
+                        <p style="text-align: left;">台中|夜晚吃喝行程 </p>
+                        <p>價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-item">
+                <img src="~/images/促銷2.jpg" alt="目的地1">
+                <div class="fill-block">
+                    <div class="destination-info">
+                        <p style="text-align: left;">台東|鹿野高台熱氣球嘉年華3天2夜</p>
+                        <p>價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="destination-item">
+                <img src="~/images/促銷3.jpg" alt="目的地1">
+                <div class="fill-block">
+                    <div class="destination-info">
+                        <p style="text-align: left;">台東|蘭嶼拼板舟體驗 </p>
+                        <p>價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+
+
 
 <section class="hot-destinations-section" id="hot-destinations-section">
     <h2>促銷旅遊專案</h2>
@@ -162,8 +207,11 @@
 
         <div class="hot-place-item">
             <img src="~/images/城市1.jpg" alt="城市1">
-            <div class="caption">台北</div>
+                <div class="caption">台北</div>
         </div>
+
+
+            
 
         <div class="hot-place-item">
             <img src="~/images/城市2.jpg" alt="城市2">
@@ -377,7 +425,7 @@
         .hot-place-item {
             width: 200px;
             height: 300px;
-            border-radius: 10px; /* 圖片的邊角圓弧 */
+            
             overflow: hidden; /* 隱藏圖片的溢出部分，以顯示圓弧效果 */
             font-size: 16px; /* 設置子元素的 font-size 為適當的值 */
         }
@@ -387,6 +435,7 @@
                 height: 100%;
                 object-fit: cover;
                 margin: 5px;
+                border-radius: 10px 
             }
 
             .hot-place-item:hover {
@@ -402,12 +451,13 @@
         .caption {
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 100%;
+            left: 2%;
+            width: 98%;
             background-color: rgba(0, 0, 0, 0.5);
             color: #fff;
             padding: 10px;
             opacity: 0;
+
             transform: translateY(100%);
             transition: opacity 0.3s, transform 0.3s;
         }
@@ -455,7 +505,8 @@
                 transition: background-color 0.3s; /* 添加平滑過渡效果 */
             }
 
-        
+            /*-------------------------------------------*/
+     
 
     </style>
         }
@@ -475,24 +526,7 @@
             slidesPerView: 1, // 每次只顯示一張圖片
         });
 
-        //城市
 
-        // 取得所有熱門地區項目元素
-        const hotPlaceItems = document.querySelectorAll('.hot-place-item');
-
-        // 添加滑鼠移入事件處理程序
-        hotPlaceItems.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                // 滑鼠移到圖片上時，調整圖片寬度為 300px
-                item.style.width = '300px';
-            });
-
-            // 添加滑鼠移出事件處理程序
-            item.addEventListener('mouseout', () => {
-                // 滑鼠移出圖片時，恢復圖片原本的寬度
-                item.style.width = '200px';
-            });
-        });
 
     </script>
         

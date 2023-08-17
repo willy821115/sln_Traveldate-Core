@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Test</h1>
+<div class="plan-container">
+    <div class="comments-title">
+        <p>體驗地點</p>
+    </div>
+    <hr />
+    <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
+</div>
+
+@section Scripts{
+
+
+    <script>
+
+        // Load Google Maps API
+        const googleMapsScript = document.createElement("script");
+        googleMapsScript.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBbcL3X1HudqP8Ej1YhYQlzE9Oy3frc-rc&callback=initMap";
+        document.head.appendChild(googleMapsScript);
+
+        const addressData = @Html.Raw(Json.Serialize(Model.program.fforumAddress));
+        console.log(addressData)
+
+        let map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 23.9, lng: 120.9 }, 
+                zoom: 7,
+            });
+
+            const geocoder = new google.maps.Geocoder();
+
+            for (const address of addressData) {
+                geocoder.geocode({ address: address }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        const latitude = results[0].geometry.location.lat();
+                        const longitude = results[0].geometry.location.lng();
+                        const Latlng = new google.maps.LatLng(latitude, longitude);
+
+                        new google.maps.Marker({
+                            position: Latlng,
+                            map: map,
+                        });
+                    } else {
+                        console.error(status);
+                    }
+                });
+            }
+        }
+     </script>
+ }

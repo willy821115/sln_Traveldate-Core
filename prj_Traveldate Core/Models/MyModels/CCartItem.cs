@@ -2,6 +2,7 @@
 {
     public class CCartItem
     {
+        public int orderDetailID { get; set; }
         public string? planName { get; set; }
         public string? date { get; set; }
         public int? quantity { get; set; }

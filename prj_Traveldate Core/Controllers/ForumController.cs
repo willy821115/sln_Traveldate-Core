@@ -20,13 +20,20 @@ namespace prj_Traveldate_Core.Controllers
         {
             CFilteredProductFactory factory = new CFilteredProductFactory();
            vm.regions = factory.qureyFilterCountry();
-           vm.forumList = _context.ForumLists.ToList();
+            //vm.forumList = _context.ForumLists.ToList();
+            vm.schedules = _context.ScheduleLists.Include(s => s.ForumList).Include(s=>s.Trip).Include(s=>s.ForumList.Member).ToList();
             vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m=>m.ForumLists).ToList();
             vm.level = _context.LevelLists.Include(l=>l.Members).ToList();
             vm.categories = factory.qureyFilterCategories();
+            //vm.schedules = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).ToList();
             var tripId = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s=>s.Trip.Product.ProductId).ToList();
-            vm.prodPhoto = _context.ProductPhotoLists.Where(p=>tripId.Contains((int)p.ProductId)).ToList();
+            var prod_photo= _context.ProductPhotoLists.Where(p=>tripId.Contains((int)p.ProductId)).Select(p=>new { p.Photo, p.ProductId }).ToList();
+            //foreach(var p in prod_photo)
+            //{
+            //    vm.prodPhoto.Add(p.Photo);
+            //}
+            //TODO 把Schedule的prodId跟prodPhotoId連結並放到畫面上
             return View(vm);
         }
         public IActionResult Create()
@@ -45,6 +52,8 @@ namespace prj_Traveldate_Core.Controllers
             vm.forum = _context.ForumLists.Find(id);
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.member = _context.Members.Find(6);
+            vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+           
             return View(vm);
         }
         //////////////////////////////// /////////////////////////////////Api/ ////////////////////////////////////////////////////////////////
@@ -78,7 +87,6 @@ namespace prj_Traveldate_Core.Controllers
         //發文選擇商品
         public IActionResult selectTrips(string? keyword)
         {
-            
             if (!string.IsNullOrEmpty(keyword) && keyword!="undefined")
             {
                 var filterdtrips = _context.Trips
@@ -96,7 +104,7 @@ namespace prj_Traveldate_Core.Controllers
         //選到的發文商品的日期
         public IActionResult selectDate(int? id)
         {
-            var dates = _context.Trips.Where(t=>t.ProductId==id).Select(t=>t.Date.Value.ToString("yyyy/MM/dd")).ToList();
+            var dates = _context.Trips.Where(t=>t.ProductId==id).OrderBy(t=>t.Date).Select(t=>new { tripDate = t.Date.Value.ToString("yyyy/MM/dd"),price =t.UnitPrice }).ToList();
             return Json(dates);
         }
 
