@@ -34,12 +34,14 @@
 <br>
 
 <div class="downlabel">
-    <label for="exampleInputEmail1" class="form-label">建立帳戶</label>
-    <label for="exampleInputEmail1" class="form-label">忘記密碼</label>
-    <label for="exampleInputEmail1" class="form-label">切換廠商登入</label>
-</div>
+
+        <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+        <label for="exampleInputEmail1" class="form-label">忘記密碼</label>
+    <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">切換廠商登入</a>
+    <br />
 <a asp-area="" asp-controller="Member" asp-action="Index">開發用會員登入</a>
 <a asp-area="" asp-controller="Platform" asp-action="content1">開發用平台登入</a>
+</div>
  @section Styles
  {
     <style>
@@ -69,9 +71,12 @@
 
 
 
-        .downlabel label:hover {
-            color: #9BE8D8; /* 滑鼠滑過顏色改變為 */
+        .downlabel label:hover,
+        .downlabel a:hover {
+            color: #9BE8D8; /* 滑鼠滑過時的文字顏色 */
         }
+
+
 
         .downlabel label {
             margin-right: 30px;
