@@ -44,48 +44,40 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow fixed-top">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm fixed-top pt-0 pb-0 fs-5">
             <div class="container-fluid justify-content-start">
-                <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList"><img src="~/icons/logo_travel_text_3.png" width="200px" /></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Search" asp-action="SearchList"><img src="~/icons/logo-text-v5.jpg" width="350"/></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="d-flex row w-75 pl-5">
-                    <div class="navbar-collapse collapse d-sm-inline-flex divide-line ">
-                        <ul class="navbar-nav flex-grow-1 justify-content-center">
-                        <li class="nav-item mr-5">
+                    <div class="navbar-collapse collapse d-sm-inline-flex">
+                        <ul class="navbar-nav flex-grow-1 justify-content-start">
+                        <li class="nav-item mr-2">
                             <a asp-area="" asp-controller="HomePage" asp-action="HomePage">首頁</a>
                         </li>
-                            <li class="nav-item mr-5">
+                            <li class="nav-item mr-2">
                             <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
                         </li>
-                            <li class="nav-item">
+                            <li class="nav-item mr-2">
                             <a href="#contact-us">聯絡我們</a>
                         </li>
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Search" asp-action="SearchList">門票</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Search" asp-action="SearchList">自助旅行</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
+                            </li>
                     </ul>
-                        
-                </div>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ">
-                        <ul class="navbar-nav flex-grow-1 justify-content-evenly mt-1">
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Search" asp-action="SearchList">門票</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Search" asp-action="SearchList">自助旅行</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
-                    </li>
-                    
-                    
-                </ul>
                 </div>
                 </div>
-               
                 <ul class="navbar-nav flex-grow-1  justify-content-center w-25">
                     <li class="nav-item mr-2">
                         <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
@@ -112,13 +104,13 @@
     </div>
 
     <footer id="contact-us">
-        <div class="d-flex row">
-            <span>TravelDate</span>
-            <span>&copy; 2023 旅遊網站。保留所有權利。</span>
-            <span>公司名稱:TravelDate</span>
-            <span>聯絡人:陳某某 電話: 0922222222</span>
-            <span>Mail: TravelDate@gmail.com 地址:台北市復興南路一段390號2樓</span>
-            <span>服務時間: 週一到週六 9:00-18:00 (例假日另行公告)</span>
+        <div>
+            <p class="m-0">TravelDate</p>
+            <p class="m-0">&copy; 2023 旅遊網站。保留所有權利。</p>
+            <p class="m-0">公司名稱:TravelDate</p>
+            <p class="m-0">聯絡人:陳某某 電話: 0922222222</p>
+            <p class="m-0">Mail: TravelDate@gmail.com 地址:台北市復興南路一段390號2樓</p>
+            <p class="m-0">服務時間: 週一到週六 9:00-18:00 (例假日另行公告)</p>
         </div>
         <div class="social-icons">
             <a href="#" target="_blank" title="關注我們的Line"><img src="~/images/line-icon.png" alt="Line" width="50" height="50" style="border-radius: 10px;"></a>

@@ -1,6 +1,6 @@
 .rectangle-container {
-    width: 50px; /* 調整容器的寬度 */
-    height: 10px; /* 調整容器的高度 */
+    width: 70px; /* 調整容器的寬度 */
+    height: 15px; /* 調整容器的高度 */
     overflow: hidden;
     /*z-index: 100;*/
   }
@@ -9,13 +9,13 @@
     /*position: absolute;*/
     /*top: 0;*/
     width: 0;
-    height: 10px;
+    height: 15px;
     background-color: #44dbe6; /* 設定矩形的初始背景顏色 */
     
   }
   .star-rating{
     position: absolute;
     top: 0;
-    width: 50px; /* 調整容器的寬度 */
+    width: 70px; /* 調整容器的寬度 */
   }
 
