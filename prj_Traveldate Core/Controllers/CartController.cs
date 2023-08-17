@@ -37,7 +37,9 @@ namespace prj_Traveldate_Core.Controllers
 
         public ActionResult ConfirmOrder()
         {
-            return View();
+            var me = _context.Members.Find(1);
+            
+            return View(me);
         }
         [HttpPost]
         public ActionResult ConfirmOrder(int id)
