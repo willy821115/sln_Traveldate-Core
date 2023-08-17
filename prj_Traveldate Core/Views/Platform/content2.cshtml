@@ -83,9 +83,8 @@
                                 <th>出生日期</th>
                                 <th>居住地區</th>
                                 <th>手機號碼</th>
-                                <th>EMAIL</th>
                                 <th>密碼</th>
-
+                                <th>管理</th>
                             </tr>
                             <tr>
                                 <td>XXX</td>
@@ -93,8 +92,11 @@
                                 <td>1993/02/18</td>
                                 <td>新北市</td>
                                 <td>0982222222</td>
-                                <td>EMAIL@gmail.com</td>
                                 <td>123456</td>
+                                <td>
+                                    @Html.ActionLink("停權","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                    @Html.ActionLink("恢復","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                </td>
                             </tr>
                         </table>
 
@@ -105,8 +107,8 @@
                                 <th>電話</th>
                                 <th>聯絡人姓名</th>
                                 <th>聯絡人職稱</th>
-                                <th>EMAIL</th>
                                 <th>服務概述</th>
+                                <th>管理</th>
 
                             </tr>
                             <tr>
@@ -114,12 +116,15 @@
                                 <td>26360999</td>
                                 <td>川古夫</td>
                                 <td>經理</td>
-                                <td>EMAIL@gmail.com</td>
                                 <td>
                                     <details>
                                         <summary>服務概述</summary>
                                         這是服務概述。
                                     </details>
+                                </td>
+                                <td>
+                                    @Html.ActionLink("停權","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                    @Html.ActionLink("恢復","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
                                 </td>
                             </tr>
                         </table>
@@ -134,10 +139,7 @@
                                 <td>停權公司顯示區域</td>
                             </tr>
                         </table>
-                        <div>
-                            <input type="submit" value="停權">
-                            <input type="submit" value="恢復">
-                        </div>
+
 
 
 
