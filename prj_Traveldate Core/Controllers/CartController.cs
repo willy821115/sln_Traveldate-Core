@@ -20,7 +20,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID)).Select(c=>
             new CCartItem
             {
-                planName = c.Trip.Product.PlanName,
+                planName = c.Trip.Product.ProductName,
                 date = $"{c.Trip.Date:d}",
                 quantity = c.Quantity,
                 photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
@@ -37,7 +37,9 @@ namespace prj_Traveldate_Core.Controllers
 
         public ActionResult ConfirmOrder()
         {
-            return View();
+            var me = _context.Members.Find(1);
+            
+            return View(me);
         }
         [HttpPost]
         public ActionResult ConfirmOrder(int id)

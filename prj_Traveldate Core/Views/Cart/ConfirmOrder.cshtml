@@ -1,4 +1,5 @@
-﻿@{
+﻿@model prj_Traveldate_Core.Models.Member
+@{
     ViewBag.Title = "填寫資料與付款";
 }
 
@@ -28,19 +29,19 @@
                             <div class="accordion-body Confirm-Container-Content">
                                 <div class="traveler-info">
                                     <label for="lastname">　　　姓氏　</label>
-                                    <input type="text" name="lastname" id="lastname" size="30" value="王" disabled="disabled">
+                                    <input type="text" name="lastname" id="lastname" size="30" value="@Model.LastName" disabled="disabled">
                                     <br />
                                     <label for="firstname">　　　名字　</label>
-                                    <input type="text" name="firstname" id="firstname" size="30" value="小明" disabled="disabled">
+                                    <input type="text" name="firstname" id="firstname" size="30" value="@Model.FirstName" disabled="disabled">
                                     <br />
                                     <label for="idnumber">身份證字號　</label>
-                                    <input type="text" name="idnumber" id="idnumber" size="30" value="A123456789" disabled="disabled">
+                                    <input type="text" name="idnumber" id="idnumber" size="30" value="@Model.Idnumber" disabled="disabled">
                                     <br />
                                     <label for="phone">　聯絡電話　</label>
-                                    <input type="text" name="phone" id="phone" size="30" value="0919150982" disabled="disabled">
+                                    <input type="text" name="phone" id="phone" size="30" value="@Model.Phone" disabled="disabled">
                                     <br />
                                     <label for="emailadd">　電子信箱　</label>
-                                    <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
+                                    <input type="email" name="emailadd" id="emailadd" size="30" value="@Model.Email" disabled="disabled">
                                 </div>
                             </div>
                         </div>
@@ -92,19 +93,19 @@
                                     <div class="Confirm-Container-Content">
                                         <div class="traveler-info">
                                             <label for="lastname">　　　姓氏　</label>
-                                            <input type="text" name="lastname" id="lastname" size="30" value="王" disabled="disabled">
+                                            <input type="text" name="lastname" id="lastname" size="30" value="@Model.LastName" disabled="disabled">
                                             <br />
                                             <label for="firstname">　　　名字　</label>
-                                            <input type="text" name="firstname" id="firstname" size="30" value="小明" disabled="disabled">
+                                            <input type="text" name="firstname" id="firstname" size="30" value="@Model.FirstName" disabled="disabled">
                                             <br />
                                             <label for="idnumber">身份證字號　</label>
-                                            <input type="text" name="idnumber" id="idnumber" size="30" value="A123456789" disabled="disabled">
+                                            <input type="text" name="idnumber" id="idnumber" size="30" value="@Model.Idnumber" disabled="disabled">
                                             <br />
                                             <label for="phone">　聯絡電話　</label>
-                                            <input type="text" name="phone" id="phone" size="30" value="0919150982" disabled="disabled">
+                                            <input type="text" name="phone" id="phone" size="30" value="@Model.Phone" disabled="disabled">
                                             <br />
                                             <label for="emailadd">　電子信箱　</label>
-                                            <input type="email" name="emailadd" id="emailadd" size="30" value="hello.wang@gmail.com" disabled="disabled">
+                                            <input type="email" name="emailadd" id="emailadd" size="30" value="@Model.Email" disabled="disabled">
                                         </div>
                                     </div>
                                     </div>
@@ -115,15 +116,15 @@
                                 <div class="Confirm-Container-Content">
                                     <div class="radio-group">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose" checked>
-                                            <label class="form-check-label" for="traveler_choose">
-                                                自旅伴名單中選擇
+                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_input" checked>
+                                            <label class="form-check-label" for="traveler_input">
+                                                自行填寫
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_input">
-                                            <label class="form-check-label" for="traveler_input">
-                                                自行填寫
+                                            <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose">
+                                            <label class="form-check-label" for="companion_choose">
+                                                自旅伴名單中選擇
                                             </label>
                                         </div>
                                     </div>
@@ -189,7 +190,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.09.30</h6>
                                                     </div>
-                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-bs-dismiss="modal">使用</button>
                                                 </div>
                                                 <div class="confirm-coupon-content">
                                                     <div style="width:80%;">
@@ -201,7 +202,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.09.30</h6>
                                                     </div>
-                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-bs-dismiss="modal">使用</button>
                                                 </div>
                                                 <div class="confirm-coupon-content">
                                                     <div style="width:80%;">
@@ -213,7 +214,7 @@
                                                         </p>
                                                         <h6>使用期限：2023.08.31</h6>
                                                     </div>
-                                                    <button type="button" class="btn btn-outline-secondary col-2" data-dismiss="modal">使用</button>
+                                                    <button type="button" class="btn btn-outline-secondary col-2" data-bs-dismiss="modal">使用</button>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -287,14 +288,14 @@
                     <div class="accordion-body">
                         <div>
                             <h5 class="confirm-subtitle" style="margin:0.3em 0;">
-                                澎湖兩天一夜 × 1
+                                澎湖浮潛海底郵筒 & SUP 立漿體驗 | 山水沙灘 × 1
                             </h5>
-                            <h6 class="subtitle">2023/07/31</h6>
-                            <h6 class="Confirm-subtotal">NTD 5999</h6>
+                            <h6 class="subtitle">2023/10/15</h6>
+                            <h6 class="Confirm-subtotal">NTD 1500</h6>
                         </div>
                         <hr>
-                        <h6 class="Confirm-total">總金額 NTD 5999</h6>
-                        <span class="badge bg-secondary Confirm-earnpoint">共可獲得 60 點!</span>
+                        <h6 class="Confirm-total">總金額 NTD 1500</h6>
+                        <span class="badge bg-secondary Confirm-earnpoint">共可獲得 15 點!</span>
 
                     </div>
                 </div>

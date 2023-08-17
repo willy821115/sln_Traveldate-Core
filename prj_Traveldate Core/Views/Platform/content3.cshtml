@@ -56,8 +56,18 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
-                <h2>優惠券</h2>
+                <h2>優惠券-發放</h2>
 
+                <div>
+                    <label for="companyName">會員等級:</label>
+                    <select id="companyName" name="companyName" required>
+                        <option value="">請選擇會員等級</option>
+                        <option value="等級A">A</option>
+                        <option value="等級B">B</option>
+                        <option value="等級C">C</option>
+                        <!-- 在此添加其他公司名稱的選項 -->
+                    </select>
+                </div>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -66,13 +76,14 @@
                             <input type="text" id="productName" name="productName" required>
                             <input type="submit" value="搜尋">
                         </div>
+
                         <div>
-                            <label for="companyName">會員等級:</label>
+                            <label for="companyName">優惠卷:</label>
                             <select id="companyName" name="companyName" required>
-                                <option value="">請選擇會員等級</option>
-                                <option value="等級A">A</option>
-                                <option value="等級B">B</option>
-                                <option value="等級C">C</option>
+                                <option value="">請選擇優惠卷</option>
+                                <option value="優惠卷A">優惠卷A</option>
+                                <option value="優惠卷B">優惠卷B</option>
+                                <option value="優惠卷C">優惠卷C</option>
                                 <!-- 在此添加其他公司名稱的選項 -->
                             </select>
                         </div>
@@ -80,22 +91,29 @@
 
                         <table>
                             <tr>
-                                <th>會員名稱</th>
-                                <th>優惠卷名稱</th>
-                                <th>折扣</th>
-                                <th>數量</th>
+                                <th>客戶姓名</th>
+                                <th>性別</th>
+                                <th>出生日期</th>
+                                <th>居住地區</th>
+                                <th>手機號碼</th>
+                                <th>密碼</th>
+                                <th>管理</th>
                             </tr>
                             <tr>
-                                <td>葉大雄</td>
-                                <td>父親節優惠卷</td>
-                                <td>0.8</td>
-                                <td>1</td>
+                                <td>XXX</td>
+                                <td>男</td>
+                                <td>1993/02/18</td>
+                                <td>新北市</td>
+                                <td>0982222222</td>
+                                <td>123456</td>
+                                <td>
+                                    @Html.ActionLink("發放","Details","Product",new{/*id=item.PrimaryKey*/},new{@class="btn btn-succes"})
+                                </td>
                             </tr>
-
                         </table>
-
-
-
+                        <hr class="divider">
+                        <br />
+                        <h2>優惠券-新增</h2>
                         <div>
                             <label for="ticketName">輸入優惠卷名稱:</label>
                             <input type="text" id="ticketName" name="ticketName" required>
@@ -105,6 +123,15 @@
                             <br />
                             <label for="ticketQuantity">輸入數量:</label>
                             <input type="text" id="ticketQuantity" name="ticketQuantity" required>
+                            <br />
+                            <label for="ticketDescription">輸入優惠卷介紹:</label>
+                            <input type="text" id="ticketDescription" name="ticketDescription" required>
+                            <br />
+                            <br />
+                            <br />
+                                <label for="ticketExpiration">選擇到期日期:</label>
+                                <input type="date" id="ticketExpiration" name="ticketExpiration" required>
+                        
                         </div>
 
                         <input type="submit" value="新增優惠卷">
@@ -135,7 +162,14 @@
         @section Styles
         {
     <style>
- 
+        .divider {
+            border: none;
+            border-top: 5px solid #155074; /* 與框架寬度一致，並增加粗度 */
+            margin: 20px 0;
+            width: 100%; /* 填滿框架寬度 */
+        }
+
+
         .content {
             flex: 1;
             background-color: #E2F6CA;
@@ -192,6 +226,15 @@
             input[type="submit"]:hover {
                 background-color: #78C1F3;
             }
+
+        input[type="date"] {
+            width: 160px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
 
         textarea {
             resize: vertical;

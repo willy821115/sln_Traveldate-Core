@@ -145,11 +145,12 @@
                     <p>
                         蘭嶼的海真的好美好喜歡，下次真的希望還可以看到這麽漂亮的海洋和這麼豐富的海底生態，而且再次覺得無光害的蘭嶼，太適合觀星星了，一大片的星空真的是在台北想也想不到的場景，希望下次可以用照片紀錄下眼睛所看到的風景！
                     </p>
-                    <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="commentpic" />
+                        <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="commentpic" />
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <div class="plancal-container" id="booking-section" style="background-color:white">
@@ -210,10 +211,10 @@
                             <li class="list-inline-item"><span id="var-value" class="ml-3 mr-3">1</span></li>
                             <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-plus">＋</button></li>
                         </ul>
-                    <label style="font-size:22px">金額：1000</label>
+                    <label style="font-size:22px">金額：4500</label>
                 </div>
                 <div class="m-3">
-                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn btn-outline-dark btn-lg">加入購物車</a>
+                    <div id="addtocart" class="btn btn-outline-dark btn-lg">加入購物車</div>
                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
                 </div>
             </div>
@@ -235,8 +236,8 @@
                             <div class="col">
                                 <label>@Model.product.PlanName</label>
                             </div>
-                            <div class="col">
-                                <label>價格：１０００</label>
+                            <div class="col-auto">
+                                <label>價格：4500</label>
                             </div>
                             <div class="col-auto">
                                 <ul class="list-inline">
@@ -254,7 +255,7 @@
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn btn-outline-dark">加入購物車</a>
+                                    <div class="btn btn-outline-dark">加入購物車</div>
                                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary">立即購買</a>
                                 </div>
                             </div>
@@ -293,6 +294,9 @@
                                 <p>
                                     台東火車站至富岡漁港接駁->台東搭乘豪華客輪前往蘭嶼->抵達蘭嶼開元港->民宿專車接往住宿辦理 check in->騎車環島蘭嶼->在海岸邊欣賞美麗的蘭嶼日落->返回民宿
                                 </p>
+                                <div class="image-container">
+                                    <img src="~/images/蘭嶼.jpg" alt="Day 1 Image" class="w-300 h-200" />
+                                </div>
                             </div>
                         </li>
                         <li>
@@ -300,6 +304,9 @@
                                 <p>
                                     前往蘭嶼最佳欣賞日出地點->東清灣的朝陽景色與充滿部落風情的拼板舟 (自費行程、當地預約、現場報價)->從軍艦岩望出的視角，您可在此拍攝到日出從海面升起->蘭嶼浮潛->返回民宿
                                 </p>
+                                <div class="image-container">
+                                    <img src="~/images/蘭嶼舊燈塔.jpg" alt="Day 1 Image" class="w-300 h-200" />
+                                </div>
                             </div>
                         </li>
                         <li>
@@ -307,6 +314,9 @@
                                 <p>
                                     民宿 check out->蘭嶼地下屋導覽->搭乘客輪回台東->台東富岡漁港至台東火車站接駁
                                 </p>
+                                <div class="image-container">
+                                    <img src="~/images/蘭嶼情人洞.jpg" alt="Day 1 Image" class="w-300 h-200" />
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -465,48 +475,55 @@
         }
 
         // Function to create a day element for the calendar
-        function createDayElement(date, className) {
-            let dayElement = document.createElement('div');
-            dayElement.className = 'day';
-            dayElement.classList.add(className);
-            dayElement.textContent = date.getDate();
-
-
-            if (availableDates.includes(formatDate(date))) {
-                dayElement.classList.add('available-date');
-            }
-
-            if (date < new Date()) {
-                dayElement.classList.add('expired-date');
-            }
-            return dayElement;
-        }
-
         // function createDayElement(date, className) {
         //     let dayElement = document.createElement('div');
         //     dayElement.className = 'day';
         //     dayElement.classList.add(className);
+        //     dayElement.textContent = date.getDate();
 
-        //     let dayContent = document.createElement('div');
-        //     dayContent.textContent = date.getDate();
 
         //     if (availableDates.includes(formatDate(date))) {
         //         dayElement.classList.add('available-date');
-        //         const priceElement = document.createElement('div');
-        //         const formattedDate = formatDate(date);
-        //         const priceIndex = availableDates.indexOf(formattedDate);
-        //         if (priceIndex !== -1) {
-        //             priceElement.textContent = '$' + price[priceIndex];
-        //         }
-        //         dayContent.appendChild(priceElement);
         //     }
 
         //     if (date < new Date()) {
         //         dayElement.classList.add('expired-date');
         //     }
-        //     dayElement.appendChild(dayContent);
         //     return dayElement;
         // }
+
+        function createDayElement(date, className) {
+            let dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.classList.add(className);
+
+            let content = document.createElement('div');
+            content.className = 'content';
+            let daycontent = document.createElement('p');
+            daycontent.textContent = date.getDate();
+            content.appendChild(daycontent);
+
+            if (availableDates.includes(formatDate(date))) {
+                dayElement.classList.add('available-date');
+                const formattedDate = formatDate(date);
+                const priceIndex = availableDates.indexOf(formattedDate);
+                if (priceIndex !== -1) {
+                    let priceSpan = document.createElement('p');
+                    priceSpan.className = 'price';
+                    priceSpan.textContent = '$' + price[priceIndex];
+                    content.appendChild(priceSpan);
+                }
+            }
+
+            if (date < new Date()) {
+                dayElement.classList.add('expired-date');
+            }
+          
+            dayElement.appendChild(content);
+            
+            return dayElement;
+        }
+
 
 
         // Helper function to get month name from month index (0 - 11)
@@ -527,11 +544,19 @@
                 if (availableDates.includes(formattedClickedDate)) {
                     if (selectedDateElement) {
                         selectedDateElement.classList.remove(selectedDateClass);
+                        const priceElement = selectedDateElement.querySelector('.price');
+                        if (priceElement) {
+                            priceElement.classList.remove(selectedDateClass);
+                        }
                     }
 
                     if (selectedDateElement !== target) {
                         selectedDateElement = target;
                         target.classList.add(selectedDateClass);
+                        const priceElement = target.querySelector('.price');
+                        if (priceElement) {
+                            priceElement.classList.add(selectedDateClass);
+                        }
                     } else {
                         selectedDateElement = null;
                     }
@@ -608,9 +633,12 @@
             isEnlarged = !isEnlarged;
         });
 
+        //加購物車
+        const addCart = document.getElementById('addtocart');
+        addCart.addEventListener('click',function(){
+            swal('已加入購物車!', '', 'success');
+        })
 
-
-       
     </script>
     }
 @*<script src="~/js/CalendarJS.js"></script>*@

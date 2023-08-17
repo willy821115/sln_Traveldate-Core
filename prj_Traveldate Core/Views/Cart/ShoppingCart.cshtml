@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "我的購物車";
+    int count = 0;
 }
 @using (Html.BeginForm())
 {
@@ -51,11 +52,12 @@
             </div>
             @foreach(var item in Model.cartitems)
             {
-            <div class="Cart-Items">
+                count++;
+                <div class="Cart-Items cartChecked">
                 <div class="checkboxes">
-                    <img class="uncheckbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
-                    <img class="checkbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
-                    <input type="checkbox" id="prodcb">
+                        <img class="checkbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
+                        <img class="uncheckbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
+                    <input type="checkbox" id="prodcb" checked>
                 </div>
                 <div class="image-box">
                         <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" />
@@ -69,12 +71,17 @@
                     <div class="count">@item.quantity</div>
                     <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
                 </div>
-                <div class="prices">
-                    <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal">
-                    <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
-                    <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
-                    <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
-                        <div class="mt-2"><span class="amount">NTD </span><span class="amount">@item.unitPrice</span></div>
+                <div class="prices d-flex flex-column justify-content-between">
+                    <div>
+                        <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal">
+                        <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
+                        <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
+                        <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
+                    </div>
+                    <div class="mt-2">
+                        <span class="amount">NTD </span>
+                            <span class="amount itemprice">@(item.unitPrice * item.quantity)</span>
+                    </div>
                 </div>
                 <div class="modal fade" id="EditCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -106,8 +113,8 @@
             }
         </div>
         <div class="SelectAll m-4">
-            <img class="uncheckall CartIconbtn" src="~/icons/icons8-uncheck-all-48.png" />
-            <img class="checkall CartIconbtn" src="~/icons/icons8-check-all-48.png" />
+            <img class="checkall CartIconbtn" src="~/icons/icons8-uncheck-all-48.png" />
+            <img class="uncheckall CartIconbtn" src="~/icons/icons8-check-all-48.png" />
             <input type="checkbox" id="selectall">
             <label for="selectall" class="mr-2">全選</label>
             <span class="btn btn-outline-dark btn-sm">刪除所有已選項目</span>
@@ -120,47 +127,58 @@
                         <div class="items">1 項商品</div>
                     </div>
                     <div class="d-flex align-items-center flex-column">
-                        <span class="badge badge-light">可獲得 60 點!</span>
-                        <div class="total-amount ml-2 mr-2">NTD 5999</div>
+                        <span class="badge badge-light" id="earnpoint">可獲得 0 點!</span>
+                        <div>
+                            <span class="total-amount ml-2 mr-1">NTD</span>
+                            <span class="total-amount ml-1 mr-2" id="totalPrice"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <input type="submit" class="mt-2 btn my-btn-primary btn-lg col-4" value="去結帳" />
+            <input type="submit" class="mt-2 btn my-btn-primary btn-lg" value="去結帳" />
         </div>
     </div>
 }
 
 <h4 class="mt-lg-4" style="color: #155074;font-weight:600;">您可能也會喜歡...</h4>
 <div class="card-deck">
-            <div class="card">
+    <div class="card">
                 <img class="card-img-top" src="~/images/熱門1.jpg" alt="澎湖｜一日遊 吉貝暢玩水上活動＆來回船票">
-                <div class="card-body">
+        <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title">澎湖｜一日遊 吉貝暢玩水上活動＆來回船票</h5>
-                    <p class="card-text">價格:$3000</p><p class="card-text">評價：4.5/5</p>
+                    <div>
+                    <p class="card-text">NTD 3000</p><p class="card-text">評價：4.5/5</p>
+            </div>
                 </div>
             </div>
             <div class="card">
                 <img class="card-img-top" src="~/images/熱門2.jpg" alt="台灣台東｜蘭嶼達悟族划拼板舟體驗">
-                <div class="card-body">
+        <div class="card-body d-flex flex-column justify-content-between">
                     <h5 class="card-title">台灣台東｜蘭嶼達悟族划拼板舟體驗</h5>
-                    <p class="card-text">價格:$4000</p><p class="card-text">評價：4.5/5</p>
+                    <div>
+                    <p class="card-text">NTD 4000</p><p class="card-text">評價：4.5/5</p>
+            </div>
                 </div>
             </div>
             <div class="card">
-                <img class="card-img-top" src="~/images/熱門3.jpg" alt="台灣台東｜蘭嶼達悟族划拼板舟體驗">
-                <div class="card-body">
-                    <h5 class="card-title">台灣台東｜蘭嶼達悟族划拼板舟體驗</h5>
-                    <p class="card-text">價格:$1000</p><p class="card-text">評價：4.5/5</p>
+        <img class="card-img-top" src="~/images/熱門3.jpg" alt="新北｜福隆沙雕藝術季「迪士尼百年慶典」包車參觀">
+        <div class="card-body d-flex flex-column justify-content-between">
+            <h5 class="card-title">新北｜福隆沙雕藝術季「迪士尼百年慶典」包車參觀</h5>
+                <div>
+                <p class="card-text">NTD 1000</p><p class="card-text">評價：4.5/5</p>
+                </div>
                 </div>
         </div>
         <div class="card">
-                <img class="card-img-top" src="~/images/熱門4.jpg" alt="花蓮｜後山那一邊 | 花蓮明利飛行傘基地">
-                <div class="card-body">
-                    <h5 class="card-title">花蓮｜後山那一邊 | 花蓮明利飛行傘基地</h5>
-                    <p class="card-text">價格:$3200</p><p class="card-text">評價：4.5/5</p>
+            <img class="card-img-top" src="~/images/熱門4.jpg" alt="花蓮｜後山那一邊 | 花蓮明利飛行傘基地">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">花蓮｜後山那一邊 | 花蓮明利飛行傘基地</h5>
+                <div>
+                    <p class="card-text">NTD 3200</p><p class="card-text">評價：4.5/5</p>
                 </div>
-            </div>
+                </div>
         </div>
+</div>
 
 
 @section Styles{
@@ -172,11 +190,6 @@
     <script src="~/js/jsCart.js"></script>
     <script src="~/js/jquery-3.4.1.js"></script>
 
-    <script>
-        $('.cartDele').on('click', function () {
-            $(this).closest('.Cart-Items').fadeOut();
-        })
-    </script>
 
 }
 
