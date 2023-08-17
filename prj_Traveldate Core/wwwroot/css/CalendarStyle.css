@@ -108,7 +108,7 @@
 }
 
 .expired-date {
-    color: #5d5c5e;
+    color: #5d5c5e !important;
     background-color: #F0F0F0;
     pointer-events: none;
 }
