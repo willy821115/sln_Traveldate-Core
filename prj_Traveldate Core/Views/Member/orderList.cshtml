@@ -1,5 +1,4 @@
 ﻿
-@{
     ViewData["Title"] = "orderList";
 }
 
@@ -42,6 +41,7 @@
                         <th>評論</th>
                         <th>訂購日期</th>
                         <th>行程日期</th>
+                        <th>商品名稱</th>
                         @*<th>行程描述</th>*@
                     </tr>
 
@@ -56,6 +56,7 @@
                                 <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
                                 <td>@item.Datetime</td>
                                 <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                                <td>@item.ProductName</td>
 
                             </tr>
                         }

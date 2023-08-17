@@ -20,7 +20,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID)).Select(c=>
             new CCartItem
             {
-                planName = c.Trip.Product.PlanName,
+                planName = c.Trip.Product.ProductName,
                 date = $"{c.Trip.Date:d}",
                 quantity = c.Quantity,
                 photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
