@@ -145,11 +145,17 @@
                     <p>
                         蘭嶼的海真的好美好喜歡，下次真的希望還可以看到這麽漂亮的海洋和這麼豐富的海底生態，而且再次覺得無光害的蘭嶼，太適合觀星星了，一大片的星空真的是在台北想也想不到的場景，希望下次可以用照片紀錄下眼睛所看到的風景！
                     </p>
-                    <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="commentpic" />
+                        <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="myImg" />
+                    <div id="myModal" class="modal">
+                        <div class="close">&times;</div>
+                        <img class="modal-content" id="img01">
+                        <div id="caption"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+   
 
 
     <div class="plancal-container" id="booking-section" style="background-color:white">
@@ -235,7 +241,7 @@
                             <div class="col">
                                 <label>@Model.product.PlanName</label>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <label>價格：4500</label>
                             </div>
                             <div class="col-auto">
@@ -611,7 +617,7 @@
         });
 
         //commentpic
-        var image = document.getElementById('commentpic');
+        var image = document.getElementById('myImg');
         image.addEventListener('mouseover', function () {
             image.style.cursor = 'url("/icons/search_zoom.png"), auto';
         });
@@ -620,17 +626,17 @@
             image.style.cursor = 'auto';
         });
 
-        var isEnlarged = false;
-        image.addEventListener('click', function () {
-            if (isEnlarged) {
-                image.style.width = '80px';
-                image.style.height = '60px';
-            } else {
-                image.style.width = '600px';
-                image.style.height = '400px';
-            }
-            isEnlarged = !isEnlarged;
-        });
+        // var isEnlarged = false;
+        // image.addEventListener('click', function () {
+        //     if (isEnlarged) {
+        //         image.style.width = '80px';
+        //         image.style.height = '60px';
+        //     } else {
+        //         image.style.width = '600px';
+        //         image.style.height = '400px';
+        //     }
+        //     isEnlarged = !isEnlarged;
+        // });
 
         //加購物車
         const addCart = document.getElementById('addtocart');
@@ -638,8 +644,26 @@
             swal('已加入購物車!', '', 'success');
         })
 
+        var modal = document.getElementById("myModal");
 
-       
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("myImg");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+
     </script>
     }
 @*<script src="~/js/CalendarJS.js"></script>*@
