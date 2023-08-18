@@ -4,7 +4,7 @@ namespace prj_Traveldate_Core.Models.MyModels
 {
     public class CFilteredProductFactory
     {
-        List<int> confirmedId = null;
+        public List<int> confirmedId = null;
         TraveldateContext db = null;
         public CFilteredProductFactory() 
         {
@@ -36,7 +36,14 @@ namespace prj_Traveldate_Core.Models.MyModels
                 CFilteredProductItem item = new CFilteredProductItem();
                 item.productID = p.id;
                 item.productName = p.name.FirstOrDefault();
-                item.outlineForSearch = p.outlineForSearch.FirstOrDefault();
+                if (p.outlineForSearch.FirstOrDefault().Length > 85)
+                {
+                    item.outlineForSearch = p.outlineForSearch.FirstOrDefault().Substring(0, 85) + "…";
+                }
+                else
+                {
+                    item.outlineForSearch = p.outlineForSearch.FirstOrDefault();
+                }
                 if (p.city.FirstOrDefault().Trim().Substring(p.city.FirstOrDefault().Length - 1, 1) == "縣"
                    || p.city.FirstOrDefault().Trim().Substring(p.city.FirstOrDefault().Length - 1, 1) == "市")
                 {
@@ -66,6 +73,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 item.orederCount = buy.HasValue ? buy: 0;
                 list.Add(item);
             }
+
             return list;
            
         }

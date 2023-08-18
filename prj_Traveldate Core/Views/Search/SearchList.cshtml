@@ -26,16 +26,17 @@
         <div class="filter_block ">
             <div class="flex-column">
                 <label class="fs-4 pl-2 pt-2">篩選目的地</label>
-                @using (Html.BeginForm())
-                {
+                @* @using (Html.BeginForm())
+                { *@
                     <div class="d-flex align-items-center search_container position-relative">
                         <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                         <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
-                        <input type="text" id="txtKeyword" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
-                        <input  id="btnSearch" class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" />
+                        <input type="text" id="inputKeyword" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
+                        @* <input  id="btnSearch" class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" /> *@
                     </div>
-              }
+              @* } *@
             </div>
+            
             @foreach (var city in Model.countryAndCities)
             {
                 <div class="controls-display-row category-click">
@@ -46,7 +47,7 @@
                     </div>
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled m">
+                    <ul class="list-unstyled" id="divCityList">
                         @foreach (var t in city.citys)
                         {
                             <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -58,7 +59,7 @@
                     </ul>
                 </div>
             }
-
+            
         </div>
         <div class="filter_block">
             <label class="fs-4 pl-2 pt-2">所有商品類別</label>
@@ -182,11 +183,11 @@
                 <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                     <span class=" fw-bolder ">排序 : </span>
                     <span>　</span>
-                    <a id="sortByHot" href="#" class=" fw-bolder">熱門程度</a>
+                    <a id="sortByHot" href="#" class=" fw-bolder" name="status">熱門程度</a>
                     <span>　|　</span>
-                    <a id="sortByCommet" href="#" class=" fw-bolder">用戶評價</a>
+                    <a id="sortByCommet" href="#" class=" fw-bolder" name="status">用戶評價</a>
                     <span>　|　</span>
-                    <a id="sortByPrice" href="#" class=" fw-bolder">價格排序(低到高)</a>
+                    <a id="sortByPrice" href="#" class=" fw-bolder" name="status">價格排序(低到高)</a>
                 </div>
             </div>
             <div id="filterBody">
@@ -218,7 +219,7 @@
                                 else
                                   {
                                       <div class="overflow-hidden my-rounded-start my-bg-primary d-flex justify-content-center">
-                                            <img src="~/icons/Logo_traveldate.png" alt="@item.productName" height="250" />
+                                            <img src="~/icons/logos/Logo_traveldate.png" alt="@item.productName" height="250" />
                                        </div>
                                   }
                                    
@@ -234,7 +235,7 @@
                                 </p>
                                         </div>
                                 <div class="row align-items-end">
-                                    <div class="col d-flex align-items-center">
+                                    <div class="col-8 d-flex align-items-center">
                                         <div class="rectangle-container me-2 d-flex position-relative">
                                             <div class="rectangle"></div>
                                             <img class="star-rating" src="~/icons/star-rating.png">
@@ -265,15 +266,8 @@
 </div>
 
 @section Scripts{
-    @*<script src="~/js/jquery-3.4.1.js"></script>*@
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/mutiRange.js"></script>
-   @* <script src="~/Scripts/jquery.validate.min.js"></script>*@
-    @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
-   @*  <script src="~/calendar-03/calendar-03/js/jquery.min.js"></script>
-    <script src="~/js/"></script>
-    <script src="~/calendar-03/calendar-03/js/popper.js"></script>
-    <script src="~/calendar-03/calendar-03/js/bootstrap.min.js"></script> *@
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
@@ -296,7 +290,7 @@
             });
         }
         //////////////////////////////////////3種排序///////////////////////////////////////////
-        //by熱門
+        const filterTotal = document.querySelector('#filter-total')
         //排序/篩選載入資料
         function loadData(status) {
             fetch('@Url.Action("sortBy", "Search")?' + status, {
@@ -308,27 +302,67 @@
                     starRating() //重新載入星星
                 })
         } 
+        //by熱門
         const sortByHot = document.querySelector('#sortByHot');
         sortByHot.addEventListener('click',()=>{
-                loadData("status=hot")})
+            loadData("sortType=hot")
+            
+        })
         //by評價
         const sortByCommet = document.querySelector('#sortByCommet');
         sortByCommet.addEventListener('click', () => {
-            loadData("status=comment")
+            loadData("sortType=comment")
         })
         //by價格
         const sortByPrice = document.querySelector('#sortByPrice');
         sortByPrice.addEventListener('click', () => {
-            loadData("status=price")
+            loadData("sortType=price")
         })
-        // //by keyword
+        //by keyword
         // const btnSearch = document.querySelector('#btnSearch');
         // const keyword = document.querySelector('#txtKeyword');
         // btnSearch.addEventListener('click', () => {
         //     loadData("txtKeyword=" + keyword.value)
         // })
     </script>
-    
+    <script>
+        const inputKeyword = document.querySelector('#inputKeyword');
+        const divCityList = document.querySelector('#divCityList');
+        inputKeyword.addEventListener('input',()=>{
+            loadCities(inputKeyword.value);
+        })
+        async function loadCities(keyword) {
+            const resopnse = await fetch(`@Url.Content("~/Search/filterCity")?txtKeyword=${keyword}`)
+            const datas = await resopnse.json();
+            if (datas != null) {
+                console.log(datas)
+                const cities = datas.map(city => {
+                    const { cityId, cityName } = city
+                    return (
+                        `<li id=${cityId} class=" d-flex align-items-center divide-line my-w-80-percent filterCityItem" >
+                                <img class="uncheckbox" src = "/icons/icons8-unchecked-32.png" />
+                                <img class="checkbox" src = "/icons/icons8-checkbox-32.png" />
+                                                        <span>${cityName}</span>
+                        </li>`
+                    )
+                })
+                divCityList.innerHTML = cities.join("");
+                const filterCityItem = document.querySelectorAll('.filterCityItem');
+                filterCityItem.forEach(cityItem => {
+                    cityItem.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const clickedCity = e.target.textContent;
+                       // const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
+                        // inputTripDate.addEventListener('focus', () => {
+                        //     loadTripDate(productId);
+                        // })
+                        // divTrip.innerHTML = "";
+                        // inputTrip.value = clickedTrip;
+                    });
+                })
+            }
+        }
+    </script>
 
 }
 
