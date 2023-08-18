@@ -25,7 +25,10 @@ namespace prj_Traveldate_Core.Controllers
             vm.city.City = pf.loadCity((int)id);
             vm.member.LastName=pf.loadCommentMem((int)id);
             vm.program.fPlanPrice = pf.loadPlanprice((int)id);
-
+            vm.program.fTripDetails = pf.loadTripdetails((int)id);
+            vm.program.fTripPrice = pf.loadPlanpriceStart((int)id);
+            vm.member.Gender = pf.memgender((int)id);
+            vm.program.fCommentDate = pf.loadCommentDate((int)id);
             return View(vm);
         }
         //public IActionResult List()

@@ -42,19 +42,19 @@
 <section class="hot-destinations-section " id="hot-destinations-section">
     <h2>熱門行程</h2>
     <div class="destination-container">
-      @*   @foreach(var p in Model.popularList)
+       @* @foreach(var p in Model.popularList)
             {
                 <div class="destination-item">
-                    <img src="~/images/@p.ImagePath" alt="目的地" />
-                    <div class="fill-block">
+                  <img src="~/images/@p.ImagePath" alt="目的地" />
+                  <div class="fill-block">
                         <div class="destination-info">
                             <p style="text-align: left">@p.productName</p>
-                            <p>單價:@p.unitPrice 評價：@p.commentScore</p>
+                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
                         </div>
                     </div>
-                </div>
-
+                </div> 
             } *@
+           
             <div class="destination-item">
             <div class="card" style="width: 18rem;">
                 <img src="~/images/熱門1.jpg" class="card-img-top" alt="...">

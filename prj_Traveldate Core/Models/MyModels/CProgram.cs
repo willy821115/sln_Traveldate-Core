@@ -7,5 +7,8 @@
         public List<string> fOutline { get; set; }
         public List<string> fPlanDescription { get; set; }
         public List<decimal?> fPlanPrice { get; set; }
+        public List<string> fTripDetails { get; set; }
+        public decimal? fTripPrice { get; set; }
+        public string fCommentDate { get; set; }
     }
 }
