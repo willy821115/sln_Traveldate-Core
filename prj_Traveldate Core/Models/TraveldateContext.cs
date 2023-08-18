@@ -81,7 +81,7 @@ public partial class TraveldateContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=192.168.31.90;Initial Catalog=Traveldate;User ID=tdSQL;Password=1234;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Traveldate;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -351,6 +351,7 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.Idnumber)
                 .HasMaxLength(50)
                 .HasColumnName("IDNumber");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.LevelId).HasColumnName("LevelID");
             entity.Property(e => e.Password).HasMaxLength(50);
