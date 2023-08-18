@@ -9,6 +9,11 @@
         public List<decimal?> fPlanPrice { get; set; }
         public List<string> fTripDetails { get; set; }
         public decimal? fTripPrice { get; set; }
-        public string fCommentDate { get; set; }
+        public List<string> fCommentDate { get; set; }
+        public List<string> fComMem { get; set; }
+        public List<string> fComMemGender { get; set; }
+        public List<int?> fComScore { get; set; }
+        public List<string> fComContent { get; set; }
+        public List<string> fComTitle { get; set; }
     }
 }

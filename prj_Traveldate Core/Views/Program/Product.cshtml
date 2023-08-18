@@ -5,7 +5,7 @@
 
 <div class="product-detail">
     <div>
-        <div>
+        <div class="protag">
             <span>台灣</span>
             <span>></span>
             <span>@Model.city.City</span>
@@ -94,60 +94,52 @@
 
     <div class="plan-container">
         <div class="be-comment-block">
-            <div class="comments-title"><p>旅客評價</p></div>
-            <div class="be-comment">
+            @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
+            {
+            <div class="comments-title"><p>旅客評價<a href="#commentdetail" class="more-comment">更多評價<i class="fa fa-angle-right"></i></a></p></div>
+                <div class="be-comment">
                 <div class="be-img-comment">
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
                 </div>
                 <div class="comment-header">
-                    @if(Model.member.LastName != null)
+                    @if (Model.program.fComMem[0] != null)
                     {
-                        if(Model.member.Gender == "男")
+                        if (Model.program.fComMemGender[0] == "男")
                         {
-                            <span class="be-comment-name">@Model.member.LastName 先生</span>
+                            <span class="be-comment-name">@Model.program.fComMem[0] 先生</span>
                         }
-                        else if (Model.member.Gender == "女")
+                        else if (Model.program.fComMemGender[0] == "女")
                         {
-                            <span class="be-comment-name">@Model.member.LastName 小姐</span>
+                            <span class="be-comment-name">@Model.program.fComMem[0] 小姐</span>
                         }
                     }
-                    <span class="be-comment-time">@Model.program.fCommentDate</span>
-
-
+                    <span class="be-comment-time">@Model.program.fCommentDate[0]</span>
                 </div>
+
                 <div class="comments-title">
                     <span class="rating">
-                        <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                        </i>
-                        <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </i>
-                        <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </i>
-                        <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </i>
-                        <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                            </svg>
-                        </i>
+                        @for (int i = 1; i <= Model.program.fComScore[0]; i++)
+                        {
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                </svg>
+                            </i>
+                        }
+                       @for (int i = Model.program.fComScore[0] + 1; i <= 5; i++)
+                        {
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                </svg>
+                            </i>
+                        }
                     </span>
                 </div>
                 <div class="be-comment-text">
-                    <div class="be-comment-title">浮潛一生推</div>
+                    <div class="be-comment-title">@Model.program.fComTitle[0]</div>
                     <p>
-                        蘭嶼的海真的好美好喜歡，下次真的希望還可以看到這麽漂亮的海洋和這麼豐富的海底生態，而且再次覺得無光害的蘭嶼，太適合觀星星了，一大片的星空真的是在台北想也想不到的場景，希望下次可以用照片紀錄下眼睛所看到的風景！
+                        @Model.program.fComContent[0]
                     </p>
                         <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="myImg" />
                     <div id="myModal" class="modal">
@@ -156,7 +148,32 @@
                         <div id="caption"></div>
                     </div>
                 </div>
-            </div>
+                </div>
+            }
+            else
+            {
+                <div class="comments-title"><p>旅客評價</p></div>
+                <div class="be-comment">
+                    <div class="be-img-comment">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                    </div>
+                    <div class="comments-title">
+                        <span class="rating">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                    </svg>
+                                </i>
+                            }
+                        </span>
+                    </div>
+                    <div class="be-comment-text">
+                        <div class="be-comment-title">尚未有評論</div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
    
@@ -317,56 +334,7 @@
             </div>
         </div>
     </div>
-
-@*     <div class="plan-container">
-        <div class="naccs">
-            <div class="comments-title"><p>行程說明</p></div>
-            <hr />
-            <div class="grid">
-                <div class="gc gc--1-of-3">
-                    <div class="menu">
-                        <div class="active"><span class="light"></span><span>第一天</span></div>
-                        <div><span class="light"></span><span>第二天</span></div>
-                        <div><span class="light"></span><span>第三天</span></div>
-                    </div>
-                </div>
-                <div class="gc gc--2-of-3">
-                    <ul class="nacc">
-                        <li class="active">
-                            <div>
-                                <p>
-                                    台東火車站至富岡漁港接駁->台東搭乘豪華客輪前往蘭嶼->抵達蘭嶼開元港->民宿專車接往住宿辦理 check in->騎車環島蘭嶼->在海岸邊欣賞美麗的蘭嶼日落->返回民宿
-                                </p>
-                                <div class="image-container">
-                                    <img src="~/images/蘭嶼.jpg" alt="Day 1 Image" class="w-300 h-200" />
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <p>
-                                    前往蘭嶼最佳欣賞日出地點->東清灣的朝陽景色與充滿部落風情的拼板舟 (自費行程、當地預約、現場報價)->從軍艦岩望出的視角，您可在此拍攝到日出從海面升起->蘭嶼浮潛->返回民宿
-                                </p>
-                                <div class="image-container">
-                                    <img src="~/images/蘭嶼舊燈塔.jpg" alt="Day 1 Image" class="w-300 h-200" />
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <p>
-                                    民宿 check out->蘭嶼地下屋導覽->搭乘客輪回台東->台東富岡漁港至台東火車站接駁
-                                </p>
-                                <div class="image-container">
-                                    <img src="~/images/蘭嶼情人洞.jpg" alt="Day 1 Image" class="w-300 h-200" />
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> *@
+    
     <div class="plan-container">
         <div class="comments-title">
             <p>體驗地點</p>
@@ -375,7 +343,73 @@
         <hr />
         <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
     </div>
+    @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
+            {
+        <div class="plan-container">
+            <div class="be-comment-block">
+                <div class="comments-title" id="commentdetail"><p>旅客評價</p></div>
+                <hr />
 
+                @for (int comIndex = 0; comIndex < Model.program.fComMem.Count; comIndex++)
+                {
+                    <div class="be-comment" style="margin-bottom:40px">
+                        <div class="be-img-comment">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                        </div>
+                        <div class="comment-header">
+                            @if (Model.program.fComMem[comIndex] != null)
+                            {
+                                if (Model.program.fComMemGender[comIndex] == "男")
+                                {
+                                    <span class="be-comment-name">@Model.program.fComMem[comIndex] 先生</span>
+                                }
+                                else if (Model.program.fComMemGender[comIndex] == "女")
+                                {
+                                    <span class="be-comment-name">@Model.program.fComMem[comIndex] 小姐</span>
+                                }
+                            }
+                            <span class="be-comment-time">@Model.program.fCommentDate[comIndex]</span>
+                        </div>
+                        <div class="comments-title">
+                            <span class="rating">
+                                @for (int i = 1; i <= Model.program.fComScore[comIndex]; i++)
+                                {
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                        </svg>
+                                    </i>
+                                }
+                                @for (int i = Model.program.fComScore[comIndex] + 1; i <= 5; i++)
+                                {
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                        </svg>
+                                    </i>
+                                }
+                            </span>
+                        </div>
+
+                        <div class="be-comment-text">
+                            <div class="be-comment-title">@Model.program.fComTitle[comIndex]</div>
+                            <p>
+                                @Model.program.fComContent[comIndex]
+                            </p>
+                            <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="myImg" />
+                            <div id="myModal" class="modal">
+                                <div class="close">&times;</div>
+                                <img class="modal-content" id="img01">
+                                <div id="caption"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            
+            
+        </div>
+    </div>
+    }
 </div>
 @section Scripts{
 
@@ -516,24 +550,6 @@
             currentDate = new Date();
             showCalendar(currentDate);
         }
-
-        // Function to create a day element for the calendar
-        // function createDayElement(date, className) {
-        //     let dayElement = document.createElement('div');
-        //     dayElement.className = 'day';
-        //     dayElement.classList.add(className);
-        //     dayElement.textContent = date.getDate();
-
-
-        //     if (availableDates.includes(formatDate(date))) {
-        //         dayElement.classList.add('available-date');
-        //     }
-
-        //     if (date < new Date()) {
-        //         dayElement.classList.add('expired-date');
-        //     }
-        //     return dayElement;
-        // }
 
         function createDayElement(date, className) {
             let dayElement = document.createElement('div');
@@ -704,5 +720,4 @@
 
     </script>
     }
-@*<script src="~/js/CalendarJS.js"></script>*@
 
