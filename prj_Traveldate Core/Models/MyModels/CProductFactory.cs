@@ -112,6 +112,20 @@ namespace prj_Traveldate_Core.Models.MyModels
             List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
             return price;
         }
+        //多少錢起的價格
+        public decimal? loadPlanpriceStart(int id)
+        {
+            decimal? price = db.Trips.Where(p => p.ProductId == id).OrderBy(t=>t.UnitPrice).Select(t => t.UnitPrice).FirstOrDefault();
+            return price;
+        }
+
+
+        //loadtripdetail
+        public List<string> loadTripdetails(int id)
+        {
+            List<string> tripdetail = db.TripDetails.Where(td => td.ProductId == id).OrderBy(t => t.TripDay).Select(t => t.TripDetail1).ToList();
+            return tripdetail;
+        }
 
 
 
