@@ -102,12 +102,16 @@
                 <div class="comment-header">
                     @if(Model.member.LastName != null)
                     {
-                        <span class="be-comment-name">@Model.member.LastName 先生</span>
-                    }else{
-                        <span class="be-comment-name">古先生</span>
+                        if(Model.member.Gender == "男")
+                        {
+                            <span class="be-comment-name">@Model.member.LastName 先生</span>
+                        }
+                        else if (Model.member.Gender == "女")
+                        {
+                            <span class="be-comment-name">@Model.member.LastName 小姐</span>
+                        }
                     }
-                    
-                    <span class="be-comment-time">May 27, 2018</span>
+                    <span class="be-comment-time">@Model.program.fCommentDate</span>
 
 
                 </div>

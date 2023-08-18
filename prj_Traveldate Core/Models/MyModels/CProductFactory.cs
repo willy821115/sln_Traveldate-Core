@@ -104,6 +104,21 @@ namespace prj_Traveldate_Core.Models.MyModels
                             select m.LastName).FirstOrDefault();
             return commember;
         }
+        public string memgender(int id)
+        {
+            var membergen = (from c in db.CommentLists
+                             join m in db.Members on c.MemberId equals m.MemberId
+                             where c.ProductId == id
+                             select m.Gender).FirstOrDefault();
+            return membergen;
+        }
+        public string loadCommentDate(int id)
+        {
+            DateTime? comdate = db.CommentLists.Where(c=>c.ProductId ==id).Select(c=>c.Date).FirstOrDefault();
+            string comdatetime = comdate?.ToString("yyyy/MM/dd");
+            return comdatetime;
+        }
+
 
 
         //loadTripPrice
