@@ -9,6 +9,6 @@
 
         public decimal unitPrice { get; set; }
 
-        public int? commentScore { get; set; }
+        public double? commentScore { get; set; }
     }
 }
