@@ -29,9 +29,11 @@ public partial class Member
 
     public int? Discount { get; set; }
 
+    public bool? Enable { get; set; }
+
     public byte[]? Photo { get; set; }
 
-    public bool? Enable { get; set; }
+    public string? ImagePath { get; set; }
 
     public virtual CityList? City { get; set; }
 

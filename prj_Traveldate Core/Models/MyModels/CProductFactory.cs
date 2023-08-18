@@ -96,29 +96,46 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         //Comment
-        public string loadCommentMem(int id)
+        public List<string> loadCommentMem(int id)
         {
-            var commember = (from c in db.CommentLists
+            List<string> commember = (from c in db.CommentLists
                             join m in db.Members on c.MemberId equals m.MemberId
                             where c.ProductId == id
-                            select m.LastName).FirstOrDefault();
+                            select m.LastName).ToList();
             return commember;
         }
-        public string memgender(int id)
+        public List<string> memgender(int id)
         {
-            var membergen = (from c in db.CommentLists
+            List<string> membergen = (from c in db.CommentLists
                              join m in db.Members on c.MemberId equals m.MemberId
                              where c.ProductId == id
-                             select m.Gender).FirstOrDefault();
+                             select m.Gender).ToList();
             return membergen;
         }
-        public string loadCommentDate(int id)
+        public List<string> loadCommentDate(int id)
         {
-            DateTime? comdate = db.CommentLists.Where(c=>c.ProductId ==id).Select(c=>c.Date).FirstOrDefault();
-            string comdatetime = comdate?.ToString("yyyy/MM/dd");
+            List<DateTime?> comdate = db.CommentLists.Where(c=>c.ProductId ==id).Select(c=>c.Date).ToList();
+            List<string> comdatetime = comdate.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
             return comdatetime;
         }
 
+        public List<int?> loadcommentScore(int id)
+        {
+            List<int?> comScore = db.CommentLists.Where(c=>c.ProductId==id).Select(c=>c.CommentScore).ToList();
+            return comScore;
+        }
+
+        public List<string> loadCommentContent(int id)
+        {
+            List<string> comcontent = db.CommentLists.Where(c => c.ProductId == id).Select(c=>c.Content).ToList();
+            return comcontent;
+        }
+
+        public List<string> loadCommentTitle(int id)
+        {
+            List<string> comtiltle = db.CommentLists.Where(c => c.ProductId == id).Select(c => c.Title).ToList();
+            return comtiltle;
+        }
 
 
         //loadTripPrice

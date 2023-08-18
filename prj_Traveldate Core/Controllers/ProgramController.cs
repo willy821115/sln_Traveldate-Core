@@ -23,21 +23,18 @@ namespace prj_Traveldate_Core.Controllers
             vm.product.Address= pf.loadAddress((int)id);
             vm.program.fOutline = pf.loadOutlineDetails((int)id);
             vm.city.City = pf.loadCity((int)id);
-            vm.member.LastName=pf.loadCommentMem((int)id);
+            vm.program.fComMem=pf.loadCommentMem((int)id);
             vm.program.fPlanPrice = pf.loadPlanprice((int)id);
             vm.program.fTripDetails = pf.loadTripdetails((int)id);
             vm.program.fTripPrice = pf.loadPlanpriceStart((int)id);
-            vm.member.Gender = pf.memgender((int)id);
+            vm.program.fComMemGender= pf.memgender((int)id);
             vm.program.fCommentDate = pf.loadCommentDate((int)id);
+            vm.program.fComScore = pf.loadcommentScore((int)id);
+            vm.program.fComTitle = pf.loadCommentTitle((int)id);
+            vm.program.fComContent = pf.loadCommentContent((int)id);
             return View(vm);
         }
-        //public IActionResult List()
-        //{
-        //    TraveldateContext db = new TraveldateContext();
-        //    var datas = from p in db.ProductLists
-        //                select p;
-        //    return View(datas);
-        //}
+        
 
         public IActionResult Address(int id)
         {
@@ -45,6 +42,13 @@ namespace prj_Traveldate_Core.Controllers
             var address = db.ProductLists.Where(p => p.ProductId == id).Select(p => p.Address).ToList();
             return Json(address);
         }
+
+        //public IActionResult Addtocart(int id)
+        //{
+
+        //}
+
+
 
     }
 }
