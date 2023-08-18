@@ -57,16 +57,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             var address = db.ProductLists.Where(p=>p.ProductId==id).Select(p => p.Address).FirstOrDefault();
             return address;
         }
-        //揪團的地址
-
-        public List<string> loadForumAddress(int id)
-        {
-            List<string> forumaddress = db.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
-
-            return forumaddress;
-        }
-
-
+        
 
         public string loadPlan(int id)
         {
