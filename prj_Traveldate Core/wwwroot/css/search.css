@@ -1,7 +1,9 @@
 ﻿/****************************************共同區********************************************/
 body {
-    background-color: #DCE5E2;
-    /*background-color: #fff;*/
+    /* background-color: #DCE5E2;*/ /*原本的*/
+    /*background-color: #fff;*/ /*白色*/
+    /*background-color: #EDF2F0;*/ /*偏綠+亮白*/
+    background-color: #f9fbfa;
 }
 
 .filter_block,
@@ -263,6 +265,6 @@ input,
 }
 
 /**************************導覽列************************************/
-.nav-height-mt{
-    margin-top:143.39px;
+.nav-height-mt {
+    margin-top: 127.39px;
 }

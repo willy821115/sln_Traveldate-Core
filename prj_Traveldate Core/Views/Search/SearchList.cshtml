@@ -15,12 +15,14 @@
             padding: 15px;
             height: 250px;
         }
-        
+        .card{
+            border:0px solid white;
+        }
     </style>
 }
 
 <div class="row justify-content-center">
-    <div class="col-3 border g-0 ps-2 pe-2 me-4">
+    <div class="col-3 g-0 ps-2 pe-2 me-4">
         <div class="filter_block ">
             <div class="flex-column">
                 <label class="fs-4 pl-2 pt-2">篩選目的地</label>
@@ -170,9 +172,9 @@
         </div>
     </div>
 
-    <div class="col-8 border g-0 justify-content-end">
+    <div class="col-8 g-0 justify-content-end">
         <div class="row g-0">
-            <div class="border col-12 filter_block">
+            <div class="col-12 filter_block">
                 <div class="divide-line pl-3">
                     <span id="filter-total" class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">項體驗行程</span>
                     <div id="selected-checkboxes"></div>
@@ -222,13 +224,15 @@
                                    
                         </div>
                         <div class="col-md-8 pl-0">
-                            <div class="card-body">
+                            <div class="card-body d-flex justify-content-around row">
+                                <div class="pl-4 pr-4">
                                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
+                                            <p class="card-text  mb-2">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
                                 <p class="card-text">
                                     <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
                                     <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
                                 </p>
+                                        </div>
                                 <div class="row align-items-end">
                                     <div class="col d-flex align-items-center">
                                         <div class="rectangle-container me-2 d-flex position-relative">

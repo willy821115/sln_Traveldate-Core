@@ -1,7 +1,7 @@
 
 const maxValue = 5;
 const minValue = 0;
-const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
+const unitWidth = 70 / (maxValue - minValue); // 根據最大值調整寬度
 
 // 獲取所有的 star-rating-div 元素
 const rectangles = document.querySelectorAll(".rectangle");
