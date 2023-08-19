@@ -89,12 +89,12 @@ namespace prj_Traveldate_Core.Controllers
         {
             if (!string.IsNullOrEmpty(keyword) && keyword!="undefined")
             {
-                var filterdtrips = _context.Trips
+                var filteredTrips = _context.Trips
                     .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
                     .Where(t=>t.Product.ProductName.Contains(keyword))
                     .Select(t => new { t.Product.ProductName, t.Product.ProductId })
                     .Distinct().ToList();
-                return Json(filterdtrips);
+                return Json(filteredTrips);
             }
             var trips = _context.Trips
                 .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)

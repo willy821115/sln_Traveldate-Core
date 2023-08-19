@@ -1,27 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 using X.PagedList;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace prj_Traveldate_Core.Controllers
 {
     public class SearchController : Controller
     {
-        CFilteredProductFactory _products = null;
-        CSearchListViewModel _vm = null;
-        
-        public SearchController()
+        CFilteredProductFactory _products = new CFilteredProductFactory();
+        CSearchListViewModel _vm = new CSearchListViewModel();
+        TraveldateContext _context = null;
+        public SearchController(TraveldateContext context)
         {
-            _vm = new CSearchListViewModel();
-            _products = new CFilteredProductFactory();
-            _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
-           
+            _context = context;
         }
 
         public IActionResult SearchList(CKeywordViewModel keyword, int? page)
         {
-             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+            _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
             if (!string.IsNullOrEmpty(keyword.txtKeyword))
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().Where(p => p.productName.Contains(keyword.txtKeyword)).ToList();
@@ -36,25 +35,48 @@ namespace prj_Traveldate_Core.Controllers
             //_vm.pages = new StaticPagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize, _vm.filterProducts.Count);
             return View(_vm);
         }
-        public IActionResult sortBy(string status)
+        public IActionResult sortBy(string txtKeyword, string sortType)
         {
-                if (status == "hot")
-                {
-                    _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.orederCount).ToList();//商品cards;
-                    return PartialView(_vm);
-                }
-                if (status == "comment")
-                {
-                    _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.commentAvgScore).ToList();//商品cards;
-                    return PartialView(_vm);
-                }
-                if (status == "price")
-                {
-                    _vm.filterProducts = _vm.filterProducts.OrderBy(p => p.price).ToList();//商品cards;
-                    return PartialView(_vm);
-                }
+            _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+            if (!string.IsNullOrEmpty(txtKeyword))
+            {
+                _vm.filterProducts = _products.qureyFilterProductsInfo().Where(p => p.productName.Contains(txtKeyword)).ToList();
                 return PartialView(_vm);
             }
+            if (sortType == "hot")
+            {
+                _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.orederCount).ToList();//商品cards;
+                return PartialView(_vm);
+            }
+            if (sortType == "comment")
+            {
+                _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.commentAvgScore).ToList();//商品cards;
+                return PartialView(_vm);
+            }
+            if (sortType == "price")
+            {
+                _vm.filterProducts = _vm.filterProducts.OrderBy(p => p.price).ToList();//商品cards;
+                return PartialView(_vm);
+            }
+            return PartialView(_vm);
+        }
+        //public IActionResult prodTest()
+        //{
+
+        //}
+        public IActionResult filterCity(string? txtKeyword)
+        {
+            if (!string.IsNullOrEmpty(txtKeyword) && txtKeyword != "undefined")
+            {
+                var filterCities = _context.ProductLists
+                    .Where(p=> _products.confirmedId.Contains(p.ProductId))
+                    .Where(c=>c.City.City.Contains(txtKeyword))
+                    .Select(c=>new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0,2)}).ToList();
+                return Json(filterCities);
+            }
+           var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).ToList();
+            return Json(filterCitiess);
         }
     }
+}
 
