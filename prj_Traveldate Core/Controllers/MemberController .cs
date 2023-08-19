@@ -11,21 +11,21 @@ namespace prj_Traveldate_Core.Controllers
     public class MemberController : Controller
     {
         TraveldateContext context = new TraveldateContext();
-        public IActionResult Index() //左側欄V
+        public IActionResult Index() // 左側欄 先維持原版V
         {
             return View();
         }
-        public IActionResult basicInfo() //基本資料設定V
+        public IActionResult basicInfo() //基本資料設定 V
         {
             var datas = from mm in context.Members where mm.MemberId == 1 select mm;
 
             return View(datas);
         }
-        public IActionResult passwordChange() //密碼更改V
+        public IActionResult passwordChange() //密碼更改 先維持原版V
         {
                 return View();
         }
-        public IActionResult couponList(int? id = 1) //優惠券清單V
+        public IActionResult couponList(int? id = 1) //優惠券清單 new V
         {
             var datas = from m in context.Members
                         join c in context.Coupons
@@ -52,7 +52,7 @@ namespace prj_Traveldate_Core.Controllers
             //context.SaveChanges();
             return View();
         }
-        public IActionResult showCompanion(int? id = 1) //顯示常用旅客
+        public IActionResult showCompanion(int? id = 1) //顯示常用旅伴
         {
             var datas = from m in context.Members
                         join cm in context.Companions
@@ -67,7 +67,7 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-        public IActionResult favoriteList(int? id = 1) //收藏清單V
+        public IActionResult favoriteList(int? id = 1) //收藏清單new V
         {
             var datas = from pl in context.ProductLists
                         join f in context.Favorites
@@ -80,11 +80,10 @@ namespace prj_Traveldate_Core.Controllers
                             ProductName = pl.ProductName,
                             //Description = pl.Description,
                             Outline = pl.Outline,
-
                         };
             return View(datas.Distinct());
         }
-        public IActionResult orderList(int? id = 1) //會員訂單
+        public IActionResult orderList(int? id = 1) //會員訂單new V
         {
             //var datas = from tripde in context.TripDetails
             //            join trip in context.Trips
@@ -112,7 +111,25 @@ namespace prj_Traveldate_Core.Controllers
                         select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
             return View(datas.Distinct());
         }
-        public IActionResult commentList(int? id = 1) //我的評論V
+        //public IActionResult commentList(int? id = 1) //我的評論V
+        //{
+        //    var datas = from m in context.Members
+        //                join cm in context.CommentLists
+        //                on m.MemberId equals cm.MemberId
+        //                join pl in context.ProductLists
+        //                on cm.ProductId equals pl.ProductId
+        //                where m.MemberId == id
+        //                select new CcommentListViewModel
+        //                {
+        //                    Title = cm.Title,
+        //                    Content = cm.Content,
+        //                    CommentScore = cm.CommentScore,
+        //                    Date = cm.Date,
+        //                    ProductName = pl.ProductName
+        //                };
+        //    return View(datas);
+        //}
+        public IActionResult commentList(int? id = 1) //我的評論new V
         {
             var datas = from m in context.Members
                         join cm in context.CommentLists
@@ -131,11 +148,12 @@ namespace prj_Traveldate_Core.Controllers
             return View(datas);
         }
 
-        public IActionResult addcomment() //添加評論V
+        public IActionResult addcomment() //添加評論 先維持舊版V
         {
             return View();
         }
-        public IActionResult forumList(int? id = 1) //我的揪團V
+
+        public IActionResult forumList(int? id = 1) //我的揪團new V
         {
             var datas = from m in context.Members
                         join fl in context.ForumLists

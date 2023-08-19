@@ -102,9 +102,33 @@ height {
     border-radius:10px;
 }
 .carousel-inner {
-    margin-top: 1em;
+
+
     border-radius: 10px;
+    top: -100px;
 }
 /*.passwordposition1 {
     margin-left: 525px
 }*/
+/*==============================================我是分隔線=================================================*/
+/*20230819 0100 金新增*/
+.left {
+    left: -20PX;
+    top: 10px;
+    bottom: 100px;
+    float: left;
+}
+
+#table_id_wrapper.dataTables_wrapper {
+
+    
+    
+    left: 250PX;
+    top:-600px;
+    bottom:50px;
+    position:relative;
+    width:85%;
+    height:80%
+}
+}
+/*==============================================我是分隔線=================================================*/

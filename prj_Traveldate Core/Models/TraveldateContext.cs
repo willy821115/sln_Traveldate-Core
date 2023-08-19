@@ -351,7 +351,7 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.Idnumber)
                 .HasMaxLength(50)
                 .HasColumnName("IDNumber");
-            entity.Property(e => e.ImagePath).HasMaxLength(50);
+            //entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.LevelId).HasColumnName("LevelID");
             entity.Property(e => e.Password).HasMaxLength(50);

@@ -21,7 +21,7 @@
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                             <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
@@ -45,14 +45,14 @@
                 <div class="form-group"><label for="Email">聯絡信箱</label><input type="text" id="txtEmail" class="form-control" /></div>
                 <div class="form-group">
                     <button type="submit" class="btn my-btn-primary">增加</button>
-                    <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("常用旅客", "showCompanion","Member","","")</button>
+                    <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+@*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
             <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
@@ -73,7 +73,7 @@
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
     </div>
-</div>
+</div>*@
 
     @section Styles
     {
