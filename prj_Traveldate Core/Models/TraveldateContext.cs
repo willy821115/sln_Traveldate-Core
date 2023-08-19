@@ -87,7 +87,8 @@ public partial class TraveldateContext : DbContext
     {
         modelBuilder.Entity<ArticlePhoto>(entity =>
         {
-            entity.Property(e => e.ArticlePhotoId).HasColumnName("ArticlePhotoID");
+            
+     entity.Property(e => e.ArticlePhotoId).HasColumnName("ArticlePhotoID");
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.ImagePath).HasMaxLength(50);
 
@@ -118,7 +119,8 @@ public partial class TraveldateContext : DbContext
             entity.ToTable("CommentList");
 
             entity.Property(e => e.CommentId).HasColumnName("CommentID");
-            entity.Property(e => e.Date).HasColumnType("datetime");
+            
+           entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Title).HasMaxLength(50);
@@ -351,7 +353,7 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.Idnumber)
                 .HasMaxLength(50)
                 .HasColumnName("IDNumber");
-            entity.Property(e => e.ImagePath).HasMaxLength(50);
+            //entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.LevelId).HasColumnName("LevelID");
             entity.Property(e => e.Password).HasMaxLength(50);

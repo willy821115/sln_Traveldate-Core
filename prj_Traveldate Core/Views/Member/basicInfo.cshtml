@@ -1,4 +1,4 @@
-﻿@model IEnumerable<prj_Traveldate_Core.Models.Member>
+﻿@model prj_Traveldate_Core.Models.Member
 @{
     ViewData["Title"] = "basicInfo";
 }
@@ -22,7 +22,7 @@
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                             <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴資料", "addCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
                             <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
@@ -34,50 +34,80 @@
         </div>
 
             <!-- 右半邊 - 內容容器 -->
+            
         <div class="col-md-9">
+            
             <h3 class="mb-4">基本資料設定</h3>
             <div id="rightPanel">
-                @foreach (var member in Model)
-                {
+@*                @foreach (var member in Model)
+                {*@
+                @using (Html.BeginForm("basicInfo","Member",FormMethod.Post)){
                     <div class="form-group">
-                        <label for="txtLastName">姓</label>
-                        <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />
+                        @*<label for="txtMemberId">MemberId</label>*@
+                            @*<input type="text" id="txtMemberId" class="form-control" value="@member.MemberId" />*@
+                        @*<label class="control-label">MemberId</label>*@
+                    @Html.LabelFor(model=>model.MemberId)
+                        @Html.EditorFor(model=>model.MemberId)
+                        </div>
+                    <div class="form-group">
+@*                        <label for="txtLastName">姓</label>
+                        <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />*@
+                    @*<label class="control-label">LastName</label>*@
+                    @Html.LabelFor(model=>model.LastName)
+                    @Html.EditorFor(model=>model.LastName)
                     </div>
                     <div class="form-group">
-                        <label for="txtFirstName">名</label>
-                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />
+@*                        <label for="txtFirstName">名</label>
+                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />*@
+                    @*<label class="control-label">FirstName</label>*@
+                    @Html.LabelFor(model=>model.FirstName)
+                    @Html.EditorFor(model=>model.FirstName)
                     </div>
                     <div>
-                        <label for="txtGender">性別</label>
-                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />
+@*                        <label for="txtGender">性別</label>
+                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />*@
+                    @*<label class="control-label">Gender</label>*@
+                    @Html.LabelFor(model=>model.Gender)
+                    @Html.EditorFor(model=>model.Gender)
                     </div>
 
                     <div class="form-group">
-                        <label for="txtBirthDate">出生日期</label>
-                        @{
-                            //DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
-                            string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
-                        }
-                        <input type="text" id="date" class="form-control" value=@member.BirthDate />
+@*                        <label for="txtBirthDate">出生日期</label>
+                        @{*@
+                            /@*/DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
+                        //    string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
+                        //}
+                        //<input type="text" id="date" class="form-control" value=@member.BirthDate />*@
+                    @*<label class="control-label">BirthDate</label>*@
+                    @Html.LabelFor(model=>model.BirthDate)
+                    @Html.EditorFor(model=>model.BirthDate)
                     </div>
                     <div class="form-group">
-                        <label for="txtPhoneNumber">手機號碼</label>
-                        <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />
+@*@*                        <label for="txtPhoneNumber">手機號碼</label>
+                        <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />*@
+                    @*<label class="control-label">Phone</label>*@
+                    @Html.LabelFor(model=>model.Phone)
+                    @Html.EditorFor(model=>model.Phone)
                     </div>
                     <div class="form-group">
-                        <label for="txtEmail">聯絡信箱</label>
-                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />
+@*@*                        <label for="txtEmail">聯絡信箱</label>
+                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />*@
+                    @Html.LabelFor(model=>model.Email)
+                    @Html.EditorFor(model=>model.Email)
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary">儲存</button>
                     </div>
+                @*}*@
                 }
             </div>
+            
         </div>
-     </div>
-</div>
+
+
+
     
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+@*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
             <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
@@ -98,7 +128,7 @@
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
     </div>
-</div>
+</div>*@
 
     @section Styles
     {

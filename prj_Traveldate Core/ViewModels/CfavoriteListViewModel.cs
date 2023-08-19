@@ -29,6 +29,11 @@ namespace prj_Traveldate_Core.ViewModels
             _favorite=new Favorite();
             _productList=new ProductList();
         }
+        public int MemberId
+        {
+            get { return _member.MemberId; }
+            set { _member.MemberId = value; }
+        }
         public string? ProductName
         {
             get { return _productList.ProductName; }
