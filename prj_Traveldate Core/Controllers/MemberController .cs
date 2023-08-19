@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.ViewModels;
 using System.Globalization;
+using System.Linq;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -17,13 +19,56 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult basicInfo() //基本資料設定 V
         {
-            var datas = from mm in context.Members where mm.MemberId == 1 select mm;
+            int MemberId = 3;
+            Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+           // var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
 
-            return View(datas);
+            return View(mem);
         }
+        [HttpPost]
+        public IActionResult basicInfo(Member edit) //基本資料設定edit V
+        {
+            int MemberId = 3;
+            Member mDB = context.Members.FirstOrDefault(m=>m.MemberId == edit.MemberId);          
+                if (mDB != null)
+            {
+                 
+                    mDB.FirstName = edit.FirstName;
+                    mDB.LastName = edit.LastName;
+                    mDB.Gender = edit.Gender;
+                    mDB.BirthDate = edit.BirthDate;
+                    mDB.Photo = edit.Photo;
+                    mDB.Email = edit.Email;
+
+                    context.SaveChanges(); 
+            }
+
+            return RedirectToAction("Index");
+        }
+        
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
-                return View();
+            int MemberId = 3;
+            Member Password = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            return View();
+        }
+        [HttpPost]
+        public IActionResult passwordChange(Member edit) //密碼更改 edit
+        {
+            //int MemberId = 3;
+            //string Password=context.Members.FirstOrDefault(m=>m.Password==)
+
+            //if (edit == null) {
+            //    return View();
+            //}
+            //Member mDB = context.Members.FirstOrDefault(m => m.Password == edit.Password);
+            //if (mDB != null)
+            //{
+            //    mDB.Password = edit.Password;
+
+            //    context.SaveChanges();
+            //}
+            return View();          
         }
         public IActionResult couponList(int? id = 1) //優惠券清單 new V
         {
@@ -43,16 +88,38 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-
-        /*public IActionResult addCompanion(Companion cm) *///新增旅伴資料
         public IActionResult addCompanion() //新增旅伴資料
         {
-            //int MemberId = 1;
-            //context.Companions.Add(cm);
-            //context.SaveChanges();
-            return View();
+            int MemberId = 3;
+            CCompanionViewModel m =new CCompanionViewModel();
+            m.MemberId = MemberId;
+            return View(m);
         }
-        public IActionResult showCompanion(int? id = 1) //顯示常用旅伴
+        [HttpPost]
+        public IActionResult addCompanion(CCompanionViewModel vm) //新增旅伴資料Create V
+        {            
+                if (
+                    (string.IsNullOrEmpty(vm.LastName)) ||
+                    (string.IsNullOrEmpty(vm.FirstName)) ||
+                    (string.IsNullOrEmpty(vm.Phone))
+                  )
+                    return RedirectToAction("showCompanion");         
+            else
+            {
+                Companion cpDB = new Companion();
+                if (cpDB != null)
+                {
+                    cpDB.LastName = vm.LastName;
+                    cpDB.FirstName = vm.FirstName;
+                    cpDB.Phone = vm.Phone;
+
+                    context.Companions.Add(cpDB);
+                    context.SaveChanges();
+                }               
+            }
+            return RedirectToAction("index");
+        }
+        public IActionResult showCompanion(int? id = 3) //顯示常用旅伴
         {
             var datas = from m in context.Members
                         join cm in context.Companions
@@ -67,8 +134,9 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-        public IActionResult favoriteList(int? id = 1) //收藏清單new V
+        public IActionResult favoriteList(int? id=3) //收藏清單new V
         {
+            
             var datas = from pl in context.ProductLists
                         join f in context.Favorites
                         on pl.ProductId equals f.ProductId
@@ -82,6 +150,20 @@ namespace prj_Traveldate_Core.Controllers
                             Outline = pl.Outline,
                         };
             return View(datas.Distinct());
+        }
+        [HttpPost]
+        public IActionResult favoriteList(int ProductId, int MemberId) //收藏清單delete 
+        {         
+            //Favorite fDB = new Favorite();
+            var fDB=context.Favorites.FirstOrDefault(f=>f.ProductId== ProductId&& f.MemberId== MemberId);
+            //Favorite fav = context.Favorites.FirstOrDefault(fa => fa.MemberId == vm.MemberId);
+                if(fDB != null)
+                {
+                    context.Favorites.Remove(fDB);
+                    context.SaveChanges();
+                }
+            
+            return RedirectToAction("favoriteList");
         }
         public IActionResult orderList(int? id = 1) //會員訂單new V
         {
