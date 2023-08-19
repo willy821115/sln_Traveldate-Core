@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
@@ -48,27 +49,48 @@ namespace prj_Traveldate_Core.Controllers
         
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
+            //int MemberId = 3;
+            //CpasswordChangeViewModel mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             int MemberId = 3;
-            Member Password = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-            return View();
+            CpasswordChangeViewModel prd=new CpasswordChangeViewModel();
+            //Member mem=context.Members.FirstOrDefault(m=>m.MemberId==MemberId);
+            //Member m=context.Members.FirstOrDefault(m=>m.Password==prd.txtNewPassword);
+            prd.MemberId = MemberId;
+            return View(prd);
         }
         [HttpPost]
-        public IActionResult passwordChange(Member edit) //密碼更改 edit
+        public IActionResult passwordChange(CpasswordChangeViewModel edit) //密碼更改 edit V
         {
-            //int MemberId = 3;
-            //string Password=context.Members.FirstOrDefault(m=>m.Password==)
+            if (string.IsNullOrEmpty(edit.txtNewPassword) || string.IsNullOrEmpty(edit.txtCheckPassword))
+            {
+                ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不得為空白，請確認後再次提交");
+                return View(edit);
+            }
 
-            //if (edit == null) {
-            //    return View();
-            //}
-            //Member mDB = context.Members.FirstOrDefault(m => m.Password == edit.Password);
-            //if (mDB != null)
-            //{
-            //    mDB.Password = edit.Password;
+            int memberId = 3; 
+            Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
-            //    context.SaveChanges();
-            //}
-            return View();          
+            if (mDB != null)
+            {
+                if (edit.txtNewPassword == edit.txtCheckPassword)
+                {
+                    mDB.Password = edit.txtNewPassword;
+                    //context.Members.Add(mDB);
+                    context.Entry(mDB).State=EntityState.Modified;
+                    context.SaveChanges();
+                    return RedirectToAction("passwordChange");
+                }             
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不一致，請再次確認後提交");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "找不到對應的會員。");
+            }
+
+            return View("Index");
         }
         public IActionResult couponList(int? id = 1) //優惠券清單 new V
         {
@@ -146,25 +168,27 @@ namespace prj_Traveldate_Core.Controllers
                         select new CfavoriteListViewModel
                         {
                             ProductName = pl.ProductName,
+                            ProductId=pl.ProductId,
+                            MemberId=m.MemberId,
                             //Description = pl.Description,
                             Outline = pl.Outline,
                         };
             return View(datas.Distinct());
         }
-        [HttpPost]
-        public IActionResult favoriteList(int ProductId, int MemberId) //收藏清單delete 
-        {         
-            //Favorite fDB = new Favorite();
-            var fDB=context.Favorites.FirstOrDefault(f=>f.ProductId== ProductId&& f.MemberId== MemberId);
-            //Favorite fav = context.Favorites.FirstOrDefault(fa => fa.MemberId == vm.MemberId);
-                if(fDB != null)
-                {
-                    context.Favorites.Remove(fDB);
-                    context.SaveChanges();
-                }
+        //[HttpPost]
+        //public IActionResult favoriteList(int ProductId, int MemberId) //收藏清單delete 
+        //{
+        //    ////Favorite fDB = new Favorite();
+        //    //var fDB = from f in context.Favorites where f.FavoriteId == ProductId && f.MemberId == MemberId select
+        //    ////Favorite fav = context.Favorites.FirstOrDefault(fa => fa.MemberId == vm.MemberId);
+        //    //    if(fDB != null)
+        //    //    {
+        //    //        context.Favorites.Remove(fDB);
+        //    //        context.SaveChanges();
+        //    //    }
             
-            return RedirectToAction("favoriteList");
-        }
+        //    //return RedirectToAction("favoriteList");
+        //}
         public IActionResult orderList(int? id = 1) //會員訂單new V
         {
             //var datas = from tripde in context.TripDetails

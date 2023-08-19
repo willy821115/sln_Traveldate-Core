@@ -36,7 +36,7 @@
         <table id="table_id" class="display cell-border compact hover col-md-12">
             <thead>
                 <tr>
-                        <th></th>
+                        <th class="col-md-1"></th>
                         <th>優惠券名稱</th>
                         <th>折扣</th>
                         <th>描述</th>
@@ -48,7 +48,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>●</td>
+                <td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>
                             <td>@item.CouponName</td>
                             <td>@item.Discount</td>
                             <td>@item.Description</td>

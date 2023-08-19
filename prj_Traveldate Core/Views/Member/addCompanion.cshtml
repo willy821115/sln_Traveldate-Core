@@ -47,20 +47,22 @@
                     @*<div class="form-group"><label for="MemberId">Id</label><input type="text" id="txtLastName" class="form-control" /></div>*@
                     @*                <div class="form-group"><label for="LastName">姓</label><input type="text" id="txtLastName" class="form-control" /></div>*@
                     @Html.LabelFor(model=>model.LastName)
-                    @Html.EditorFor(model=>model.LastName)
+                    @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})
                     @*                    <div class="form-group"><label for="FirstName">名</label><input type="text" id="txtFirstName" class="form-control" /></div>*@
                     @Html.LabelFor(model=>model.FirstName)
-                    @Html.EditorFor(model=>model.FirstName)
+                    @Html.EditorFor(model=>model.FirstName,"",new {htmlAttributes=new{@class="form-control"}})
 
                     <div class="form-group"><label for="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select></div>
 
                     @*<div class="form-group"><label for="BirthDate">出生日期</label><input type="date" id="txtBirthDate" class="form-control" /></div>*@
                     @Html.LabelFor(model=>model.BirthDate)
-                    @Html.EditorFor(model=>model.BirthDate)
+                    @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
                     @*<div class="form-group"><label asp-for="txtRegion">地區</label><select id="txtRegion" class="form-control"><option value="">請選擇</option><option value="台北市">台北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option><option value="台中市">台中市</option><option value="台南市">台南市</option><option value="高雄市">高雄市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option><option value="基隆市">基隆市</option><option value="新竹市">新竹市</option><option value="嘉義市">嘉義市</option></select></div>*@
                     @*<div class="form-group"><label for="Phone">手機號碼</label><input type="text" id="txtPhoneNumber" class="form-control" /></div>*@
+                    
                     @Html.LabelFor(model=>model.Phone)
-                    @Html.EditorFor(model=>model.Phone)
+                    @Html.EditorFor(model=>model.Phone,"",new {htmlAttributes=new{@class="form-control"}})
+
                     <div class="form-group"><label for="Email">聯絡信箱</label><input type="text" id="txtEmail" class="form-control" /></div>
 
                     <div class="form-group">

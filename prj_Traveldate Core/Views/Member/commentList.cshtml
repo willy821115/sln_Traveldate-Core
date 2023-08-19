@@ -34,17 +34,18 @@
 
         <!-- 右半邊 - 內容容器 -->
 <h3 class="mb-4">我的評論</h3>
+
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
-                <th ></th>
+            <th ></th>
             <th class="col-md-2">商品名稱</th>
-                <th class="col-md-2">標題</th>
-                <th class="col-md-4">評論內容</th>
+            <th class="col-md-2">標題</th>
+            <th class="col-md-4">評論內容</th>
             <th class="col-md-1">您的評分</th>
-                <th class="col-md-2">評論日期</th>
-                <th class="col-md-1">操作</th>
-                    </tr>
+            <th class="col-md-2">評論日期</th>
+            <th class="col-md-1">操作</th>                  
+        </tr>
     </thead>
     <tbody>
            @{
@@ -52,8 +53,8 @@
              foreach (var item in Model) 
              {
               //count++;
-               <tr >
-                    <td >●</td>
+               <tr>
+                    <td><i class='far fa-comment-dots' style='font-size:24px'></i></td>
                     <td >@item.ProductName</td>
                     <td >@item.Title</td>
                     <td >@item.Content</td>
@@ -62,35 +63,12 @@
                    <td ><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
                </tr>
              }          
-@*                    <tr id="comment1" class="collapse">
-                        <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
-                    </tr>
-                    <tr data-toggle="collapse" data-target="#comment2">
-                        <td>澎湖一日遊</td>
-                        <td>整體感受不錯</td>
-                        <td>很好玩，推薦喜愛心豔陽的朋友。夏天太陽很大，要注意防曬</td>
-                        <td>5</td>
-                        <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
-                    </tr>
-                    <tr id="comment2" class="collapse">
-                        <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
-                    </tr>
-                    <tr data-toggle="collapse" data-target="#comment3">
-                        <td>宜蘭太平山二日遊</td>
-                        <td>安全性很高，值得參加遊</td>
-                        <td>我和先生參加的活動是雙人獨木舟，阿湯老師解釋很清楚，進行活動很安全，很棒的體驗。有機會下次會再參加。</td>
-                        <td>5</td>
-                        <td><input type="button" value="移除評論" class="btn my-btn-primary btn-sm" /></td>
-                    </tr>
-                    <tr id="comment3" class="collapse">
-                        <td colspan="5">額外評論內容：這是額外的評論，可以在這裡添加更多詳細內容。</td>
-                    </tr>*@
           }
     </tbody>
 </table>
 
 
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+@*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
             <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
@@ -111,7 +89,7 @@
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
     </div>
-</div>
+</div>*@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />

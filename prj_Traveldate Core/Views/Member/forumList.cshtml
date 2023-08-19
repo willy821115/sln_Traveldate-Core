@@ -37,6 +37,7 @@
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
+
             <th></th>
             <th class="col-md-2">行程名稱</th>
             <th>發布日期</th>
@@ -52,7 +53,9 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <td>●</td>
+
+                    <td><i class="material-icons" style="font-size:24px;margin-left:24px">exposure_plus_1</i></td>
+                    
                     <td>@item.Title</td>
                     <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
                     <td>@item.DueDate.ToString("yyyy-MM-dd")</td>

@@ -31,12 +31,15 @@
 </div>
 
 <!-- 右半邊 - 內容容器 -->
-<h3 class="mb-4">常用旅伴<span></span><button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("新增旅伴", "addCompanion","Member","","")</button></h3>
+<h3 class="mb-4">常用旅伴<span></span></h3>
+<button type="submit" class="btn btn-outline-secondary" style="margin-top:-105px;margin-left:120px;">
+    @Html.ActionLink("新增旅伴", "addCompanion", "Member", "", "")
+</button>
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
-         <tr>                        
-             <th></th>                        
-             <th>名</th>                       
+         <tr>
+            <th class ="col-md-1"></th>
+            <th>名</th>                       
              <th>姓</th>                        
              <th>出生日期</th>                       
              <th>手機號碼</th>
@@ -49,7 +52,7 @@
                         {
                             //count++;
                             <tr data-toggle="collapse" data-target="#comment1">
-                                <td>●</td>
+                    <td><i class="material-icons" style="font-size:30px;margin-left:30px">person_pin</i></td>
                                 <td>@item.FirstName</td>
                                 <td>@item.LastName</td>
                                 <td>@item.BirthDate.ToString("yyyy-MM-dd")</td>
