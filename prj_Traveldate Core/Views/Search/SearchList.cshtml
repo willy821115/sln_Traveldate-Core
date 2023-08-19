@@ -32,7 +32,7 @@
                         <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                         <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
                         <input type="text" id="inputKeyword" name="txtKeyword" class="search-input" placeholder="搜尋目的地">
-                        @* <input  id="btnSearch" class="btn my-btn-primary btn-dock-right" type="submit" value="查詢" /> *@
+                        <img class="clearKeyword" src="~/icons/icons8-x-30.png" />
                     </div>
               @* } *@
             </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled" id="divCityList">
+                    <ul class="list-unstyled divFiltered" id="divCityList">
                         @foreach (var t in city.citys)
                         {
                             <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled m">
+                    <ul class="list-unstyled divFiltered">
                         @foreach (var t in c.tags.Distinct())
                         {
                             <li class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <div class="ms-lg-4 filter-block-toggle">
-                <ul class="list-unstyled m">
+                <ul class="list-unstyled divFiltered">
                     @foreach (var type in Model.types.Distinct())
                     {
                         <li class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -177,8 +177,12 @@
         <div class="row g-0">
             <div class="col-12 filter_block">
                 <div class="divide-line pl-3">
-                    <span id="filter-total" class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">項體驗行程</span>
-                    <div id="selected-checkboxes"></div>
+                    <span id="total" class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">
+                        <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon"/>
+                        項體驗行程
+                        </span>
+                    <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
+                    <div id="selected-tags" class="alert alert-info"></div>
                 </div>
                 <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                     <span class=" fw-bolder ">排序 : </span>
@@ -191,7 +195,7 @@
                 </div>
             </div>
             <div id="filterBody">
-              
+                <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
             @foreach (var item in Model.filterProducts)
             {
                 string salesCount = "";
@@ -266,31 +270,46 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/calender-main.js"></script>
+    <script>
+        function showLoadingIcon() {
+            $('.loading-icon').show()
+        }
+        function hideLoadingIcon() {
+            $('.loading-icon').hide()
+        }
+    
+        var selectedTags = [];
+        function updateSelectedTags() {
+            showLoadingIcon()
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("FilterByConditions", "Search")", // 請替換為您的 Controller 名稱和方法名稱
+                data: { conditions: selectedTags },
+                success: function (response) {
+                    hideLoadingIcon()
+                    $('#filterBody').html(response)
+                    roadRating()
+                    var resultCount = $('#filterBody').find('.forCount').length;
+                    $('#total').html(resultCount); // 顯示數量
+                },
+                error: function (error) {
+                    console.log("發生錯誤：", error);
+                }
+            });
+        }
+    </script>
+
     <script src="~/js/mutiRange.js"></script>
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
-
+    <script src="~/js/calender-main.js"></script>
+    
     <script>
-        //為了把星星的js檔當非同步執行時,再重載到畫面上
-        function starRating() {
-            const maxValue = 5;
-            const minValue = 0;
-            const unitWidth = 50 / (maxValue - minValue); // 根據最大值調整寬度
-
-            // 獲取所有的 star-rating-div 元素
-            const rectangles = document.querySelectorAll(".rectangle");
-
-            // 遍歷所有的 star-rating-div 元素並設置寬度
-            rectangles.forEach(rectangle => {
-                const value = parseFloat(rectangle.parentElement.querySelector('#rating-value').value); // 獲取相對應的 value 屬性值
-                const width = (value - minValue) * unitWidth;
-                rectangle.style.width = width + "px";
-            });
-        }
+        roadRating()
+        
         //////////////////////////////////////3種排序///////////////////////////////////////////
-        const filterTotal = document.querySelector('#filter-total')
+        
         //排序/篩選載入資料
         function loadData(status) {
             fetch('@Url.Action("sortBy", "Search")?' + status, {
@@ -299,14 +318,13 @@
                 .then(response => response.text())
                 .then(data => {
                     $('#filterBody').html(data); // 更新畫面
-                    starRating() //重新載入星星
+                    roadRating()
                 })
         } 
         //by熱門
         const sortByHot = document.querySelector('#sortByHot');
         sortByHot.addEventListener('click',()=>{
             loadData("sortType=hot")
-            
         })
         //by評價
         const sortByCommet = document.querySelector('#sortByCommet');
@@ -318,12 +336,7 @@
         sortByPrice.addEventListener('click', () => {
             loadData("sortType=price")
         })
-        //by keyword
-        // const btnSearch = document.querySelector('#btnSearch');
-        // const keyword = document.querySelector('#txtKeyword');
-        // btnSearch.addEventListener('click', () => {
-        //     loadData("txtKeyword=" + keyword.value)
-        // })
+      
     </script>
     <script>
         const inputKeyword = document.querySelector('#inputKeyword');
@@ -342,7 +355,7 @@
                         `<li id=${cityId} class=" d-flex align-items-center divide-line my-w-80-percent filterCityItem" >
                                 <img class="uncheckbox" src = "/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src = "/icons/icons8-checkbox-32.png" />
-                                                        <span>${cityName}</span>
+                                <span>${cityName}</span>
                         </li>`
                     )
                 })
@@ -351,19 +364,12 @@
                 filterCityItem.forEach(cityItem => {
                     cityItem.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const clickedCity = e.target.textContent;
-                       // const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
-                        // inputTripDate.addEventListener('focus', () => {
-                        //     loadTripDate(productId);
-                        // })
-                        // divTrip.innerHTML = "";
-                        // inputTrip.value = clickedTrip;
                     });
                 })
             }
         }
     </script>
-
+   
 }
 
 

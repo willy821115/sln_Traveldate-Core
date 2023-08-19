@@ -1,4 +1,4 @@
-
+function roadRating(){
 const maxValue = 5;
 const minValue = 0;
 const unitWidth = 70 / (maxValue - minValue); // 根據最大值調整寬度
@@ -12,3 +12,5 @@ rectangles.forEach(rectangle => {
     const width = (value - minValue) * unitWidth;
     rectangle.style.width = width + "px";
 });
+}
+
