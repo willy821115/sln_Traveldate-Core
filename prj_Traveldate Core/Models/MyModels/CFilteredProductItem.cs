@@ -26,28 +26,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public int? orederCount { get; set; }
 
 
-        //public List<ProductList?> product { get; set; }
-        //public List<Trip?> trip { get; set; }
-        //public ProductPhotoList? photo { get; set; }
-        //public ProductTagList? tagsList { get; set; }
-        //public ProductTagDetail? tagsDetail { get; set; }
-        //public ProductCategory? category { get; set; }
-        //public ProductTypeList? type { get; set; }
-        //public CommentList? comment { get; set; }
-
-        //public List<int> confirmedId
-        //{
-        //    get
-        //    {
-        //        var confirmedIds = _db.Trips
-        //            .Where(t=>t.ProductId==t.Product.ProductId
-        //            && t.Product.ProductTypeId==1
-        //            && t.Product.Discontinued ==false)
-        //            .Select(t=>t.ProductId)
-        //            .ToList();
-        //        return confirmedIds;
-        //    }
-        //}
+       
 
     }
 }

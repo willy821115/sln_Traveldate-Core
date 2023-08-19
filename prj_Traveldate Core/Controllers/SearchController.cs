@@ -18,13 +18,9 @@ namespace prj_Traveldate_Core.Controllers
             _context = context;
         }
 
-        public IActionResult SearchList(CKeywordViewModel keyword, int? page)
+        public IActionResult SearchList(int? page)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
-            if (!string.IsNullOrEmpty(keyword.txtKeyword))
-            {
-                _vm.filterProducts = _products.qureyFilterProductsInfo().Where(p => p.productName.Contains(keyword.txtKeyword)).ToList();
-            }
             _vm.categoryAndTags = _products.qureyFilterCategories();//商品類別&標籤,左邊篩選列
             _vm.countryAndCities = _products.qureyFilterCountry();  //商品國家&縣市,左邊篩選列
             _vm.types = _products.qureyFilterTypes();//商品類型,左邊篩選列
@@ -60,10 +56,7 @@ namespace prj_Traveldate_Core.Controllers
             }
             return PartialView(_vm);
         }
-        //public IActionResult prodTest()
-        //{
-
-        //}
+        
         public IActionResult filterCity(string? txtKeyword)
         {
             if (!string.IsNullOrEmpty(txtKeyword) && txtKeyword != "undefined")
@@ -71,11 +64,20 @@ namespace prj_Traveldate_Core.Controllers
                 var filterCities = _context.ProductLists
                     .Where(p=> _products.confirmedId.Contains(p.ProductId))
                     .Where(c=>c.City.City.Contains(txtKeyword))
-                    .Select(c=>new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0,2)}).ToList();
+                    .Select(c=>new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0,2)}).Distinct().ToList();
                 return Json(filterCities);
             }
-           var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).ToList();
+           var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
             return Json(filterCitiess);
+        }
+        
+        public IActionResult FilterByConditions(List<string> conditions)
+        { 
+            _vm.filterProducts = _products.qureyFilterProductsInfo()
+                .Where(p=>p.productTags.Any(tag=> conditions.Contains(tag))
+                || conditions.Contains(p.city)
+                ).ToList();
+            return PartialView(_vm);
         }
     }
 }

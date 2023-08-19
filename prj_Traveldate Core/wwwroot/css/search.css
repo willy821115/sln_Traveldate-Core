@@ -103,7 +103,8 @@ input,
 .my-calendar,
 .category-click,
 .write-conatiner,
-.insert-photo-container {
+.insert-photo-container,
+.clearKeyword {
     cursor: pointer;
 }
 

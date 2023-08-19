@@ -56,7 +56,7 @@
 				clicked = $(this);
 				if (clicked.hasClass('past-date')) { return; }
 				var whichCalendar = calendar.name;
-				console.log(whichCalendar);
+				//console.log(whichCalendar);
 				// Understading which element was clicked;
 				// var parentClass = $(this).parent().parent().attr('class');
 				if (firstClick && secondClick) {
@@ -148,15 +148,16 @@
 				function highlightDates(passed_year, passed_month, dateElements){
 					if (passed_year in selected && passed_month in selected[passed_year]) {
 						var daysToCompare = selected[passed_year][passed_month];
-						// console.log(daysToCompare);
 						for (var d in daysToCompare) {
-							dateElements.each(function(index) {
+							dateElements.each(function (index) {
 								if (parseInt($(this).text()) == daysToCompare[d]) {
+									var day = daysToCompare[d];
+									var dateString = year / month / day;
 									$(this).addClass('selected');
+
 								}
 							});
 						}
-
 					}
 				}
 				
@@ -310,16 +311,6 @@
 					"year": clickedYear
 				
 			}
-			//修改306行,原本沒有"startDate": {}及313行,原本沒有f (secondClick) {clickedInfo.endDate = {"date": secondClicked.date,"month": secondClicked.month,"year": secondClicked.year};}
-			//if (secondClick) {
-			//	clickedInfo.endDate = {
-			//		"date": secondClicked.date,
-			//		"month": secondClicked.month,
-			//		"year": secondClicked.year
-			//	};
-			//}
-			console.log(clickedInfo);
-		
 			return clickedInfo;
 		}
 
@@ -333,7 +324,27 @@
 				var added_year = secondClicked.year;
 				var added_month = secondClicked.month;
 				var added_date = secondClicked.date;
-				console.log(selected);
+				//console.log(selected);
+
+				//20230819 加入日期button在畫面上
+				var firstDate =firstClicked.year  + '/' + (firstClicked.month + 1) +'/'+firstClicked.date
+				var secondDate = secondClicked.year + '/' + (secondClicked.month + 1) + '/' + secondClicked.date
+				var date_string = firstDate + '~' + secondDate + ' X'
+				var button = $('<button>', {
+					text: date_string,// 設定按鈕文字為 div 的文字內容
+					class: "btn btn-outline-secondary mr-1 date_button",
+					click: function () {
+						$(this).remove(); // 點擊按鈕時刪除該按鈕
+						$('.calendar-container').find('.selected').remove();
+						checkCleanAllButtonExistence();
+					}
+				})
+				if ($('#selected-checkboxes').find('.date_button').length > 0) {
+						$('.date_button').remove();
+				}
+				$('#selected-checkboxes').append(button)
+				$('.cleanAll').removeClass('d-none');
+				////////////////////////////////////////////////////////////////////////
 
 				if (added_year > firstClicked.year) {	
 					// first add all dates from all months of Second-Clicked-Year
@@ -346,7 +357,7 @@
 					}
 			
 					added_month = added_month - 1;
-					console.log(added_month);
+					//console.log(added_month);
 					while (added_month >= 0) {
 						selected[added_year][added_month] = [];
 						for (var i = 1; 
@@ -376,7 +387,7 @@
 				
 				if (added_month > firstClicked.month) {
 					if (firstClicked.year == secondClicked.year) {
-						console.log("here is the month:",added_month);
+						//console.log("here is the month:",added_month);
 						selected[added_year][added_month] = [];
 						for (var i = 1; 
 							i <= secondClicked.date;
@@ -404,7 +415,6 @@
 				}
 			}
 
-			
 			return selected;
 		}
 });
