@@ -58,7 +58,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         [HttpPost]
         public IActionResult Create(CProductWrap pro)
-        {
+         {
             return RedirectToAction("List");
         }
 
