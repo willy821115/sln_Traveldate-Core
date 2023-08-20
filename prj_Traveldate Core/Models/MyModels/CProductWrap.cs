@@ -10,10 +10,10 @@
         }
         public ProductList ProductList { get { return _prod; } set { _prod = value; } }
 
-        public int ProductId
+        public int? ProductId
         {
             get { return _prod.ProductId; }
-            set { _prod.ProductId = value; }
+            set { _prod.ProductId = (int)value; }
         }
 
         public int CompanyId
@@ -94,6 +94,8 @@
 
         public string? productStatus { get; set;}
 
+        public string? ImagePath { get; set; }
+
         public List<CCategoryAndTags> categoryAndTags { get; set;}
 
         public  List<string>? countries { get; set; }
@@ -102,12 +104,17 @@
 
         public List<ProductTypeList>? types { get; set; }
 
-        public List<TripDetail>? tripDetails { get; set; }
-
-        public List<int> TagsID { get; set; }
+        
+        public List<int> Tags { get; set; }
 
         public List< IFormFile> photos { get; set; }
 
         public List<ProductPhotoList> productPhotos { get; set; }
+
+        public List<IFormFile> TripDetailphotos { get; set; }
+
+        public List<string> TripDetails { get; set; }
+
+        public List<int> TripDays { get; set; }
     }
 }
