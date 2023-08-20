@@ -88,7 +88,7 @@
             
             <div class="container-fluid">
                 <h2>新增產品</h2>
-                <form asp-action="Create">
+                <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 
                     <div class="row">
@@ -110,9 +110,9 @@
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                           @foreach(string type in Model.types)
+                                           @foreach(ProductTypeList type in Model.types)
                                             {
-                                                <option>@type</option>
+                                                <option value="@type.ProductTypeId">@type.ProductType</option>
                                             }
 
                                         </select>
@@ -131,9 +131,9 @@
                                     <div class=" form-group">
                                         <label class="control-label">所在城市</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (string type in Model.cities)
+                                            @foreach (CityList type in Model.cities)
                                             {
-                                                <option>@type</option>
+                                                <option value="@type.CityId">@type.City</option>
                                             }
                                         </select>
                                     </div>
@@ -145,7 +145,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">輪播圖</label>
-                                        <input type="file" class="form-control" id="photoInput" multiple/>
+                                        <input type="file" class="form-control" id="photoInput" name="photos" multiple/>
                                         
                                     </div>
                                      
@@ -173,11 +173,11 @@
                                         </div>
                                         <div class="ms-lg-4 filter-block-toggle">
                                             <ul class="list-unstyled m">
-                                                @foreach (var t in c.tags.Distinct())
+                                                @foreach (var t in c.productTags.Distinct())
                                                 {
                                                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                       <input type="checkbox"/>
-                                                        <span>@Html.DisplayFor(modelItem => t)</span>
+                                                        <input type="checkbox" value="@t.ProductTagDetailsId" name="TagsID" />
+                                                        <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
                                                     </li>
                                                 }
                                             </ul>
@@ -248,16 +248,17 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">行程詳情</h6>
                                     </div>
                                     <div class="card-body">
-                                        <label class="control-label">照片</label>
+                                        @*<label class="control-label">照片</label>
                                         <input type="file" class="form-control" id="photoInput" />
                                         <label class="control-label">行程描述</label>
                                         <textarea class="col-lg-12" id="descriptionInput"></textarea>
-                                        <button type="button" id="addButton" class="form-control">新增</button>
+                                        <button type="button" id="addButton" class="form-control">新增</button>*@
+                                    <label class="control-label">行程天數</label>
+                                    <input type="number" id="tripDay" placeholder="請輸入數量" />
+                                    <button type="button" id="generatetripDay">新增天數</button>
                                     </div>
                                 </div>
-
-
-                           
+                                                        
 
                             
                                 @*<!-- Basic Card Example -->*@
@@ -265,11 +266,15 @@
                                     <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">現有行程</h6>
                                     </div>
-                                    <div class="card-body" id="contentContainer">
+                                    <div class="card-body" >
+                                    <ul id="sortable">
+
+
+                                    </ul>
                                     </div>
                                 </div>
 
-
+                                
                             
 
 
@@ -310,6 +315,61 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/search_jq.js"></script>
+    <script>
+        $(function () {
+            $("#sortable").sortable({
+                revert: true
+            });
+            $("#draggable").draggable({
+                connectToSortable: "#sortable",
+                helper: "clone",
+                revert: "invalid"
+            });
+            $("ul, li").disableSelection();
+        });
+
+
+        $('#generatetripDay').click(function () {
+            var tripDay = $('#tripDay');
+            var numberOftripDay = parseInt(tripDay.val()); // 讀取使用者輸入的值
+
+            // 檢查輸入的值是否有效
+            if (!isNaN(numberOftripDay) && numberOftripDay > 0) {
+                for (var i = 0; i < numberOftripDay; i++) {
+                    var triplHtml = `<li id="ui-state-default">
+                                                    <div class="card mb-3">
+                                                        <div class="row g-0">
+                                                            <div class="col-md-4">
+                                                                <img src="~/images/東清秘境-蘭嶼.png" class="img-fluid rounded-start" alt="...">
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="card-body">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="card-title">第1天</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                            <input type="file" class="form-control" id="photoInput" />
+                                                                           <textarea class="col-lg-12 card-text" id="descriptionInput"></textarea>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </li>`;
+
+                    // 將生成的 SecondModel 添加到 div 中
+                    $('#sortable').append(triplHtml);
+                }
+            } else {
+                alert('請輸入有效的數量。');
+            }
+        });
+
+    </script>
+
+
 }
 @section Styles{
     <style>

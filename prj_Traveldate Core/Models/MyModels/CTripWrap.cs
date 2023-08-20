@@ -65,8 +65,6 @@
 
         public string? date { get; set; }
 
-        public TripDetail tripDetail { get; set; }
 
-        public List<TripDetail> tripDetails { get; set; }
     }
 }

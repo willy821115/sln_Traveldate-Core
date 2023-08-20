@@ -41,19 +41,23 @@
 <div class="bg-white pb-3" style="border-radius:10px">
 <section class="hot-destinations-section " id="hot-destinations-section">
     <h2>熱門行程</h2>
-    <div class="destination-container">
-       @* @foreach(var p in Model.popularList)
+        <div class="destination-container">
+            @foreach (var p in Model.popularList)
             {
                 <div class="destination-item">
-                  <img src="~/images/@p.ImagePath" alt="目的地" />
-                  <div class="fill-block">
+                    <img src="~/images/@p.ImagePath" alt="目的地" />
+                    <div class="fill-block">
                         <div class="destination-info">
                             <p style="text-align: left">@p.productName</p>
                             <p>單價:@p.unitPrice 評分:@p.commentScore</p>
                         </div>
                     </div>
-                </div> 
-            } *@
+                </div>
+            }
+
+        </div>
+    <div class="destination-container">
+       
            
             <div class="destination-item">
             <div class="card" style="width: 18rem;">
@@ -190,6 +194,19 @@
     <section class="hot-destinations-section" id="hot-destinations-section">
         <h2>TOP旅遊行程</h2>
 
+        @foreach (var p in Model.commentList)
+        {
+            <div class="destination-item">
+                <img src="~/images/@p.ImagePath" alt="目的地" />
+                <div class="fill-block">
+                    <div class="destination-info">
+                        <p style="text-align: left">@p.productName</p>
+                        <p>單價:@p.unitPrice 評分:@p.commentScore</p>
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="destination-container">
 
 
@@ -286,6 +303,21 @@
 
 <section class="hot-destinations-section" id="hot-destinations-section">
     <h2>促銷旅遊專案</h2>
+        <div class="destination-container">
+            @foreach (var p in Model.discountList)
+            {
+                <div class="destination-item">
+                    <img src="~/images/@p.ImagePath" alt="目的地" />
+                    <div class="fill-block">
+                        <div class="destination-info">
+                            <p style="text-align: left">@p.productName</p>
+                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
 
     <div class="destination-container">
 

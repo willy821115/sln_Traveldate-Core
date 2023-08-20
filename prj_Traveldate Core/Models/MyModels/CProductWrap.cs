@@ -98,10 +98,16 @@
 
         public  List<string>? countries { get; set; }
 
-        public List<string>? cities { get; set; }
+        public List<CityList>? cities { get; set; }
 
-        public List<string>? types { get; set; }
+        public List<ProductTypeList>? types { get; set; }
 
+        public List<TripDetail>? tripDetails { get; set; }
 
+        public List<int> TagsID { get; set; }
+
+        public List< IFormFile> photos { get; set; }
+
+        public List<ProductPhotoList> productPhotos { get; set; }
     }
 }

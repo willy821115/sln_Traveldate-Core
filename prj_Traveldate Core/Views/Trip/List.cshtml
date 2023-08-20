@@ -99,9 +99,9 @@
                                 <div>
                                     <label>產品類型</label>
                                     <select class="form-select">
-                                        @foreach (string type in Model.types)
+                                        @foreach (ProductTypeList type in Model.types)
                                         {
-                                            <option>@type</option>
+                                            <option value="@type.ProductTypeId">@type.ProductType</option>
                                         }
                                     </select>
                                 </div>

@@ -110,9 +110,9 @@
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (string type in Model.types)
+                                            @foreach (ProductTypeList type in Model.types)
                                             {
-                                                <option>@type</option>
+                                                <option value="@type.ProductTypeId">@type.ProductType</option>
                                             }
 
                                         </select>
@@ -131,9 +131,9 @@
                                     <div class=" form-group">
                                         <label class="control-label">所在城市</label>
                                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (string type in Model.cities)
+                                            @foreach (CityList type in Model.cities)
                                             {
-                                                <option>@type</option>
+                                                <option value="@type.CityId">@type.City</option>
                                             }
                                         </select>
                                     </div>

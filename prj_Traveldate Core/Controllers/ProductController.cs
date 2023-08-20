@@ -11,16 +11,21 @@ namespace prj_Traveldate_Core.Controllers
     {
         private TraveldateContext _db = null;
         private int companyID = 1;
-
-        public ProductController() 
+        private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
+        public ProductController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
         {
-        _db= new TraveldateContext();
-            //HttpContext.Session.SetInt32(CDictionary.SK_COMPANYID, 1);
-            //companyID=  (int)HttpContext.Session.GetInt32(CDictionary.SK_COMPANYID);
+            _enviro = p;
         }
+        //public ProductController() 
+        //{
+        //    _db = new TraveldateContext();
+        //    HttpContext.Session.SetInt32(CDictionary.SK_COMPANYID, 1);
+        //    companyID = (int)HttpContext.Session.GetInt32(CDictionary.SK_COMPANYID);
+        //}
         public IActionResult List()
         {
-            var q = from p in _db.ProductLists
+            TraveldateContext _db = new TraveldateContext();
+                var q = from p in _db.ProductLists
                     where p.CompanyId == companyID
                     select new { productName = p.ProductName, productType = p.ProductType.ProductType, city = p.City.City, status = p.Status.Status1, discontinued=p.Discontinued };
            CProductListViewModel model = new CProductListViewModel();
@@ -51,6 +56,13 @@ namespace prj_Traveldate_Core.Controllers
             list.types = factory.loadTypes();
             return View(list);
         }
+        [HttpPost]
+        public IActionResult Create(CProductWrap pro)
+        {
+            return RedirectToAction("List");
+        }
+
+
 
         public IActionResult Edit() 
         {

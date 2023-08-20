@@ -172,13 +172,15 @@ namespace prj_Traveldate_Core.Models.MyModels
                 new
                 {
                     category = g.Key,
-                    tag = g.Select(t => t.ProductTagDetailsName)
-                });
-            foreach (var i in data_category)
+                    tag = g.ToList()
+
+                }) ;
+            foreach (var i in data_category.ToList())
             {
                 CCategoryAndTags x = new CCategoryAndTags();
-                x.category = i.category;
-                x.tags = i.tag;
+                x.productTags = i.tag;
+                 x.category = i.category;
+                
                 list.Add(x);
             }
             return list;
@@ -191,10 +193,10 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-        public List<string> loadCities()
+        public List<CityList> loadCities()
         {
             TraveldateContext db = new TraveldateContext();
-            List<string> list = db.CityLists.Select(c => c.City).ToList();
+            List<CityList> list = db.CityLists.ToList();
             return list;
         }
         public List<string> loadStauts()
@@ -203,10 +205,10 @@ namespace prj_Traveldate_Core.Models.MyModels
             var list = db.Statuses.Select(p => p.Status1).ToList();
             return list;
         }
-        public List<string> loadTypes()
+        public List<ProductTypeList> loadTypes()
         {
             TraveldateContext db = new TraveldateContext();
-             var list= db.ProductTypeLists.Select(p=>p.ProductType).ToList();
+             var list= db.ProductTypeLists.ToList();
             return list;
         }
 

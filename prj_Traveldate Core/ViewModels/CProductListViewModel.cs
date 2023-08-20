@@ -1,4 +1,5 @@
-﻿using prj_Traveldate_Core.Models.MyModels;
+﻿using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.Models.MyModels;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -6,7 +7,7 @@ namespace prj_Traveldate_Core.ViewModels
     {
         public List<CProductWrap> list { get; set; }
 
-        public List<string> types { get; set; }
+        public List<ProductTypeList> types { get; set; }
 
         public List<string> status { get; set; }
     }

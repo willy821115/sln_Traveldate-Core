@@ -14,35 +14,82 @@ namespace prj_Traveldate_Core.Controllers
 
             TraveldateContext db = new TraveldateContext();
 
-            //var popular = from od in db.OrderDetails
+            var popular = from od in db.OrderDetails
+                          group od by od.Trip.Product into g
+                          orderby g.Select(o=>o.Quantity).Sum() descending
+                          select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.Trip.UnitPrice) };
 
-            //        group od by od.Trip.Product into g
+            List<CHomeViewModel> popularList = new List<CHomeViewModel>();
+            foreach (var p in popular.Take(6).ToList())
+            {
+                CHomeViewModel item = new CHomeViewModel();
+                item.productId = p.productId;
+                item.productName = p.productName;
+                item.unitPrice = (decimal)p.unitPrice;
 
-            //        orderby g.Count() descending
+                var commentScore = db.CommentLists.Where(c => c.ProductId == p.productId).Select(c => c.CommentScore).Average();
+                var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
 
-            //        select new { productId= g.Key.ProductId, productName= g.Key.ProductName, unitPrice = g.Min(od => od.Trip.UnitPrice) };
-           
-            //List<CHomeViewModel> popularList = new List<CHomeViewModel>();
-            //foreach (var p in popular.Take(6).ToList())
-            //{
-            //    CHomeViewModel item = new CHomeViewModel();
-            //    item.productId = p.productId;
-            //    item.productName = p.productName;
-            //    item.unitPrice = (decimal)p.unitPrice;
+                item.ImagePath = imagePath;
+                item.commentScore = commentScore;
 
-            //    var commentScore = db.CommentLists.Where(c => c.ProductId == p.productId).Select(c => c.CommentScore).Average();
-            //    var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
+                popularList.Add(item);
+            }
 
-            //    item.ImagePath = imagePath;
-            //    item.commentScore = commentScore;
+            list.popularList = popularList;
 
-            //    popularList.Add(item);
-            //}
+            var comment = from  c in db.CommentLists
+                          group c by c.Product into g 
+                          orderby g.Select(c=>c.CommentScore).Average()
+                          select new { productId = g.Key.ProductId, productName = g.Key.ProductName, commentScore= g.Select(c => c.CommentScore).Average() };
 
-            //list.popularList = popularList;
+            List<CHomeViewModel> commentList = new List<CHomeViewModel>();
+            foreach (var p in comment.Take(6).ToList())
+            {
+                CHomeViewModel item = new CHomeViewModel();
+                item.productId = p.productId;
+                item.productName = p.productName;
+                item.commentScore = (double)p.commentScore;
 
-            return View();
+                var unitprice = db.Trips.Where(c => c.ProductId == p.productId).Min(c=>c.UnitPrice);
+                var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
+
+                item.ImagePath = imagePath;
+                item.unitPrice = (decimal)unitprice;
+
+                commentList.Add(item);
+            }
+            list.commentList = commentList;
+
+            var discount = from od in db.Trips
+                          group od by od.Product into g
+                          orderby g.Max(o => o.Discount) descending
+                          select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.UnitPrice) };
+
+            List<CHomeViewModel> discountList = new List<CHomeViewModel>();
+            foreach (var p in discount.Take(6).ToList())
+            {
+                CHomeViewModel item = new CHomeViewModel();
+                item.productId = p.productId;
+                item.productName = p.productName;
+                item.unitPrice = (decimal)p.unitPrice;
+
+                var commentScore = db.CommentLists.Where(c => c.ProductId == p.productId).Select(c => c.CommentScore).Average();
+                var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
+
+                item.ImagePath = imagePath;
+                item.commentScore = commentScore;
+
+                discountList.Add(item);
+            }
+
+            list.discountList = discountList;
+
+
+            return View(list);
         }
+
+
 
         public IActionResult Intro()
         {
