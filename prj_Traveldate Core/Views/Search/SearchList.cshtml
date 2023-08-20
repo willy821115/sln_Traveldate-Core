@@ -178,11 +178,11 @@
             <div class="col-12 filter_block">
                 <div class="divide-line pl-3">
                     <span id="total" class="fs-3 fw-bolder me-2">@Model.filterProducts.Count()</span><span class="fs-5 my-text-primary">
-                        <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon"/>
+                        <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
                         項體驗行程
                         </span>
                     <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
-                    <div id="selected-tags" class="alert alert-info"></div>
+                    
                 </div>
                 <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                     <span class=" fw-bolder ">排序 : </span>
@@ -194,8 +194,10 @@
                     <a id="sortByPrice" href="#" class=" fw-bolder" name="status">價格排序(低到高)</a>
                 </div>
             </div>
+            <div class="alert alert-light d-none">
+                <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
+            </div>
             <div id="filterBody">
-                <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
             @foreach (var item in Model.filterProducts)
             {
                 string salesCount = "";
@@ -272,25 +274,32 @@
 @section Scripts{
     <script>
         function showLoadingIcon() {
-            $('.loading-icon').show()
+            $('.loading-icon').removeClass('d-none')
+            $('#total').addClass('d-none')
+            $('#filterBody').addClass('d-none')
+            $('.alert-light').removeClass('d-none')
         }
         function hideLoadingIcon() {
-            $('.loading-icon').hide()
+            $('.loading-icon').addClass('d-none')
+            $('#total').removeClass('d-none')
+            $('#filterBody').removeClass('d-none')
+            $('.alert-light').addClass('d-none')
         }
     
         var selectedTags = [];
         function updateSelectedTags() {
-            showLoadingIcon()
+           showLoadingIcon()
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("FilterByConditions", "Search")", // 請替換為您的 Controller 名稱和方法名稱
+                url: "@Url.Action("FilterByConditions", "Search")", 
                 data: { conditions: selectedTags },
                 success: function (response) {
                     hideLoadingIcon()
                     $('#filterBody').html(response)
                     roadRating()
-                    var resultCount = $('#filterBody').find('.forCount').length;
-                    $('#total').html(resultCount); // 顯示數量
+                    var resultCount = $('#filterBody').find('.forCount').length
+                    $('#total').html(resultCount)
+                   
                 },
                 error: function (error) {
                     console.log("發生錯誤：", error);
@@ -300,14 +309,36 @@
     </script>
 
     <script src="~/js/mutiRange.js"></script>
+    
+    <script>
+        
+        function filteredByDate(startTime, endTime) {
+            showLoadingIcon()
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("FilterByDate", "Search")",
+                data: { startTime: startTime, endTime: endTime },
+                success: function (response) {
+                    hideLoadingIcon()
+                    $('#filterBody').html(response)
+                    roadRating()
+                    var resultCount = $('#filterBody').find('.forCount').length
+                    $('#total').html(resultCount)
+
+                },
+                error: function (error) {
+                    console.log("發生錯誤：", error);
+                }
+            });
+        }
+    </script>
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
-    <script src="~/js/calender-main.js"></script>
+    
     
     <script>
         roadRating()
-        
         //////////////////////////////////////3種排序///////////////////////////////////////////
         
         //排序/篩選載入資料
