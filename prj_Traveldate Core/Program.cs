@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

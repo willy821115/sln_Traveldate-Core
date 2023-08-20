@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AspNetCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -20,20 +21,70 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult basicInfo() //基本資料設定 V
         {
+
+
             int MemberId = 3;
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-           // var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
+            // var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
 
             return View(mem);
+            //int MemberId = 3;
+
+
+            //Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            //// var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
+            //return View(mem);
+            //CMemberLevelViewModel viewModel = new CMemberLevelViewModel();
+            //viewModel.Member = context.Members.Where(m => m.MemberId == MemberId).ToList();
+            //return View(viewModel);
+            //CMemberLevelViewModel vmml = new CMemberLevelViewModel();
+            //Member mem =context.Members.FirstOrDefault(m=>m.MemberId == MemberId);
+            //if (mem != null) {
+            //    mem.FirstName=Views_Member_commentList.
+            //return View(mem);
+
+            //var datas = from m in context.Members
+            //            join l in context.LevelLists
+            //            on m.LevelId equals l.LevelId
+            //            where m.MemberId == MemberId
+            //            select new CMemberLevelViewModel
+            //            {
+            //                FirstName = m.FirstName,
+            //                LastName = m.LastName,
+            //                Gender = m.Gender,
+            //                BirthDate = m.BirthDate,
+            //                Phone = m.Phone,
+            //                Email = m.Email,
+            //                LevelId = m.LevelId,
+            //            };
+            //return View(datas);
+            //var levelvm = from m in vmml.Member
+            //              join l in vmml.LevelList
+            //              on m.LevelId equals l.LevelId
+            //              where MemberId == m.MemberId
+            //              select m;
+            //ViewBag.level = levelvm.ToString();
         }
         [HttpPost]
         public IActionResult basicInfo(Member edit) //基本資料設定edit V
         {
             int MemberId = 3;
+            //context.Members.ToList();
+
+            //CMemberLevelViewModel vmml=new CMemberLevelViewModel();
+
+            //var levelvm=from m in vmml.Member
+            //          join l in vmml.LevelList
+            //          on m.LevelId equals l.LevelId
+            //          where m.MemberId== MemberId
+            //          select m;
+
+           
+
+
             Member mDB = context.Members.FirstOrDefault(m=>m.MemberId == edit.MemberId);          
                 if (mDB != null)
-            {
-                 
+            {               
                     mDB.FirstName = edit.FirstName;
                     mDB.LastName = edit.LastName;
                     mDB.Gender = edit.Gender;
@@ -157,8 +208,7 @@ namespace prj_Traveldate_Core.Controllers
             return View(datas);
         }
         public IActionResult favoriteList(int? id=3) //收藏清單new V
-        {
-            
+        {           
             var datas = from pl in context.ProductLists
                         join f in context.Favorites
                         on pl.ProductId equals f.ProductId
@@ -217,6 +267,7 @@ namespace prj_Traveldate_Core.Controllers
                         select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
             return View(datas.Distinct());
         }
+        #region 我的評論 0817(四)版 暫時用不到
         //public IActionResult commentList(int? id = 1) //我的評論V
         //{
         //    var datas = from m in context.Members
@@ -235,6 +286,7 @@ namespace prj_Traveldate_Core.Controllers
         //                };
         //    return View(datas);
         //}
+        #endregion
         public IActionResult commentList(int? id = 1) //我的評論new V
         {
             var datas = from m in context.Members
@@ -253,12 +305,12 @@ namespace prj_Traveldate_Core.Controllers
                         };
             return View(datas);
         }
-
+        #region 添加評論view 暫時用不到2023.08.20
         public IActionResult addcomment() //添加評論 先維持舊版V
         {
             return View();
         }
-
+        #endregion
         public IActionResult forumList(int? id = 1) //我的揪團new V
         {
             var datas = from m in context.Members
