@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
-    <link href="/css/nav.css" rel="stylesheet" />
+    <link href="~/css/nav.css" rel="stylesheet" />
 
     @*<script src="~/js/modernizr-2.8.3.js"></script>*@
     
@@ -72,9 +72,6 @@
                             <a asp-area="" asp-controller="HomePage" asp-action="Intro">關於我們</a>
                         </li>
                             <li class="nav-item mr-2">
-                            <a href="#contact-us">聯絡我們</a>
-                        </li>
-                            <li class="nav-item mr-2">
                                 <a asp-area="" asp-controller="Search" asp-action="SearchList">團體旅遊</a>
                             </li>
                             <li class="nav-item mr-2">
@@ -85,6 +82,9 @@
                             </li>
                             <li class="nav-item mr-2">
                                 <a asp-area="" asp-controller="Forum" asp-action="ForumList">揪團</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a href="#contact-us">聯絡我們</a>
                             </li>
                     </ul>
                 </div>

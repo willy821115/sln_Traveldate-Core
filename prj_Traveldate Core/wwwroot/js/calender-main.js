@@ -330,12 +330,16 @@
 				var firstDate =firstClicked.year  + '/' + (firstClicked.month + 1) +'/'+firstClicked.date
 				var secondDate = secondClicked.year + '/' + (secondClicked.month + 1) + '/' + secondClicked.date
 				var date_string = firstDate + '~' + secondDate + ' X'
+				var startTime = firstClicked.year + '-' + (firstClicked.month + 1) + '-' + firstClicked.date
+				var endTime = secondClicked.year + '-' + (secondClicked.month + 1) + '-' + secondClicked.date
+				filteredByDate(startTime, endTime)
 				var button = $('<button>', {
 					text: date_string,// 設定按鈕文字為 div 的文字內容
 					class: "btn btn-outline-secondary mr-1 date_button",
 					click: function () {
 						$(this).remove(); // 點擊按鈕時刪除該按鈕
-						$('.calendar-container').find('.selected').remove();
+						$('.calendar-container').find('.selected').removeClass('selected');
+						filteredByDate()
 						checkCleanAllButtonExistence();
 					}
 				})
