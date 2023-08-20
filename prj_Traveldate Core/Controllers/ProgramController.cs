@@ -32,6 +32,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fComScore = pf.loadcommentScore((int)id);
             vm.program.fComTitle = pf.loadCommentTitle((int)id);
             vm.program.fComContent = pf.loadCommentContent((int)id);
+            vm.program.fStatus = pf.loadStatus((int)id);
             return View(vm);
         }
         

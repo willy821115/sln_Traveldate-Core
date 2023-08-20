@@ -86,7 +86,7 @@
                     <span>起</span>
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
-                <p class="card-text" style="margin-top:5px">狀態</p>
+                <p class="card-text" style="margin-top:5px">@Model.program.fStatus</p>
             </div>
         </div>
     </div>
@@ -256,14 +256,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-auto">
                                 <label>@tripDate</label>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <label>@Model.product.PlanName</label>
                             </div>
                             <div class="col-auto">
-                                <label>價格：4500</label>
+                                <label>金額：@Model.program.fPlanPrice[i]</label>
                             </div>
                             <div class="col-auto">
                                 <ul class="list-inline">
@@ -347,7 +347,7 @@
             {
         <div class="plan-container">
             <div class="be-comment-block">
-                <div class="comments-title" id="commentdetail"><p>旅客評價</p></div>
+                <div class="comments-title" id="commentdetail"><p>旅客評價區</p></div>
                 <hr />
 
                 @for (int comIndex = 0; comIndex < Model.program.fComMem.Count; comIndex++)

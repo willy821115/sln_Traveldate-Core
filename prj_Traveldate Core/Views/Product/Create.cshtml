@@ -100,7 +100,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
                                 </div>
                                 <div class="card-body">
-
+                                    <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
                                     <div class="form-group">
                                         <label class="control-label">產品名稱</label>
                                         <input asp-for="ProductName" class="form-control" />
@@ -109,7 +109,7 @@
 
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
-                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <select asp-for="ProductTypeId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                            @foreach(ProductTypeList type in Model.types)
                                             {
                                                 <option value="@type.ProductTypeId">@type.ProductType</option>
@@ -130,7 +130,7 @@
 
                                     <div class=" form-group">
                                         <label class="control-label">所在城市</label>
-                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                             @foreach (CityList type in Model.cities)
                                             {
                                                 <option value="@type.CityId">@type.City</option>
@@ -145,7 +145,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">輪播圖</label>
-                                        <input type="file" class="form-control" id="photoInput" name="photos" multiple/>
+                                        <input asp-for="photos" type="file" class="form-control" id="photoInput" name="photos" multiple />
                                         
                                     </div>
                                      
@@ -173,12 +173,16 @@
                                         </div>
                                         <div class="ms-lg-4 filter-block-toggle">
                                             <ul class="list-unstyled m">
-                                                @foreach (var t in c.productTags.Distinct())
+                                                @{
+                                                    int id = 0;
+                                                    foreach (var t in c.productTags.Distinct())
                                                 {
                                                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                        <input type="checkbox" value="@t.ProductTagDetailsId" name="TagsID" />
+                                                        <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" />
                                                         <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
-                                                    </li>
+                                                        </li>
+                                                        id++;
+                                                    }
                                                 }
                                             </ul>
                                         </div>
@@ -234,7 +238,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">方案描述</label>
-                                        <textarea name="PlanDescription" class="form-control col-lg-12"></textarea>
+                                        <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
                                         <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                     </div>
 
@@ -315,18 +319,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/search_jq.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
     <script>
-        $(function () {
-            $("#sortable").sortable({
-                revert: true
-            });
-            $("#draggable").draggable({
-                connectToSortable: "#sortable",
-                helper: "clone",
-                revert: "invalid"
-            });
-            $("ul, li").disableSelection();
-        });
+        
 
 
         $('#generatetripDay').click(function () {
@@ -336,21 +331,22 @@
             // 檢查輸入的值是否有效
             if (!isNaN(numberOftripDay) && numberOftripDay > 0) {
                 for (var i = 0; i < numberOftripDay; i++) {
+                    var day = i+1;
                     var triplHtml = `<li id="ui-state-default">
                                                     <div class="card mb-3">
                                                         <div class="row g-0">
                                                             <div class="col-md-4">
-                                                                <img src="~/images/東清秘境-蘭嶼.png" class="img-fluid rounded-start" alt="...">
+                                                                                <img src="@Url.Content("~/icons/logos/Logo_traveldate.png")" class="img-fluid rounded-start" alt="...">
                                                             </div>
                                                             <div class="col-md-8">
                                                                 <div class="card-body">
                                                                     <div class="modal-header">
-                                                                        <h5 class="card-title">第1天</h5>
+                                                                        <h5 class="card-title">第${day}天</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                            <input type="file" class="form-control" id="photoInput" />
-                                                                           <textarea class="col-lg-12 card-text" id="descriptionInput"></textarea>
-
+                                                                                    <input type="hidden" id="photoInput" name="TripDays" value="${day}" />
+                                                                                    <input type="file" class="form-control" id="photoInput" name="TripDetailphotos" />
+                                                                                   <textarea class="col-lg-12 card-text" id="descriptionInput" name="TripDetails"></textarea>
                                                                 </div>
 
                                                             </div>
@@ -365,6 +361,17 @@
             } else {
                 alert('請輸入有效的數量。');
             }
+        });
+        $(function () {
+            $("#sortable").sortable({
+                revert: true
+            });
+            $("#draggable").draggable({
+                connectToSortable: "#sortable",
+                helper: "clone",
+                revert: "invalid"
+            });
+            $("ul, li").disableSelection();
         });
 
     </script>

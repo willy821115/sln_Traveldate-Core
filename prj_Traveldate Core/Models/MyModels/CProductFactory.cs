@@ -79,11 +79,29 @@ namespace prj_Traveldate_Core.Models.MyModels
             return new List<string>(); // 返回空列表
         }
 
-        public int loadPrice(int id)
+        public string loadStatus(int id)
         {
-            var planPrice = db.Trips.Where(p => p.ProductId == id).Select(t=>t.UnitPrice).FirstOrDefault();
-            return (int)planPrice;
+            var maxNums = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
+            var tripdate = db.Trips.Where(p => p.ProductId == id).Select(t => t.Date).ToList();
+
+                bool allSoldOut = maxNums.All(maxNum => maxNum == 0);
+            bool IsExpired = tripdate.All(tripdate => tripdate < DateTime.Now);
+            
+                if (allSoldOut)
+                {
+                    return "已售完";
+                }
+            else if(IsExpired)
+            {
+                return "已截止";
+            }
+                else
+                {
+                    return "熱賣中";
+                }
         }
+
+
 
         //Product的縣市顯示再tilte label
         public string loadCity(int id)
@@ -225,6 +243,13 @@ namespace prj_Traveldate_Core.Models.MyModels
             TraveldateContext _db = new TraveldateContext();
             var q = _db.TripDetails.Where(t=>t.Product.ProductId==productID).Count();
             return q;
+        }
+
+        public List<Company> loadCompanies()
+        {
+            TraveldateContext db = new TraveldateContext();
+            var list = db.Companies.ToList();
+            return list;
         }
 
 
