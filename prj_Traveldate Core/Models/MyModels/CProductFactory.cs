@@ -227,6 +227,13 @@ namespace prj_Traveldate_Core.Models.MyModels
             return q;
         }
 
+        public List<Company> loadCompanies()
+        {
+            TraveldateContext db = new TraveldateContext();
+            var list = db.Companies.ToList();
+            return list;
+        }
+
 
     }
 }

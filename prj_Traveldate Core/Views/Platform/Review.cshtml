@@ -1,0 +1,190 @@
+﻿@model prj_Traveldate_Core.ViewModels.CPlatformViewModel
+
+@{
+    ViewData["Title"] = "Review";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Review">
+                <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content2">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content3">
+                <span>優惠券</span>
+            </a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <h2>商品審核</h2>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">產品搜尋</h6>
+                            </div>
+                            <div class="card-body">
+                                @using (Html.BeginForm())
+                                {
+                                    @:關鍵字 @Html.TextBox("txtKeyword")
+                                    <input type="submit" value="查詢" class="btn btn-outline-secondary" />
+                                }
+                                <div>
+                                    <label>公司名稱</label>
+                                    <select class="form-select">
+                                        @foreach (Company type in Model.company)
+                                        {
+                                            <option value="@type.CompanyName">@type.CompanyName</option>
+                                        }
+                                    </select>
+                                    <label>產品類型</label>
+                                    <select class="form-select">
+                                        @foreach (ProductTypeList type in Model.types)
+                                        {
+                                            <option value="@type.ProductTypeId">@type.ProductType</option>
+                                        }
+                                    </select>
+                                    <label>審核狀態</label>
+                                    <select class="form-select">
+                                        @foreach (string status in Model.status)
+                                        {
+                                            <option>@status</option>
+                                        }
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">產品清單</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>產品名稱</th>
+                                        <th>產品類型</th>
+                                        <th>所在城市</th>
+                                        <th>產品狀態</th>
+                                        <th>銷售狀態</th>
+                                        <th>上/下架</th>
+                                        <th>動作</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.product)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
+                                            </td>
+                                            <td>
+                                                <div>@Html.DisplayFor(modelItem => item.productType)</div>
+                                            </td>
+                                            <td>
+                                                <div> @Html.DisplayFor(modelItem => item.cityName)</div>
+                                            </td>
+                                            <td>
+                                                <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
+                                            </td>
+                                            <td>
+                                               @* @if ((bool)item.Discontinued)
+                                                {
+                                                    <div> 下架</div>
+                                                }
+                                                else
+                                                {
+                                                    <div> 上架</div>
+                                                }*@
+                                            </td>
+                                            <td>
+                                                <div>@Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})</div>
+                                                <div>@Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})</div>
+
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("修改", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                            </td>
+                                        </tr>
+                                    }
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+
+@section Styles{
+    <style>
+        .card-body {
+            height: unset;
+        }
+    </style>
+ }
