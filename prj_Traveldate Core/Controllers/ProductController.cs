@@ -27,7 +27,7 @@ namespace prj_Traveldate_Core.Controllers
             TraveldateContext _db = new TraveldateContext();
                 var q = from p in _db.ProductLists
                     where p.CompanyId == companyID
-                    select new { productName = p.ProductName, productType = p.ProductType.ProductType, city = p.City.City, status = p.Status.Status1, discontinued=p.Discontinued };
+                    select new {productID=p.ProductId, productName = p.ProductName, productType = p.ProductType.ProductType, city = p.City.City, status = p.Status.Status1, discontinued=p.Discontinued };
            CProductListViewModel model = new CProductListViewModel();
             CProductFactory factory = new CProductFactory();
             model.status = factory.loadStauts();
@@ -36,6 +36,7 @@ namespace prj_Traveldate_Core.Controllers
             foreach (var item in q)
             {
                 CProductWrap cProductWrap = new CProductWrap();
+                cProductWrap.ProductId = item.productID;
                 cProductWrap.ProductName= item.productName;
                 cProductWrap.productType = item.productType;
                 cProductWrap.cityName = item.city;
@@ -55,7 +56,6 @@ namespace prj_Traveldate_Core.Controllers
             list.cities = factory.loadCities();
             list.types = factory.loadTypes();
             list.CompanyId = companyID;
-            Console.WriteLine(list.ProductId);
             return View(list);
         }
         [HttpPost]
@@ -131,14 +131,19 @@ namespace prj_Traveldate_Core.Controllers
 
 
 
-        public IActionResult Edit() 
+        public IActionResult Edit(int productID) 
         {
+            Console.WriteLine(productID);
+            TraveldateContext db = new TraveldateContext();
             CProductWrap list = new CProductWrap();
             CProductFactory factory = new CProductFactory();
             list.categoryAndTags = factory.loadCategories();
             list.countries = factory.loadCountries();
             list.cities = factory.loadCities();
             list.types = factory.loadTypes();
+            list.ProductList = db.ProductLists.Where(p => p.ProductId == productID).FirstOrDefault();
+            list.Tags = db.ProductTagLists.Where(t => t.ProductId == productID).Select(t => (int)t.ProductTagDetailsId).ToList();
+            list.CtripDetail = db.TripDetails.Where(t => t.ProductId == productID).ToList();
             return View(list);
         }
     }

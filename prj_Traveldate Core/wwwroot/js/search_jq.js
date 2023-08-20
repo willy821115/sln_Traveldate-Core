@@ -19,7 +19,10 @@ function clearAllFiltered() {
     $('#selected-checkboxes').append(cleanAllElement)
     $('.uncheckbox').show();
     $('.checkbox').hide();
-    $('.calendar-container').find('.selected').remove();
+    $('.calendar-container').find('.selected').removeClass('selected');
+    selectedTags = [];
+    updateSelectedTags()
+    filteredByDate()
     isFirstButton = true; // 重設為第一次新增狀態
 }
 
@@ -45,6 +48,7 @@ $('.divFiltered').on('click', '.uncheckbox', function () {
             checkCleanAllButtonExistence();
             var index = selectedTags.indexOf(text); // 找到文字在陣列中的索引
             removeTagsFormArr(index)
+            
         }
     });
     $('#selected-checkboxes').append(button); // 將按鈕追加到id為displayText的元素中

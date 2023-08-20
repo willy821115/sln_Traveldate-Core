@@ -88,7 +88,7 @@
 
             <div class="container-fluid">
                 <h2>新增產品</h2>
-                <form asp-action="Create">
+                <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row">
@@ -100,7 +100,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
                                 </div>
                                 <div class="card-body">
-
+                                    <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
                                     <div class="form-group">
                                         <label class="control-label">產品名稱</label>
                                         <input asp-for="ProductName" class="form-control" />
@@ -173,12 +173,16 @@
                                         </div>
                                         <div class="ms-lg-4 filter-block-toggle">
                                             <ul class="list-unstyled m">
-                                                @foreach (var t in c.tags.Distinct())
-                                                {
-                                                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                        <input type="checkbox" />
-                                                        <span>@Html.DisplayFor(modelItem => t)</span>
-                                                    </li>
+                                                @{
+                                                    int id = 0;
+                                                    foreach (var t in c.productTags.Distinct())
+                                                    {
+                                                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                            <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" @(Model.Tags.Contains(t.ProductTagDetailsId) ? "checked" : "") />
+                                                            <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
+                                                        </li>
+                                                        id++;
+                                                    }
                                                 }
                                             </ul>
                                         </div>
@@ -267,7 +271,7 @@
                                 </div>
                                 <div class="card-body" id="contentContainer">
                                     <ul id="sortable">
-                                        <li id="ui-state-default">
+                                        @*<li id="ui-state-default">
                                             <div class="card mb-3">
                                                 <div class="row g-0">
                                                     <div class="col-md-4">
@@ -311,7 +315,9 @@
 
                                                 </div>
                                             </div>
-                                        </li>
+                                        </li>*@
+
+
                                     </ul>
                                     
 

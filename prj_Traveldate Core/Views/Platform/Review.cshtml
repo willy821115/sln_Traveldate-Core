@@ -66,11 +66,11 @@
                                 <h6 class="m-0 font-weight-bold text-primary">產品搜尋</h6>
                             </div>
                             <div class="card-body" style="display: flex; align-items: center;">
-                                @using (Html.BeginForm())
+                               @* @using (Html.BeginForm())
                                 {
                                     @:關鍵字 @Html.TextBox("txtKeyword")
                                     <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
-                                }
+                                }*@
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 10px;">
                                         <label>公司名稱</label>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table id="datatable" class="display" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>公司名稱</th>
@@ -184,4 +184,16 @@
             height: unset;
         }
     </style>
+        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
  }
+
+   @section Scripts{
+       <script>
+            $(document).ready(function () {
+                $('#datatable').DataTable();
+            });
+       </script>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+   }
