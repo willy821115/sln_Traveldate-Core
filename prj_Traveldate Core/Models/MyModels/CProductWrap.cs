@@ -18,8 +18,8 @@
 
         public int CompanyId
         {
-            get { return _prod.ProductId; }
-            set { _prod.ProductId = value; }
+            get { return _prod.CompanyId; }
+            set { _prod.CompanyId = value; }
         }
 
         public string? ProductName
@@ -104,7 +104,7 @@
 
         public List<ProductTypeList>? types { get; set; }
 
-        
+        public List<TripDetail>? CtripDetail { get; set; }
         public List<int> Tags { get; set; }
 
         public List< IFormFile> photos { get; set; }
@@ -116,5 +116,7 @@
         public List<string> TripDetails { get; set; }
 
         public List<int> TripDays { get; set; }
+
+
     }
 }
