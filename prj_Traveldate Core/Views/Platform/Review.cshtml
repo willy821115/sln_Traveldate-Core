@@ -57,43 +57,51 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
-                <h2>商品審核</h2>
+                <h2 style="margin-top:10px">商品審核</h2>
 
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">產品搜尋</h6>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="display: flex; align-items: center;">
                                 @using (Html.BeginForm())
                                 {
                                     @:關鍵字 @Html.TextBox("txtKeyword")
-                                    <input type="submit" value="查詢" class="btn btn-outline-secondary" />
+                                    <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
                                 }
-                                <div>
-                                    <label>公司名稱</label>
-                                    <select class="form-select">
-                                        @foreach (Company type in Model.company)
-                                        {
-                                            <option value="@type.CompanyName">@type.CompanyName</option>
-                                        }
-                                    </select>
-                                    <label>產品類型</label>
-                                    <select class="form-select">
-                                        @foreach (ProductTypeList type in Model.types)
-                                        {
-                                            <option value="@type.ProductTypeId">@type.ProductType</option>
-                                        }
-                                    </select>
-                                    <label>審核狀態</label>
-                                    <select class="form-select">
-                                        @foreach (string status in Model.status)
-                                        {
-                                            <option>@status</option>
-                                        }
-                                    </select>
-                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 10px;">
+                                        <label>公司名稱</label>
+                                        <select class="form-select" name="companySelect">
+                                            <option value="all">全部公司</option>
+                                            @foreach (Company type in Model.company)
+                                            {
+                                                <option value="@type.CompanyName">@type.CompanyName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div style="margin-right: 10px;">
+                                        <label>產品類型</label>
+                                        <select class="form-select" name="productTypeSelect">
+                                            <option value="all">全部類型</option>
+                                            @foreach (ProductTypeList type in Model.types)
+                                            {
+                                                <option value="@type.ProductTypeId">@type.ProductType</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>審核狀態</label>
+                                        <select class="form-select" name="statusSelect">
+                                            <option value="all">全部狀態</option>
+                                            @foreach (string status in Model.status)
+                                            {
+                                                <option>@status</option>
+                                            }
+                                        </select>
+                                    </div>
 
                             </div>
                         </div>
@@ -110,21 +118,25 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>公司名稱</th>
                                         <th>產品名稱</th>
                                         <th>產品類型</th>
                                         <th>所在城市</th>
                                         <th>產品狀態</th>
-                                        <th>銷售狀態</th>
-                                        <th>上/下架</th>
-                                        <th>動作</th>
+                                        <th>查看</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
 
                                     @foreach (var item in Model.product)
-                                    {
-                                        <tr>
+                                        {
+                                            var company = Model.company.Where(c => c.CompanyId == item.CompanyId).Select(c=>c.CompanyName).FirstOrDefault();
+
+                                            <tr>
+                                                <td>
+                                                    <div>@company </div>
+                                                </td>
                                             <td>
                                                 <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
                                             </td>
@@ -138,22 +150,7 @@
                                                 <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
                                             </td>
                                             <td>
-                                               @* @if ((bool)item.Discontinued)
-                                                {
-                                                    <div> 下架</div>
-                                                }
-                                                else
-                                                {
-                                                    <div> 上架</div>
-                                                }*@
-                                            </td>
-                                            <td>
-                                                <div>@Html.ActionLink("上架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-primary"})</div>
-                                                <div>@Html.ActionLink("下架", "Details", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-danger"})</div>
-
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("修改", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                                @Html.ActionLink("查看", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
                                             </td>
                                         </tr>
                                     }

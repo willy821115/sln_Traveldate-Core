@@ -12,6 +12,9 @@ namespace prj_Traveldate_Core.ViewModels
         public string? txtKeyword { get; set; }
 
         public List<Company> company { get; set; }
+        public string companySelect { get; set; }
+        public string productTypeSelect { get; set; }
+        public string statusSelect { get; set; }
 
     }
 }

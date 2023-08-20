@@ -11,7 +11,7 @@ namespace prj_Traveldate_Core.ViewModels
         private CommentList _commentlist = null;
         private Member _member = null;
 
-
+       
 
         public ProductList product
         {
