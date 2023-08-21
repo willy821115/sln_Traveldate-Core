@@ -51,6 +51,21 @@ namespace prj_Traveldate_Core.Models.MyModels
             return formattedDates;
         }
 
+        //最多可報名可賣數量
+        public List<int?> loadQuantityMax(int id)
+        {
+            List<int?> maxnum = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
+            return maxnum;
+        }
+        //最少報名人數
+        public List<int?> loadQuantityMin(int id)
+        {
+            List<int?> maxnum = db.Trips.Where(p => p.ProductId == id).Select(t => t.MinNum).ToList();
+            return maxnum;
+        }
+
+
+
 
         public string loadAddress(int id)
         {
@@ -101,7 +116,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 }
         }
 
-
+       
 
         //Product的縣市顯示再tilte label
         public string loadCity(int id)

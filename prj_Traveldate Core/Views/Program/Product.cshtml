@@ -223,9 +223,9 @@
                 </a>
             </div>
             <div class="buy-content">
-                <ul>
-                    <li>最少成行人數：6人</li>
-                    <li>可報名人數：18人</li>
+                <ul id="ul1">
+                    @* <li id="minGroupSize"></li>
+                    <li id="maxParticipants"></li> *@
                 </ul>
                 <div class="col">
                         <ul class="list-inline">
@@ -594,11 +594,13 @@
         const selectedDateClass = 'select-date';
         let selectedDateElement = null;
 
+        //點擊日曆的日期
         calendarDays.addEventListener('click', function (event) {
             const target = event.target;
             if (target.classList.contains('day')) {
                 const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(target.textContent));
                 const formattedClickedDate = formatDate(clickedDate);
+                const productId = @Model.product.ProductId;
 
                 if (availableDates.includes(formattedClickedDate)) {
                     if (selectedDateElement) {
@@ -616,6 +618,8 @@
                         if (priceElement) {
                             priceElement.classList.add(selectedDateClass);
                         }
+
+                        loadmaxmin(formattedClickedDate, productId);
                     } else {
                         selectedDateElement = null;
                     }
@@ -623,6 +627,26 @@
             }
         });
 
+        async function loadmaxmin(formattedClickedDate, productId) {
+            const response = await fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
+            const data = await response.json();
+            console.log('Received data:', data);
+            const ulElement = document.getElementById('ul1');
+
+            if (ulElement) {
+                let html = '';
+
+                if (data.maxnum > 0) {
+                    html += `<li>可訂購數：${data.maxnum}</li>`;
+                }
+
+                if (data.minnum > 0) {
+                    html += `<li>最少成行人數：${data.minnum}人</li>`;
+                }
+
+                ulElement.innerHTML = html;
+            }
+        } 
 
 
         //商品每天行程JS
@@ -679,19 +703,7 @@
         image.addEventListener('mouseout', function () {
             image.style.cursor = 'auto';
         });
-
-        // var isEnlarged = false;
-        // image.addEventListener('click', function () {
-        //     if (isEnlarged) {
-        //         image.style.width = '80px';
-        //         image.style.height = '60px';
-        //     } else {
-        //         image.style.width = '600px';
-        //         image.style.height = '400px';
-        //     }
-        //     isEnlarged = !isEnlarged;
-        // });
-
+        
         //加購物車
         const addCart = document.getElementById('addtocart');
         addCart.addEventListener('click',function(){
