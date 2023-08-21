@@ -629,6 +629,7 @@
             }
         });
         console.log('buy-content element:', document.getElementById('buy-content'));
+
         async function loadmaxmin(formattedClickedDate, productId) {
             const response = await fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
             const data = await response.json();
