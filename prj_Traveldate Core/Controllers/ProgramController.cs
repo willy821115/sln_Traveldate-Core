@@ -57,13 +57,18 @@ namespace prj_Traveldate_Core.Controllers
             List<DateTime?> tripdate = db.Trips.Where(p=>p.ProductId==id).Select(t => t.Date).ToList();
             List<int?> max = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
             List<int?> min = db.Trips.Where(p => p.ProductId == id).Select(t => t.MinNum).ToList();
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
 
             int? maxnum = max[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             int? minnum = min[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            decimal? pricenum = price[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            DateTime? date = tripdate.FirstOrDefault(d => d?.ToString("yyyy-MM-dd") == selectedDate);
             return Json(new
             {
                 Maxnum = maxnum,
                 Minnum = minnum,
+                Price = pricenum,
+                Date = date?.ToString("yyyy-MM-dd"),
             });
         }
     }

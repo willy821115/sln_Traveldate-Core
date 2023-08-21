@@ -222,10 +222,8 @@
                     顯示所有可訂購日期
                 </a>
             </div>
-            <div class="buy-content">
+            <div class="buy-content" id="buy-content" style="display: none;">
                 <ul id="ul1">
-                    @* <li id="minGroupSize"></li>
-                    <li id="maxParticipants"></li> *@
                 </ul>
                 <div class="col">
                         <ul class="list-inline">
@@ -237,13 +235,13 @@
                             <li class="list-inline-item"><span id="var-value" class="ml-3 mr-3">1</span></li>
                             <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-plus">＋</button></li>
                         </ul>
-                    <label style="font-size:22px">金額：4500</label>
+                    <label style="font-size:22px" id="planprice">金額：</label>
                 </div>
                 <div class="m-3">
                     <div id="addtocart" class="btn btn-outline-dark btn-lg">加入購物車</div>
                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 
@@ -478,6 +476,8 @@
 
         const availableDates = @Html.Raw(Json.Serialize(Model.program.fTripDate));
         const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
+        console.log(availableDates);
+        console.log(price);
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -620,18 +620,21 @@
                         }
 
                         loadmaxmin(formattedClickedDate, productId);
+                        document.getElementById('buy-content').style.display = 'block';
                     } else {
                         selectedDateElement = null;
+                        document.getElementById('buy-content').style.display = 'none';
                     }
                 }
             }
         });
-
+        console.log('buy-content element:', document.getElementById('buy-content'));
         async function loadmaxmin(formattedClickedDate, productId) {
             const response = await fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
             const data = await response.json();
             console.log('Received data:', data);
             const ulElement = document.getElementById('ul1');
+            const planPriceElement = document.getElementById('planprice');
 
             if (ulElement) {
                 let html = '';
@@ -645,6 +648,9 @@
                 }
 
                 ulElement.innerHTML = html;
+            }
+            if (planPriceElement && data.price) {
+                planPriceElement.textContent = `金額：${data.price}`;
             }
         } 
 
