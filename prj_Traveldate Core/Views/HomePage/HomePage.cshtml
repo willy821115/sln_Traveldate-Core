@@ -43,9 +43,9 @@
     <h2>熱門行程</h2>
         
     <div class="destination-container">
-        @* @foreach (var p in Model.popularList)
+        @foreach (var p in Model.popularList)
         {
-            <a href="@Url.Action("Product","Program",new{id=p.productId})">
+            <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                 <div class="destination-item">
                     <img src="~/images/@p.ImagePath" alt="目的地" />
                     <div class="fill-block">
@@ -55,8 +55,8 @@
                         </div>
                     </div>
                 </div>
-            </a>
-        } *@
+           </a>
+        }
            
             <div class="destination-item">
             <div class="card" style="width: 18rem;">
