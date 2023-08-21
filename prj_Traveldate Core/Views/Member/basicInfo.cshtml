@@ -1,5 +1,5 @@
 ﻿@model prj_Traveldate_Core.Models.Member
-{
+@{
     ViewData["Title"] = "basicInfo";
 }
 
@@ -12,8 +12,10 @@
                     <div class="cell d-flex flex-column">
                         <img src="~/icons/User profile - border vector image.png" class="userIcon" />
                         <ul class="list-group leftarea mt-3">
-                            <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:aqua"></li>
+                            @Html.LabelFor(model=>model)
+                            <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                            
                         </ul>
 
                     </div>
@@ -37,7 +39,7 @@
             
         <div class="col-md-9">
             
-            <h3 class="mb-4">基本資料設定</h3>
+            <h3 class="mb-4"><b>基本資料設定</b></h3>
             <div id="rightPanel">
 @*                @foreach (var member in Model)
                 {*@

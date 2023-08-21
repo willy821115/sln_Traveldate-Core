@@ -1,4 +1,5 @@
 ﻿using prj_Traveldate_Core.Models;
+using System.ComponentModel;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -24,16 +25,20 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public int CompanionId { get; set; }
 
+        [DisplayName("姓")]
         public string? LastName { get; set; }
 
+        [DisplayName("名")]
         public string? FirstName { get; set; }
 
         public string? Idnumber { get; set; }
 
+        [DisplayName("手機號碼")]
         public string? Phone { get; set; }
 
         public int? MemberId { get; set; }
 
+        [DisplayName("出生日期")]
         public DateTime? BirthDate { get; set; }
     }
 }

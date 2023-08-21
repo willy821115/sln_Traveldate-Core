@@ -92,16 +92,16 @@ namespace prj_Traveldate_Core.ViewModels
         //    get { return _member.Enable; }
         //    set { _member.Enable = value; }
         //}
-        public byte[]? Photo
-        {
-            get { return _member.Photo; }
-            set { _member.Photo = value; }
-        }
-        public string? ImagePath
-        {
-            get { return _member.ImagePath; }
-            set { _member.ImagePath = value; }
-        }
+        //public byte[]? Photo
+        //{
+        //    get { return _member.Photo; }
+        //    set { _member.Photo = value; }
+        //}
+        //public string? ImagePath
+        //{
+        //    get { return _member.ImagePath; }
+        //    set { _member.ImagePath = value; }
+        //}
 
 
         public string? Level

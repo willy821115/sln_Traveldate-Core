@@ -17,20 +17,58 @@ namespace prj_Traveldate_Core.Controllers
         TraveldateContext context = new TraveldateContext();
         public IActionResult Index() // 左側欄 先維持原版V
         {
+            int MemberId = 1;
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View();
         }
         public IActionResult basicInfo() //基本資料設定 V
         {
-
-
-            int MemberId = 3;
+            int MemberId = 1;
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-            // var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
+ 
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m;
+            if(mem.LevelId==1)
+                ViewBag.level = "一般會員";
+            else if (mem.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (mem.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if(mem.FirstName==mem.FirstName)
+                ViewBag.firstName = mem.FirstName;
+
+            if (mem.LastName == mem.LastName)
+                ViewBag.LastName = mem.LastName;
 
             return View(mem);
+            #region 先註解掉的程式碼
             //int MemberId = 3;
-
-
             //Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             //// var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
             //return View(mem);
@@ -64,24 +102,12 @@ namespace prj_Traveldate_Core.Controllers
             //              where MemberId == m.MemberId
             //              select m;
             //ViewBag.level = levelvm.ToString();
+            #endregion
         }
         [HttpPost]
         public IActionResult basicInfo(Member edit) //基本資料設定edit V
         {
-            int MemberId = 3;
-            //context.Members.ToList();
-
-            //CMemberLevelViewModel vmml=new CMemberLevelViewModel();
-
-            //var levelvm=from m in vmml.Member
-            //          join l in vmml.LevelList
-            //          on m.LevelId equals l.LevelId
-            //          where m.MemberId== MemberId
-            //          select m;
-
-           
-
-
+            int MemberId = 1;
             Member mDB = context.Members.FirstOrDefault(m=>m.MemberId == edit.MemberId);          
                 if (mDB != null)
             {               
@@ -94,20 +120,53 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.SaveChanges(); 
             }
-
             return RedirectToAction("Index");
+            #region 先註解掉的程式碼
+            //context.Members.ToList();
+
+            //CMemberLevelViewModel vmml=new CMemberLevelViewModel();
+
+            //var levelvm=from m in vmml.Member
+            //          join l in vmml.LevelList
+            //          on m.LevelId equals l.LevelId
+            //          where m.MemberId== MemberId
+            //          select m;
+            #endregion
         }
-        
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
-            //int MemberId = 3;
-            //CpasswordChangeViewModel mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-            int MemberId = 3;
+            int MemberId = 1;
             CpasswordChangeViewModel prd=new CpasswordChangeViewModel();
+
+            prd.MemberId = MemberId;
+            Member x=context.Members.FirstOrDefault(m=>m.MemberId==prd.MemberId);
+
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+            return View(prd);
+            #region 先註解掉的程式碼
+            //CpasswordChangeViewModel mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             //Member mem=context.Members.FirstOrDefault(m=>m.MemberId==MemberId);
             //Member m=context.Members.FirstOrDefault(m=>m.Password==prd.txtNewPassword);
-            prd.MemberId = MemberId;
-            return View(prd);
+            #endregion
         }
         [HttpPost]
         public IActionResult passwordChange(CpasswordChangeViewModel edit) //密碼更改 edit V
@@ -117,8 +176,7 @@ namespace prj_Traveldate_Core.Controllers
                 ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不得為空白，請確認後再次提交");
                 return View(edit);
             }
-
-            int memberId = 3; 
+            int memberId = 1; 
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
             if (mDB != null)
@@ -143,14 +201,15 @@ namespace prj_Traveldate_Core.Controllers
 
             return View("Index");
         }
-        public IActionResult couponList(int? id = 1) //優惠券清單 new V
+        public IActionResult couponList() //優惠券清單 new V
         {
+            int MemberId = 1;
             var datas = from m in context.Members
                         join c in context.Coupons
                         on m.MemberId equals c.MemberId
                         join cl in context.CouponLists
                         on c.CouponListId equals cl.CouponListId
-                        where m.MemberId == id
+                        where m.MemberId == MemberId
                         select new couponListViewModel
                         {
                             CouponListId = cl.CouponListId,
@@ -159,14 +218,97 @@ namespace prj_Traveldate_Core.Controllers
                             Description = cl.Description,
                             DueDate = cl.DueDate
                         };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+            return View(datas);
+        }
+
+        public IActionResult showCompanion() //顯示常用旅伴
+        {
+            int MemberId = 1;
+            var datas = from m in context.Members
+                        join cm in context.Companions
+                        on m.MemberId equals cm.MemberId
+                        where m.MemberId == MemberId
+                        select new CCompanionViewModel
+                        {
+                            LastName = cm.LastName,
+                            FirstName = cm.FirstName,
+                            Phone = cm.Phone,
+                            BirthDate = cm.BirthDate,
+                        };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View(datas);
         }
         public IActionResult addCompanion() //新增旅伴資料
         {
-            int MemberId = 3;
-            CCompanionViewModel m =new CCompanionViewModel();
-            m.MemberId = MemberId;
-            return View(m);
+            int MemberId = 1;
+            CCompanionViewModel cm =new CCompanionViewModel();
+            cm.MemberId = MemberId;
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+            return View(cm);
         }
         [HttpPost]
         public IActionResult addCompanion(CCompanionViewModel vm) //新增旅伴資料Create V
@@ -192,29 +334,16 @@ namespace prj_Traveldate_Core.Controllers
             }
             return RedirectToAction("index");
         }
-        public IActionResult showCompanion(int? id = 3) //顯示常用旅伴
+
+        public IActionResult favoriteList() //收藏清單new V
         {
-            var datas = from m in context.Members
-                        join cm in context.Companions
-                        on m.MemberId equals cm.MemberId
-                        where m.MemberId == id
-                        select new CCompanionViewModel
-                        {
-                            LastName = cm.LastName,
-                            FirstName = cm.FirstName,
-                            Phone = cm.Phone,
-                            BirthDate = cm.BirthDate,
-                        };
-            return View(datas);
-        }
-        public IActionResult favoriteList(int? id=3) //收藏清單new V
-        {           
+            int MemberId = 1;
             var datas = from pl in context.ProductLists
                         join f in context.Favorites
                         on pl.ProductId equals f.ProductId
                         join m in context.Members
                         on f.MemberId equals m.MemberId
-                        where m.MemberId == id
+                        where m.MemberId == MemberId
                         select new CfavoriteListViewModel
                         {
                             ProductName = pl.ProductName,
@@ -223,6 +352,28 @@ namespace prj_Traveldate_Core.Controllers
                             //Description = pl.Description,
                             Outline = pl.Outline,
                         };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View(datas.Distinct());
         }
         //[HttpPost]
@@ -239,8 +390,36 @@ namespace prj_Traveldate_Core.Controllers
             
         //    //return RedirectToAction("favoriteList");
         //}
-        public IActionResult orderList(int? id = 1) //會員訂單new V
+        public IActionResult orderList() //會員訂單new V
         {
+            int MemberId = 1;
+            var datas = from o in context.OrderDetails
+                        where o.Order.Member.MemberId == MemberId
+                        select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+            return View(datas.Distinct());
+            #region 先註解掉的程式碼
             //var datas = from tripde in context.TripDetails
             //            join trip in context.Trips
             //            on tripde.ProductId equals trip.ProductId
@@ -261,11 +440,7 @@ namespace prj_Traveldate_Core.Controllers
             //                Datetime = order.Datetime,
             //                //TripDetaill = tripde.TripDetaill,
             //            };
-
-            var datas = from o in context.OrderDetails
-                        where o.Order.Member.MemberId == id
-                        select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
-            return View(datas.Distinct());
+            #endregion
         }
         #region 我的評論 0817(四)版 暫時用不到
         //public IActionResult commentList(int? id = 1) //我的評論V
@@ -287,14 +462,15 @@ namespace prj_Traveldate_Core.Controllers
         //    return View(datas);
         //}
         #endregion
-        public IActionResult commentList(int? id = 1) //我的評論new V
+        public IActionResult commentList() //我的評論new V
         {
+            int MemberId = 1;
             var datas = from m in context.Members
                         join cm in context.CommentLists
                         on m.MemberId equals cm.MemberId
                         join pl in context.ProductLists
                         on cm.ProductId equals pl.ProductId
-                        where m.MemberId == id
+                        where m.MemberId == MemberId
                         select new CcommentListViewModel
                         {
                             Title = cm.Title,
@@ -303,6 +479,28 @@ namespace prj_Traveldate_Core.Controllers
                             Date = cm.Date,
                             ProductName = pl.ProductName
                         };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View(datas);
         }
         #region 添加評論view 暫時用不到2023.08.20
@@ -311,12 +509,13 @@ namespace prj_Traveldate_Core.Controllers
             return View();
         }
         #endregion
-        public IActionResult forumList(int? id = 1) //我的揪團new V
+        public IActionResult forumList() //我的揪團new V
         {
+            int MemberId =1;
             var datas = from m in context.Members
                         join fl in context.ForumLists
                         on m.MemberId equals fl.MemberId
-                        where m.MemberId == id
+                        where m.MemberId == MemberId
                         select new CForumListViewModel2
                         {
                             ForumListId = fl.ForumListId,
@@ -327,6 +526,28 @@ namespace prj_Traveldate_Core.Controllers
                             Watches = fl.Watches,
                             Content = fl.Content
                         };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View(datas);
         }
     }
