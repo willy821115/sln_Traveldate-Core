@@ -36,55 +36,78 @@
     <thead>
         <tr>
             <th class="col-md-1"></th>
-            <th>商品名稱</th>                  
-            <th>訂購日期</th>                       
+            <th>商品名稱</th>
+            <th>訂購日期</th>
             <th>行程日期</th>
+            @*<th>操作</th>*@
             <th>操作</th>
         </tr>
     </thead>
-    <tbody>            
+    <tbody>
         @{
-                        //int count = 0;
-                        foreach (var item in Model)
-                        {
-                            //count++;
-                            <tr>
-                                 <td><i class='fas fa-tag' style='font-size:24px;margin-left:32px'></i></td>
-                                <td>@item.ProductName</td>
-                                <td>@item.Datetime</td>
-                                <td>@item.Date.ToString("yyyy-MM-dd")</td>
-                                <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                            </tr>
-                        }
-                    //  <tr>
-                    //    <td>序號1</td>
-                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                    //    <td>蘭嶼三天兩夜</td>
-                    //    <td>2023-06-19</td>
-                    //    <td>2023-06-26</td>
-                    //    <td>蘭嶼三天兩夜</td>
-                    //</tr>
-                    // <tr>
-                    //    <td>序號2</td>
-                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                    //    <td>澎湖一日遊</td>
-                    //    <td>2023-07-06</td>
-                    //    <td>2023-07-15</td>
-                    //    <td>水上八合一無限遊玩</td>
-                    //</tr>
-                    //<tr>
-                    //    <td>序號3</td>
-                    //    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
-                    //    <td>宜蘭太平山二日遊</td>
-                    //    <td>2023-07-15</td>
-                    //    <td>2023-07-30</td>
-                    //    <td>雙人房</td>
-                    //</tr>
+            //int count = 0;
+            foreach (var item in Model)
+            {
+                //count++;
+                <tr>
+                    <td><i class='fas fa-tag' style='font-size:24px;margin-left:32px'></i></td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Datetime</td>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                    @*<td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>*@
+                    <td><a href="#" class="btn my-btn-primary btn-sm comment-button">評論</a></td>
+                </tr>
+            }
         }
     </tbody>
-</table>
 
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5)">
+    <div class="modal-dialog">
+        <div class="modal-dialog justify-content-center">
+
+            <div class="col-md-8">
+                <div id="rightPanel">
+                    <h3></h3>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <i class='fas fa-edit' style='font-size:24px'><span> 熱評從你開始</span></i>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    @*<hr />*@
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group"><label for="txtTitle">標題</label><input type="text" id="txtTitle" class="form-control" /></div>
+                            <div class="form-group"><label for="txtComment">內容</label><input type="text" id="txtComment" class="form-control" /></div>
+                            <div class="form-group"><label for="txtScore">您的評分</label><select id="txtScore" class="form-control"><option value="">請選擇</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select></div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class="btn my-btn-primary">
+                                <td class="link-offset-2 link-underline link-underline-opacity-0" href="#">
+                                    @Html.ActionLink("儲存", "orderList","Member","",new {@class="black-link2"})
+                            </button>
+                            <button type="button" class="btn my-btn-primary">
+                                <td class="link-offset-2 link-underline link-underline-opacity-0" href="#">
+                                    @Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
             <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
@@ -105,14 +128,30 @@
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
     </div>
-</div>
+</div>*@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 
 }
 @section scripts{
+    <script>
+        $(document).ready(function () {
+            // 處理「評論」按鈕的點擊事件
+            $('.comment-button').click(function () {
+                // 如果需要，從當前行獲取數據
+                var productName = $(this).closest('tr').find('td:eq(1)').text();
+                var date = $(this).closest('tr').find('td:eq(3)').text();
 
+                // 如果需要，將數據設置在模態對話框中
+                $('#exampleModal').find('#txtProductName').val(productName);
+                $('#exampleModal').find('#txtDate').val(date);
+
+                // 打開模態對話框
+                $('#exampleModal').modal('show');
+            });
+        });
+    </script>
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({

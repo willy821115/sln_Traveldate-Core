@@ -1,5 +1,5 @@
 ﻿@model prj_Traveldate_Core.Models.Member
-@{
+{
     ViewData["Title"] = "basicInfo";
 }
 
@@ -13,7 +13,7 @@
                         <img src="~/icons/User profile - border vector image.png" class="userIcon" />
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1">Travel Date</li>
-                            <li class="list-group-item menuItem" data-content="subItem2">一般會員</li>
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:aqua"></li>
                         </ul>
 
                     </div>
@@ -53,8 +53,8 @@
 @*                          <label for="txtLastName">姓</label>
                             <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />*@
                             @*<label class="control-label">LastName</label>*@
-                            @Html.LabelFor(model=>model.LastName)
-                            @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.LabelFor(model=>model.LastName)
+                        @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
 @*                        <label for="txtFirstName">名</label>
