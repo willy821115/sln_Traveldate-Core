@@ -29,7 +29,7 @@ namespace prj_Traveldate_Core.Controllers
 
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
-                 json = JsonSerializer.Serialize(_vm.filterProducts);
+                json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
             //int pageSize = 5;
@@ -66,35 +66,48 @@ namespace prj_Traveldate_Core.Controllers
             }
             return PartialView(_vm);
         }
-        
+
         public IActionResult filterCity(string? txtKeyword)
         {
             if (!string.IsNullOrEmpty(txtKeyword) && txtKeyword != "undefined")
             {
                 var filterCities = _context.ProductLists
-                    .Where(p=> _products.confirmedId.Contains(p.ProductId))
-                    .Where(c=>c.City.City.Contains(txtKeyword))
-                    .Select(c=>new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0,2)}).Distinct().ToList();
+                    .Where(p => _products.confirmedId.Contains(p.ProductId))
+                    .Where(c => c.City.City.Contains(txtKeyword))
+                    .Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
                 return Json(filterCities);
             }
-           var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
+            var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
             return Json(filterCitiess);
         }
-        
-        public IActionResult FilterByConditions(List<string> conditions , string startTime, string endTime)
+
+        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice)
         {
+            _vm.filterProducts = _products.qureyFilterProductsInfo();
             //有篩選條件做篩選
-            if (conditions.Count >0)
+            if (tags.Count > 0)
             {
-                _vm.filterProducts =_products.qureyFilterProductsInfo()
-                                .Where(p => p.productTags.Any(tag => conditions.Contains(tag))
-                                || conditions.Contains(p.city)
-                                ).ToList();
+                _vm.filterProducts = _vm.filterProducts
+                                .Where(p => p.productTags.Any(tag => tags.Contains(tag))).ToList();
+                json = JsonSerializer.Serialize(_vm.filterProducts);
+                HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+            }
+            if(cities.Count > 0)
+            {
+                _vm.filterProducts = _vm.filterProducts
+                                .Where(p => cities.Contains(p.city)).ToList();
+                json = JsonSerializer.Serialize(_vm.filterProducts);
+                HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+            }
+            if (types.Count > 0)
+            {
+                _vm.filterProducts = _vm.filterProducts
+                               .Where(p => types.Contains(p.type)).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
             //沒有篩選條件抓全部
-            else
+            if(tags.Count == 0 && cities.Count == 0&& types.Count == 0)
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
@@ -108,13 +121,35 @@ namespace prj_Traveldate_Core.Controllers
                 _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+                if (_vm.filterProducts.Count == 0)
+                {
+                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+                }
                 return PartialView(_vm);
             }
-          
-           //1.回傳只有城市/標籤的篩選
-           //2.回傳只有時間的篩選
-           //3.回傳有時間/標籤/城市的篩選
-           //4.回傳沒有任何篩選的結果
+            //有價格篩選做上面篩選後的篩選
+            if (!string.IsNullOrEmpty(minPrice) && !string.IsNullOrEmpty(maxPrice))
+            {
+
+                _vm.filterProducts = _vm.filterProducts.Where(p => p.price >= Convert.ToInt32(minPrice) && p.price <= Convert.ToInt32(maxPrice)).ToList();
+                json = JsonSerializer.Serialize(_vm.filterProducts);
+                HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+                if (_vm.filterProducts.Count == 0)
+                {
+                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+                }
+                return PartialView(_vm);
+            }
+
+
+            //1.回傳只有城市/標籤的篩選
+            //2.回傳只有時間的篩選
+            //3.回傳有時間/標籤/城市的篩選
+            //4.回傳沒有任何篩選的結果
+            if (_vm.filterProducts.Count == 0)
+            {
+                return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+            }
             return PartialView(_vm);
         }
         //////////////////20230821跟其他篩選項目整合了////////////////////////////

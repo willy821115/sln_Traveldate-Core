@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled divFiltered" id="divCityList">
+                    <ul class="list-unstyled divFiltered_city" id="divCityList">
                         @foreach (var t in city.citys)
                         {
                             <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled divFiltered">
+                    <ul class="list-unstyled divFiltered_tag">
                         @foreach (var t in c.tags.Distinct())
                         {
                             <li class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <div class="ms-lg-4 filter-block-toggle">
-                <ul class="list-unstyled divFiltered">
+                <ul class="list-unstyled divFiltered_type">
                     @foreach (var type in Model.types.Distinct())
                     {
                         <li class=" d-flex align-items-center divide-line my-w-80-percent">
@@ -209,8 +209,8 @@
                 {
                     salesCount = $"{item.orederCount} 個已訂購";
                 }
-                    
-              <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" />
+                    <input type="hidden" class="forCount" />
+              @* <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" /> *@
               <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
                         <div class="card mb-3 col-12 p-0">
                         <div class="row g-0">
@@ -285,23 +285,29 @@
             $('#filterBody').removeClass('d-none')
             $('.alert-light').addClass('d-none')
         }
-    
+
         var selectedTags = [];
+        var selectedCities = [];
+        var selectedTypes = [];
         var startTime=""
         var endTime = ""
-        function filteredByConditions(/* startTime, endTime */) {
+        var minPrice = ""
+        var maxPrice = ""
+        function filteredByConditions() {
            showLoadingIcon()
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("FilterByConditions", "Search")",
-                data: { conditions: selectedTags, startTime: startTime, endTime: endTime },
+                data: {
+                    tags: selectedTags, cities: selectedCities, types: selectedTypes,
+                    startTime: startTime, endTime: endTime,
+                    minPrice: minPrice, maxPrice: maxPrice },
                 success: function (response) {
                     hideLoadingIcon()
                     $('#filterBody').html(response)
                     roadRating()
                     var resultCount = $('#filterBody').find('.forCount').length
                     $('#total').html(resultCount)
-                   
                 },
                 error: function (error) {
                     console.log("發生錯誤：", error);
