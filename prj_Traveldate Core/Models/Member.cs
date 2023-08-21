@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace prj_Traveldate_Core.Models;
 
 public partial class Member
 {
+    
     public int MemberId { get; set; }
 
+    [DisplayName("姓")]
     public string? LastName { get; set; }
 
+    [DisplayName("名")]
     public string? FirstName { get; set; }
 
+    [DisplayName("性別")]
     public string? Gender { get; set; }
 
     public string? Idnumber { get; set; }
 
+    [DisplayName("出生日期")]
     public DateTime? BirthDate { get; set; }
 
     public int? CityId { get; set; }
 
+    [DisplayName("手機號碼")]
     public string? Phone { get; set; }
 
+    [DisplayName("聯絡信箱")]
     public string? Email { get; set; }
 
     public string? Password { get; set; }

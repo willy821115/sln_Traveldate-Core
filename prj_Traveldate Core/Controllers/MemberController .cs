@@ -17,6 +17,28 @@ namespace prj_Traveldate_Core.Controllers
         TraveldateContext context = new TraveldateContext();
         public IActionResult Index() // 左側欄 先維持原版V
         {
+            int MemberId = 1;
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
             return View();
         }
         public IActionResult basicInfo() //基本資料設定 V
@@ -85,7 +107,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult basicInfo(Member edit) //基本資料設定edit V
         {
-            int MemberId = 3;
+            int MemberId = 1;
             Member mDB = context.Members.FirstOrDefault(m=>m.MemberId == edit.MemberId);          
                 if (mDB != null)
             {               
@@ -113,7 +135,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
-            int MemberId = 3;
+            int MemberId = 1;
             CpasswordChangeViewModel prd=new CpasswordChangeViewModel();
 
             prd.MemberId = MemberId;
@@ -154,7 +176,7 @@ namespace prj_Traveldate_Core.Controllers
                 ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不得為空白，請確認後再次提交");
                 return View(edit);
             }
-            int memberId = 3; 
+            int memberId = 1; 
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
             if (mDB != null)
@@ -181,7 +203,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult couponList() //優惠券清單 new V
         {
-            int MemberId = 2;
+            int MemberId = 1;
             var datas = from m in context.Members
                         join c in context.Coupons
                         on m.MemberId equals c.MemberId
@@ -489,7 +511,7 @@ namespace prj_Traveldate_Core.Controllers
         #endregion
         public IActionResult forumList() //我的揪團new V
         {
-            int MemberId =5;
+            int MemberId =1;
             var datas = from m in context.Members
                         join fl in context.ForumLists
                         on m.MemberId equals fl.MemberId

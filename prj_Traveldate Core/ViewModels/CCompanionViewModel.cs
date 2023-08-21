@@ -25,10 +25,10 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public int CompanionId { get; set; }
 
-        [DisplayName("名")]
+        [DisplayName("姓")]
         public string? LastName { get; set; }
 
-        [DisplayName("姓")]
+        [DisplayName("名")]
         public string? FirstName { get; set; }
 
         public string? Idnumber { get; set; }
