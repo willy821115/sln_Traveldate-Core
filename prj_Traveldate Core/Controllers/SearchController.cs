@@ -81,9 +81,9 @@ namespace prj_Traveldate_Core.Controllers
             return Json(filterCitiess);
         }
         
-        public IActionResult FilterByConditions(List<string> conditions)
+        public IActionResult FilterByConditions(List<string> conditions , string startTime, string endTime)
         {
- 
+            //有篩選條件做篩選
             if (conditions.Count >0)
             {
                 _vm.filterProducts =_products.qureyFilterProductsInfo()
@@ -92,37 +92,56 @@ namespace prj_Traveldate_Core.Controllers
                                 ).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-                return PartialView(_vm);
             }
-            _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
-            json = JsonSerializer.Serialize(_vm.filterProducts);
-            HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-            return PartialView(_vm);
-        }
-        public IActionResult FilterByDate(string startTime,string endTime)
-        {
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
+            //沒有篩選條件抓全部
+            else
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
-
-            json = HttpContext.Session.GetString(CDictionary.SK_FILETREDPRODUCTS_INFO);
-            _vm.filterProducts = JsonSerializer.Deserialize<List<CFilteredProductItem>>(json);
-            if(!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+            //有時間條件做上面篩選後的篩選
+            if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
             {
                 DateTime startDateTime = DateTime.Parse(startTime);
                 DateTime endDateTime = DateTime.Parse(endTime).AddDays(1);
-                _vm.filterProducts = _vm.filterProducts.Where(p=> DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
+                _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
                 return PartialView(_vm);
             }
-            //json = JsonSerializer.Serialize(_vm.filterProducts);
-            //HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+          
+           //1.回傳只有城市/標籤的篩選
+           //2.回傳只有時間的篩選
+           //3.回傳有時間/標籤/城市的篩選
+           //4.回傳沒有任何篩選的結果
             return PartialView(_vm);
         }
+        //////////////////20230821跟其他篩選項目整合了////////////////////////////
+        //public IActionResult FilterByDate(string startTime, string endTime)
+        //{
+        //    if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
+        //    {
+        //        _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+        //        json = JsonSerializer.Serialize(_vm.filterProducts);
+        //        HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+        //    }
+
+        //    json = HttpContext.Session.GetString(CDictionary.SK_FILETREDPRODUCTS_INFO);
+        //    _vm.filterProducts = JsonSerializer.Deserialize<List<CFilteredProductItem>>(json);
+        //    if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
+        //    {
+        //        DateTime startDateTime = DateTime.Parse(startTime);
+        //        DateTime endDateTime = DateTime.Parse(endTime).AddDays(1);
+        //        _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
+        //        json = JsonSerializer.Serialize(_vm.filterProducts);
+        //        HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+        //        return PartialView(_vm);
+        //    }
+        //    //json = JsonSerializer.Serialize(_vm.filterProducts);
+        //    //HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+        //    return PartialView(_vm);
+        //}
     }
 }
 

@@ -287,12 +287,14 @@
         }
     
         var selectedTags = [];
-        function updateSelectedTags() {
+        var startTime=""
+        var endTime = ""
+        function filteredByConditions(/* startTime, endTime */) {
            showLoadingIcon()
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("FilterByConditions", "Search")", 
-                data: { conditions: selectedTags },
+                url: "@Url.Action("FilterByConditions", "Search")",
+                data: { conditions: selectedTags, startTime: startTime, endTime: endTime },
                 success: function (response) {
                     hideLoadingIcon()
                     $('#filterBody').html(response)
@@ -312,25 +314,25 @@
     
     <script>
         
-        function filteredByDate(startTime, endTime) {
-            showLoadingIcon()
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("FilterByDate", "Search")",
-                data: { startTime: startTime, endTime: endTime },
-                success: function (response) {
-                    hideLoadingIcon()
-                    $('#filterBody').html(response)
-                    roadRating()
-                    var resultCount = $('#filterBody').find('.forCount').length
-                    $('#total').html(resultCount)
+        // function filteredByDate(startTime, endTime) {
+        //     showLoadingIcon()
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "@Url.Action("FilterByDate", "Search")",
+        //         data: { startTime: startTime, endTime: endTime },
+        //         success: function (response) {
+        //             hideLoadingIcon()
+        //             $('#filterBody').html(response)
+        //             roadRating()
+        //             var resultCount = $('#filterBody').find('.forCount').length
+        //             $('#total').html(resultCount)
 
-                },
-                error: function (error) {
-                    console.log("發生錯誤：", error);
-                }
-            });
-        }
+        //         },
+        //         error: function (error) {
+        //             console.log("發生錯誤：", error);
+        //         }
+        //     });
+        // }
     </script>
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
