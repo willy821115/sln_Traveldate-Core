@@ -43,7 +43,20 @@
     <h2>熱門行程</h2>
         
     <div class="destination-container">
-       
+       @*  @foreach (var p in Model.popularList)
+        {
+            <a href="@Url.Action("Product","Program",new{id=p.productId})">
+                <div class="destination-item">
+                    <img src="~/images/@p.ImagePath" alt="目的地" />
+                    <div class="fill-block">
+                        <div class="destination-info">
+                            <p style="text-align: left">@p.productName</p>
+                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        } *@
            
             <div class="destination-item">
             <div class="card" style="width: 18rem;">
@@ -130,6 +143,7 @@
 
       @*  @foreach (var p in Model.commentList)
         {
+        <a href="@Url.Action("Product","Program",new{id=p.productId})">
             <div class="destination-item">
                 <img src="~/images/@p.ImagePath" alt="目的地" />
                 <div class="fill-block">
@@ -139,7 +153,8 @@
                     </div>
                 </div>
             </div>
-        }*@
+        </a>
+        } *@
 
         <div class="destination-container">
 
@@ -238,9 +253,10 @@
 <section class="hot-destinations-section" id="hot-destinations-section">
     <h2>促銷旅遊專案</h2>
 
-        @*<div class="destination-container">
-            @foreach (var p in Model.discountList)
+        <div class="destination-container">
+           @*  @foreach (var p in Model.discountList)
             {
+                <a href="@Url.Action("Product","Program",new{id=p.productId})">
                 <div class="destination-item">
                     <img src="~/images/@p.ImagePath" alt="目的地" />
                     <div class="fill-block">
@@ -250,8 +266,9 @@
                         </div>
                     </div>
                 </div>
-            }*@
-
+                </a>
+            }
+ *@
         
 
     <div class="destination-container">
