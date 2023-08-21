@@ -16,7 +16,7 @@ namespace prj_Traveldate_Core.Controllers
 
             //var popular = from od in db.OrderDetails
             //              group od by od.Trip.Product into g
-            //              orderby g.Select(o=>o.Quantity).Sum() descending
+            //              orderby g.Select(o => o.Quantity).Sum() descending
             //              select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.Trip.UnitPrice) };
 
             //List<CHomeViewModel> popularList = new List<CHomeViewModel>();
@@ -38,20 +38,20 @@ namespace prj_Traveldate_Core.Controllers
 
             //list.popularList = popularList;
 
-            //var comment = from  c in db.CommentLists
-            //              group c by c.Product into g 
-            //              orderby g.Select(c=>c.CommentScore).Average()
-            //              select new { productId = g.Key.ProductId, productName = g.Key.ProductName, commentScore= g.Select(c => c.CommentScore).Average() };
+            //var comment = from c in db.CommentLists
+            //              group c by c.Product into g
+            //              orderby g.Select(c => c.CommentScore).Average()
+            //              select new { productId = g.Key.ProductId, productName = g.Key.ProductName, commentScore = g.Select(c => c.CommentScore).Average() };
 
             //List<CHomeViewModel> commentList = new List<CHomeViewModel>();
-            //foreach (var p in comment.Take(6).ToList())
+            //foreach (var p in comment.Take(8).ToList())
             //{
             //    CHomeViewModel item = new CHomeViewModel();
             //    item.productId = p.productId;
             //    item.productName = p.productName;
             //    item.commentScore = (double)p.commentScore;
 
-            //    var unitprice = db.Trips.Where(c => c.ProductId == p.productId).Min(c=>c.UnitPrice);
+            //    var unitprice = db.Trips.Where(c => c.ProductId == p.productId).Min(c => c.UnitPrice);
             //    var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
 
             //    item.ImagePath = imagePath;
@@ -62,12 +62,12 @@ namespace prj_Traveldate_Core.Controllers
             //list.commentList = commentList;
 
             //var discount = from od in db.Trips
-            //              group od by od.Product into g
-            //              orderby g.Max(o => o.Discount) descending
-            //              select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.UnitPrice) };
+            //               group od by od.Product into g
+            //               orderby g.Max(o => o.Discount) descending
+            //               select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.UnitPrice) };
 
             //List<CHomeViewModel> discountList = new List<CHomeViewModel>();
-            //foreach (var p in discount.Take(6).ToList())
+            //foreach (var p in discount.Take(8).ToList())
             //{
             //    CHomeViewModel item = new CHomeViewModel();
             //    item.productId = p.productId;
