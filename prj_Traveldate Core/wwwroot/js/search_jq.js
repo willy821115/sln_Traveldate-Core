@@ -21,7 +21,7 @@ function clearAllFiltered() {
     $('.checkbox').hide();
     $('.calendar-container').find('.selected').removeClass('selected');
     selectedTags = [];
-    updateSelectedTags()
+    filteredByConditions()
     filteredByDate()
     isFirstButton = true; // 重設為第一次新增狀態
 }
@@ -36,7 +36,7 @@ $('.divFiltered').on('click', '.uncheckbox', function () {
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     $('#selected-tags').append(text)
     selectedTags.push(text); // 將文字添加到陣列中
-    updateSelectedTags();
+    filteredByConditions();
     var button = $('<button>', {
         text: text + ' X',
         value: text,
@@ -71,7 +71,7 @@ $('.divFiltered').on('click', '.checkbox', function(){
 function removeTagsFormArr(index) {
     if (index > -1) {
         selectedTags.splice(index, 1); // 從陣列中刪除該文字
-        updateSelectedTags(); // 更新顯示選中標籤的元素
+        filteredByConditions(); // 更新顯示選中標籤的元素
     }
 }
 
