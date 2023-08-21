@@ -1,4 +1,4 @@
-﻿using AspNetCore;
+﻿//using AspNetCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -21,13 +21,35 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult basicInfo() //基本資料設定 V
         {
-
-
-            int MemberId = 3;
+            int MemberId = 1;
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             // var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
 
+            //test
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m;
+            if(mem.LevelId==1)
+                ViewBag.level = "一般會員";
+            else if (mem.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (mem.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if(mem.FirstName==mem.FirstName)
+                ViewBag.firstName = mem.FirstName;
+
+            if (mem.LastName == mem.LastName)
+                ViewBag.LastName = mem.LastName;
+
             return View(mem);
+
+
+
             //int MemberId = 3;
 
 

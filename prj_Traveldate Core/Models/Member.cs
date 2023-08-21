@@ -33,7 +33,7 @@ public partial class Member
 
     public byte[]? Photo { get; set; }
 
-    public string? ImagePath { get; set; }
+    //public string? ImagePath { get; set; }
 
     public virtual CityList? City { get; set; }
 
