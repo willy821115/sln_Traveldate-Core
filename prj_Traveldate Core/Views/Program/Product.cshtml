@@ -222,10 +222,8 @@
                     顯示所有可訂購日期
                 </a>
             </div>
-            <div class="buy-content">
-                <ul>
-                    <li>最少成行人數：6人</li>
-                    <li>可報名人數：18人</li>
+            <div class="buy-content" id="buy-content" style="display: none;">
+                <ul id="ul1">
                 </ul>
                 <div class="col">
                         <ul class="list-inline">
@@ -237,13 +235,13 @@
                             <li class="list-inline-item"><span id="var-value" class="ml-3 mr-3">1</span></li>
                             <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm" id="btn-plus">＋</button></li>
                         </ul>
-                    <label style="font-size:22px">金額：4500</label>
+                    <label style="font-size:22px" id="planprice">金額：</label>
                 </div>
                 <div class="m-3">
                     <div id="addtocart" class="btn btn-outline-dark btn-lg">加入購物車</div>
                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 
@@ -478,6 +476,8 @@
 
         const availableDates = @Html.Raw(Json.Serialize(Model.program.fTripDate));
         const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
+        console.log(availableDates);
+        console.log(price);
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -594,11 +594,13 @@
         const selectedDateClass = 'select-date';
         let selectedDateElement = null;
 
+        //點擊日曆的日期
         calendarDays.addEventListener('click', function (event) {
             const target = event.target;
             if (target.classList.contains('day')) {
                 const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(target.textContent));
                 const formattedClickedDate = formatDate(clickedDate);
+                const productId = @Model.product.ProductId;
 
                 if (availableDates.includes(formattedClickedDate)) {
                     if (selectedDateElement) {
@@ -616,13 +618,41 @@
                         if (priceElement) {
                             priceElement.classList.add(selectedDateClass);
                         }
+
+                        loadmaxmin(formattedClickedDate, productId);
+                        document.getElementById('buy-content').style.display = 'block';
                     } else {
                         selectedDateElement = null;
+                        document.getElementById('buy-content').style.display = 'none';
                     }
                 }
             }
         });
+        console.log('buy-content element:', document.getElementById('buy-content'));
+        async function loadmaxmin(formattedClickedDate, productId) {
+            const response = await fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
+            const data = await response.json();
+            console.log('Received data:', data);
+            const ulElement = document.getElementById('ul1');
+            const planPriceElement = document.getElementById('planprice');
 
+            if (ulElement) {
+                let html = '';
+
+                if (data.maxnum > 0) {
+                    html += `<li>可訂購數：${data.maxnum}</li>`;
+                }
+
+                if (data.minnum > 0) {
+                    html += `<li>最少成行人數：${data.minnum}人</li>`;
+                }
+
+                ulElement.innerHTML = html;
+            }
+            if (planPriceElement && data.price) {
+                planPriceElement.textContent = `金額：${data.price}`;
+            }
+        } 
 
 
         //商品每天行程JS
@@ -679,19 +709,7 @@
         image.addEventListener('mouseout', function () {
             image.style.cursor = 'auto';
         });
-
-        // var isEnlarged = false;
-        // image.addEventListener('click', function () {
-        //     if (isEnlarged) {
-        //         image.style.width = '80px';
-        //         image.style.height = '60px';
-        //     } else {
-        //         image.style.width = '600px';
-        //         image.style.height = '400px';
-        //     }
-        //     isEnlarged = !isEnlarged;
-        // });
-
+        
         //加購物車
         const addCart = document.getElementById('addtocart');
         addCart.addEventListener('click',function(){

@@ -11,7 +11,7 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Product(int? id)
         {
             if (id == null)
-                return RedirectToAction("List");
+                return RedirectToAction("Search");
             CProductFactory pf = new CProductFactory();
             ProgramViewModel vm = new ProgramViewModel();
             vm.program.fPhotoList = pf.loadPhoto((int)id);
@@ -33,6 +33,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fComTitle = pf.loadCommentTitle((int)id);
             vm.program.fComContent = pf.loadCommentContent((int)id);
             vm.program.fStatus = pf.loadStatus((int)id);
+            vm.product.ProductId = (int)id;
             return View(vm);
         }
         
@@ -49,7 +50,26 @@ namespace prj_Traveldate_Core.Controllers
 
         //}
 
+        public IActionResult MaxNum(string selectedDate,int id)
+        {
+            TraveldateContext db = new TraveldateContext();
 
+            List<DateTime?> tripdate = db.Trips.Where(p=>p.ProductId==id).Select(t => t.Date).ToList();
+            List<int?> max = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
+            List<int?> min = db.Trips.Where(p => p.ProductId == id).Select(t => t.MinNum).ToList();
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
 
+            int? maxnum = max[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            int? minnum = min[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            decimal? pricenum = price[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            DateTime? date = tripdate.FirstOrDefault(d => d?.ToString("yyyy-MM-dd") == selectedDate);
+            return Json(new
+            {
+                Maxnum = maxnum,
+                Minnum = minnum,
+                Price = pricenum,
+                Date = date?.ToString("yyyy-MM-dd"),
+            });
+        }
     }
 }
