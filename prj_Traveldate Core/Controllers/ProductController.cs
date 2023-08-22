@@ -198,10 +198,15 @@ namespace prj_Traveldate_Core.Controllers
             if (pro.photos != null)
             {
                 //先刪除image所有輪播圖
-                var deletedPhoto = db.ProductPhotoLists.Where(p => p.ProductId == pro.ProductId).Select(p => p.ImagePath);
+                var deletedPhoto = db.ProductPhotoLists.Where(p => p.ProductId == pro.ProductId);
+                
                 if (deletedPhoto != null) 
                 {
-                foreach (var path in deletedPhoto) 
+                    foreach (var photo in deletedPhoto)
+                    {
+                        db.ProductPhotoLists.Remove(photo);
+                    }
+                    foreach (var path in deletedPhoto.Select(t=>t.ImagePath)) 
                     {
                         if (path != null) 
                         {
