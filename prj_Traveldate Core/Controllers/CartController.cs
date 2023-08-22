@@ -5,9 +5,9 @@ using prj_Traveldate_Core.ViewModels;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class CartController : Controller
+    public class CartController : SuperController
     {
-        int _memberID = 1;
+        int _memberID = 0;
         TraveldateContext _context;
         public CartController()
         {
@@ -15,6 +15,8 @@ namespace prj_Traveldate_Core.Controllers
         }
         public ActionResult ShoppingCart()
         {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
             vm.cartitems = new List<CCartItem>();
             vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID)).Select(c=>
@@ -44,6 +46,7 @@ namespace prj_Traveldate_Core.Controllers
             //抓資料: 會員資料+點數 常用旅伴 優惠券
             //抓session: orderDetailID List of checked items
             //合成一個vm 傳給view
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
             vm.member = _context.Members.Find(_memberID);

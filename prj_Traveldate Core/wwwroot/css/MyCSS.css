@@ -89,8 +89,14 @@ footer {
     }
 /**************************************20230809導覽列新增樣式***********************************************************/
 
+.loginAlert {
+    color: darkred;
+    font-weight:bold;
+}
 
-
-
+.form-check-input:checked {
+    background-color: #155074;
+    border-color: #155074;
+}
 
 

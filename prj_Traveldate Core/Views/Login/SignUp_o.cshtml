@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<form method="post" action="/Vendor/Register">
+    <h1>會員註冊</h1>
+    <div>
+        <label for="lastName">姓氏:</label>
+        <input type="text" id="lastName" name="lastName" required>
+    </div>
+    <div>
+        <label for="firstName">人名:</label>
+        <input type="text" id="firstName" name="firstName" required>
+    </div>
+    <div>
+        <label for="gender">性別:</label>
+        <select id="gender" name="gender" required>
+            <option value="">請選擇性別</option>
+            <option value="Male">男性</option>
+            <option value="Female">女性</option>
+            <!-- 在此添加其他選項 -->
+        </select>
+    </div>
+    <div>
+        <label for="idNumber">身份證字號:</label>
+        <input type="text" id="idNumber" name="idNumber" required pattern="[A-Za-z][1-2]\d{8}" title="請輸入有效的台灣身分證字號">
+    </div>
+    <div>
+        <label for="birthdate">出生日期:</label>
+        <input type="date" id="birthdate" name="birthdate" required min="<?php echo date('Y-m-d'); ?>">
+    </div>
+    <div>
+        <label for="region">居住地區:</label>
+        <select id="region" name="region" required onchange="generatePostalCode()">
+            <option value="">請選擇地區</option>
+            <option value="Taipei">台北市</option>
+            <option value="NewTaipei">新北市</option>
+            <option value="Keelung">基隆市</option>
+            <option value="Taoyuan">桃園市</option>
+            <option value="Hsinchu">新竹市</option>
+            <option value="HsinchuCounty">新竹縣</option>
+            <option value="Miaoli">苗栗縣</option>
+            <option value="Taichung">台中市</option>
+            <option value="Changhua">彰化縣</option>
+            <option value="Nantou">南投縣</option>
+            <option value="Yunlin">雲林縣</option>
+            <option value="Chiayi">嘉義市</option>
+            <option value="ChiayiCounty">嘉義縣</option>
+            <option value="Tainan">台南市</option>
+            <option value="Kaohsiung">高雄市</option>
+            <option value="Pingtung">屏東縣</option>
+            <option value="Yilan">宜蘭縣</option>
+            <option value="Hualien">花蓮縣</option>
+            <option value="Taitung">台東縣</option>
+            <option value="Kinmen">金門縣</option>
+            <option value="Penghu">澎湖縣</option>
+            <option value="Lienchiang">連江縣</option>
+        </select>
+    </div>
+    <div>
+        <label for="phone">手機號碼:</label>
+        <input type="tel" id="phone" name="phone" required maxlength="10" pattern="\d{1,10}" title="請輸入十位以內的數字">
+    </div>
+    <div>
+        <label for="contactEmail">EMAIL:</label>
+        <input type="email" id="contactEmail" name="contactEmail" required>
+    </div>
+    <div>
+        <label for="password">設定密碼:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="photo">照片:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+    </div>
+    <div>
+        <input type="submit" value="註冊">
+    </div>
+</form>
+
+    @section Styles
+    {
+    <style>
+
+        /* 設定整個網頁的字型為Arial, sans-serif，背景顏色為#f2f2f2，並在四周留有20像素的間距 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        /* 設定表單的最大寬度為600像素，水平置中對齊，背景顏色為#fff，內容周圍留有20像素的間距，並帶有淡淡的陰影效果 */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 1);
+        }
+
+            /* 設定表單標題的對齊方式為置中 */
+            form h2 {
+                text-align: center;
+            }
+
+        /* 定義元素之間的垂直間距為15像素 */
+        div {
+            margin-bottom: 15px;
+        }
+
+        /* 設定標籤(label)的顯示方式為區塊元素，並在下方留有5像素的間距，並加粗字體 */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        /* 設定文字輸入框(input[type="text"])、
+                    郵件輸入框(input[type="email"])、
+                    密碼輸入框(input[type="password"])、
+                    電話號碼輸入框(input[type="tel"])、
+                    多行文字輸入框(textarea)和下拉選單(select)的寬度為100%，
+                    內容周圍留有10像素的間距，並有1像素的灰色實線邊框，圓角為3像素 */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid #ccc;
+            border-radius: 10px;
+        }
+
+
+
+
+
+
+        /* 設定提交按鈕(input[type="submit"])的寬度為100%，
+                    內容周圍留有10像素的間距，背景顏色為#155074，
+                    並將滑鼠指標樣式設為指向連結的樣式 */
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            /* 按鈕背景 */
+            background-color: #155074;
+            /* 文字顏色 */
+            color: #F8FDCF;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+            /* 當滑鼠指向提交按鈕時，將背景顏色變更為#0056b3 */
+            input[type="submit"]:hover {
+                background-color: #78C1F3;
+            }
+    </style>
+    }
+

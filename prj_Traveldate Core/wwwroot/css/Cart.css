@@ -43,10 +43,10 @@
     align-items: center;
 }
 
-    .image-box img {
+    .image-box .prodimg {
         width: 100%;
         object-fit: contain;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
     }
 
 .CommonButton {
@@ -244,6 +244,9 @@
 }
 
 
+..card-img-top {
+    height: 172px;
+}
 /***填資料*************************************************************/
 .Confirm-All {
     width: 100%;

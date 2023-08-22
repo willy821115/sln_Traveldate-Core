@@ -3,9 +3,6 @@
     padding: 0;
 }
 
-.protag{
-    margin-top:5px;
-}
 
 .product-detail {
     display: flex;
@@ -21,7 +18,7 @@
 
 .product-detail span {
     margin: 0 1px;
-    font-size:8px;
+    font-size:16px;
 }
 
 .more-comment{
@@ -463,7 +460,3 @@ pre {
 }
 
 
-.card:hover {
-    color: #155074;
-    background-color: #F0F0F0;
-}

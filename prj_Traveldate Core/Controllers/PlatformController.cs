@@ -71,10 +71,51 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
+        public IActionResult AccountSuspend()
+        {
+            TraveldateContext db = new TraveldateContext();
+            var memberData = from m in db.Members
+                             select new CPlatformMemViewModel
+                             {
+                                 MemberId = m.MemberId,
+                                 LastName = m.LastName,
+                                 FirstName = m.FirstName,
+                                 Gender = m.Gender,
+                                 Idnumber = m.Idnumber,
+                                 BirthDate = m.BirthDate,
+                                 Phone = m.Phone,
+                                 Email = m.Email,
+                                 Discount = m.Discount
+                             };
+
+            var companyData = from c in db.Companies
+                              select new CPlatformMemViewModel
+                              {
+                                  CompanyId = c.CompanyId,
+                                  TaxIdNumber = c.TaxIdNumber,
+                                  CompanyName = c.CompanyName,
+                                  City = c.City,
+                                  Address = c.Address,
+                                  CompanyPhone = c.Phone,
+                                  Principal = c.Principal,
+                                  Contact = c.Contact,
+                                  Title = c.Title,
+                                  ComEmail = c.Email,
+                                  ServerDescription = c.ServerDescription
+                              };
+
+            var combinedData = new CPlatformViewModel
+            {
+                Members = memberData.ToList(),
+                Companies = companyData.ToList()
+            };
 
 
+            return View(combinedData);
+        }
 
-        public ActionResult content1()
+
+public ActionResult content1()
         {
             return View();
         }

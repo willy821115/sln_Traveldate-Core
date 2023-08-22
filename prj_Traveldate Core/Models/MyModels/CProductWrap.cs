@@ -105,18 +105,15 @@
         public List<ProductTypeList>? types { get; set; }
 
         public List<TripDetail>? CtripDetail { get; set; }
-        public List<int> Tags { get; set; }
+        public List<int?>? Tags { get; set; }
 
         public List< IFormFile> photos { get; set; }
 
         public List<ProductPhotoList> productPhotos { get; set; }
 
-        public List<IFormFile> TripDetailphotos { get; set; }
 
-        public List<string> TripDetails { get; set; }
-
-        public List<int> TripDays { get; set; }
+        public List<TripDetailText>triptest { get; set; }
 
 
-    }
+}
 }
