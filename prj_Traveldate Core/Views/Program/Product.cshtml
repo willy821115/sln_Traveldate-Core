@@ -6,15 +6,11 @@
 <div class="product-detail">
     <div>
         <div class="protag">
-            <span>台灣</span>
-            <span>></span>
-            <span>@Model.city.City</span>
-            <span>></span>
-            <span>@Model.product.ProductName</span>
+            <span>台灣 > @Model.city.City > @Model.product.ProductName</span>
         </div>
     </div>
-
-    <div class="outer-wrapper">
+    <div class="outer-wrappers">
+    <div class="outer-wrapper col-10 mb-3">
         <div class="s-wrap s-type-1" role="slider">
             @if (Model.program.fPhotoList != null)
             {
@@ -62,6 +58,7 @@
                 <label class="s-nav-5 left" for="s-4"></label>
             </div>
         </div>
+    </div>
     </div>
     <div class="mt-2">
         <h3>@Model.product.ProductName</h3>
@@ -251,6 +248,7 @@
     </div>
 
     <div id="tripidContainer" class="detailplan-container" style="display: none;">
+        <div>更多日期： </div>
         @for (int i = 0; i < Model.program.fTripDate.Count; i++)
         {
             var tripDate = Model.program.fTripDate[i];
@@ -787,6 +785,21 @@
             modal.style.display = "none";
         }
 
+        // $(document).ready(function () {
+        //     $(".addtocart").click(function (event) {
+        //         event.preventDefault();
+
+        //         // 增加计数器
+        //         var count = $(this).data("count");
+        //         count++;
+        //         $(this).data("count", count);
+
+        //         // 添加或移除 counter 类
+        //         $("a.cart > span").toggleClass("counter", count > 0);
+
+        //         // 其他代码...
+        //     });
+        // });
 
     </script>
     }
@@ -797,6 +810,44 @@
             color: #155074;
             background-color: #F0F0F0;
         }
+/* 
+        a.cart {
+            position: relative;
+        }
+
+            a.cart > span.counter {
+                width: 24px;
+                height: 24px;
+                font-size: 16px;
+                color: #fff;
+                line-height: 24px;
+                position: absolute;
+                top: -10px;
+                right: 5px; /* 调整此值来控制右上角的偏移量 */
+                border-radius: 12px;
+                background: #ffab00;
+                box-shadow: 0 3px 6px rgba(255, 171, 0, 0.16), 0 3px 6px rgba(255, 171, 0, 0.23);
+                transition: .2s linear;
+                transform: scale(1);
+            }
+
+            a.cart > span {
+                display: block;
+                width: 24px;
+                height: 24px;
+                background: #ffab00;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 24px;
+                font-size: 16px;
+                color: #fff;
+                position: absolute;
+                top: -10px;
+                right: 5px; /* 调整此值来控制右上角的偏移量 */
+                box-shadow: 0 3px 6px rgba(255, 171, 0, 0.16), 0 3px 6px rgba(255, 171, 0, 0.23);
+                transition: .2s linear;
+                transform: scale(1);
+            } */
     </style>
     }
 
