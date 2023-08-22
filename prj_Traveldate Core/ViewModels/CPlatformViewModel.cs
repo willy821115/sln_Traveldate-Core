@@ -19,5 +19,9 @@ namespace prj_Traveldate_Core.ViewModels
         public List<CPlatformMemViewModel> Members { get; set; }
         public List<CPlatformMemViewModel> Companies { get; set; }
 
+        public string SelectedCompany { get; set; }
+        public string SelectedProductType { get; set; }
+        public string SelectedStatus { get; set; }
+
     }
 }

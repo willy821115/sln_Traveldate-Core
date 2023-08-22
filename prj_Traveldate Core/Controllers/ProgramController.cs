@@ -74,11 +74,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        public IActionResult AddToCart(int? id)
-        {
-                return RedirectToAction("Product");
-        }
-
+        
         [HttpPost]
         public IActionResult AddToCart(int num, int tripId)
         {

@@ -3,13 +3,21 @@
     public class CProductWrap
     {
         private ProductList _prod = null;
+        private Company _company = null;
 
         public CProductWrap()
         {
             _prod = new ProductList();
+            _company = new Company();
         }
         public ProductList ProductList { get { return _prod; } set { _prod = value; } }
+        public Company Company { get { return _company; } set { _company = value; } }
 
+        public string? CompanyName
+        {
+            get { return _company.CompanyName; }
+            set { _company.CompanyName = value; }
+        }
         public int? ProductId
         {
             get { return _prod.ProductId; }

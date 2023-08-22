@@ -2,6 +2,7 @@
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -16,58 +17,28 @@ namespace prj_Traveldate_Core.Controllers
             vm.company = factory.loadCompanies();
             
             vm.product = new List<CProductWrap>();
-            if (string.IsNullOrEmpty(vm.txtKeyword)) {
+            
                 var datas = from p in db.ProductLists
+                            orderby p.Status descending
                             select new
                             {
-                                company = p.CompanyId,
+                                company = p.Company.CompanyName,
                                 productName = p.ProductName,
                                 productType = p.ProductType.ProductType,
                                 city = p.City.City,
                                 status = p.Status.Status1,
                             };
-                foreach (var item in datas)
+            foreach (var item in datas)
                 {
                     CProductWrap cProductWrap = new CProductWrap();
-                    cProductWrap.CompanyId = item.company;
+                    cProductWrap.CompanyName = item.company;
                     cProductWrap.ProductName = item.productName;
                     cProductWrap.productType = item.productType;
                     cProductWrap.cityName = item.city;
                     cProductWrap.productStatus = item.status;
                     vm.product.Add(cProductWrap);
                 }
-            }
 
-            else {
-                var query = db.ProductLists
-            .Where(p => p.ProductName.ToUpper().Contains(vm.txtKeyword.ToUpper()));
-
-                if (vm.companySelect != "all")
-                {
-                    query = query.Where(p => p.Company.CompanyName == vm.companySelect);
-                }
-
-                if (vm.productTypeSelect != "all")
-                {
-                    query = query.Where(p => p.ProductType.ProductType == vm.productTypeSelect);
-                }
-
-                if (vm.statusSelect != "all")
-                {
-                    query = query.Where(p => p.Status.Status1 == vm.statusSelect);
-                }
-
-                vm.product = query
-                    .Select(p => new CProductWrap
-                    {
-                        CompanyId = p.CompanyId,
-                        ProductName = p.ProductName,
-                        productType = p.ProductType.ProductType,
-                        cityName = p.City.City,
-                        productStatus = p.Status.Status1
-                    })
-                    .ToList();
-            }
             return View(vm);
         }
 
