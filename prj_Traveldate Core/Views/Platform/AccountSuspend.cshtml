@@ -1,4 +1,4 @@
-﻿@model prj_Traveldate_Core.ViewModels.CPlatformViewModel
+﻿
 
 @{
     ViewData["Title"] = "AccountSuspend";
@@ -63,54 +63,6 @@
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">會員搜尋</h6>
-                            </div>
-                            <div class="card-body" style="display: flex; align-items: center;">
-                                @* @using (Html.BeginForm())
-                                {
-                                @:關鍵字 @Html.TextBox("txtKeyword")
-                                <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
-                                }*@
-                                <div style="display: flex; align-items: center;">
-                                    <div style="margin-right: 10px;">
-                                        <label>公司名稱</label>
-                                        <select class="form-select" name="companySelect">
-                                            <option value="all">全部公司</option>
-                                            @foreach (Company type in Model.company)
-                                            {
-                                                <option value="@type.CompanyName">@type.CompanyName</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div style="margin-right: 10px;">
-                                        <label>產品類型</label>
-                                        <select class="form-select" name="productTypeSelect">
-                                            <option value="all">全部類型</option>
-                                            @foreach (ProductTypeList type in Model.types)
-                                            {
-                                                <option value="@type.ProductTypeId">@type.ProductType</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label>審核狀態</label>
-                                        <select class="form-select" name="statusSelect">
-                                            <option value="all">全部狀態</option>
-                                            @foreach (string status in Model.status)
-                                            {
-                                                <option>@status</option>
-                                            }
-                                        </select>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">會員清單</h6>
                             </div>
                             <div class="card-body">
@@ -118,45 +70,74 @@
                                     <table id="datatable" class="display" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>公司名稱</th>
-                                                <th>產品名稱</th>
-                                                <th>產品類型</th>
-                                                <th>所在城市</th>
-                                                <th>產品狀態</th>
-                                                <th>查看</th>
+                                                <th>會員編號</th>
+                                                <th>姓名</th>
+                                                <th>性別</th>
+                                                <th>身份證號</th>
+                                                <th>出生日期</th>
+                                                <th>電話</th>
+                                                <th>電子郵件</th>
+                                                <th>折扣</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-
-                                            @foreach (var item in Model.product)
+                                            @foreach (var member in Model.Members)
                                             {
-                                                var company = Model.company.Where(c => c.CompanyId == item.CompanyId).Select(c => c.CompanyName).FirstOrDefault();
-
                                                 <tr>
-                                                    <td>
-                                                        <div>@company </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>@Html.DisplayFor(modelItem => item.productType)</div>
-                                                    </td>
-                                                    <td>
-                                                        <div> @Html.DisplayFor(modelItem => item.cityName)</div>
-                                                    </td>
-                                                    <td>
-                                                        <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
-                                                    </td>
-                                                    <td>
-                                                        @Html.ActionLink("查看", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
-                                                    </td>
+                                                    <td>@member.MemberId</td>
+                                                    <td>@member.LastName@member.FirstName</td>
+                                                    <td>@member.Gender</td>
+                                                    <td>@member.Idnumber</td>
+                                                    <td>@member.BirthDate.ToShortDateString()</td>
+                                                    <td>@member.Phone</td>
+                                                    <td>@member.Email</td>
+                                                    <td>@member.Discount</td>
                                                 </tr>
                                             }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
-
-
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">旅行社清單</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="datatable" class="display" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>旅行社編號</th>
+                                                <th>統編</th>
+                                                <th>旅行社名稱</th>
+                                                <th>城市</th>
+                                                <th>地址</th>
+                                                <th>電話</th>
+                                                <th>經理</th>
+                                                <th>聯絡人</th>
+                                                <th>信箱</th>
+                                                <th>服務項目</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var com in Model.Companies)
+                                        {
+                                            <tr>
+                                                <td>@com.CompanyName</td>
+                                                <td>@com.Principal @com.Contact</td>
+                                                <td>@com.City</td>
+                                                <td>@com.Address</td>
+                                                <td>@com.CompanyPhone</td>
+                                                <td>@com.TaxIdNumber</td>
+                                                <td>@com.Title</td>
+                                                <td>@com.ComEmail</td>
+                                                <td>@com.ServerDescription</td>
+                                            </tr>
+                                        }
                                         </tbody>
                                     </table>
                                 </div>

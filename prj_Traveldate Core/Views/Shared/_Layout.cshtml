@@ -51,6 +51,13 @@
     <link href="~/css/search.css" rel="stylesheet" />
 
 
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.css' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+
+   
+
 </head>
 <body>
     <header>
@@ -96,7 +103,7 @@
                         <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">廠商登入</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart">購物車</a>
+                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" class="cart">購物車<span class ="counter"></span></a>
                     </li>
                     </ul>
               
@@ -131,12 +138,13 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
     
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @*Scripts.Render("~/bundles/jquery")*@
-   @* @Scripts.Render("~/bundles/bootstrap")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
     @*@RenderSection("scripts", required: false)*@
     <!-- Bootstrap core JavaScript-->
     @*<script src="~/Template/vendor/jquery/jquery.min.js"></script>*@
@@ -157,6 +165,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-    
+
+
 </body>
 </html>
