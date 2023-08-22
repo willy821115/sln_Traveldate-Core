@@ -1,7 +1,7 @@
 ﻿@model prj_Traveldate_Core.ViewModels.CPlatformViewModel
 
 @{
-    ViewData["Title"] = "Review";
+    ViewData["Title"] = "AccountSuspend";
 }
 
 <!-- Page Wrapper -->
@@ -57,19 +57,19 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
-                <h2 style="margin-top:10px; margin-left:15px">商品審核</h2>
+                <h2 style="margin-top:10px; margin-left:15px">停權管理</h2>
 
                 <div class="myrow">
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">產品搜尋</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">會員搜尋</h6>
                             </div>
                             <div class="card-body" style="display: flex; align-items: center;">
-                               @* @using (Html.BeginForm())
+                                @* @using (Html.BeginForm())
                                 {
-                                    @:關鍵字 @Html.TextBox("txtKeyword")
-                                    <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
+                                @:關鍵字 @Html.TextBox("txtKeyword")
+                                <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
                                 }*@
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 10px;">
@@ -103,107 +103,104 @@
                                         </select>
                                     </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="col-md-12">
-                    <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">產品清單</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                                <table id="datatable" class="display" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>公司名稱</th>
-                                        <th>產品名稱</th>
-                                        <th>產品類型</th>
-                                        <th>所在城市</th>
-                                        <th>產品狀態</th>
-                                        <th>查看</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-
-                                    @foreach (var item in Model.product)
-                                        {
-                                            var company = Model.company.Where(c => c.CompanyId == item.CompanyId).Select(c=>c.CompanyName).FirstOrDefault();
-
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">會員清單</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="datatable" class="display" style="width:100%">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <div>@company </div>
-                                                </td>
-                                            <td>
-                                                <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
-                                            </td>
-                                            <td>
-                                                <div>@Html.DisplayFor(modelItem => item.productType)</div>
-                                            </td>
-                                            <td>
-                                                <div> @Html.DisplayFor(modelItem => item.cityName)</div>
-                                            </td>
-                                            <td>
-                                                <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("查看", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
-                                            </td>
-                                        </tr>
-                                    }
+                                                <th>公司名稱</th>
+                                                <th>產品名稱</th>
+                                                <th>產品類型</th>
+                                                <th>所在城市</th>
+                                                <th>產品狀態</th>
+                                                <th>查看</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            @foreach (var item in Model.product)
+                                            {
+                                                var company = Model.company.Where(c => c.CompanyId == item.CompanyId).Select(c => c.CompanyName).FirstOrDefault();
+
+                                                <tr>
+                                                    <td>
+                                                        <div>@company </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>@Html.DisplayFor(modelItem => item.productType)</div>
+                                                    </td>
+                                                    <td>
+                                                        <div> @Html.DisplayFor(modelItem => item.cityName)</div>
+                                                    </td>
+                                                    <td>
+                                                        <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("查看", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                                    </td>
+                                                </tr>
+                                            }
 
 
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
+                <!-- /.container-fluid -->
 
-                    </div>
             </div>
-            <!-- /.container-fluid -->
+            <!-- End of Main Content -->
+
 
         </div>
-        <!-- End of Main Content -->
-
+        <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
+    @section Styles{
+        <style>
+            .card-body {
+                height: unset;
+            }
 
-</div>
-<!-- End of Page Wrapper -->
-
-
-
-@section Styles{
-    <style>
-        .card-body {
-            height: unset;
-        }
-        .myrow{
+            .myrow {
                 display: flex;
                 align-content: flex-start;
                 flex-direction: column;
-                width:100%;
-        }
+                width: 100%;
+            }
 
-
-          
-    </style>
+        </style>
         <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
- }
+    }
 
-   @section Scripts{
-       <script>
+    @section Scripts{
+        <script>
             $(document).ready(function () {
                 $('#datatable').DataTable();
             });
-       </script>
+        </script>
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-   }
+    }
+
