@@ -134,8 +134,9 @@
                                     </div>
                                     <div class="card-body">
                                     <label asp-for="Date" class="control-label">商品日期</label>
-                                    <input asp-for="Date" class="control-label" type="date" multiple/>
-                                    <span asp-validation-for="Date" class="text-danger"></span>
+                                    <input asp-for="Date" class="control-label" type="date" />
+                                    <input type="text" id="tripcalendar" />
+                                     <span asp-validation-for="Date" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -186,17 +187,26 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
-
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 @section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <style>
         .card-body {
             height: unset;
         }
+          
+        
     </style>
  }
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $('#tripcalendar').flatpickr({
+            mode: "multiple",
+            dateFormat: "Y-m-d",
+            defaultDate: ["@DateTime.Now"]
+        });
+    </script>
+}
