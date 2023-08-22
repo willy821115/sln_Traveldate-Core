@@ -71,7 +71,31 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
+        //public IActionResult AccountSuspend(CPlatformViewModel vm)
+        //{
+        //    TraveldateContext db = new TraveldateContext();
+        //    //vm.product = new List<ProgramViewModel>();
 
+        //    //var memberData = from m in db.Members
+        //    //                 select m;
+
+        //    //var companyData = from c in db.Companies
+        //    //                  select c;
+
+        //    //foreach (var member in memberData)
+        //    //{
+        //    //    foreach (var company in companyData)
+        //    //    {
+        //    //        vm.product.Add(new ProgramViewModel
+        //    //        {
+        //    //            Member = member,
+        //    //            Company = company
+        //    //        });
+        //        }
+        //    }
+
+        //    return View(vm);
+        //}
 
 
         public ActionResult content1()
