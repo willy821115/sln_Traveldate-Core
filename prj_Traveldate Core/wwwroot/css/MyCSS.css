@@ -94,6 +94,9 @@ footer {
     font-weight:bold;
 }
 
-
+.form-check-input:checked {
+    background-color: #155074;
+    border-color: #155074;
+}
 
 

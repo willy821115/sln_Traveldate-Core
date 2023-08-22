@@ -11,13 +11,13 @@
     <br>
     <div class="mb-3">
         <label for="mlUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control" asp-for="mlUsername" aria-describedby="phoneHelp" pattern="09[0-9]{8}">
+        <input type="tel" class="form-control" asp-for="mlUsername" aria-describedby="phoneHelp" pattern="09[0-9]{8}" value="0945316798" />
         <span id="phoneHelp" class="form-text ml-1">會員帳號為註冊使用的手機號碼</span>
         <br>
 
         <div class="mb-3">
             <label for="mlPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" asp-for="mlPassword">
+            <input type="password" class="form-control" asp-for="mlPassword" value="qwertyuiop">
             <span class="loginAlert ml-1">@ViewBag.Message</span>
         </div>
 

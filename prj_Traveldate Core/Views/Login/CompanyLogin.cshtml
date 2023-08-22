@@ -8,13 +8,13 @@
 
     <div class="mb-3">
         <label for="clUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" pattern="{8}">
+        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" pattern="{8}" value="04315397" />
         <span id="phoneHelp" class="form-text">請輸入統一編號，格式為八位數字</span>
         <br>
 
         <div class="mb-3">
             <label for="clPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" id="clPassword" asp-for="clPassword">
+            <input type="password" class="form-control" id="clPassword" asp-for="clPassword" value="cola">
             <span class="loginAlert ml-1">@ViewBag.Message</span>
         </div>
 
