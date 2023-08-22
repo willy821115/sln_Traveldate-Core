@@ -6,6 +6,8 @@ namespace prj_Traveldate_Core.Models.MyModels
     public class CProductFactory
     {
         TraveldateContext db = new TraveldateContext();
+
+      
         public List<byte[]> loadPhoto(int id)
         {
             List<byte[]> photoList = db.ProductPhotoLists

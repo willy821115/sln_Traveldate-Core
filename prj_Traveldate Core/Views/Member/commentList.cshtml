@@ -34,17 +34,18 @@
 
         <!-- 右半邊 - 內容容器 -->
 <h3 class="mb-4"><b>我的評論</b></h3>
-
+@using (Html.BeginForm("commentListDelete", "Member", FormMethod.Post))
+{
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
-            <th ></th>
+            <th class="col-md-0.5"></th>
             <th class="col-md-2">商品名稱</th>
             <th class="col-md-2">標題</th>
             <th class="col-md-4">評論內容</th>
-            <th class="col-md-1">您的評分</th>
-            <th class="col-md-2">評論日期</th>
-            <th class="col-md-1">操作</th>                  
+            <th class="col-md-1.2">您的評分</th>
+            <th class="col-md-1.2">評論日期</th>
+            <th class="col-md-0.5">操作</th>                  
         </tr>
     </thead>
     <tbody>
@@ -54,18 +55,22 @@
              {
               //count++;
                <tr>
-                    <td><i class='far fa-comment-dots' style='font-size:24px'></i></td>
+                    <td><i class='far fa-comment-dots' style='font-size:24px;margin-left:8px'></i></td>
                     <td >@item.ProductName</td>
                     <td >@item.Title</td>
                     <td >@item.Content</td>
                     <td >@item.CommentScore</td>
                     <td >@item.Date.ToString("yyyy-MM-dd")</td>
+                        @using (Html.BeginForm("commentListDelete", "Member", FormMethod.Post))
+                        {
                    <td ><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                        }
                </tr>
              }          
           }
     </tbody>
 </table>
+}
 
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">

@@ -1,0 +1,187 @@
+﻿
+
+@{
+    ViewData["Title"] = "AccountSuspend";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Review">
+                <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/AccountSuspend">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/content3">
+                <span>優惠券</span>
+            </a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <h2 style="margin-top:10px; margin-left:15px">停權管理</h2>
+
+                <div class="myrow">
+                    <div class="col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">會員清單</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="datatable" class="display" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>會員編號</th>
+                                                <th>姓名</th>
+                                                <th>性別</th>
+                                                <th>身份證號</th>
+                                                <th>出生日期</th>
+                                                <th>電話</th>
+                                                <th>電子郵件</th>
+                                                <th>折扣</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var member in Model.Members)
+                                            {
+                                                <tr>
+                                                    <td>@member.MemberId</td>
+                                                    <td>@member.LastName@member.FirstName</td>
+                                                    <td>@member.Gender</td>
+                                                    <td>@member.Idnumber</td>
+                                                    <td>@member.BirthDate.ToShortDateString()</td>
+                                                    <td>@member.Phone</td>
+                                                    <td>@member.Email</td>
+                                                    <td>@member.Discount</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">旅行社清單</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="datatable" class="display" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>旅行社編號</th>
+                                                <th>統編</th>
+                                                <th>旅行社名稱</th>
+                                                <th>城市</th>
+                                                <th>地址</th>
+                                                <th>電話</th>
+                                                <th>經理</th>
+                                                <th>聯絡人</th>
+                                                <th>信箱</th>
+                                                <th>服務項目</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var com in Model.Companies)
+                                        {
+                                            <tr>
+                                                <td>@com.CompanyName</td>
+                                                <td>@com.Principal @com.Contact</td>
+                                                <td>@com.City</td>
+                                                <td>@com.Address</td>
+                                                <td>@com.CompanyPhone</td>
+                                                <td>@com.TaxIdNumber</td>
+                                                <td>@com.Title</td>
+                                                <td>@com.ComEmail</td>
+                                                <td>@com.ServerDescription</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    @section Styles{
+        <style>
+            .card-body {
+                height: unset;
+            }
+
+            .myrow {
+                display: flex;
+                align-content: flex-start;
+                flex-direction: column;
+                width: 100%;
+            }
+
+        </style>
+        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
+    }
+
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $('#datatable').DataTable();
+            });
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    }
+
