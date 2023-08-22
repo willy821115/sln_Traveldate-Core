@@ -45,13 +45,13 @@ namespace prj_Traveldate_Core.Controllers
         {
             int MemberId = 1;
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
- 
+
             var levelvm = from m in context.Members
                           join l in context.LevelLists
                           on m.LevelId equals l.LevelId
                           where MemberId == m.MemberId
                           select m;
-            if(mem.LevelId==1)
+            if (mem.LevelId == 1)
                 ViewBag.level = "一般會員";
             else if (mem.LevelId == 2)
                 ViewBag.level = "白銀會員";
@@ -60,7 +60,7 @@ namespace prj_Traveldate_Core.Controllers
             else
                 ViewBag.level = "黑鑽會員";
 
-            if(mem.FirstName==mem.FirstName)
+            if (mem.FirstName == mem.FirstName)
                 ViewBag.firstName = mem.FirstName;
 
             if (mem.LastName == mem.LastName)
@@ -108,17 +108,17 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult basicInfo(Member edit) //基本資料設定edit V
         {
             int MemberId = 1;
-            Member mDB = context.Members.FirstOrDefault(m=>m.MemberId == edit.MemberId);          
-                if (mDB != null)
-            {               
-                    mDB.FirstName = edit.FirstName;
-                    mDB.LastName = edit.LastName;
-                    mDB.Gender = edit.Gender;
-                    mDB.BirthDate = edit.BirthDate;
-                    mDB.Photo = edit.Photo;
-                    mDB.Email = edit.Email;
+            Member mDB = context.Members.FirstOrDefault(m => m.MemberId == edit.MemberId);
+            if (mDB != null)
+            {
+                mDB.FirstName = edit.FirstName;
+                mDB.LastName = edit.LastName;
+                mDB.Gender = edit.Gender;
+                mDB.BirthDate = edit.BirthDate;
+                mDB.Photo = edit.Photo;
+                mDB.Email = edit.Email;
 
-                    context.SaveChanges(); 
+                context.SaveChanges();
             }
             return RedirectToAction("Index");
             #region 先註解掉的程式碼
@@ -136,10 +136,10 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
             int MemberId = 1;
-            CpasswordChangeViewModel prd=new CpasswordChangeViewModel();
+            CpasswordChangeViewModel prd = new CpasswordChangeViewModel();
 
             prd.MemberId = MemberId;
-            Member x=context.Members.FirstOrDefault(m=>m.MemberId==prd.MemberId);
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == prd.MemberId);
 
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -176,7 +176,7 @@ namespace prj_Traveldate_Core.Controllers
                 ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不得為空白，請確認後再次提交");
                 return View(edit);
             }
-            int memberId = 1; 
+            int memberId = 1;
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
             if (mDB != null)
@@ -185,10 +185,10 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     mDB.Password = edit.txtNewPassword;
                     //context.Members.Add(mDB);
-                    context.Entry(mDB).State=EntityState.Modified;
+                    context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
                     return RedirectToAction("passwordChange");
-                }             
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不一致，請再次確認後提交");
@@ -284,7 +284,7 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult addCompanion() //新增旅伴資料
         {
             int MemberId = 1;
-            CCompanionViewModel cm =new CCompanionViewModel();
+            CCompanionViewModel cm = new CCompanionViewModel();
             cm.MemberId = MemberId;
 
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
@@ -312,13 +312,13 @@ namespace prj_Traveldate_Core.Controllers
         }
         [HttpPost]
         public IActionResult addCompanion(CCompanionViewModel vm) //新增旅伴資料Create V
-        {            
-                if (
-                    (string.IsNullOrEmpty(vm.LastName)) ||
-                    (string.IsNullOrEmpty(vm.FirstName)) ||
-                    (string.IsNullOrEmpty(vm.Phone))
-                  )
-                    return RedirectToAction("showCompanion");         
+        {
+            if (
+                (string.IsNullOrEmpty(vm.LastName)) ||
+                (string.IsNullOrEmpty(vm.FirstName)) ||
+                (string.IsNullOrEmpty(vm.Phone))
+              )
+                return RedirectToAction("showCompanion");
             else
             {
                 Companion cpDB = new Companion();
@@ -330,7 +330,7 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
-                }               
+                }
             }
             return RedirectToAction("index");
         }
@@ -347,8 +347,8 @@ namespace prj_Traveldate_Core.Controllers
                         select new CfavoriteListViewModel
                         {
                             ProductName = pl.ProductName,
-                            ProductId=pl.ProductId,
-                            MemberId=m.MemberId,
+                            ProductId = pl.ProductId,
+                            MemberId = m.MemberId,
                             //Description = pl.Description,
                             Outline = pl.Outline,
                         };
@@ -376,20 +376,31 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas.Distinct());
         }
-        //[HttpPost]
-        //public IActionResult favoriteList(int ProductId, int MemberId) //收藏清單delete 
-        //{
-        //    ////Favorite fDB = new Favorite();
-        //    //var fDB = from f in context.Favorites where f.FavoriteId == ProductId && f.MemberId == MemberId select
-        //    ////Favorite fav = context.Favorites.FirstOrDefault(fa => fa.MemberId == vm.MemberId);
-        //    //    if(fDB != null)
-        //    //    {
-        //    //        context.Favorites.Remove(fDB);
-        //    //        context.SaveChanges();
-        //    //    }
-            
-        //    //return RedirectToAction("favoriteList");
-        //}
+
+        public IActionResult favoriteListDelete()  //收藏清單Delete V
+        {
+            int id = 1;
+            var pid = from p in context.ProductLists
+                      join f in context.Favorites
+                      on p.ProductId equals f.ProductId
+                      where f.MemberId == id
+                      select p.ProductId;
+            var mid = from f in context.Favorites
+                      join m in context.Members
+                      on f.MemberId equals m.MemberId
+                      where f.MemberId == id
+                      select f.MemberId;
+            Member mm = context.Members.FirstOrDefault(p => p.MemberId == id);
+            Favorite ff = context.Favorites.FirstOrDefault(p => p.MemberId == id);
+
+            if (mm != null)
+            {
+                if (ff != null)
+                    context.Favorites.Remove(ff);
+                    context.SaveChanges();
+            }
+            return RedirectToAction("favoriteList");
+        }
         public IActionResult orderList() //會員訂單new V
         {
             int MemberId = 1;
@@ -503,6 +514,35 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas);
         }
+
+        public IActionResult commentListDelete() //我的評論Delete 
+        {
+            int id = 1;
+            var cid = from c in context.CommentLists
+                      join m in context.Members
+                      on c.MemberId equals m.MemberId
+                      where m.MemberId == id
+                      select c.MemberId;
+            var pid = from c in context.CommentLists
+                      join p in context.ProductLists
+                      on c.ProductId equals p.ProductId
+                      where c.ProductId == p.ProductId
+                      select c.MemberId;
+            Member mm = context.Members.FirstOrDefault(p => p.MemberId == id);
+            CommentList ff = context.CommentLists.FirstOrDefault(p => p.MemberId == id);
+
+                if(mm!= null)
+            {
+                if(ff!=null)
+                {
+                    context.CommentLists.Remove(ff);
+                    context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("index");
+        }
+
         #region 添加評論view 暫時用不到2023.08.20
         public IActionResult addcomment() //添加評論 先維持舊版V
         {

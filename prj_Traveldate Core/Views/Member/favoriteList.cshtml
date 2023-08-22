@@ -33,14 +33,14 @@
 
 <!-- 右半邊 - 內容容器 -->
 <h3 class="mb-4"><b>收藏清單</b></h3>
-@using (Html.BeginForm("favoriteList", "Member", FormMethod.Post))
+@using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
 {
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
                         <th class="col-md-1"></th>
-@*                        <th >MId</th
-                        <th >PId</th>*@
+@*                         <th >MId</th>
+                         <th >PId</th>  *@
                         <th class="col-md-4">名稱</th>
                         <th class="col-md-6">概述</th>
                         <th class="col-md-2">操作</th>
@@ -51,12 +51,15 @@
                         {
                             //count++;
                         <tr class="height">
-                            <td><img style="width:28px;height:28px;margin-left:28px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
-@*                            <td>@item.MemberId </td>
-                            <td>@item.ProductId </td>*@
+                            <td><img style="width:28px;height:28px;margin-left:26px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
+@*                             <td>@item.MemberId </td>
+                                   <td>@item.ProductId </td> *@
                             <td>@item.ProductName </td>
-                            <td>@item.Outline </td>
-                           <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                    <td>@item.Outline </td>
+                    @using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
+                    {
+                        <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                    }
                         </tr>
                         }
     </tbody>
