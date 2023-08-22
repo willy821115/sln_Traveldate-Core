@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 using System.Collections.Generic;
+using System.IO;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -108,22 +110,23 @@ namespace prj_Traveldate_Core.Controllers
                 }
             }
             //存入TripDetail
-            if (pro.TripDetails.Count() == pro.TripDays.Count() && pro.TripDays.Count() == pro.TripDetailphotos.Count()&&pro.TripDays!=null) 
+            foreach (TripDetailText t in pro.triptest) 
             {
-                for (int i = 0; i < pro.TripDays.Count(); i++) 
+                TripDetail trip = new TripDetail();
+                trip.TripDay = t.TripDay;
+                trip.TripDetail1 = t.TripDetail;
+                trip.ProductId = productID;
+                //照片
+                if (t.photo != null) 
                 {
-                TripDetail t =new TripDetail();
-                    t.TripDay = pro.TripDays[i];
-                    t.TripDetail1 = pro.TripDetails[i];
-                    t.ProductId = productID;
-                    //照片
-                      string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
-                        t.ImagePath = photoName;
-                    pro.TripDetailphotos[i].CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
-                        db.TripDetails.Add(t);
+                 string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                trip.ImagePath = photoName;
+                t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
                 }
+               db.TripDetails.Add(trip);
             }
-            
+
+
             db.SaveChanges();
 
             return RedirectToAction("List");
@@ -133,7 +136,6 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult Edit(int productID) 
         {
-            Console.WriteLine(productID);
             TraveldateContext db = new TraveldateContext();
             CProductWrap list = new CProductWrap();
             CProductFactory factory = new CProductFactory();
@@ -142,9 +144,119 @@ namespace prj_Traveldate_Core.Controllers
             list.cities = factory.loadCities();
             list.types = factory.loadTypes();
             list.ProductList = db.ProductLists.Where(p => p.ProductId == productID).FirstOrDefault();
-            list.Tags = db.ProductTagLists.Where(t => t.ProductId == productID).Select(t => (int)t.ProductTagDetailsId).ToList();
+            list.Tags = db.ProductTagLists.Where(t => t.ProductId == productID).Select(t => (int?)t.ProductTagDetailsId).ToList();
             list.CtripDetail = db.TripDetails.Where(t => t.ProductId == productID).ToList();
             return View(list);
+        }
+
+        [HttpPost]
+
+        public IActionResult Edit(CProductWrap pro) 
+        {
+            TraveldateContext db = new TraveldateContext();
+            ProductList proDb=db.ProductLists.FirstOrDefault(p=>p.ProductId==pro.ProductId);
+           //存入ProductList
+            if (proDb != null) 
+            {
+                proDb.ProductName = pro.ProductName;
+                proDb.CityId = pro.CityId;
+                proDb.Description = pro.Description;
+                proDb.ProductTypeId = pro.ProductTypeId;
+                proDb.PlanName = pro.PlanName;
+                proDb.PlanDescription = pro.PlanDescription;
+                proDb.Outline = pro.Outline;
+                proDb.OutlineForSearch = pro.OutlineForSearch;
+                proDb.Address = pro.Address;
+            }
+            //存入ProductTagList
+            var originalList = db.ProductTagLists.Where(p => p.ProductId == pro.ProductId).Select(p => p.ProductTagDetailsId).ToList();
+            var addedTagID = pro.Tags.Except(originalList);
+            var deletedTagID = originalList.Except(pro.Tags);
+            //刪除移除的Tag
+            var tagDbDelete = db.ProductTagLists.Where(t => t.ProductId == pro.ProductId && deletedTagID.Contains(t.ProductTagDetailsId));
+                                       
+            if (deletedTagID != null) 
+            {
+                foreach (var tag in tagDbDelete) 
+                {
+                db.ProductTagLists.Remove(tag);
+                }
+            }
+            //新增新加的Tag
+            if (addedTagID != null)
+            {
+                foreach (int tagID in addedTagID)
+            {
+            ProductTagList tagDbAdd=new ProductTagList();
+                tagDbAdd.ProductTagDetailsId = tagID;
+                tagDbAdd.ProductId = pro.ProductId;
+                db.Add(tagDbAdd);
+            }
+                          
+            }
+            //存入ProductPhotoList            
+            if (pro.photos != null)
+            {
+                //先刪除image所有輪播圖
+                var deletedPhoto = db.ProductPhotoLists.Where(p => p.ProductId == pro.ProductId).Select(p => p.ImagePath);
+                if (deletedPhoto != null) 
+                {
+                foreach (var path in deletedPhoto) 
+                    {
+                        if (path != null) 
+                        {
+                        string webRootPath = _enviro.WebRootPath;
+                        string filePath = Path.Combine(webRootPath, "images", path);
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                // 刪除檔案
+                                System.IO.File.Delete(filePath);
+                            }
+                        }
+                        
+                    }
+                }
+                //新增輪播圖
+                foreach (IFormFile photo in pro.photos)
+                {
+                    ProductPhotoList photoList = new ProductPhotoList();
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                    photoList.ImagePath = photoName;
+                    photoList.ProductId = pro.ProductId;
+                    photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                    db.ProductPhotoLists.Add(photoList);
+                 }
+            }
+            //存入TripDetail
+            foreach (TripDetailText t in pro.triptest)
+            {
+                TripDetail tripDb = db.TripDetails.FirstOrDefault(t => t.TripDetailId == t.TripDetailId);
+                tripDb.TripDay = t.TripDay;
+                tripDb.TripDetail1 = t.TripDetail;
+               
+                //照片
+                if (t.photo != null)
+                {
+                    //先刪除舊圖
+                    if (tripDb.ImagePath != null)
+                    {
+                        string webRootPath = _enviro.WebRootPath;
+                        string filePath = Path.Combine(webRootPath, "images", tripDb.ImagePath);
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            // 刪除檔案
+                            System.IO.File.Delete(filePath);
+                        }
+                    }
+                    //存入新圖
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                    tripDb.ImagePath = photoName;
+                    t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                }
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("List");
         }
     }
 }

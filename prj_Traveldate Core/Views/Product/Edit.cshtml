@@ -101,6 +101,7 @@
                                 </div>
                                 <div class="card-body">
                                     <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
+                                    <input asp-for="ProductId" type="hidden" value="@Model.ProductId" />
                                     <div class="form-group">
                                         <label class="control-label">產品名稱</label>
                                         <input asp-for="ProductName" class="form-control" />
@@ -109,7 +110,7 @@
 
                                     <div class=" form-group">
                                         <label class="control-label">產品類型</label>
-                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <select asp-for="ProductTypeId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                             @foreach (ProductTypeList type in Model.types)
                                             {
                                                 <option value="@type.ProductTypeId">@type.ProductType</option>
@@ -130,7 +131,7 @@
 
                                     <div class=" form-group">
                                         <label class="control-label">所在城市</label>
-                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                             @foreach (CityList type in Model.cities)
                                             {
                                                 <option value="@type.CityId">@type.City</option>
@@ -145,7 +146,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">輪播圖</label>
-                                        <input type="file" class="form-control" id="photoInput" multiple />
+                                        <input name="photos" type="file" class="form-control" id="photoInput" multiple />
 
                                     </div>
 
@@ -220,7 +221,7 @@
 
                                     <div class="form-group">
                                         <label class="control-label">產品描述</label>
-                                        <textarea name="Description" class="form-control col-lg-12"></textarea>
+                                        <textarea asp-for="Description" class="form-control col-lg-12"></textarea>
                                         <span asp-validation-for="Description" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -238,7 +239,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">方案描述</label>
-                                        <textarea name="PlanDescription" class="form-control col-lg-12"></textarea>
+                                        <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
                                         <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                     </div>
 
@@ -247,7 +248,7 @@
 
 
                             @*<!-- Basic Card Example -->*@
-                            <div class="card shadow mb-4">
+                            @* <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">行程詳情</h6>
                                 </div>
@@ -258,7 +259,7 @@
                                     <textarea class="col-lg-12" id="descriptionInput"></textarea>
                                     <button type="button" id="addButton" class="form-control">新增</button>
                                 </div>
-                            </div>
+                            </div> *@
 
 
 
@@ -316,19 +317,50 @@
                                                 </div>
                                             </div>
                                         </li>*@
+                                        @{
+                                            int i = 0;
+                                            foreach (TripDetail t in Model.CtripDetail)
+                                        {
+                                            
+                                            <li id="ui-state-default">
+                                                <div class="card mb-3">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-4">
+                                                            @if (t.ImagePath == null)
+                                                            {
+                                                                <img src="~/icons/logos/Logo_traveldate.png" class="img-fluid rounded-start" alt="...">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="~/images/@t.ImagePath" class="img-fluid rounded-start" alt="...">
+                                                             }
+                                                            
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="card-body">
+                                                                <div class="modal-header">
+                                                                    <h5 class="card-title">第 @t.TripDay 天</h5>
+                                                                  @*   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+                                                                </div>
+                                                                <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
+                                                                    <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
+                                                                    <input type="file" class="form-control" id="photoInput" name="triptest[@i].photo" />
+                                                                    <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetailId">@t.TripDetail1</textarea>
+                                                            </div>
 
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                </li>
+                                               i++;
+                                            }
+                                       }
 
                                     </ul>
-                                    
-
-                                    
 
                                 </div>
                             </div>
-
-
-
-
 
                             <div class="form-group">
                                 <input type="submit" value="修改並儲存" class="btn btn-primary" />
@@ -340,13 +372,7 @@
 
                     </div>
 
-
-
-
-
                 </form>
-
-                
 
             </div>
             <!-- /.container-fluid -->
