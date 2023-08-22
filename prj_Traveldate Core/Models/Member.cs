@@ -1,39 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace prj_Traveldate_Core.Models;
 
 public partial class Member
 {
-    
     public int MemberId { get; set; }
 
-    [DisplayName("姓氏")]
     public string? LastName { get; set; }
 
-    [DisplayName("名字")]
     public string? FirstName { get; set; }
 
-    [DisplayName("性別")]
     public string? Gender { get; set; }
 
-    [DisplayName("身分證字號")]
     public string? Idnumber { get; set; }
 
-    [DisplayName("出生日期")]
     public DateTime? BirthDate { get; set; }
-    
-    [DisplayName("居住地區")]
+
     public int? CityId { get; set; }
 
-    [DisplayName("手機號碼")]
     public string? Phone { get; set; }
 
-    [DisplayName("聯絡信箱")]
     public string? Email { get; set; }
 
-    [DisplayName("密碼")]
     public string? Password { get; set; }
 
     public int? LevelId { get; set; }
@@ -42,10 +31,9 @@ public partial class Member
 
     public bool? Enable { get; set; }
 
-    [DisplayName("大頭照")]
     public byte[]? Photo { get; set; }
 
-    //public string? ImagePath { get; set; }
+    public string? ImagePath { get; set; }
 
     public virtual CityList? City { get; set; }
 
