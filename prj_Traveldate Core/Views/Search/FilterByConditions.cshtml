@@ -1,68 +1,118 @@
 ﻿@using prj_Traveldate_Core.ViewModels
+@using X.PagedList.Mvc.Core;
 @model CSearchListViewModel
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@foreach (var item in Model.filterProducts)
-{
-    string salesCount = "";
-    if (item.orederCount > 1000)
-    {
-        salesCount = $"{item.orederCount / 1000} K+ 個已訂購";
-    }
-    else
-    {
-        salesCount = $"{item.orederCount} 個已訂購";
-    }
-    <input type="hidden" class="forCount"/>
-    @* <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" class="forCount"/> *@
-    <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
-        <div class="card mb-3 col-12 p-0">
-            <div class="row g-0">
-                <div class="col-md-4 pr-0 ">
-                    @if (item.photo != null)
-                    {
-                        <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
-                            <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250" />
-                        </div>
-                    }
 
-                    else
-                    {
-                        <div class="overflow-hidden my-rounded-start my-bg-primary d-flex justify-content-center">
-                            <img src="~/icons/logos/Logo_traveldate.png" alt="@item.productName" height="250" />
-                        </div>
-                    }
 
-                </div>
-                <div class="col-md-8 pl-0">
-                    <div class="card-body d-flex justify-content-around row">
-                        <div class="pl-4 pr-4">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
-                            <p class="card-text  mb-2">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
-                            <p class="card-text">
-                                <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
-                                <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
-                            </p>
-                        </div>
-                        <div class="row align-items-end">
-                            <div class="col-8 d-flex align-items-center">
-                                <div class="rectangle-container me-2 d-flex position-relative">
-                                    <div class="rectangle"></div>
-                                    <img class="star-rating" src="~/icons/star-rating.png">
-                                    <input type="hidden" id="rating-value" value="@item.commentAvgScore">
-                                </div>
-                                <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</small>
-                                <small class="text-body-secondary"> | @salesCount</small>
+<div id="sortBody">
+    @foreach (var item in Model.pageFilterProducts)
+    {
+        string salesCount = "";
+        if (item.orederCount > 1000)
+        {
+            salesCount = $"{item.orederCount / 1000} K+ 個已訂購";
+        }
+        else
+        {
+            salesCount = $"{item.orederCount} 個已訂購";
+        }
+
+        @* <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" class="forCount"/> *@
+        <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
+            <div class="card mb-3 col-12 p-0">
+                <div class="row g-0">
+                    <div class="col-md-4 pr-0 ">
+                        @if (item.photo != null)
+                        {
+                            <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
+                                <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250" />
                             </div>
-                            <div class="col">
-                                <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>
+                        }
+
+                        else
+                        {
+                            <div class="overflow-hidden my-rounded-start my-bg-primary d-flex justify-content-center">
+                                <img src="~/icons/logos/Logo_traveldate.png" alt="@item.productName" height="250" />
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-md-8 pl-0">
+                        <div class="card-body d-flex justify-content-around row">
+                            <div class="pl-4 pr-4">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
+                                <p class="card-text  mb-2">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
+                                <p class="card-text">
+                                    <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
+                                    <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
+                                </p>
+                            </div>
+                            <div class="row align-items-end">
+                                <div class="col-8 d-flex align-items-center">
+                                    <div class="rectangle-container me-2 d-flex position-relative">
+                                        <div class="rectangle"></div>
+                                        <img class="star-rating" src="~/icons/star-rating.png">
+                                        <input type="hidden" id="rating-value" value="@item.commentAvgScore">
+                                    </div>
+                                    <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</small>
+                                    <small class="text-body-secondary"> | @salesCount</small>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </a>
+    }
+</div>
+<input id="updateTotal" type="hidden" value="@Model.filterProducts.Count()" />
+<div class="d-flex justify-content-center bg-transparent border-0">
+    <div class="col-7 d-flex justify-content-around">
+        <div class="pagination-container">
+            <div class="pagination">
+                @{
+                    int pageCount = (int)Math.Ceiling((double)Model.filterProducts.Count / 5); // 計算總頁數
+                    int currentPage = Model.currentPage; /* 取得當前頁碼 */
+                   
+                    if (pageCount > 1)
+                    {
+                        if (currentPage > 1)
+                        {
+                            <a href="#" class="page-link-cust" data-page="1">@Html.Raw("&lt;")</a>
+                        }
+                        for (int i = 1; i <= pageCount; i++)
+                        { 
+                            if (i != currentPage)
+                            {
+                                <a href="#" class="page-link-cust" data-page="@i">@i</a>
+                            }
+                            else
+                            {
+                                <span class="page-link-cust active">@i</span>
+                            }
+                        }
+                       
+                    } 
+                    if (pageCount >= 2 && currentPage != @pageCount)
+                        {
+                             <a href="#" class="page-link-cust" data-page="@pageCount">@Html.Raw("&gt;")</a>
+                        }
+                }
+            </div>
         </div>
-    </a>
-}
+    </div>
+</div>
+<script>
+    // 添加分頁點擊事件處理程序
+    $(".pagination>a").on("click", function (e) {
+        e.preventDefault();
+        pageNumber = $(this).data("page");
+        filteredByConditions(); // 加載新頁面  
+    });
+</script>

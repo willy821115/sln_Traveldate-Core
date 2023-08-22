@@ -1,7 +1,7 @@
 ﻿using prj_Traveldate_Core.Models.MyModels;
 using X.PagedList;
 using Microsoft.AspNetCore.Mvc;
-
+using PagedList.Core.Mvc;
 
 
 namespace prj_Traveldate_Core.ViewModels
@@ -13,6 +13,9 @@ namespace prj_Traveldate_Core.ViewModels
         public List<CCountryAndCity> countryAndCities { get; set; } = new List<CCountryAndCity>();
         //public List<string> fTags { get; set; } = new List<string>();
         public List<string> types { get; set; } = new List<string>();
-        public StaticPagedList<CFilteredProductItem> pages { get; set; } 
+        public IPagedList<CFilteredProductItem> pages { get; set; }
+        public List<CFilteredProductItem> pageFilterProducts { get; set; } = new List<CFilteredProductItem>();
+        public int currentPage { get; set; }
+        
     }
 }
