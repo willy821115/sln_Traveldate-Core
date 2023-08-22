@@ -4,9 +4,8 @@
     ViewData["Title"] = "SignUp";
 }
 
-<h1>SignUp</h1>
+<h1>會員註冊</h1>
 
-<h4>Member</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,8 +22,21 @@
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
+                    <label asp-for="Gender" class="control-label"></label><br />
+                <div class="radio-group pl-2">
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="Gender" type="radio" value="男" id="gender_male" checked />
+                        <label class="form-check-label" for="gender_male">男</label>
+                    </div>
+                <div class="form-check">
+                        <input class="form-check-input" asp-for="Gender" type="radio" value="女" id="gender_female" />
+                        <label class="form-check-label" for="gender_female">女</label><br />
+                      </div>
+                <div class="form-check">
+                        <input class="form-check-input" asp-for="Gender" type="radio" value="不回答" id="gender_x" />
+                        <label class="form-check-label" for="gender_x">不回答</label><br />
+                    </div>
+                    </div>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -62,7 +74,7 @@
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn my-btn-primary" />
+                <input type="submit" value="送出資料" class="btn my-btn-primary" />
             </div>
         </form>
     </div>

@@ -46,6 +46,7 @@ namespace prj_Traveldate_Core.Controllers
             //抓資料: 會員資料+點數 常用旅伴 優惠券
             //抓session: orderDetailID List of checked items
             //合成一個vm 傳給view
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
             vm.member = _context.Members.Find(_memberID);

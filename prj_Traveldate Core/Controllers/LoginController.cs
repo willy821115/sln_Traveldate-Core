@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
@@ -57,11 +58,23 @@ namespace prj_Traveldate_Core.Controllers
             TraveldateContext db = new TraveldateContext();
             db.Companies.Add(c);
             db.SaveChanges();
-            return RedirectToAction("List", "Dashboard");
+            return RedirectToAction("CompanyLogin", "Login");
         }
 
         public ActionResult SignUp()
         {
+            List<SelectListItem> cities = new List<SelectListItem>();
+            TraveldateContext db = new TraveldateContext();
+            foreach(var c in db.CityLists)
+            {
+                SelectListItem city = new SelectListItem()
+                {
+                    Value = c.CityId.ToString(),
+                    Text = c.City
+                };
+                cities.Add(city);
+            }
+            ViewBag.CityId = cities;
             return View();
         }
         [HttpPost]
@@ -70,7 +83,7 @@ namespace prj_Traveldate_Core.Controllers
             TraveldateContext db = new TraveldateContext();
             db.Members.Add(m);
             db.SaveChanges();
-            return RedirectToAction("Index", "Member");
+            return RedirectToAction("Login", "Login");
         }
     }
 }
