@@ -16,5 +16,6 @@
         public List<string> fComContent { get; set; }
         public List<string> fComTitle { get; set; }
         public string fStatus { get; set; }
+        public int fQuantity { get; set; }
     }
 }

@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewData["Title"] = "CompanySignUp";
+}
+
+<form method="post" action="/Vendor/Register">
+    <h1>廠商註冊</h1>
+    <div>
+        <label for="companyName">公司名稱</label>
+        <input type="text" id="companyName" name="companyName" required>
+    </div>
+    <div>
+        <label for="taxId">統一編號</label>
+        <input type="text" id="taxId" name="taxId" required pattern="\d{8}" title="請輸入八位數字">
+    </div>
+    <div>
+        <label for="country">國家</label>
+        <select id="country" name="country" required>
+            <option value="">請選擇國家</option>
+            <option value="Taiwan">台灣</option>
+            <!-- 在此添加其他選項 -->
+        </select>
+    </div>
+    <div>
+        <label for="region">地區</label>
+        <select id="region" name="region" required onchange="generatePostalCode()">
+            <option value="">請選擇地區</option>
+            <option value="Taipei">台北市</option>
+            <option value="NewTaipei">新北市</option>
+            <option value="Keelung">基隆市</option>
+            <option value="Taoyuan">桃園市</option>
+            <option value="Hsinchu">新竹市</option>
+            <option value="HsinchuCounty">新竹縣</option>
+            <option value="Miaoli">苗栗縣</option>
+            <option value="Taichung">台中市</option>
+            <option value="Changhua">彰化縣</option>
+            <option value="Nantou">南投縣</option>
+            <option value="Yunlin">雲林縣</option>
+            <option value="Chiayi">嘉義市</option>
+            <option value="ChiayiCounty">嘉義縣</option>
+            <option value="Tainan">台南市</option>
+            <option value="Kaohsiung">高雄市</option>
+            <option value="Pingtung">屏東縣</option>
+            <option value="Yilan">宜蘭縣</option>
+            <option value="Hualien">花蓮縣</option>
+            <option value="Taitung">台東縣</option>
+            <option value="Kinmen">金門縣</option>
+            <option value="Penghu">澎湖縣</option>
+            <option value="Lienchiang">連江縣</option>
+        </select>
+    </div>
+    <div>
+        <label for="postalCode">郵遞區號</label>
+        <input type="text" id="postalCode" name="postalCode" required readonly>
+    </div>
+    <div>
+        <label for="address">地址</label>
+        <textarea id="address" name="address" required></textarea>
+    </div>
+    <div>
+        <label for="phone">電話</label>
+        <input type="tel" id="phone" name="phone" required maxlength="10" pattern="\d{1,10}" title="請輸入十位以內的數字">
+    </div>
+    <div>
+        <label for="website">公司網站</label>
+        <input type="text" id="website" name="website" pattern="^(https?://)?([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(:[0-9]{1,5})?(/.*)?$" title="請輸入有效的網址">
+    </div>
+    <div>
+        <label for="ceoName">負責人姓名</label>
+        <input type="text" id="ceoName" name="ceoName" required>
+    </div>
+    <div>
+        <label for="contactName">聯絡人姓名</label>
+        <input type="text" id="contactName" name="contactName" required>
+    </div>
+    <div>
+        <label for="contactTitle">聯絡人職稱</label>
+        <input type="text" id="contactTitle" name="contactTitle">
+    </div>
+    <div>
+        <label for="contactEmail">EMAIL</label>
+        <input type="email" id="contactEmail" name="contactEmail" required>
+    </div>
+    <div>
+        <label for="password">設定密碼</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="serviceOverview">服務概述:</label>
+        <textarea id="serviceOverview" name="serviceOverview" required></textarea>
+    </div>
+    <div>
+        <input type="submit" value="註冊">
+    </div>
+</form>
+
+        @section Styles
+        {
+    <style>
+
+        /* 設定整個網頁的字型為Arial, sans-serif，背景顏色為#f2f2f2，並在四周留有20像素的間距 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        /* 設定表單的最大寬度為600像素，水平置中對齊，背景顏色為#fff，內容周圍留有20像素的間距，並帶有淡淡的陰影效果 */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 1);
+        }
+
+            /* 設定表單標題的對齊方式為置中 */
+            form h2 {
+                text-align: center;
+            }
+
+        /* 定義元素之間的垂直間距為15像素 */
+        div {
+            margin-bottom: 15px;
+        }
+
+        /* 設定標籤(label)的顯示方式為區塊元素，並在下方留有5像素的間距，並加粗字體 */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        /* 設定文字輸入框(input[type="text"])、
+                    郵件輸入框(input[type="email"])、
+                    密碼輸入框(input[type="password"])、
+                    電話號碼輸入框(input[type="tel"])、
+                    多行文字輸入框(textarea)和下拉選單(select)的寬度為100%，
+                    內容周圍留有10像素的間距，並有1像素的灰色實線邊框，圓角為3像素 */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid #ccc;
+            border-radius: 10px;
+        }
+
+
+
+
+
+
+        /* 設定提交按鈕(input[type="submit"])的寬度為100%，
+                    內容周圍留有10像素的間距，背景顏色為#155074，
+                    並將滑鼠指標樣式設為指向連結的樣式 */
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            /* 按鈕背景 */
+            background-color: #155074;
+            /* 文字顏色 */
+            color: #F8FDCF;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+            /* 當滑鼠指向提交按鈕時，將背景顏色變更為#0056b3 */
+            input[type="submit"]:hover {
+                background-color: #78C1F3;
+            }
+
+    </style>
+        }
+
+                    @section Scripts
+                    {
+    <script>
+        function generatePostalCode() {
+            const regionSelect = document.getElementById("region");
+            const postalCodeInput = document.getElementById("postalCode");
+            const selectedRegion = regionSelect.value;
+
+            // 設定相應地區對應的郵遞區號
+            const postalCodeMap = {
+                "Taipei": "100",
+                "NewTaipei": "220",
+                "Keelung": "200",
+                "Taoyuan": "320",
+                "Hsinchu": "300",
+                "HsinchuCounty": "300",
+                "Miaoli": "360",
+                "Taichung": "400",
+                "Changhua": "500",
+                "Nantou": "540",
+                "Yunlin": "640",
+                "Chiayi": "600",
+                "ChiayiCounty": "600",
+                "Tainan": "700",
+                "Kaohsiung": "800",
+                "Pingtung": "900",
+                "Yilan": "260",
+                "Hualien": "970",
+                "Taitung": "950",
+                "Kinmen": "890",
+                "Penghu": "880",
+                "Lienchiang": "209",
+            };
+            // 自動填入郵遞區號
+            postalCodeInput.value = postalCodeMap[selectedRegion] || "";
+        }
+    </script>
+                    }
