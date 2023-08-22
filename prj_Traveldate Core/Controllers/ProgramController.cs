@@ -76,7 +76,6 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult AddToCart(int? id)
         {
-            
                 return RedirectToAction("Product");
         }
 
