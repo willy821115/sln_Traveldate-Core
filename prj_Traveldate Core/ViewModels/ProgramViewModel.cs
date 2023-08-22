@@ -10,13 +10,19 @@ namespace prj_Traveldate_Core.ViewModels
         private CityList _city = null;
         private CommentList _commentlist = null;
         private Member _member = null;
+        private Trip _trip = null;
 
-       
+
 
         public ProductList product
         {
             get { return _prod; }
             set { _prod = value; }
+        }
+        public Trip trip
+        {
+            get { return _trip; }
+            set { _trip = value; }
         }
         public CProgram program
         {
@@ -48,6 +54,7 @@ namespace prj_Traveldate_Core.ViewModels
             _city = new CityList();
             _commentlist = new CommentList();
             _member = new Member();
+            _trip = new Trip();
         }
     }
 }

@@ -238,9 +238,13 @@
                     <label style="font-size:22px" id="planprice">金額：</label>
                 </div>
                 <div class="m-3">
-                    <div id="addtocart" class="btn btn-outline-dark btn-lg">加入購物車</div>
-                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId"  class="btn my-btn-primary btn-lg">立即購買</a>
-                </div>
+                    <form id="addToCartForm" action="@Url.Action("AddToCart", "Program")" method="post">
+                        <input type="hidden" id="tripId" name="tripId" value="">
+                        <input type="hidden" id="num" name="num" value="">
+                        <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg" value="加入購物車" />
+                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary btn-lg">立即購買</a>
+                    </form>
+                  </div>
             </div> 
         </div>
     </div>
@@ -535,6 +539,13 @@
 
         // Function to show the previous month in the calendar
         function showPreviousMonth() {
+            const now = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth();
+
+            if (currentYear === now.getFullYear() && currentMonth === now.getMonth()) {
+                return; 
+            }
             currentDate.setMonth(currentDate.getMonth() - 1);
             showCalendar(currentDate);
         }
@@ -594,12 +605,15 @@
         const selectedDateClass = 'select-date';
         let selectedDateElement = null;
 
+        let formattedClickedDate;
+        let trip;
+
         //點擊日曆的日期
         calendarDays.addEventListener('click', function (event) {
             const target = event.target;
             if (target.classList.contains('day')) {
                 const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(target.textContent));
-                const formattedClickedDate = formatDate(clickedDate);
+                 formattedClickedDate = formatDate(clickedDate);
                 const productId = @Model.product.ProductId;
 
                 if (availableDates.includes(formattedClickedDate)) {
@@ -653,7 +667,45 @@
             if (planPriceElement && data.price) {
                 planPriceElement.textContent = `金額：${data.price}`;
             }
+            trip = data.tripId;
         } 
+
+
+        //加到購物車
+        document.getElementById('addtocart').addEventListener('click', function (event) {
+            event.preventDefault();
+            const productId = @Model.product.ProductId;
+            const numElement = document.getElementById('var-value');
+            const num = parseInt(numElement.textContent);
+
+            // Fetch MaxNum data
+            fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Set the value of the hidden field
+                    document.getElementById('num').value = num;
+
+                    // Construct the request data
+                    const requestData = {
+                        num: num,
+                        tripId: data.tripId
+                    };
+
+                    console.log(requestData);
+
+                    // Submit the form programmatically
+                    return fetch(`@Url.Content("~/program/AddToCart")?num=${num}&tripId=${data.tripId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestData)
+                    });
+                })
+               
+        });
+
+
 
 
         //商品每天行程JS
@@ -689,7 +741,6 @@
         plusButton.addEventListener('click', function () {
             value++;
             valueSpan.textContent = value;
-            updatePriceAndMinPeople();
         });
 
         // 监听 "-" 按钮点击事件
@@ -697,7 +748,6 @@
             if (value > 1) {
                 value--;
                 valueSpan.textContent = value;
-                updatePriceAndMinPeople();
             }
         });
 
