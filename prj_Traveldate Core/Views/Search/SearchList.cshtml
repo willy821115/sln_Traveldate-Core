@@ -358,8 +358,7 @@
                 data: {
                     tags: selectedTags, cities: selectedCities, types: selectedTypes,
                     startTime: startTime, endTime: endTime,
-                    minPrice: minPrice, maxPrice: maxPrice,
-                    page: pageNumber
+                    minPrice: minPrice, maxPrice: maxPrice
                 },
                 success: function (response) {
                     hideLoadingIcon()
@@ -367,9 +366,9 @@
                     roadRating()
                     var resultCount = $('#updateTotal').val()
                     $('#total').html(resultCount)
-                    $(".pagination > a").filter(function () {
-                        return $(this).text() === pageNumber.toString();
-                    }).addClass("active");
+                     $(".pagination > a").filter(function () {
+                         return $(this).text() === pageNumber.toString();
+                     }).addClass("active");
                 
                 },
                 error: function (error) {
