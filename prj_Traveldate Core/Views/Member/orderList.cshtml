@@ -54,8 +54,7 @@
                     <td>@item.ProductName</td>
                     <td>@item.Datetime</td>
                     <td>@item.Date.ToString("yyyy-MM-dd")</td>
-                    @*<td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>*@
-                    <td><a href="#" class="btn my-btn-primary btn-sm comment-button">評論</a></td>
+                    <td>@Html.ActionLink("評論", "addcomment","Member","",new {@class="btn my-btn-primary btn-sm"})</td>
                 </tr>
             }
         }
@@ -63,6 +62,7 @@
 
 
 </table>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5)">
     <div class="modal-dialog">
         <div class="modal-dialog justify-content-center">
@@ -135,7 +135,7 @@
 
 }
 @section scripts{
-    <script>
+@*     <script>
         $(document).ready(function () {
             // 處理「評論」按鈕的點擊事件
             $('.comment-button').click(function () {
@@ -151,7 +151,7 @@
                 $('#exampleModal').modal('show');
             });
         });
-    </script>
+    </script> *@
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({

@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.ViewModels;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
@@ -115,8 +117,9 @@ namespace prj_Traveldate_Core.Controllers
                 mDB.LastName = edit.LastName;
                 mDB.Gender = edit.Gender;
                 mDB.BirthDate = edit.BirthDate;
-                mDB.Photo = edit.Photo;
+                mDB.Phone = edit.Phone;
                 mDB.Email = edit.Email;
+                mDB.MemberId = edit.MemberId;
 
                 context.SaveChanges();
             }
@@ -171,11 +174,6 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult passwordChange(CpasswordChangeViewModel edit) //密碼更改 edit V
         {
-            if (string.IsNullOrEmpty(edit.txtNewPassword) || string.IsNullOrEmpty(edit.txtCheckPassword))
-            {
-                ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不得為空白，請確認後再次提交");
-                return View(edit);
-            }
             int memberId = 1;
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
@@ -184,23 +182,21 @@ namespace prj_Traveldate_Core.Controllers
                 if (edit.txtNewPassword == edit.txtCheckPassword)
                 {
                     mDB.Password = edit.txtNewPassword;
-                    //context.Members.Add(mDB);
                     context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
+
+                  Thread.Sleep(2000);
+                }
+                else if(edit.txtNewPassword != edit.txtCheckPassword )
+                {
+                    Thread.Sleep(2000);
                     return RedirectToAction("passwordChange");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "新密碼與確認新密碼不一致，請再次確認後提交");
-                }
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "找不到對應的會員。");
-            }
-
-            return View("Index");
+            Thread.Sleep(2000);
+            return RedirectToAction("Index");
         }
+    
         public IActionResult couponList() //優惠券清單 new V
         {
             int MemberId = 1;
@@ -255,7 +251,7 @@ namespace prj_Traveldate_Core.Controllers
                             LastName = cm.LastName,
                             FirstName = cm.FirstName,
                             Phone = cm.Phone,
-                            BirthDate = cm.BirthDate,
+                            BirthDate = cm.BirthDate                           
                         };
 
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
@@ -317,22 +313,24 @@ namespace prj_Traveldate_Core.Controllers
                 (string.IsNullOrEmpty(vm.LastName)) ||
                 (string.IsNullOrEmpty(vm.FirstName)) ||
                 (string.IsNullOrEmpty(vm.Phone))
-              )
+               )
                 return RedirectToAction("showCompanion");
             else
             {
                 Companion cpDB = new Companion();
-                if (cpDB != null)
+                if (cpDB!= null)
                 {
                     cpDB.LastName = vm.LastName;
                     cpDB.FirstName = vm.FirstName;
                     cpDB.Phone = vm.Phone;
+                    cpDB.MemberId = vm.MemberId;
+                    cpDB.BirthDate = vm.BirthDate;
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
                 }
             }
-            return RedirectToAction("index");
+            return RedirectToAction("showCompanion");
         }
 
         public IActionResult favoriteList() //收藏清單new V
@@ -453,6 +451,7 @@ namespace prj_Traveldate_Core.Controllers
             //            };
             #endregion
         }
+
         #region 我的評論 0817(四)版 暫時用不到
         //public IActionResult commentList(int? id = 1) //我的評論V
         //{
@@ -546,9 +545,79 @@ namespace prj_Traveldate_Core.Controllers
         #region 添加評論view 暫時用不到2023.08.20
         public IActionResult addcomment() //添加評論 先維持舊版V
         {
-            return View();
+            int MemberId = 1;
+            var datas = from m in context.Members
+                        join cm in context.CommentLists
+                        on m.MemberId equals cm.MemberId
+                        join pl in context.ProductLists
+                        on cm.ProductId equals pl.ProductId
+                        where m.MemberId == MemberId
+                        select new CcommentListViewModel
+                        {
+                            Title = cm.Title,
+                            Content = cm.Content,
+                            CommentScore = cm.CommentScore,
+                            Date = cm.Date,
+                            ProductName = pl.ProductName
+                        };
+
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+            return View(datas);
         }
         #endregion
+        [HttpPost]
+        public IActionResult addcommentCreate()
+        {
+            //int MemberId = 1;
+            //CcommentListViewModel vm = new CcommentListViewModel();
+            //vm.MemberId = MemberId;
+            //Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+
+            var commentList = new CommentList();
+            
+            CommentList cmDB = new CommentList();
+            cmDB.MemberId = Convert.ToInt32(Request.Form["MemberId"]);
+            cmDB.Title = Request.Form["Title"];
+            cmDB.Content = Request.Form["Content"];
+            cmDB.CommentScore = Convert.ToInt32(Request.Form["CommentScore"]);
+
+            //cmDB.Date = Request.Form["txtTitle"];
+            //cmDB.ProductId = Request.Form["txtTitle"];
+
+            //if (cmDB != null)
+            //{
+            //    cmDB.Title = vm.Title;
+            //    cmDB.Content = vm.Content;
+            //    cmDB.CommentScore = vm.CommentScore;
+            //    cmDB.MemberId = vm.MemberId;
+            //    cmDB.Date = vm.Date;
+            //    cmDB.ProductId = vm.ProductId;
+            
+                context.CommentLists.Add(cmDB);
+                context.SaveChanges();
+            //}
+            return RedirectToAction("orderList");
+        }
         public IActionResult forumList() //我的揪團new V
         {
             int MemberId =1;

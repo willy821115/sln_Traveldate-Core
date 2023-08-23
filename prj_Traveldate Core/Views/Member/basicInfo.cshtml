@@ -45,62 +45,42 @@
                 {*@
                 @using (Html.BeginForm("basicInfo","Member",FormMethod.Post)){
                     <div class="form-group">
-                        @*<label for="txtMemberId">MemberId</label>*@
-                            @*<input type="text" id="txtMemberId" class="form-control" value="@member.MemberId" />*@
-                        @*<label class="control-label">MemberId</label>*@
                         @Html.LabelFor(model=>model.MemberId)
                         @Html.EditorFor(model=>model.MemberId,"",new {htmlAttributes=new{@class="form-control"}})
                         </div>
                     <div class="form-group">
-@*                          <label for="txtLastName">姓</label>
-                            <input type="text" id="txtLastName" class="form-control" value="@member.LastName" />*@
-                            @*<label class="control-label">LastName</label>*@
                         @Html.LabelFor(model=>model.LastName)
                         @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
-@*                        <label for="txtFirstName">名</label>
-                        <input type="text" id="txtFirstName" class="form-control" value="@member.FirstName" />*@
-                        @*<label class="control-label">FirstName</label>*@
                         @Html.LabelFor(model=>model.FirstName)
                         @Html.EditorFor(model=>model.FirstName,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
-@*                        <label for="txtGender">性別</label>
-                        <input type="text" id="txtGender" class="form-control" value="@member.Gender" />
-                        <label class="control-label">Gender</label>*@
                         @Html.LabelFor(model=>model.Gender)
-                        @Html.EditorFor(model=>model.Gender,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.EditorFor(model=>model.Gender,new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
-@*                        <label for="txtBirthDate">出生日期</label>
-                        @{
+@*                         @{
                             DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
                             string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
-                            }
-                        <input type="text" id="date" class="form-control" value=@member.BirthDate />
-                        <label class="control-label">BirthDate</label>*@
+                            } *@
                         @Html.LabelFor(model=>model.BirthDate)
                         @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
-@*                       <label for="txtPhoneNumber">手機號碼</label>
-                         <input type="text" id="txtPhoneNumber" class="form-control" value="@member.Phone" />
-                         <label class="control-label">Phone</label>*@
                          @Html.LabelFor(model=>model.Phone)
                         @Html.EditorFor(model=>model.Phone,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
-@*@*                    <label for="txtEmail">聯絡信箱</label>
-                        <input type="text" id="txtEmail" class="form-control" value="@member.Email" />*@
                         @Html.LabelFor(model=>model.Email)
                         @Html.EditorFor(model=>model.Email,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary">儲存</button>
                     </div>
-                @*}*@
                 }
+                
             </div>
             
         </div>

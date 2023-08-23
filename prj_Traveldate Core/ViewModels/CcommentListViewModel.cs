@@ -30,6 +30,11 @@ namespace prj_Traveldate_Core.ViewModels
             _productList = new ProductList();
         }
 
+        public int MemberId
+        {
+            get { return _member.MemberId; }
+            set { _member.MemberId = value; }
+        }
 
         public string? Title
         {
