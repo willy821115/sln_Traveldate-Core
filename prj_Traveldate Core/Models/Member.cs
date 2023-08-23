@@ -29,9 +29,11 @@ public partial class Member
 
     public int? Discount { get; set; }
 
+    public bool? Enable { get; set; }
+
     public byte[]? Photo { get; set; }
 
-    public bool? Enable { get; set; }
+    public string? ImagePath { get; set; }
 
     public virtual CityList? City { get; set; }
 
@@ -46,6 +48,8 @@ public partial class Member
     public virtual ICollection<ForumList> ForumLists { get; set; } = new List<ForumList>();
 
     public virtual LevelList? Level { get; set; }
+
+    public virtual ICollection<LikeList> LikeLists { get; set; } = new List<LikeList>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
