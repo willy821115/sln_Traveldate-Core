@@ -15,7 +15,7 @@ body {
     /*background-color: #DCE5E2;*/
 }
 
-#arrow_bottom_down,
+#arrow_top_up,
 .checkbox,
 .calendar-container,
 .calendar-gif,
@@ -267,5 +267,5 @@ input,
 
 /**************************導覽列************************************/
 .nav-height-mt {
-    margin-top: 105.5px;
+    margin-top: 91.84px;
 }
