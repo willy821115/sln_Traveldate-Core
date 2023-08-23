@@ -53,8 +53,12 @@
             background-color: #fff;
             border: 1px solid #dee2e6;
         }
-
-        
+        .my-fs-md{
+            font-size:18px;
+        }
+        .my-fs-lg{
+            font-size: 24px;
+        }
     </style>
 }
 
@@ -231,6 +235,8 @@
                     <a id="sortByCommet" href="#" class=" fw-bolder" name="status">用戶評價</a>
                     <span>　|　</span>
                     <a id="sortByPrice" href="#" class=" fw-bolder" name="status">價格排序(低到高)</a>
+                    <span>　|　</span>
+                    <a id="sortByStock" href="#" class=" fw-bolder" name="status">即將售完</a>
                 </div>
             </div>
             <div class="alert alert-light d-none">
@@ -249,7 +255,7 @@
                 {
                     salesCount = $"{item.orederCount} 個已訂購";
                 }
-                    <input type="hidden" class="forCount" />
+                    
               @* <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" /> *@
               <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
                         <div class="card mb-3 col-12 p-0">
@@ -273,11 +279,17 @@
                         <div class="col-md-8 pl-0">
                             <div class="card-body d-flex justify-content-around row">
                                 <div class="pl-4 pr-4">
-                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
-                                            <p class="card-text  mb-2">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
+                                <h5 class="card-title fw-bold">@Html.DisplayFor(modelItem => item.productName)</h5>
+                                                <p class="card-text  mb-2 my-fs-md">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
                                 <p class="card-text">
-                                    <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
-                                    <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
+                                    <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 後</span>
+                                    <span class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </span>
+                                                    <span class="text-body-secondary">
+                                                        | <img src="~/icons/icons8-tag-16.png"> @foreach (var t in item.productTags)
+                                                        {
+                                                            <span>#@t&thinsp;</span>
+                                                        }
+                                                     </span>
                                 </p>
                                         </div>
                                 <div class="row align-items-end">
@@ -287,9 +299,14 @@
                                             <img class="star-rating" src="~/icons/star-rating.png">
                                             <input type="hidden" id="rating-value" value="@item.commentAvgScore">
                                         </div>
-                                        <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</small>
-                                        <small class="text-body-secondary"> | @salesCount</small>
-                                    </div>
+                                        <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</span>
+                                        <span class="text-body-secondary"> | <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
+                                                   @if (!string.IsNullOrEmpty(item.strProdStock))
+                                                        {
+                                                        <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                                        }
+                                                   
+                                                </div>
                                     <div class="col">
                                         <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>
                                     </div>
@@ -307,9 +324,10 @@
                     </div>
             </div>
             </div>
+            </div>
         </div>
     </div>
-</div>
+
 
 @section Scripts{
     <script>
@@ -399,6 +417,11 @@
         const sortByPrice = document.querySelector('#sortByPrice');
         sortByPrice.addEventListener('click', () => {
             loadData("sortType=price")
+        })
+        //by庫存
+        const sortByStock = document.querySelector('#sortByStock');
+        sortByStock.addEventListener('click', () => {
+            loadData("sortType=stock")
         })
       
     </script>

@@ -18,6 +18,7 @@ namespace prj_Traveldate_Core.Controllers
         CFilteredProductFactory _products = new CFilteredProductFactory();
         CSearchListViewModel _vm = new CSearchListViewModel();
         TraveldateContext _context = null;
+
         public SearchController(TraveldateContext context)
         {
             _context = context;
@@ -26,7 +27,7 @@ namespace prj_Traveldate_Core.Controllers
         int itemsPerPage = 0; // 每頁顯示的項目數
         int itemsToSkip = 0;
 
-        public IActionResult SearchList(int page=1)
+        public IActionResult SearchList(int page = 1)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
             _vm.categoryAndTags = _products.qureyFilterCategories();//商品類別&標籤,左邊篩選列
@@ -38,13 +39,13 @@ namespace prj_Traveldate_Core.Controllers
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
-            int  currentPage = page < 1 ? 1 : page;
+            int currentPage = page < 1 ? 1 : page;
             _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
             return View(_vm);
         }
         public IActionResult sortBy(string sortType)
         {
-            
+
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
@@ -69,6 +70,11 @@ namespace prj_Traveldate_Core.Controllers
                 _vm.filterProducts = _vm.filterProducts.OrderBy(p => p.price).ToList();//商品cards;
                 return PartialView(_vm);
             }
+            if (sortType == "stock")
+            {
+                _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.prodStock).ToList();//商品cards;
+                return PartialView(_vm);
+            }
             return PartialView(_vm);
         }
 
@@ -80,10 +86,10 @@ namespace prj_Traveldate_Core.Controllers
                     .Where(p => _products.confirmedId.Contains(p.ProductId))
                     .Where(c => c.City.City.Contains(txtKeyword))
                     .GroupBy(p => p.City.City)
-                    .Select(g => 
-                    new 
-                    { 
-                        CityId = g.Select(i=>i.CityId),
+                    .Select(g =>
+                    new
+                    {
+                        CityId = g.Select(i => i.CityId),
                         CityName = g.Key.ToString().Trim().Substring(0, 2),
                         countCity = g.Count()
                     }).ToList();
@@ -91,16 +97,16 @@ namespace prj_Traveldate_Core.Controllers
             }
             var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId))
                 .GroupBy(p => p.City.City)
-                .Select(g => new 
-                { 
+                .Select(g => new
+                {
                     CityId = g.Select(i => i.CityId),
                     CityName = g.Key.ToString().Trim().Substring(0, 2),
                     countCity = g.Count()
                 }).ToList();
             return Json(filterCitiess);
         }
-       
-        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice,int page)
+
+        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice, int page)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo();
             //有篩選條件做篩選
@@ -111,7 +117,7 @@ namespace prj_Traveldate_Core.Controllers
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
-            if(cities.Count > 0)
+            if (cities.Count > 0)
             {
                 _vm.filterProducts = _vm.filterProducts
                                 .Where(p => cities.Contains(p.city)).ToList();
@@ -126,7 +132,7 @@ namespace prj_Traveldate_Core.Controllers
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
             //沒有篩選條件抓全部
-            if(tags.Count == 0 && cities.Count == 0&& types.Count == 0)
+            if (tags.Count == 0 && cities.Count == 0 && types.Count == 0)
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
@@ -176,11 +182,11 @@ namespace prj_Traveldate_Core.Controllers
             _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
             _vm.currentPage = page;
 
-           
+
 
             return PartialView(_vm);
         }
-     
     }
-}
+}   
+
 

@@ -17,7 +17,7 @@
     {
         salesCount = $"{item.orederCount} 個已訂購";
     }
-   
+
     @* <input type="hidden" value="@Html.DisplayFor(modelItem => item.productTags)" /> *@
     <a asp-action="Product" asp-controller="Program" asp-route-id="@item.productID" class="text-secondary">
         <div class="card mb-3 col-12 p-0">
@@ -26,7 +26,7 @@
                     @if (item.photoPath != null)
                     {
                         <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
-                            <img src="~/images/@item.photoPath" height="250" />
+                            <img src="~/images/@item.photoPath" alt="@item.productName" height="250" />
                         </div>
                     }
 
@@ -41,22 +41,30 @@
                 <div class="col-md-8 pl-0">
                     <div class="card-body d-flex justify-content-around row">
                         <div class="pl-4 pr-4">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.productName)</h5>
-                        <p class="card-text">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
-                        <p class="card-text">
-                            <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 前</small>
-                            <small class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </small>
-                        </p>
+                            <h5 class="card-title fw-bold">@Html.DisplayFor(modelItem => item.productName)</h5>
+                            <p class="card-text  mb-2 my-fs-md">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
+                            <p class="card-text">
+                                <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 後</span>
+                                <span class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </span>
+                                <span class="text-body-secondary"> | <img src="~/icons/icons8-tag-16.png"> @foreach (var t in item.productTags)
+                                    {
+                                        <span>#@t&thinsp;</span>
+                                    }</span>
+                            </p>
                         </div>
                         <div class="row align-items-end">
-                            <div class="col d-flex align-items-center">
+                            <div class="col-8 d-flex align-items-center">
                                 <div class="rectangle-container me-2 d-flex position-relative">
                                     <div class="rectangle"></div>
                                     <img class="star-rating" src="~/icons/star-rating.png">
                                     <input type="hidden" id="rating-value" value="@item.commentAvgScore">
                                 </div>
-                                <small class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</small>
-                                <small class="text-body-secondary"> | @salesCount</small>
+                                <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</span>
+                                <span class="text-body-secondary"> |  <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
+                                @if (!string.IsNullOrEmpty(item.strProdStock))
+                                {
+                                    <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                }
                             </div>
                             <div class="col">
                                 <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>
@@ -69,3 +77,47 @@
     </a>
 }
 <input id="updateTotal" type="hidden" value="@Model.filterProducts.Count()" />
+@* <div class="d-flex justify-content-center bg-transparent border-0">
+    <div class="col-7 d-flex justify-content-around">
+        <div class="pagination-container">
+            <div class="pagination">
+                @{
+                    int pageCount = (int)Math.Ceiling((double)Model.filterProducts.Count / 5); // 計算總頁數
+                    int currentPage = Model.currentPage; /* 取得當前頁碼 */
+
+                    if (pageCount > 1)
+                    {
+                        if (currentPage > 1)
+                        {
+                            <a href="#" class="page-link-cust" data-page="1">@Html.Raw("&lt;")</a>
+                        }
+                        for (int i = 1; i <= pageCount; i++)
+                        {
+                            if (i != currentPage)
+                            {
+                                <a href="#" class="page-link-cust" data-page="@i">@i</a>
+                            }
+                            else
+                            {
+                                <span class="page-link-cust active">@i</span>
+                            }
+                        }
+
+                    }
+                    if (pageCount >= 2 && currentPage != @pageCount)
+                    {
+                        <a href="#" class="page-link-cust" data-page="@pageCount">@Html.Raw("&gt;")</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 添加分頁點擊事件處理程序
+    $(".pagination>a").on("click", function (e) {
+        e.preventDefault();
+        pageNumber = $(this).data("page");
+        filteredByConditions(); // 加載新頁面
+    });
+</script> *@

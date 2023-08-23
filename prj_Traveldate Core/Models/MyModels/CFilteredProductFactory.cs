@@ -17,7 +17,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         
         public List<CFilteredProductItem> qureyFilterProductsInfo()
         {
-            
+            CProductFactory prodStock = new CProductFactory();
             var datas = db.Trips.Where(t => confirmedId.Contains(t.ProductId)).GroupBy(t => t.ProductId)
                 .Select(g =>
                 new
@@ -26,7 +26,8 @@ namespace prj_Traveldate_Core.Models.MyModels
                     name = g.Select(n => n.Product.ProductName),
                     outlineForSearch = g.Select(n => n.Product.OutlineForSearch),
                     city = g.Select(n => n.Product.City.City).Distinct(),
-                    date = g.Select(n => n.Date).Max(),
+                    date = g.Select(n => n.Date).Where(d=>d.Value>DateTime.Now).Min(),
+                    tripId = g.Where(d=>d.Date.Value > DateTime.Now).Min(i=>i.TripId),
                     price = g.Select(n => n.UnitPrice).Min(),
                     type = g.Select(n => n.Product.ProductType.ProductType).Distinct()
                 }).ToList();
@@ -72,11 +73,18 @@ namespace prj_Traveldate_Core.Models.MyModels
                 //購買次數
                 var buy = db.OrderDetails.Where(o => o.Trip.Product.ProductId == item.productID).Select(o => o.Quantity).Sum();
                 item.orederCount = buy.HasValue ? buy: 0;
+                //trip的剩餘名額
+                var strStock = prodStock.TripStock(p.tripId);
+                double r = Convert.ToDouble(strStock.Split('/')[0]);
+                double m = Convert.ToDouble(strStock.Split('/')[1]);
+               item.prodStock = r/ m;
+                if (item.prodStock > 0.01) 
+                {
+                    item.strProdStock = "即將額滿";
+                }
                 list.Add(item);
             }
-
             return list;
-           
         }
      
         

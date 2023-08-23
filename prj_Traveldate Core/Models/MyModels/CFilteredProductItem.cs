@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace prj_Traveldate_Core.Models.MyModels
@@ -24,6 +25,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public int commentCount { get; set; }
         public string strComment { get; set; }
         public int? orederCount { get; set; }
-
+        public string strProdStock { get; set; }
+        public double prodStock { get; set; }
     }
 }
