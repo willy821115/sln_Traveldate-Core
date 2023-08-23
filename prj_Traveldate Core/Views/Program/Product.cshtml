@@ -12,9 +12,9 @@
     <div class="outer-wrappers">
     <div class="outer-wrapper col-10 mb-3">
         <div class="s-wrap s-type-1" role="slider">
-         @*    @if (Model.program.fPhotoList != null)
+                @if (Model.program.fPhotoPath != null)
             {
-                int photoCount = Model.program.fPhotoList.Count;
+                    int photoCount = Model.program.fPhotoPath.Count;
                 for (int i = 1; i <= photoCount; i++)
                 {
                     <input type="radio" id="@("s-" + i)" name="slider-control" @(i == 1 ? "checked=\"checked\"" : "")>
@@ -22,23 +22,24 @@
             }
 
             <ul class="s-content">
-                @if (Model.program.fPhotoList != null)
+                    @if (Model.program.fPhotoPath != null)
                 {
                     int index = 1;
-                    foreach (var photoBytes in Model.program.fPhotoList)
+                        foreach (var photoBytes in Model.program.fPhotoPath)
                     {
                         <li class="s-item s-item-@index">
-                            <img src="data:image/png;base64,@Convert.ToBase64String(photoBytes)" alt="Product Image" />
+                                @*<img src="data:image/png;base64,@Convert.ToBase64String(photoBytes)" alt="Product Image" />*@
+                                <img src="~/images/@photoBytes" alt="Product Image" />
                         </li>
                         index++;
                     }
-                } *@
+                } 
             </ul>
 
             <div class="s-control">
-                @if (Model.program.fPhotoList != null)
+                    @if (Model.program.fPhotoPath != null)
                 {
-                    int photoCount = Model.program.fPhotoList.Count;
+                        int photoCount = Model.program.fPhotoPath.Count;
                     for (int i = 1; i <= photoCount; i++)
                     {
                         <label class="s-c-@i" for="@("s-" + i)"></label>

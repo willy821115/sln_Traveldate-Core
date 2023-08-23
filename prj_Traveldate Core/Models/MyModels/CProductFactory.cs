@@ -6,8 +6,13 @@ namespace prj_Traveldate_Core.Models.MyModels
     public class CProductFactory
     {
         TraveldateContext db = new TraveldateContext();
-
+        public List<string> loadPhotoPath(int id)
+        {
+            List<string> photopath = db.ProductPhotoLists.Where(p => p.ProductId == id).Select(p => p.ImagePath).ToList();
+            return photopath;
+        }
       
+
         public List<byte[]> loadPhoto(int id)
         {
             List<byte[]> photoList = db.ProductPhotoLists

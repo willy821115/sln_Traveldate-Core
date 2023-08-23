@@ -1,0 +1,141 @@
+﻿@model prj_Traveldate_Core.ViewModels.couponListViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Review">
+                <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/AccountSuspend">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Coupon">
+                <span>優惠券</span>
+            </a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <h2>新增優惠券</h2>
+                <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @*<!-- Basic Card Example -->*@
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary cardTitle">新增優惠券</h6>
+                        </div>
+                        <div class="card-body">
+                            @*<input asp-for="CouponListId" type="hidden" value="@Model.CouponListId" />*@
+                            <div class="form-group">
+                                <label class="control-label">優惠券名稱</label>
+                                <input asp-for="CouponName" class="form-control" />
+                                <span asp-validation-for="CouponName" class="text-danger"></span>
+                            </div>
+
+                            <div class=" form-group">
+                                <label class="control-label">優惠折扣數</label>
+                                <input asp-for="Discount" class="form-control" />
+                                <span asp-validation-for="Discount" class="text-danger"></span>
+                            </div>
+
+                            <div class=" form-group">
+                                <label class="control-label">描述</label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <div class=" form-group">
+                                <label class="control-label">照片</label>
+                                <input asp-for="ImagePath" class="form-control" />
+                                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                            </div>
+                            </div>
+
+                            
+
+
+                        </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="新增" class="btn btn-primary" />
+                        <a asp-action="Coupon" class="btn btn-primary">取消</a>
+                    </div>
+
+                </form>
+
+
+
+                    </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    @section Styles{
+        <style>
+            .card-body {
+                height: unset;
+            }
+        </style>
+        
+    }
+
+    @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+ 
+
+
+
+
+
+
+
