@@ -1,0 +1,18 @@
+﻿@model prj_Traveldate_Core.ViewModels.CCouponSendViewModel
+@{
+    ViewData["Title"] = "Send";
+}
+
+<h1>Send</h1>
+
+<h2>發放優惠券</h2>
+
+<p>優惠券名稱：@Model.Coupon.CouponName</p>
+<p>優惠折扣數：@Model.Coupon.Discount</p>
+<!-- 其他優惠券相關資訊... -->
+
+<form action="/Platform/SendCoupon" method="post">
+    @*@Html.DropDownList("SelectedMemberId", new SelectList(Model.Members, "MemberId", "MemberName"), "選擇會員")*@
+    <input type="hidden" name="CouponListId" value="@Model.Coupon.CouponListId" />
+    <input type="submit" value="發放優惠券" class="btn btn-primary" />
+</form>
