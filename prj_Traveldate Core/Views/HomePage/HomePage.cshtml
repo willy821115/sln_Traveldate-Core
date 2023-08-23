@@ -68,40 +68,6 @@
 
 
 
-
-<section class="hot-destinations-section" id="hot-destinations-section">
-
-    <div class="container bg-transparent p-5">
-
-        <h2 class="text-center">TOP旅遊行程</h2>
-        <div class="centered-slider">
-            <div class="slider responsive">
-
-                @foreach (var p in Model.discountList)
-                {
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 17rem; border-radius: 20px">
-                                <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
-                                <div class="card-body">
-                                    <p class="card-text">@p.productName</p>
-                                    <p class="card-text">價格：＄@p.unitPrice</p>
-                                    <p class="card-text">評價：@p.commentScore/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
 <section class="hot-destinations-section" id="hot-destinations-section">
 
     <div class="container bg-transparent p-5">
@@ -129,6 +95,38 @@
         </div>
     </div>
 </section>
+
+
+
+
+<section class="hot-destinations-section" id="hot-destinations-section">
+
+    <div class="container bg-transparent p-5">
+
+        <h2 class="text-center">促銷行程</h2>
+        <div class="centered-slider">
+            <div class="slider responsive">
+
+                @foreach (var p in Model.discountList)
+                {
+                    <div class="destination-item">
+                        <div class="card-1">
+                            <div class="card" style="width: 17rem; border-radius: 20px">
+                                <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <p class="card-text">@p.productName</p>
+                                    <p class="card-text">價格：＄@p.unitPrice</p>
+                                    <p class="card-text">評價：@p.commentScore/5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
 
 
 
