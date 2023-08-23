@@ -102,8 +102,14 @@ CProductFactory cProductFactory = new CProductFactory();
             return RedirectToAction("List");
         }
 
-        public IActionResult Edit() 
-        { 
+        public IActionResult Edit(int tripID) 
+        {
+            //TraveldateContext db = new TraveldateContext();
+            //var trips = db.Trips.Where(t => t.TripId == tripID).Select(new { 
+            
+            
+            
+            //});
             return View(); 
         }
     }

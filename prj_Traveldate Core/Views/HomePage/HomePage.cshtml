@@ -33,226 +33,35 @@
     </section>
 }
 
-<section class="hot-destinations-section_1" id="hot-destinations-section">
+
+
+
+
+
+
+
+
+<section class="hot-destinations-section" id="hot-destinations-section">
     <h2>熱門行程</h2>
 
-    
-       
-
-
-    
-
-
     <div class="destination-container">
-
-
-        @foreach (var item in Model.popularList)
+        @foreach (var p in Model.popularList)
         {
-           
             <div class="destination-item">
-                <div class="card" style="width: 350px;">
-                    <img src="~/images/@item.ImagePath" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">@item.productName</p>
-                        <p class="card-text">價格:$@item.unitPrice;評價：@item.commentScore/5</p>
+                <div class="card-1">
+                    <div class="card" style="width:340px ; border-radius: 20px">
+                        <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
+                        <div class="card-body">
+                            <p class="card-text">@p.productName</p>
+                            <p class="card-text">價格：＄@p.unitPrice</p>
+                            <p class="card-text">評價：@p.commentScore/5</p>
+                        </div>
                     </div>
                 </div>
             </div>
         }
-
-
-        <div class="destination-item">
-            <div class="card" style="width: 350px;">
-                <img src="~/images/熱門1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                        <p class="card-text">澎湖｜一日遊 吉貝暢玩水上活動＆來回船票</p>
-                        <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                  </div>
-              </div>
-            </div>
-
-        
-            <div class="destination-item">
-            <div class="card" style="width: 350px;">
-                    <img src="~/images/熱門2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">台東｜蘭嶼達悟族划拼板舟體驗</p>
-                        <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="destination-item">
-                <div class="card" style="width: 350px;">
-                    <img src="~/images/熱門3.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">新北｜福隆沙雕藝術季「迪士尼百年慶典」</p>
-                        <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                    </div>
-                </div>  
-            </div>
-
     </div>
-
-    
-
-    <div class="destination-container">
-
-            <div class="destination-item">
-            <div class="card" style="width: 350px;">
-                    <img src="~/images/熱門4.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">台中｜【限定優惠】心之芳庭入園門票</p>
-                        <p class="card-text">價格:$1400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="destination-item">
-            <div class="card" style="width: 350px;">
-                    <img src="~/images/熱門5.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">花蓮｜後山那一邊 | 花蓮明利飛行傘基地</p>
-                        <p class="card-text">價格:$3200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="destination-item">
-            <div class="card" style="width: 350px;">
-                    <img src="~/images/熱門6.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">台南｜鹽水街區、老街+月津港步行導覽</p>
-                        <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                    </div>
-                </div>
-            </div>
-
-    </div>
-
-
 </section>
-
-
-
-
-    <section class="hot-destinations-section" id="hot-destinations-section">
-
-        <div class="container bg-transparent p-5">
-
-            <h2 class="text-center">TOP旅遊行程</h2>
-            <div class="centered-slider">
-                <div class="slider responsive">
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷2.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台東|鹿野高台熱氣球嘉年華3天2夜</p>
-                                    <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷3.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台東|蘭嶼拼板舟體驗</p>
-                                    <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destination-item">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="">
-                        <div class="card-1">
-                            <div class="card" style="width: 18rem;">
-                                <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">台中|夜晚吃喝行程 </p>
-                                    <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-  
-
-
 
 
 
@@ -263,131 +72,60 @@
 
     <div class="container bg-transparent p-5">
 
-       <h2 class="text-center">促銷旅遊專案</h2>
+        <h2 class="text-center">TOP旅遊行程</h2>
         <div class="centered-slider">
-        <div class="slider responsive">
+            <div class="slider responsive">
 
-
-           @foreach (var p in Model.discountList)
-            {
-                <div class="destination-item">
-                    <img src="~/images/@p.ImagePath" alt="目的地" />
-                    <div class="fill-block">
-                        <div class="destination-info">
-                            <p style="text-align: left">@p.productName</p>
-                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
+                @foreach (var p in Model.commentList)
+                {
+                    <div class="destination-item">
+                        <div class="card-1">
+                            <div class="card" style="width: 17rem; border-radius: 20px">
+                                <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <p class="card-text">@p.productName</p>
+                                    <p class="card-text">價格：＄@p.unitPrice</p>
+                                    <p class="card-text">評價：@p.commentScore/5</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-
-
-
-                <div class="destination-item">
-                <div class ="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                   </div>
-                </div>
-           
-            
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷2.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台東|鹿野高台熱氣球嘉年華3天2夜</p>
-                            <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-           
-            
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷3.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台東|蘭嶼拼板舟體驗</p>
-                            <p class="card-text">價格:$3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                    </div>
-                       
-                </div>
-            
-            
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                           </div>
-                </div>
-           
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                   </div>  
-                </div>
-           
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                </div>
-                </div>
-           
-                <div class="destination-item">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          
-                <div class="">
-                <div class="card-1">
-                    <div class="card" style="width: 18rem;">
-                        <img src="~/images/促銷1.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">台中|夜晚吃喝行程 </p>
-                            <p class="card-text">價格:$2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;評價：4.5/5</p>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
-     </div>
     </div>
 </section>
 
 
+
+
+<section class="hot-destinations-section" id="hot-destinations-section">
+
+    <div class="container bg-transparent p-5">
+
+        <h2 class="text-center">促銷行程</h2>
+        <div class="centered-slider">
+            <div class="slider responsive">
+
+                @foreach (var p in Model.discountList)
+                {
+                    <div class="destination-item">
+                        <div class="card-1">
+                            <div class="card" style="width: 17rem; border-radius: 20px">
+                                <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <p class="card-text">@p.productName</p>
+                                    <p class="card-text">價格：＄@p.unitPrice</p>
+                                    <p class="card-text">評價：@p.commentScore/5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
 
 
 
@@ -400,7 +138,7 @@
 
         <div class="hot-place-item">
             <img src="~/images/城市1.jpg" alt="城市1">
-                <div class="caption">台北</div>
+            <div class="caption">台北</div>
         </div>
 
         <div class="hot-place-item">
@@ -430,6 +168,10 @@
 
     </div>
 </section>
+
+
+
+
 
 
 
@@ -530,7 +272,7 @@
         .destination-item {
             position: relative;
             flex: 0 0 calc(25% - 10px);
-            margin: 0 5px; 
+            margin: 5px; 
             padding: 0;
             display: flex;
             flex-direction: column;
@@ -540,17 +282,7 @@
         }
 
 
-            .destination-item:hover img
-             {
-                transform: scale(1.07); /* 圖片放大效果，可自行調整 */
-                box-shadow: 0 0 5px rgba(0, 0, 0, ); /* 隨著放大增加陰影，可自行調整 */
-            }
-
-            .destination-item:hover .fill-block{
-                transform: scale(1.05); /* 圖片放大效果，可自行調整 */
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 隨著放大增加陰影，可自行調整 */
-            }
-
+           
    
         
         .fill-block{
@@ -641,23 +373,18 @@
 
         /* 省略其他樣式... */
 
-        .hot-destinations-section_1 {
-            text-align: center; /* 讓內容置中對齊 */
-            margin-top: 20px;
-            display: flex; /* 使用 flexbox 佈局 */
-            flex-direction: column; /* 將內容垂直排列 */
-            align-items: center; /* 將內容水平置中對齊 */
-        }
 
         .hot-destinations-section {
-            text-align: center; /* 讓內容置中對齊 */
-            margin-top: 0px;
-            display: flex; /* 使用 flexbox 佈局 */
-            flex-direction: column; /* 將內容垂直排列 */
-            align-items: center; /* 將內容水平置中對齊 */    
+            width: 80%;
+            text-align: center;
+            margin: auto; /* 水平居中 */
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-       
 
             /* 鼠標懸停時的樣式 */
             .cta-btn:hover {
@@ -666,46 +393,70 @@
             }
 
             /*-------------------------------------------*/
-            .destination-item .card-text {
-                text-align: left;
-            }
+        .destination-item .card-text {
+            text-align: left;
+        }
+
 
         .card-img-top {
             width: 600px;
-            height: 220px;
+            height: 210px;
         }
-          
+
+
+        .card-body {
+            height: 140px;
+        }
+
+        .card:hover {
+            transform: scale(1.01);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .destination-item:hover {
+            transform: scale(1.1);
+        }
+
+
+        .centered-slider {
+            position: relative;
+        }
+
+        .slider responsive {
+        }
     </style>
 
         }
 <style>
-
-
     .slick-prev {
-        left: -50px; /* 左侧定位 */
+        left: -50px; /* 左定位 */
     }
 
     .slick-next {
-        left: 1213px; /* 左侧定位 */
+        left: 1213px; /* 左定位 */
     }
 
-    .slick-prev:before,
-    .slick-next:before {
-      color: black;
-      font-size: 40px;
-    }
-
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+            font-size: 40px;
+        }
 
     .slider {
-    width: 115%; 
-    
-}
+        width: 117%;
+        position: relative; /* 添加相对定位 */
+    }
+
+    .slick-track {
+        height: 400px;
+    }
 
     .centered-slider {
-       /* 设置宽度为100%，以使slider占满容器的宽度 */
-        display:flex;
+        display: flex;
         justify-content: center; /* 水平居中 */
-     
+    }
+
+    .slider-list {
     }
 
 
