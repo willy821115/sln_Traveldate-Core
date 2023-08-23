@@ -133,8 +133,8 @@
                                     <h6 class="m-0 font-weight-bold text-primary">日期</h6>
                                 </div>
                                 <div class="card-body">
-                                    <label asp-for="Date" class="control-label">商品日期</label>
-                                    <input asp-for="Date" class="control-label" type="date" />
+                                    <label asp-for="tripDates" class="control-label">商品日期</label>
+                                    <input asp-for="tripDates" class="control-label" type="text" id="tripcalendar" />
                                     <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
                             </div>
@@ -153,8 +153,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label asp-for="DiscountExpirationDate" class="control-label">折扣期限</label>
-                                        <input asp-for="DiscountExpirationDate" class="form-control" type="date" />
+                                        <label asp-for="discountLimitDate" class="control-label">折扣期限</label>
+                                        <input asp-for="discountLimitDate" class="form-control" type="text" id="discountcalendar" />
                                         <span asp-validation-for="DiscountExpirationDate" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -193,6 +193,16 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $('#tripcalendar').flatpickr({
+               dateFormat: "Y-m-d",
+           });
+
+        $('#discountcalendar').flatpickr({
+                 dateFormat: "Y-m-d",
+       });
+    </script>
+
 }
 @section Styles{
     <style>
