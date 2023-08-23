@@ -6,6 +6,9 @@ using prj_Traveldate_Core.ViewModels;
 using X.PagedList;
 using System.Text.Json;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using Azure;
+using NuGet.Protocol.Core.Types;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -19,8 +22,11 @@ namespace prj_Traveldate_Core.Controllers
         {
             _context = context;
         }
+        int pageSize = 5;
+        int itemsPerPage = 0; // 每頁顯示的項目數
+        int itemsToSkip = 0;
 
-        public IActionResult SearchList(int? page)
+        public IActionResult SearchList(int page=1)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
             _vm.categoryAndTags = _products.qureyFilterCategories();//商品類別&標籤,左邊篩選列
@@ -32,14 +38,13 @@ namespace prj_Traveldate_Core.Controllers
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
-            //int pageSize = 5;
-            //int pageNumber = page ?? 1;
-            //_vm.pages = new PagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize);
-            //_vm.pages = new StaticPagedList<CFilteredProductItem>(_vm.filterProducts, pageNumber, pageSize, _vm.filterProducts.Count);
+            int  currentPage = page < 1 ? 1 : page;
+            _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
             return View(_vm);
         }
         public IActionResult sortBy(string sortType)
         {
+            
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
@@ -80,8 +85,8 @@ namespace prj_Traveldate_Core.Controllers
             var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
             return Json(filterCitiess);
         }
-
-        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice)
+       
+        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice,int page)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo();
             //有篩選條件做篩選
@@ -123,60 +128,45 @@ namespace prj_Traveldate_Core.Controllers
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
                 if (_vm.filterProducts.Count == 0)
                 {
-                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
+                itemsPerPage = 5; // 每頁顯示的項目數
+                itemsToSkip = (page - 1) * itemsPerPage;
+                _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
+                _vm.currentPage = page;
                 return PartialView(_vm);
             }
             //有價格篩選做上面篩選後的篩選
             if (!string.IsNullOrEmpty(minPrice) && !string.IsNullOrEmpty(maxPrice))
             {
-
                 _vm.filterProducts = _vm.filterProducts.Where(p => p.price >= Convert.ToInt32(minPrice) && p.price <= Convert.ToInt32(maxPrice)).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
                 if (_vm.filterProducts.Count == 0)
                 {
-                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
+                itemsPerPage = 5; // 每頁顯示的項目數
+                itemsToSkip = (page - 1) * itemsPerPage;
+                _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
+                _vm.currentPage = page;
                 return PartialView(_vm);
             }
 
-
-            //1.回傳只有城市/標籤的篩選
-            //2.回傳只有時間的篩選
-            //3.回傳有時間/標籤/城市的篩選
-            //4.回傳沒有任何篩選的結果
             if (_vm.filterProducts.Count == 0)
             {
-                return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4>");
+                return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
             }
+            itemsPerPage = 5; // 每頁顯示的項目數
+            itemsToSkip = (page - 1) * itemsPerPage;
+            _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
+            _vm.currentPage = page;
+
+           
+
             return PartialView(_vm);
         }
-        //////////////////20230821跟其他篩選項目整合了////////////////////////////
-        //public IActionResult FilterByDate(string startTime, string endTime)
-        //{
-        //    if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
-        //    {
-        //        _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
-        //        json = JsonSerializer.Serialize(_vm.filterProducts);
-        //        HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-        //    }
-
-        //    json = HttpContext.Session.GetString(CDictionary.SK_FILETREDPRODUCTS_INFO);
-        //    _vm.filterProducts = JsonSerializer.Deserialize<List<CFilteredProductItem>>(json);
-        //    if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime))
-        //    {
-        //        DateTime startDateTime = DateTime.Parse(startTime);
-        //        DateTime endDateTime = DateTime.Parse(endTime).AddDays(1);
-        //        _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
-        //        json = JsonSerializer.Serialize(_vm.filterProducts);
-        //        HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-        //        return PartialView(_vm);
-        //    }
-        //    //json = JsonSerializer.Serialize(_vm.filterProducts);
-        //    //HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-        //    return PartialView(_vm);
-        //}
+     
     }
 }
 

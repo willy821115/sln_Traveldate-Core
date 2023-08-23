@@ -57,25 +57,20 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
-                <h2 style="margin-top:10px; margin-left:15px">商品審核</h2>
+                <h2 style="margin-top:10px; margin-left:15px">行程審核</h2>
 
                 <div class="myrow">
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">產品搜尋</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">行程搜尋</h6>
                             </div>
                             <div class="card-body" style="display: flex; align-items: center;">
-                               @* @using (Html.BeginForm())
-                                {
-                                    @:關鍵字 @Html.TextBox("txtKeyword")
-                                    <input type="submit" name="txtKeyword"  value="查詢" class="btn btn-outline-secondary" style="margin-right:10px;" />
-                                }*@
                                 <div style="display: flex; align-items: center;">
                                     <div style="margin-right: 10px;">
-                                        <label>公司名稱</label>
+                                        <label>旅行社名稱</label>
                                         <select class="form-select" name="companySelect">
-                                            <option value="all">全部公司</option>
+                                            <option value="all">全部旅行社</option>
                                             @foreach (Company type in Model.company)
                                             {
                                                 <option value="@type.CompanyName">@type.CompanyName</option>
@@ -83,12 +78,12 @@
                                         </select>
                                     </div>
                                     <div style="margin-right: 10px;">
-                                        <label>產品類型</label>
+                                        <label>行程類型</label>
                                         <select class="form-select" name="productTypeSelect">
                                             <option value="all">全部類型</option>
                                             @foreach (ProductTypeList type in Model.types)
                                             {
-                                                <option value="@type.ProductTypeId">@type.ProductType</option>
+                                                <option value="@type.ProductType">@type.ProductType</option>
                                             }
                                         </select>
                                     </div>
@@ -128,15 +123,13 @@
                                 </thead>
 
                                 <tbody>
-
-                                    @foreach (var item in Model.product)
+                                           
+                                            @foreach (var item in Model.product)
                                         {
-                                            var company = Model.company.Where(c => c.CompanyId == item.CompanyId).Select(c=>c.CompanyName).FirstOrDefault();
-
-                                            <tr>
-                                                <td>
-                                                    <div>@company </div>
-                                                </td>
+                                        <tr>
+                                             <td>
+                                                        <div>@Html.DisplayFor(modelItem => item.CompanyName) </div>
+                                             </td>
                                             <td>
                                                 <div>@Html.DisplayFor(modelItem => item.ProductName) </div>
                                             </td>
@@ -146,15 +139,43 @@
                                             <td>
                                                 <div> @Html.DisplayFor(modelItem => item.cityName)</div>
                                             </td>
+                                                    <td>
+                                                        @if (item.productStatus == "待審核")
+                                                        {
+                                                            <div class="red-text">@Html.DisplayFor(modelItem => item.productStatus)</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>@Html.DisplayFor(modelItem => item.productStatus)</div>
+                                                        }
+                                                    </td>
                                             <td>
-                                                <div> @Html.DisplayFor(modelItem => item.productStatus)</div>
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("查看", "Edit", "Product",new { /* id=item.PrimaryKey */ },new {@class="btn btn-success"})
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalScrollable">
+                                                            查看
+                                                        </button>
                                             </td>
                                         </tr>
                                     }
-
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ...
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
                                 </tbody>
@@ -191,6 +212,9 @@
                 width:100%;
         }
 
+            .red-text {
+                color: red;
+            }
 
           
     </style>
@@ -198,12 +222,49 @@
  }
 
    @section Scripts{
-       <script>
-            $(document).ready(function () {
-                $('#datatable').DataTable();
-            });
-       </script>
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+        <script>
+            new DataTable('#datatable', {
+                order: [[4, 'desc']]
+            });
+
+            $(document).ready(function () {
+                function updateTable() {
+                    var selectedCompany = String($('select[name="companySelect"]').val());
+                    var selectedProductType = String($('select[name="productTypeSelect"]').val());
+                    var selectedStatus = $('select[name="statusSelect"]').val();
+
+                    $('#datatable tbody tr').each(function () {
+                        var companyCell = $(this).find('td:first-child div').text().trim();
+                        var typeCell = $(this).find('td:nth-child(3) div').text().trim();
+                        var statusCell = $(this).find('td:nth-child(5) div').text();
+
+                        var companyMatch = (selectedCompany === 'all' || companyCell.toLowerCase() === selectedCompany.toLowerCase());
+                        var typeMatch = (selectedProductType === 'all' || typeCell.toLowerCase() === selectedProductType.toLowerCase());
+                        var statusMatch = (selectedStatus === 'all' || statusCell === selectedStatus);
+
+                        
+                        if (companyMatch && typeMatch && statusMatch) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+
+                $('select[name="companySelect"], select[name="productTypeSelect"], select[name="statusSelect"]').on('change', function () {
+                    updateTable();
+                });
+                updateTable();
+            });
+
+
+
+
+           
+        </script>
+       
    }

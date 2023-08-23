@@ -24,7 +24,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
             <a class="nav-link" href="~/Platform/Review">
-                <span>商品審核</span>
+                <span>行程審核</span>
             </a>
         </li>
 
@@ -57,9 +57,93 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
-                <h2 style="margin-top:10px; margin-left:15px">停權管理</h2>
+                <h2 style="margin-top:10px; margin-left:15px">會員／旅行社停權管理</h2>
+                <div class="tab">
+                    <button class="tablinks" onclick="openCity(event, 'Member')">會員清單</button>
+                    <button class="tablinks" onclick="openCity(event, 'Company')">旅行社清單</button>
+                </div>
 
-                <div class="myrow">
+                <div id="Member" class="tabcontent">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="memberTable" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>會員編號</th>
+                                        <th>姓名</th>
+                                        <th>性別</th>
+                                        <th>身份證號</th>
+                                        <th>出生日期</th>
+                                        <th>電話</th>
+                                        <th>電子郵件</th>
+                                        <th>折扣</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var member in Model.Members)
+                                    {
+                                        <tr>
+                                            <td>@member.MemberId</td>
+                                            <td>@member.LastName@member.FirstName</td>
+                                            <td>@member.Gender</td>
+                                            <td>@member.Idnumber</td>
+                                            <td>@member.BirthDate.ToShortDateString()</td>
+                                            <td>@member.Phone</td>
+                                            <td>@member.Email</td>
+                                            <td>@member.Discount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="Company" class="tabcontent">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="companyTable" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>旅行社編號</th>
+                                        <th>統編</th>
+                                        <th>旅行社名稱</th>
+                                        <th>城市</th>
+                                        <th>地址</th>
+                                        <th>電話</th>
+                                        <th>經理</th>
+                                        <th>聯絡人</th>
+                                        <th>聯絡人職位</th>
+                                        <th>信箱</th>
+                                        <th>服務項目</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var com in Model.Companies)
+                                    {
+                                        <tr>
+                                            <td>@com.CompanyId</td>
+                                            <td>@com.TaxIdNumber</td>
+                                            <td>@com.CompanyName</td>
+                                            <td>@com.City</td>
+                                            <td>@com.Address</td>
+                                            <td>@com.CompanyPhone</td>
+                                            <td>@com.Principal</td>
+                                            <td>@com.Contact</td>
+                                            <td>@com.Title</td>
+                                            <td>@com.ComEmail</td>
+                                            <td>@com.ServerDescription</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+            @*    <div class="myrow">
                     <div class="col-md-12">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -145,7 +229,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div>*@
                 <!-- /.container-fluid -->
 
             </div>
@@ -170,15 +254,70 @@
                 width: 100%;
             }
 
+            div.dataTables_wrapper {
+                margin-bottom: 3em;
+            }
+
+            .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+            }
+
+                /* Style the buttons inside the tab */
+                .tab button {
+                    background-color: inherit;
+                    float: left;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                    padding: 14px 16px;
+                    transition: 0.3s;
+                    font-size: 17px;
+                }
+
+                    /* Change background color of buttons on hover */
+                    .tab button:hover {
+                        background-color: #ddd;
+                    }
+
+                    /* Create an active/current tablink class */
+                    .tab button.active {
+                        background-color: #ccc;
+                    }
+
+            /* Style the tab content */
+            .tabcontent {
+                display: none;
+                padding: 6px 12px;
+                border: 1px solid #ccc;
+                border-top: none;
+            }
         </style>
         <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
     }
 
     @section Scripts{
         <script>
+
             $(document).ready(function () {
-                $('#datatable').DataTable();
+                $('#memberTable').DataTable();
+                $('#companyTable').DataTable();
             });
+
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
         </script>
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>

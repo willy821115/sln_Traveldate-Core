@@ -39,8 +39,8 @@ $('.divFiltered_city').on('click', '.uncheckbox', function () {
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
-    //$('#selected-tags').append(text)
     selectedCities.push(text); // 將文字添加到陣列中
+   
     filteredByConditions();
     var button = $('<button>', {
         text: text + ' X',
@@ -66,8 +66,8 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
-    //$('#selected-tags').append(text)
     selectedTags.push(text); // 將文字添加到陣列中
+ 
     filteredByConditions();
     var button = $('<button>', {
         text: text + ' X',
@@ -80,7 +80,6 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
             checkCleanAllButtonExistence();
             var index = selectedTags.indexOf(text); // 找到文字在陣列中的索引
             removeTagsFormArr(index)
-         
         }
     });
     $('#selected-checkboxes').append(button); // 將按鈕追加到id為displayText的元素中
@@ -96,6 +95,7 @@ $('.divFiltered_type').on('click', '.uncheckbox', function () {
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     $('#selected-tags').append(text)
     selectedTypes.push(text); // 將文字添加到陣列中
+  
     filteredByConditions();
     var button = $('<button>', {
         text: text + ' X',
@@ -124,7 +124,7 @@ $('.divFiltered_city').on('click', '.checkbox', function(){
     $(this).prev(".uncheckbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     var index = selectedCities.indexOf(text); // 找到文字在陣列中的索引
-    removeTagsFormArr(index)
+    removeCitiesFormArr(index)
     var buttonsToRemove = $('#selected-checkboxes').find('button[value="' + text + '"]'); // 尋找需要刪除的按鈕
     buttonsToRemove.remove(); // 將按鈕從 #selected-checkboxes 刪除
     checkCleanAllButtonExistence();
@@ -152,7 +152,7 @@ $('.divFiltered_type').on('click', '.checkbox', function () {
     $(this).prev(".uncheckbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     var index = selectedTypes.indexOf(text); // 找到文字在陣列中的索引
-    removeTagsFormArr(index)
+    removeTypesFormArr(index)
     var buttonsToRemove = $('#selected-checkboxes').find('button[value="' + text + '"]'); // 尋找需要刪除的按鈕
     buttonsToRemove.remove(); // 將按鈕從 #selected-checkboxes 刪除
     checkCleanAllButtonExistence();
@@ -163,18 +163,22 @@ $('.divFiltered_type').on('click', '.checkbox', function () {
 function removeTagsFormArr(index) {
     if (index > -1) {
         selectedTags.splice(index, 1); // 從陣列中刪除該文字
+        pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
     }
+    
 }
 function removeCitiesFormArr(index) {
     if (index > -1) {
         selectedCities.splice(index, 1); // 從陣列中刪除該文字
+        pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
     }
 }
 function removeTypesFormArr(index) {
     if (index > -1) {
         selectedTypes.splice(index, 1); // 從陣列中刪除該文字
+        pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
     }
 }

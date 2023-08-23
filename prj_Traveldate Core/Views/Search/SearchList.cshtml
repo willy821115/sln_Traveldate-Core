@@ -1,4 +1,5 @@
-﻿@using X.PagedList;
+﻿
+
 @using X.PagedList.Mvc.Core;
 @using prj_Traveldate_Core.Models;
 @using prj_Traveldate_Core.ViewModels;
@@ -18,6 +19,42 @@
         .card{
             border:0px solid white;
         }
+
+        .pagination > li > a {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+            color: #4F4F4F;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+    }
+        
+        .pagination > .active {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #155074;
+            border: 1px solid #dee2e6;
+        }
+
+        
+        .page-link-cust {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #4F4F4F;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+
+        
     </style>
 }
 
@@ -65,7 +102,6 @@
             <label class="fs-4 pl-2 pt-2">所有商品類別</label>
             @foreach (var c in Model.categoryAndTags)
             {
-
                 <div class="controls-display-row category-click">
                     <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
                     <div class="d-flex justify-content-end">
@@ -198,7 +234,8 @@
                 <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
             </div>
             <div id="filterBody">
-            @foreach (var item in Model.filterProducts)
+                <div id="sortBody">
+            @foreach (var item in Model.pages)
             {
                 string salesCount = "";
                 if (item.orederCount > 1000)
@@ -260,13 +297,13 @@
                 </div>
                     </a>
                     }
-                
             </div>
-            @* <div class="d-flex justify-content-center bg-transparent border-0">
-                <div class="col-7 d-flex justify-content-around">
-                    @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page }))
-                </div>
-            </div> *@
+            <div class="d-flex justify-content-center bg-transparent border-0">
+                    <div class="col-7 d-flex justify-content-around">
+                        @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page}))
+                    </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
@@ -293,6 +330,7 @@
         var endTime = ""
         var minPrice = ""
         var maxPrice = ""
+        var pageNumber = 1;
         function filteredByConditions() {
            showLoadingIcon()
             $.ajax({
@@ -301,13 +339,19 @@
                 data: {
                     tags: selectedTags, cities: selectedCities, types: selectedTypes,
                     startTime: startTime, endTime: endTime,
-                    minPrice: minPrice, maxPrice: maxPrice },
+                    minPrice: minPrice, maxPrice: maxPrice,
+                    page: pageNumber
+                },
                 success: function (response) {
                     hideLoadingIcon()
                     $('#filterBody').html(response)
                     roadRating()
-                    var resultCount = $('#filterBody').find('.forCount').length
+                    var resultCount = $('#updateTotal').val()
                     $('#total').html(resultCount)
+                    $(".pagination > a").filter(function () {
+                        return $(this).text() === pageNumber.toString();
+                    }).addClass("active");
+                
                 },
                 error: function (error) {
                     console.log("發生錯誤：", error);
@@ -317,29 +361,6 @@
     </script>
 
     <script src="~/js/mutiRange.js"></script>
-    
-    <script>
-        
-        // function filteredByDate(startTime, endTime) {
-        //     showLoadingIcon()
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "@Url.Action("FilterByDate", "Search")",
-        //         data: { startTime: startTime, endTime: endTime },
-        //         success: function (response) {
-        //             hideLoadingIcon()
-        //             $('#filterBody').html(response)
-        //             roadRating()
-        //             var resultCount = $('#filterBody').find('.forCount').length
-        //             $('#total').html(resultCount)
-
-        //         },
-        //         error: function (error) {
-        //             console.log("發生錯誤：", error);
-        //         }
-        //     });
-        // }
-    </script>
     <script src="~/js/calender-main.js"></script>
     <script src="~/js/search_jq.js"></script>
     <script src="~/js/search_rating.js"></script>
@@ -356,7 +377,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    $('#filterBody').html(data); // 更新畫面
+                    $('#sortBody').html(data); // 更新畫面
                     roadRating()
                 })
         } 
