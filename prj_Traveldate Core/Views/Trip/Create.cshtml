@@ -98,6 +98,7 @@
                                         <h6 class="m-0 font-weight-bold text-primary">基本資料</h6>
                                     </div>
                                     <div class="card-body">
+                                    <input asp-for="ProductId" type="hidden" class="form-control" />
                                         <div class="form-group">
                                              <label asp-for="UnitPrice" class="control-label">單價</label>
                                             <div class="col-md-10">
@@ -134,8 +135,8 @@
                                     </div>
                                     <div class="card-body">
                                     <label asp-for="Date" class="control-label">商品日期</label>
-                                    <input asp-for="Date" class="control-label" type="date" />
-                                    <input type="text" id="tripcalendar" />
+                                    @* <input asp-for="Date" class="control-label" type="date" /> *@
+                                    <input type="text" id="tripcalendar" name="tripDates" class="form-control" />
                                      <span asp-validation-for="Date" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -155,7 +156,8 @@
 
                                     <div class="form-group">
                                         <label asp-for="DiscountExpirationDate" class="control-label">折扣期限</label>
-                                        <input asp-for="DiscountExpirationDate" class="form-control" type="date" />
+                                      @*   <input asp-for="DiscountExpirationDate" class="form-control" type="date" /> *@
+                                        <input type="text" id="discountcalendar" class="form-control" name="discountLimitDate" />
                                         <span asp-validation-for="DiscountExpirationDate" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -206,7 +208,13 @@
         $('#tripcalendar').flatpickr({
             mode: "multiple",
             dateFormat: "Y-m-d",
-            defaultDate: ["@DateTime.Now"]
+            
+        });
+
+        $('#discountcalendar').flatpickr({
+            
+            dateFormat: "Y-m-d",
+            
         });
     </script>
 }
