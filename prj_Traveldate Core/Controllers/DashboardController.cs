@@ -29,11 +29,12 @@ namespace prj_Traveldate_Core.Controllers
             foreach (var order in orderdetails) 
             {
                  CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
+                CProductFactory cProductFactory = new CProductFactory();
                 cProductDetailViewModel.productDate = order.date.Value.Date.ToString();
                 cProductDetailViewModel.Phone = order.Phone;
                 cProductDetailViewModel.productType = order.productType;
                 cProductDetailViewModel.productName = order.productname;
-                cProductDetailViewModel.stock = cProductDetailViewModel.TripStock((int)order.TripID);
+                cProductDetailViewModel.stock = cProductFactory.TripStock((int)order.TripID);
                 cOrderState.ProductDetail.Add(cProductDetailViewModel);
             }
 

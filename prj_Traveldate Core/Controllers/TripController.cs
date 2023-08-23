@@ -77,6 +77,7 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Create(CTripWrap trip)
         {
+            TraveldateContext db = new TraveldateContext();
             if (trip.tripDates != null) 
             {
             string[] dates= trip.tripDates.Replace(" ", "").Split(",");
@@ -93,7 +94,9 @@ CProductFactory cProductFactory = new CProductFactory();
                         t.Discount = trip.Discount;
                         t.DiscountExpirationDate = DateTime.Parse(trip.discountLimitDate);
                     }
+                    db.Trips.Add(t);
                  }
+                db.SaveChanges();
             }
            
             return RedirectToAction("List");
