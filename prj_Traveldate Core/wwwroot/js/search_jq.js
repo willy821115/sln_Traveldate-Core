@@ -1,11 +1,14 @@
 ///////////////////////////////////////////////////////收合大標簽下的小標籤/////////////////////////////////////////////////////////////
-$(".category-click").on('click', function () {
+function toggleBlock() {
     const $arrowBottomDown = $(this).find("#arrow_bottom_down");
     const $arrowTopUp = $(this).find("#arrow_top_up");
     $(this).next(".filter-block-toggle").slideToggle(); //.drop_down_list_center 是下一個同級元素
     $arrowBottomDown.toggle();
     $arrowTopUp.toggle();
-});
+}
+
+$(".filter-block-toggle").hide();
+$(".category-click").on('click', toggleBlock );
 
 //////////////////////////////////////////////////checkbox跟標籤button連動/////////////////////////////////////////////////////////////////
 var isFirstButton = true;

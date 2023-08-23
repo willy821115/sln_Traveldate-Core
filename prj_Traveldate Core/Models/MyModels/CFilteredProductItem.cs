@@ -15,7 +15,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public string? outlineForSearch { get; set; }
 #endregion
         public int price { get; set; }
-        public byte[]? photo { get; set; }
+        public string photoPath { get; set; }
         public string? date { get; set; }
         public List<string> productTags { get; set; } = new List<string>();
         public string? city { get; set; }
@@ -24,9 +24,6 @@ namespace prj_Traveldate_Core.Models.MyModels
         public int commentCount { get; set; }
         public string strComment { get; set; }
         public int? orederCount { get; set; }
-
-
-       
 
     }
 }

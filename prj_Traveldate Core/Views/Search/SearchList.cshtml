@@ -62,7 +62,7 @@
     <div class="col-3 g-0 ps-2 pe-2 me-4">
         <div class="filter_block ">
             <div class="flex-column">
-                <label class="fs-4 pl-2 pt-2">篩選目的地</label>
+                <label class="fs-4 pl-2 pt-2 fw-bolder">篩選目的地</label>
                 @* @using (Html.BeginForm())
                 { *@
                     <div class="d-flex align-items-center search_container position-relative">
@@ -77,20 +77,21 @@
             @foreach (var city in Model.countryAndCities)
             {
                 <div class="controls-display-row category-click">
-                    <span class="fs-5">@Html.DisplayFor(modelItem => city.country)</span>
+                    <span class="fs-4">@Html.DisplayFor(modelItem => city.country)</span>
                     <div>
                         <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                         <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
                     </div>
                 </div>
-                <div class="ms-lg-4 filter-block-toggle">
+                <div class="ms-lg-4 country filter-block-toggle">
                     <ul class="list-unstyled divFiltered_city" id="divCityList">
-                        @foreach (var t in city.citys)
+                        @foreach (var t in city.citys.Distinct())
                         {
-                            <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
+                            var cityCount = city.citys.Count(c => c == t);
+                            <li id="@Html.DisplayFor(modelItem => t)" class=" d-flex align-items-center divide-line my-w-80-percent">
                                 <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                                <span>@Html.DisplayFor(modelItem => t)</span>
+                                <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0"> (@cityCount)</label>
                             </li>
                         }
                     </ul>
@@ -98,36 +99,11 @@
             }
             
         </div>
-        <div class="filter_block">
-            <label class="fs-4 pl-2 pt-2">所有商品類別</label>
-            @foreach (var c in Model.categoryAndTags)
-            {
-                <div class="controls-display-row category-click">
-                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
-                    <div class="d-flex justify-content-end">
-                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
-                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
-                    </div>
-                </div>
-                <div class="ms-lg-4 filter-block-toggle">
-                    <ul class="list-unstyled divFiltered_tag">
-                        @foreach (var t in c.tags.Distinct())
-                        {
-                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
-                                <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                                <span>@Html.DisplayFor(modelItem => t)</span>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
         <div class="my-calendar filter_block pt-2 pb-2">
             <div class="d-flex align-items-center">
                 <img class="calendar-static ms-4 me-2" src="~/icons/icons8-calendar-32.png" />
                 <img class="calendar-gif ms-4 me-2" src="~/icons/icons8-calendar.gif" width="32" height="32" />
-                <span class="fs-4">篩選日期</span>
+                <span class="fs-4 fw-bolder">篩選旅遊日期</span>
             </div>
             <div class="calendar-section calendar-container">
                 <div class="row no-gutters">
@@ -138,7 +114,7 @@
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
                                 <div class="d-flex align-items-center">
-                                <span id="year_f" class="year"></span><span>年</span>
+                                    <span id="year_f" class="year"></span><span>年</span>
                                     <span id="month_f" class="month"></span><span>月</span>
                                 </div>
                                 <button class="switch-month switch-right">
@@ -156,7 +132,7 @@
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
                                 <div class="d-flex align-items-center">
-                                <span id="year_s" class="year"></span><span>年</span>
+                                    <span id="year_s" class="year"></span><span>年</span>
                                     <span id="month_s" class="month"></span><span>月</span>
                                 </div>
                                 <button class="switch-month switch-right">
@@ -171,7 +147,7 @@
             </div> <!-- End Calendar -->
         </div>
         <div class="filter_block">
-            <label class="fs-4 ps-3 pt-1 form-label" for="customRange1">篩選價格</label>
+            <label class="fs-4 ps-3 pt-1 form-label fw-bolder" for="customRange1">篩選價格</label>
             <div class="mt-4">
                 <section class="range-slider range-container pb-3">
                     <span class="output outputOne pl-1 pr-1"></span>
@@ -187,8 +163,34 @@
             </div>
         </div>
         <div class="filter_block">
+            <label class="fs-4 pl-2 pt-2 fw-bolder">依旅遊類別</label>
+            @foreach (var c in Model.categoryAndTags)
+            {
+                <div class="controls-display-row category-click">
+                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+                    <div class="d-flex justify-content-end">
+                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                    </div>
+                </div>
+                <div class="ms-lg-4 filter-block-toggle">
+                    <ul class="list-unstyled divFiltered_tag">
+                        @foreach (var t in c.tags.Distinct())
+                        {
+                            var tagsCount = c.tags.Count(c => c == t);
+                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
+                                <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
+                                <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0">(@tagsCount)</label>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <div class="filter_block">
             <div class="controls-display-row category-click pt-2">
-                <span class="fs-4">商品類型</span>
+                <span class="fs-4 fw-bolder">依旅遊性質</span>
                 <div>
                     <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                     <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -198,10 +200,11 @@
                 <ul class="list-unstyled divFiltered_type">
                     @foreach (var type in Model.types.Distinct())
                     {
+                        var typeCount = Model.types.Count(t => t == type);
                         <li class=" d-flex align-items-center divide-line my-w-80-percent">
                             <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                             <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                            <span>@Html.DisplayFor(modelItem => type)</span>
+                            <span>@Html.DisplayFor(modelItem => type)</span><label class="mb-0">(@typeCount)</label>
                         </li>
                     }
                 </ul>
@@ -252,10 +255,10 @@
                         <div class="card mb-3 col-12 p-0">
                         <div class="row g-0">
                            <div class="col-md-4 pr-0 ">
-                                @if (item.photo != null)
+                                @if (item.photoPath != null)
                                 {
                                         <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
-                                         <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250"/>
+                                         <img src="~/images/@item.photoPath" alt="@item.productName" height="250"/>
                                      </div>
                                  }
                                         
@@ -368,6 +371,7 @@
     
     <script>
         roadRating()
+
         //////////////////////////////////////3種排序///////////////////////////////////////////
         
         //排序/篩選載入資料
@@ -402,20 +406,22 @@
         const inputKeyword = document.querySelector('#inputKeyword');
         const divCityList = document.querySelector('#divCityList');
         inputKeyword.addEventListener('input',()=>{
+            $('.country.filter-block-toggle').show();
+            $('#arrow_bottom_down').hide()
+            $('#arrow_top_up').show()
             loadCities(inputKeyword.value);
         })
         async function loadCities(keyword) {
             const resopnse = await fetch(`@Url.Content("~/Search/filterCity")?txtKeyword=${keyword}`)
             const datas = await resopnse.json();
-            if (datas != null) {
-                console.log(datas)
+            if (datas != null && datas.length>0) {
                 const cities = datas.map(city => {
-                    const { cityId, cityName } = city
+                    const { cityId, cityName, countCity } = city
                     return (
                         `<li id=${cityId} class=" d-flex align-items-center divide-line my-w-80-percent filterCityItem" >
                                 <img class="uncheckbox" src = "/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src = "/icons/icons8-checkbox-32.png" />
-                                <span>${cityName}</span>
+                                <span>${cityName}</span><label class="mb-0">(${countCity})</label>
                         </li>`
                     )
                 })
@@ -426,6 +432,9 @@
                         e.preventDefault();
                     });
                 })
+            } else {
+                // 如果 datas 為空陣列或 null，執行相應處理
+                divCityList.innerHTML = "沒有符合的地區";
             }
         }
     </script>
