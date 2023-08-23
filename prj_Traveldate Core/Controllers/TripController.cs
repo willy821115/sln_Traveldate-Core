@@ -68,10 +68,10 @@ CProductFactory cProductFactory = new CProductFactory();
        
             return Json(trips);
         }
-        public IActionResult Create(int ProductId)
+        public IActionResult Create(int id)
         {
             CTripWrap t = new CTripWrap();
-            t.ProductId = ProductId;
+            t.ProductId = id;
             return View(t);
         }
         [HttpPost]
