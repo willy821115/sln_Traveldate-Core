@@ -132,7 +132,6 @@
                                         <th>所在城市</th>
                                         <th>產品狀態</th>
                                         <th>銷售狀態</th>
-                                        <th>id</th>
                                         <th>上/下架</th>
                                         <th>動作</th>
                                     </tr>
@@ -164,7 +163,7 @@
                                                     <div> 上架</div>
                                                 }
                                             </td>
-                                            <td>@Html.DisplayFor(modelItem => item.ProductId)</td>
+                                            
                                         <td>
                                                 <div>@Html.ActionLink("上架", "Details", "Product",new { productID=item.ProductId },new {@class="btn btn-primary"})</div>
                                                 <div>@Html.ActionLink("下架", "Details", "Product",new { productID=item.ProductId },new {@class="btn btn-danger"})</div>

@@ -170,10 +170,10 @@ namespace prj_Traveldate_Core.Controllers
             }
             //存入ProductTagList
             var originalList = db.ProductTagLists.Where(p => p.ProductId == pro.ProductId).Select(p => p.ProductTagDetailsId).ToList();
-            var addedTagID = pro.Tags.Except(originalList);
-            var deletedTagID = originalList.Except(pro.Tags);
+            var addedTagID = pro.Tags.Except(originalList).ToList();
+            var deletedTagID = originalList.Except(pro.Tags).ToList();
             //刪除移除的Tag
-            var tagDbDelete = db.ProductTagLists.Where(t => t.ProductId == pro.ProductId && deletedTagID.Contains(t.ProductTagDetailsId));
+            var tagDbDelete = db.ProductTagLists.Where(t => t.ProductId == pro.ProductId && deletedTagID.Contains(t.ProductTagDetailsId)).ToList();
                                        
             if (deletedTagID != null) 
             {
@@ -235,7 +235,7 @@ namespace prj_Traveldate_Core.Controllers
             //存入TripDetail
             foreach (TripDetailText t in pro.triptest)
             {
-                TripDetail tripDb = db.TripDetails.FirstOrDefault(t => t.TripDetailId == t.TripDetailId);
+                TripDetail tripDb = db.TripDetails.FirstOrDefault(trip => trip.TripDetailId == t.TripDetailId);
                 tripDb.TripDay = t.TripDay;
                 tripDb.TripDetail1 = t.TripDetail;
                
@@ -245,18 +245,23 @@ namespace prj_Traveldate_Core.Controllers
                     //先刪除舊圖
                     if (tripDb.ImagePath != null)
                     {
-                        string webRootPath = _enviro.WebRootPath;
-                        string filePath = Path.Combine(webRootPath, "images", tripDb.ImagePath);
-                        if (System.IO.File.Exists(filePath))
+                        string oldImagePath = db.TripDetails.Where(trip => trip.TripDetailId == t.TripDetailId).Select(t => t.ImagePath).FirstOrDefault();
+                        if (oldImagePath != null)
                         {
-                            // 刪除檔案
-                            System.IO.File.Delete(filePath);
+                            string webRootPath = _enviro.WebRootPath;
+                            string filePath = Path.Combine(webRootPath, "images", oldImagePath);
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                // 刪除檔案
+                                System.IO.File.Delete(filePath);
+                            }
                         }
+
                     }
                     //存入新圖
                     string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
-                    tripDb.ImagePath = photoName;
                     t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                    tripDb.ImagePath = photoName;
                 }
             }
 
