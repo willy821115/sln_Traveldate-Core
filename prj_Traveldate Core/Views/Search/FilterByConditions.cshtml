@@ -25,10 +25,10 @@
             <div class="card mb-3 col-12 p-0">
                 <div class="row g-0">
                     <div class="col-md-4 pr-0 ">
-                        @if (item.photo != null)
+                        @if (item.photoPath != null)
                         {
                             <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
-                                <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250" />
+                                <img src="~/images/@item.photoPath" alt="@item.productName" height="250" />
                             </div>
                         }
 

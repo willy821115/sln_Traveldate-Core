@@ -63,8 +63,10 @@
 
         public int day { get; set; }
 
-        public string? date { get; set; }
+        public string? date1 { get; set; }
 
+        public string?  tripDates { get; set; }
 
+        public string? discountLimitDate { get; set; }
     }
 }

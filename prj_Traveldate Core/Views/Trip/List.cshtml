@@ -142,8 +142,9 @@
                                                 @Html.DisplayFor(model =>item.productStatus)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("詳情", "Create","Trip", new { /*id=item.PrimaryKey */ },new {@class="btn btn-primary"})
-                                                @Html.ActionLink("新增", "Create","Trip", new { /*id=item.PrimaryKey */ },new {@class="btn btn-primary"})
+                                                <button  value="@item.ProductId" class="btn btn-primary btnDetail">現有行程</button>
+                                                @* @Html.ActionLink("現有行程", "Create","Trip", new { id=item.ProductId },new {@class="btn btn-primary"}) *@
+                                                @Html.ActionLink("新增", "Create","Trip", new { id=item.ProductId },new {@class="btn btn-primary"})
                                             </td>
                                         </tr>
                                     }
@@ -171,8 +172,8 @@
                                     </tr>
                                 </thead>
                               
-                                <tbody>
-                                    @foreach(var item in Model.cTripWraps)
+                                <tbody id="triptable">
+                                   @*  @foreach(var item in Model.cTripWraps)
                                     {
                                         <tr>
                                             <td>
@@ -196,7 +197,7 @@
 
                                         </tr>
 
-                                    }
+                                    } *@
                                       </tbody>
                             </table>
                         </div>
@@ -224,5 +225,41 @@
             height: unset;
         }
     </style>
+ }
+
+ @section Scripts{
+ <script>
+     async function loadTripTable(productID){
+         const triptable = document.getElementById('triptable');
+            const response = await fetch(`@Url.Content("~/Trip/LoadTripTable")?productID=${productID}`);
+         const datas = await response.json();
+         if (datas != null) {
+             console.log(datas)
+             const rows = datas.map(row => {
+                 const { tripID, tripName, tripType, stock, tripDay, tripDate } = row
+                 return (
+                     ` <tr>
+                              <td>${tripName}</td>
+                               <td>${tripType}</td>
+                                <td>${tripDate}</td>
+                                <td>${tripDay}</td>
+                                <td>${stock}</td>
+                                  <td>
+                                         <a href="~/Trip/Edit?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                  </td>
+                          </tr>`
+                 )
+             })
+             triptable.innerHTML = rows.join("");
+         }
+     }
+      
+     $('.btnDetail').click(function () {
+         var productID = $(this).val();
+            loadTripTable(productID);
+
+     });
+
+ </script>
  }
 

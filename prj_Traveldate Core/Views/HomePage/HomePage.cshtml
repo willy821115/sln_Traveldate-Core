@@ -35,11 +35,33 @@
 
 <section class="hot-destinations-section_1" id="hot-destinations-section">
     <h2>熱門行程</h2>
-        
-    <div class="destination-container">
+
+    
        
+
+
+    
+
+
+    <div class="destination-container">
+
+
+        @foreach (var item in Model.popularList)
+        {
            
             <div class="destination-item">
+                <div class="card" style="width: 350px;">
+                    <img src="~/images/@item.ImagePath" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">@item.productName</p>
+                        <p class="card-text">價格:$@item.unitPrice;評價：@item.commentScore/5</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <div class="destination-item">
             <div class="card" style="width: 350px;">
                 <img src="~/images/熱門1.jpg" class="card-img-top" alt="...">
                   <div class="card-body">
@@ -71,6 +93,8 @@
             </div>
 
     </div>
+
+    
 
     <div class="destination-container">
 
@@ -226,19 +250,11 @@
         </div>
     </section>
 
-@*   @foreach (var p in Model.discountList)
-            {
-                <div class="destination-item">
-                    <img src="~/images/@p.ImagePath" alt="目的地" />
-                    <div class="fill-block">
-                        <div class="destination-info">
-                            <p style="text-align: left">@p.productName</p>
-                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
-                        </div>
-                    </div>
-                </div>
-            }
-*@
+  
+
+
+
+
 
 
 
@@ -250,6 +266,22 @@
        <h2 class="text-center">促銷旅遊專案</h2>
         <div class="centered-slider">
         <div class="slider responsive">
+
+
+           @foreach (var p in Model.discountList)
+            {
+                <div class="destination-item">
+                    <img src="~/images/@p.ImagePath" alt="目的地" />
+                    <div class="fill-block">
+                        <div class="destination-info">
+                            <p style="text-align: left">@p.productName</p>
+                            <p>單價:@p.unitPrice 評分:@p.commentScore</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
 
                 <div class="destination-item">
                 <div class ="card-1">
@@ -424,6 +456,7 @@
         section img {
             max-width: 100%;
         }
+        
 
         /* 輪播圖 */
 
@@ -486,7 +519,7 @@
         /*-----------------------------------------------------------------------------*/
 
         .destination-container {
-            width: 70%;
+          
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
