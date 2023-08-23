@@ -22,6 +22,7 @@ namespace prj_Traveldate_Core.Controllers
                             orderby p.Status descending
                             select new
                             {
+                                productid = p.ProductId,
                                 company = p.Company.CompanyName,
                                 productName = p.ProductName,
                                 productType = p.ProductType.ProductType,
@@ -31,6 +32,7 @@ namespace prj_Traveldate_Core.Controllers
             foreach (var item in datas)
                 {
                     CProductWrap cProductWrap = new CProductWrap();
+                    cProductWrap.ProductId = item.productid;
                     cProductWrap.CompanyName = item.company;
                     cProductWrap.ProductName = item.productName;
                     cProductWrap.productType = item.productType;
@@ -56,7 +58,8 @@ namespace prj_Traveldate_Core.Controllers
                                  BirthDate = m.BirthDate,
                                  Phone = m.Phone,
                                  Email = m.Email,
-                                 Discount = m.Discount
+                                 Discount = m.Discount,
+                                 Enable = m.Enable,
                              };
 
             var companyData = from c in db.Companies
@@ -72,7 +75,8 @@ namespace prj_Traveldate_Core.Controllers
                                   Contact = c.Contact,
                                   Title = c.Title,
                                   ComEmail = c.Email,
-                                  ServerDescription = c.ServerDescription
+                                  ServerDescription = c.ServerDescription,
+                                  ComEnablel = c.Enable
                               };
 
             var combinedData = new CPlatformViewModel
@@ -85,8 +89,87 @@ namespace prj_Traveldate_Core.Controllers
             return View(combinedData);
         }
 
+        public IActionResult Coupon()
+        {
+            TraveldateContext db = new TraveldateContext();
+            var datas = from c in db.CouponLists
+                        select c;
+            return View(datas);
+        }
 
-public ActionResult content1()
+
+
+
+
+        [HttpPost]
+        public ActionResult DisableMember(int memberId, bool enable)
+        {
+            try
+            {
+                TraveldateContext db = new TraveldateContext();
+                var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+
+                if (member != null)
+                {
+                    member.Enable = enable; 
+                    db.SaveChanges();
+                    return Content(enable.ToString());
+                }
+                return Content("沒有此會員");
+            }
+            catch (Exception ex)
+            {
+                return Content("");
+            }
+        }
+        [HttpPost]
+        public IActionResult BulkDisableMembers(List<int> memberIds, bool enable)
+        {
+            try
+            {
+                TraveldateContext db = new TraveldateContext();
+                var membersToUpdate = db.Members.Where(m => memberIds.Contains(m.MemberId)).ToList();
+
+                foreach (var member in membersToUpdate)
+                {
+                    member.Enable = enable; 
+                }
+                db.SaveChanges(); 
+                var success = true;
+                return Json(new { success = success });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetProductDetails(int productId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var product = (from p in db.ProductLists where p.ProductId == productId select p)
+                          .FirstOrDefault();
+
+                var productDetails = new
+                {
+                    ProductName = product.ProductName,
+                    city = product.CityId,
+                    description = product.Description,
+                    planName = product.PlanName,
+                    plandescription = product.PlanDescription,
+                    outline = product.Outline,
+                    outlineforsearch = product.OutlineForSearch,
+                    address = product.Address,
+                };
+
+                return Json(productDetails);
+            
+        }
+
+        
+
+        public ActionResult content1()
         {
             return View();
         }

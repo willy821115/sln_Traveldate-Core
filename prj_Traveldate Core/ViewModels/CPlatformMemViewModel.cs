@@ -134,5 +134,15 @@ namespace prj_Traveldate_Core.ViewModels
             get { return company.ServerDescription; }
             set { company.ServerDescription = value; }
         }
+        public bool? Enable
+        {
+            get { return member.Enable; }
+            set { member.Enable = value; }
+        }
+        public bool? ComEnablel
+        {
+            get { return company.Enable; }
+            set { company.Enable = value; }
+        }
     }
 }
