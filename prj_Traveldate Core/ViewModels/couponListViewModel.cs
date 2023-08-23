@@ -55,5 +55,10 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _couponlist.DueDate; }
             set { _couponlist.DueDate = value; }
         }
+        public string? ImagePath
+        {
+            get { return _couponlist.ImagePath; }
+            set { _couponlist.ImagePath = value; }
+        }
     }
 }

@@ -332,9 +332,6 @@
                 tablinks[i].style.backgroundColor = ""; 
                 }
             document.getElementById(AccountName).style.display = "block";
-
-            evt.currentTarget.style.backgroundColor = "#FFF0AC";
-            evt.currentTarget.style.Color = "white";
         }
 
       //會員全選
@@ -368,33 +365,24 @@
                     method: 'POST',
                     data: { memberId: memberId, enable: newEnable },
                     success: function (response) {
-                        //alert(response);
+                        alert(response);
                            const btnsuspend = document.querySelector(`#btnsuspend-${memberId}`);
 
                         if (response === "True") {
                             btnsuspend.innerHTML = "<span>停權</span>";
                             btnsuspend.classList.remove('btn-outline-success');
                             btnsuspend.classList.add('btn', 'btn-outline-danger');
-                            isEnable = false;
                         } else if (response === "False") {
                             btnsuspend.innerHTML = "<span>復原</span>";
                             btnsuspend.classList.remove('btn-outline-danger');
                             btnsuspend.classList.add('btn-outline-success');
-                            isEnable = true;
                         }
                     },
                 });
             }
         }
 
-        $(document).on('click', '.btn-suspend', function (event) {
-            event.preventDefault();
-            var memberId = $(this).data('member-id');
-            var enable = $(this).data('enable');
-            console.log(memberId, enable);
-            disableMember(memberId, enable);
-        });
-
+        
         function bulkDisableMembers(memberIds, enable) {
             var newEnable = !enable;
             console.log(newEnable);

@@ -243,7 +243,6 @@
                 <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
             </div>
             <div id="filterBody">
-                <div id="sortBody">
             @foreach (var item in Model.pages)
             {
                 string salesCount = "";
@@ -317,14 +316,13 @@
                 </div>
                     </a>
                     }
-            </div>
+       
             <div class="d-flex justify-content-center bg-transparent border-0">
                     <div class="col-7 d-flex justify-content-around">
                         @Html.PagedListPager(Model.pages, page => Url.Action("SearchList", new { page}))
                     </div>
             </div>
-            </div>
-            </div>
+            </div>    
         </div>
     </div>
 
@@ -360,8 +358,7 @@
                 data: {
                     tags: selectedTags, cities: selectedCities, types: selectedTypes,
                     startTime: startTime, endTime: endTime,
-                    minPrice: minPrice, maxPrice: maxPrice,
-                    page: pageNumber
+                    minPrice: minPrice, maxPrice: maxPrice
                 },
                 success: function (response) {
                     hideLoadingIcon()
@@ -369,9 +366,9 @@
                     roadRating()
                     var resultCount = $('#updateTotal').val()
                     $('#total').html(resultCount)
-                    $(".pagination > a").filter(function () {
-                        return $(this).text() === pageNumber.toString();
-                    }).addClass("active");
+                     $(".pagination > a").filter(function () {
+                         return $(this).text() === pageNumber.toString();
+                     }).addClass("active");
                 
                 },
                 error: function (error) {
@@ -399,10 +396,27 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    $('#sortBody').html(data); // 更新畫面
+                    $('#filterBody').html(data); 
                     roadRating()
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth' 
+                        });
                 })
-        } 
+        }
+        //用來把mvc生成的分頁再變成網址當參數回傳給loadData當參數並讓生成的PartialView長在畫面上
+            $(document).on('click', '.pagedList a', function (event) {
+                event.preventDefault();
+                const queryString = $(this).attr('href').split('?')[1]; // 取得 URL 的查詢字串
+                const queryParams = new URLSearchParams(queryString); // 解析查詢字串為參數集合
+
+                // 取得 分頁連結中 sortType 和 page 參數的值
+                const sortType = queryParams.get('sortType');
+                const page = queryParams.get('page');
+                console.log(`sortType=${sortType}&page=${page}`)
+                // 傳遞給 loadData 函式
+                loadData(`sortType=${sortType}&page=${page}`);
+            });
         //by熱門
         const sortByHot = document.querySelector('#sortByHot');
         sortByHot.addEventListener('click',()=>{

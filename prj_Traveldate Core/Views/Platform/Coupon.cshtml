@@ -1,4 +1,4 @@
-﻿@model IEnumerable<prj_Traveldate_Core.Models.CouponList>
+﻿@model prj_Traveldate_Core.ViewModels.CPlatformViewModel
 
 @{
     ViewData["Title"] = "Coupon";
@@ -62,13 +62,15 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">優惠券名稱</h6>
-                            <a asp-action="Create" class="btn btn-success">Create New</a>
+                           @* <a asp-action="Create" class="btn btn-success">新增優惠券</a>*@
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCoupon">新增優惠券</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="datatable" class="display" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>id</th>
                                             <th>優惠券名稱</th>
                                             <th>折扣</th>
                                             <th>描述</th>
@@ -79,29 +81,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
+                                        @foreach (var item in Model.coupon)
                                         {
                                             <tr>
+                                                <td>@item.CouponListId</td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CouponName)
+                                                    @item.CouponName
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Discount)
+                                                    @item.Discount
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                    @item.Description
                                                 </td>
                                                 <td>
                                                     @string.Format("{0:yyyy/MM/dd}",item.DueDate.ToString())
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.ImagePath)
+                                                    @item.ImagePath
                                                 </td>
                                                 <td>
                                                     0/0
                                                 </td>
                                                 <td>
-                                                    @Html.ActionLink("修改", "Edit", new { id = item.CouponListId })
+                                                    @Html.ActionLink("發放", "Send", new { id = item.CouponListId })
                                                 </td>
                                             </tr>
                                         }
@@ -116,7 +119,50 @@
 
             </div>
             <!-- End of Main Content -->
-
+            <div class="modal fade" id="createCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">新增優惠券</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/Platform/CreateCoupon" method="post">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">優惠券名稱</label>
+                                    <input type="text" class="form-control" id="CouponName" name="cou.CouponName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">優惠折扣數</label>
+                                    <input type="text" class="form-control" id="Discount" name="cou.Discount">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">描述</label>
+                                    <textarea class="form-control" id="Description" name="cou.Description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">優惠截止日</label>
+                                    <input type="date" class="form-control" id="DueDate" name="cou.DueDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">照片</label>
+                                    <input type="file" class="form-control" id="ImagePath" name="cou.ImagePath">
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="新增優惠券" class="btn btn-primary" />
+                                    <a asp-action="Coupon" class="btn btn-primary">取消</a>
+                                </div>
+                            </form>
+                        </div>
+                        @*<div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Send message</button>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
 
         </div>
         <!-- End of Content Wrapper -->
@@ -139,7 +185,17 @@
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
         <script>
-            new DataTable('#datatable');
+            new DataTable('#datatable', {
+                order: [[0, 'desc']]
+            });
+
+
+            $('#createCoupon').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) 
+            })
+
+
+
         </script>
     }
 

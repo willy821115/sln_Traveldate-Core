@@ -17,5 +17,6 @@
         public List<string> fComTitle { get; set; }
         public string fStatus { get; set; }
         public int fQuantity { get; set; }
+        public List<string> fPhotoPath { get; set; }
     }
 }

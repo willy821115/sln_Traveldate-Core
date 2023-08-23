@@ -6,6 +6,7 @@ namespace prj_Traveldate_Core.ViewModels
     public class CPlatformViewModel
     {
         public List<CProductWrap> product { get; set; }
+        public List<CCouponWrap> coupon { get; set; }
         public List<ProductTypeList> types { get; set; }
         public List<string> status { get; set; }
 

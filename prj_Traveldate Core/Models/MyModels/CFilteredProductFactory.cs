@@ -17,7 +17,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         
         public List<CFilteredProductItem> qureyFilterProductsInfo()
         {
-            CProductFactory prodStock = new CProductFactory();
+            CProductFactory prodFactory = new CProductFactory();
             var datas = db.Trips.Where(t => confirmedId.Contains(t.ProductId)).GroupBy(t => t.ProductId)
                 .Select(g =>
                 new
@@ -74,7 +74,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 var buy = db.OrderDetails.Where(o => o.Trip.Product.ProductId == item.productID).Select(o => o.Quantity).Sum();
                 item.orederCount = buy.HasValue ? buy: 0;
                 //trip的剩餘名額
-                var strStock = prodStock.TripStock(p.tripId);
+                var strStock = prodFactory.TripStock(p.tripId);
                 double r = Convert.ToDouble(strStock.Split('/')[0]);
                 double m = Convert.ToDouble(strStock.Split('/')[1]);
                item.prodStock = r/ m;

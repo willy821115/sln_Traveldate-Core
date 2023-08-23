@@ -18,6 +18,7 @@ namespace prj_Traveldate_Core.Controllers
             CProductFactory pf = new CProductFactory();
             ProgramViewModel vm = new ProgramViewModel();
             //vm.program.fPhotoList = pf.loadPhoto((int)id);
+            vm.program.fPhotoPath = pf.loadPhotoPath((int)id);
             vm.product.ProductName = pf.loadTitle((int)id);
             vm.product.Description = pf.loadDescription((int)id);
             vm.program.fTripDate = pf.loadTrip((int)id);

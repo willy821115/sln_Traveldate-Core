@@ -43,9 +43,10 @@ namespace prj_Traveldate_Core.Controllers
             _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
             return View(_vm);
         }
-        public IActionResult sortBy(string sortType)
+        public IActionResult sortBy(string sortType,int page=1)
         {
-
+            ViewBag.SortType = sortType;
+            int currentPage = page < 1 ? 1 : page;
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
@@ -58,23 +59,29 @@ namespace prj_Traveldate_Core.Controllers
             if (sortType == "hot")
             {
                 _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.orederCount).ToList();//商品cards;
+                _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
+                
                 return PartialView(_vm);
             }
             if (sortType == "comment")
             {
                 _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.commentAvgScore).ToList();//商品cards;
+                _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
                 return PartialView(_vm);
             }
             if (sortType == "price")
             {
                 _vm.filterProducts = _vm.filterProducts.OrderBy(p => p.price).ToList();//商品cards;
+                _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
                 return PartialView(_vm);
             }
             if (sortType == "stock")
             {
                 _vm.filterProducts = _vm.filterProducts.OrderByDescending(p => p.prodStock).ToList();//商品cards;
+                _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
                 return PartialView(_vm);
             }
+            _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
             return PartialView(_vm);
         }
 
