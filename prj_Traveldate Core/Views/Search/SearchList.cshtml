@@ -85,12 +85,13 @@
                 </div>
                 <div class="ms-lg-4 filter-block-toggle">
                     <ul class="list-unstyled divFiltered_city" id="divCityList">
-                        @foreach (var t in city.citys)
+                        @foreach (var t in city.citys.Distinct())
                         {
-                            <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
+                            var cityCount = city.citys.Count(c => c == t);
+                            <li id="@Html.DisplayFor(modelItem => t)" class=" d-flex align-items-center divide-line my-w-80-percent">
                                 <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                                <span>@Html.DisplayFor(modelItem => t)</span>
+                                <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0"> (@cityCount)</label>
                             </li>
                         }
                     </ul>
@@ -113,10 +114,11 @@
                     <ul class="list-unstyled divFiltered_tag">
                         @foreach (var t in c.tags.Distinct())
                         {
+                            var tagsCount = c.tags.Count(c => c == t);
                             <li class=" d-flex align-items-center divide-line my-w-80-percent">
                                 <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                                <span>@Html.DisplayFor(modelItem => t)</span>
+                                <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0">(@tagsCount)</label>
                             </li>
                         }
                     </ul>
@@ -198,10 +200,11 @@
                 <ul class="list-unstyled divFiltered_type">
                     @foreach (var type in Model.types.Distinct())
                     {
+                        var typeCount = Model.types.Count(t => t == type);
                         <li class=" d-flex align-items-center divide-line my-w-80-percent">
                             <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                             <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                            <span>@Html.DisplayFor(modelItem => type)</span>
+                            <span>@Html.DisplayFor(modelItem => type)</span><label class="mb-0">(@typeCount)</label>
                         </li>
                     }
                 </ul>
@@ -252,10 +255,10 @@
                         <div class="card mb-3 col-12 p-0">
                         <div class="row g-0">
                            <div class="col-md-4 pr-0 ">
-                                @if (item.photo != null)
+                                @if (item.photoPath != null)
                                 {
                                         <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
-                                         <img src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" height="250"/>
+                                         <img src="~/images/" height="250"/>
                                      </div>
                                  }
                                         
@@ -408,14 +411,13 @@
             const resopnse = await fetch(`@Url.Content("~/Search/filterCity")?txtKeyword=${keyword}`)
             const datas = await resopnse.json();
             if (datas != null) {
-                console.log(datas)
                 const cities = datas.map(city => {
-                    const { cityId, cityName } = city
+                    const { cityId, cityName, countCity } = city
                     return (
                         `<li id=${cityId} class=" d-flex align-items-center divide-line my-w-80-percent filterCityItem" >
                                 <img class="uncheckbox" src = "/icons/icons8-unchecked-32.png" />
                                 <img class="checkbox" src = "/icons/icons8-checkbox-32.png" />
-                                <span>${cityName}</span>
+                                <span>${cityName}</span><label class="mb-0">(${countCity})</label>
                         </li>`
                     )
                 })

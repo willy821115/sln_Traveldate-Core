@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Humanizer;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace prj_Traveldate_Core.Models.MyModels
 {
@@ -62,7 +63,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                         item.productTags.Add(tag);
                 }
                 //照片
-                item.photo = db.ProductPhotoLists.Where(p => item.productID == p.ProductId).Select(p => p.Photo).FirstOrDefault();
+                item.photoPath = db.ProductPhotoLists.Where(p => item.productID == p.ProductId).Select(p => p.ImagePath).FirstOrDefault();
                 //評分總分/次數
                 var comments = db.CommentLists.Where(c => c.ProductId == item.productID).Select(c => c.CommentScore);
                 item.commentAvgScore = comments.Average();
@@ -102,6 +103,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             }
             return list;
         }
+
         public List<CCountryAndCity> qureyFilterCountry()
         {
             TraveldateContext db = new TraveldateContext();
@@ -112,7 +114,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 .Select(g => new
                 {
                     country = g.Key,
-                    citys = g.Select(c => c.City.City).Distinct()
+                    citys = g.Select(c => c.City.City)
                 }) ;
 
             foreach (var c in data_region)

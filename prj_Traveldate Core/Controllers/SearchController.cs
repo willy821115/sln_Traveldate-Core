@@ -79,10 +79,24 @@ namespace prj_Traveldate_Core.Controllers
                 var filterCities = _context.ProductLists
                     .Where(p => _products.confirmedId.Contains(p.ProductId))
                     .Where(c => c.City.City.Contains(txtKeyword))
-                    .Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
+                    .GroupBy(p => p.City.City)
+                    .Select(g => 
+                    new 
+                    { 
+                        CityId = g.Select(i=>i.CityId),
+                        CityName = g.Key.ToString().Trim().Substring(0, 2),
+                        countCity = g.Count()
+                    }).ToList();
                 return Json(filterCities);
             }
-            var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId)).Select(c => new { CityId = c.CityId.Value, CityName = c.City.City.Trim().Substring(0, 2) }).Distinct().ToList();
+            var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId))
+                .GroupBy(p => p.City.City)
+                .Select(g => new 
+                { 
+                    CityId = g.Select(i => i.CityId),
+                    CityName = g.Key.ToString().Trim().Substring(0, 2),
+                    countCity = g.Count()
+                }).ToList();
             return Json(filterCitiess);
         }
        
@@ -93,7 +107,7 @@ namespace prj_Traveldate_Core.Controllers
             if (tags.Count > 0)
             {
                 _vm.filterProducts = _vm.filterProducts
-                                .Where(p => p.productTags.Any(tag => tags.Contains(tag))).ToList();
+                              .Where(p => p.productTags.Any(tag => tags.Contains(tag))).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
