@@ -1,4 +1,4 @@
-﻿@model prj_Traveldate_Core.Models.Member
+﻿@model prj_Traveldate_Core.Models.MyModels.CMemberWrap
 
 @{
     ViewData["Title"] = "SignUp";
@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SignUp">
+        <form asp-action="SignUp" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
@@ -69,9 +69,11 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" type="file" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
+                <label class="control-label">上傳大頭照</label>
+                <input asp-for="photo" class="form-control" type="file" name="photo" id="photo" />
+                <div id="preview-box">
+                    <img src="" id="preview" />
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="送出資料" class="btn my-btn-primary" />
@@ -80,6 +82,45 @@
     </div>
 </div>
 
+@section Styles{
+    <style>
+        #preview-box {
+            display:flex;
+            border: dashed 2px #155074;
+            border-radius: 10px;
+            margin: 1em 0;
+            height: 150px;
+            width: 300px;
+        }
+
+        #preview {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            margin: auto;
+        }
+    </style>
+}
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const upload = document.querySelector('#photo')
+        const pbox = document.querySelector('#preview-box')
+
+        upload.addEventListener('change', () => {
+            const image = upload.files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                document.querySelector('#preview').src = reader.result;
+            }, false);
+
+            if (image) {
+                reader.readAsDataURL(image);
+            }
+
+        })
+    </script>
 }
