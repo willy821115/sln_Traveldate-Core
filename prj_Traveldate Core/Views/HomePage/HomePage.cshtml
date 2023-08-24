@@ -44,6 +44,7 @@
         @foreach (var p in Model.popularList)
         {
             <div class="destination-item">
+                <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                 <div class="card-1">
                     <div class="card" style="width: 340px; border-radius: 20px">
                         <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
@@ -69,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
         }
     </div>
@@ -94,6 +96,7 @@
                 @foreach (var p in Model.commentList)
                 {
                     <div class="destination-item">
+                        <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                         <div class="card-1">
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
@@ -119,6 +122,7 @@
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
                 }
             </div>
@@ -140,6 +144,7 @@
                 @foreach (var p in Model.discountList)
                 {
                     <div class="destination-item">
+                        <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                         <div class="card-1">
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
@@ -165,6 +170,7 @@
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
                 }
             </div>
