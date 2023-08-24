@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
@@ -19,20 +20,23 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult ForumList(CForumListViewModel vm)
         {
             CFilteredProductFactory factory = new CFilteredProductFactory();
+            List<CForumList_prodPhoto> prodPhotos = new List<CForumList_prodPhoto>();
            vm.regions = factory.qureyFilterCountry();
-            //vm.forumList = _context.ForumLists.ToList();
-            vm.schedules = _context.ScheduleLists.Include(s => s.ForumList).Include(s=>s.Trip).Include(s=>s.ForumList.Member).ToList();
+            vm.forumList = _context.ArticlePhotos.Include(photo=>photo.ForumList).ToList();
+            vm.schedules = _context.ScheduleLists.Include(s => s.ForumList).Include(s=>s.Trip).Include(s=>s.ForumList.Member).Include(s => s.Trip.Product).ToList();
             vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m=>m.ForumLists).ToList();
             vm.level = _context.LevelLists.Include(l=>l.Members).ToList();
             vm.categories = factory.qureyFilterCategories();
-            //vm.schedules = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).ToList();
+            //vm.schedulesForProd = _context.ScheduleLists.Include(s => s.ForumList).Include(s => s.Trip).Include(s => s.Trip.Product).ToList();
             var tripId = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s=>s.Trip.Product.ProductId).ToList();
-            var prod_photo= _context.ProductPhotoLists.Where(p=>tripId.Contains((int)p.ProductId)).Select(p=>new { p.Photo, p.ProductId }).ToList();
-            //foreach(var p in prod_photo)
-            //{
-            //    vm.prodPhoto.Add(p.Photo);
-            //}
+            var prod_photo= _context.ProductPhotoLists.Where(p=>tripId.Contains((int)p.ProductId)).Select(p=>new CForumList_prodPhoto
+            {
+                prodId = (int)p.ProductId,
+                prodPhotoPath = p.ImagePath
+            }).ToList();
+            prodPhotos.AddRange(prod_photo);
+            vm.prodPhoto = prodPhotos;
             //TODO 把Schedule的prodId跟prodPhotoId連結並放到畫面上
             return View(vm);
         }
@@ -137,5 +141,6 @@ namespace prj_Traveldate_Core.Controllers
             List<CCategoryAndTags> categories = factory.qureyFilterCategories();
             return PartialView(categories);
         }
+        //CreateArticle()
     }
 }

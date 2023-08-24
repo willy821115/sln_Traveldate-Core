@@ -8,7 +8,7 @@ namespace prj_Traveldate_Core.Controllers
     public class TripController : CompanySuperController
     {
        
-        private int companyID = 1;
+        private int companyID = 0;
 
         public TripController() 
         {

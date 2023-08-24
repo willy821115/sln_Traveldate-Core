@@ -34,7 +34,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>供應商專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -108,7 +108,10 @@
                                         {
                                             <option>@status</option>
                                         }
+                                        
                                     </select>
+                                    <label>日期範圍</label>
+                                    <input type="text" id="productlistcalendar" class="form-control" />
                                 </div>
                                
                             </div>
@@ -198,9 +201,23 @@
 </div>
 <!-- End of Page Wrapper -->
 @section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <style>
         .card-body {
             height: unset;
         }
     </style>
+ }
+ @section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+ <script>
+        new DataTable('#dataTable');
+
+        $('#productlistcalendar').flatpickr({
+            mode: "range",
+            dateFormat: "Y-m-d"
+        });
+ </script>
  }

@@ -108,7 +108,7 @@
                                                     @string.Format("{0:yyyy-MM-dd}", item.DueDate)
                                                 </td>
                                                 <td class="imagetd">
-                                                    <img src="~/Images/@item.ImagePath" class="couponImg" alt="noimages" />
+                                                    <img src="~/Images/@item.ImagePath" class="couponImg img-thumbnail" alt="noimages" />
                                                 </td>
                                                 <td class ="counum">
                                                     @item.CouponNum/@item.CouponUsedNum
@@ -294,8 +294,8 @@
                 $('#EditCouponName').val(name);
                 $('#EditDiscount').val(discount);
                 $('#EditDescription').val(description);
-                var formattedDueDate = formatDate(new Date(dueDate)); // 格式化日期
-                $('#EditDueDate').val(formattedDueDate); // 设置日期输入框的值
+                var formattedDueDate = formatDate(new Date(dueDate)); 
+                $('#EditDueDate').val(formattedDueDate); 
                 console.log(formattedDueDate);
 
                 $('#EditCoupon').modal('show');

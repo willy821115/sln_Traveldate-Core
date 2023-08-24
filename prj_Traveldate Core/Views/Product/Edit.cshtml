@@ -36,7 +36,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>供應商專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -86,292 +86,251 @@
 
             <!-- Begin Page Content -->
 
-            <div class="container-fluid">
-                <h2>新增產品</h2>
+           @*  < class="container-fluid"> *@
+                <h2>編輯產品</h2>
                 <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">基本資料</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">產品描述</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">方案編輯</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#tripdetail" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">行程編輯</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                            <div class="row">
+                                <div class="col-md-6">
 
-                    <div class="row">
-                        <div class="col-md-6">
+                                    @*<!-- Basic Card Example -->*@
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
+                                            <input asp-for="ProductId" type="hidden" value="@Model.ProductId" />
+                                            <div class="form-group">
+                                                <label class="control-label">產品名稱</label>
+                                                <input asp-for="ProductName" class="form-control" />
+                                                <span asp-validation-for="ProductName" class="text-danger"></span>
+                                            </div>
 
-                            @*<!-- Basic Card Example -->*@
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
-                                </div>
-                                <div class="card-body">
-                                    <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
-                                    <input asp-for="ProductId" type="hidden" value="@Model.ProductId" />
-                                    <div class="form-group">
-                                        <label class="control-label">產品名稱</label>
-                                        <input asp-for="ProductName" class="form-control" />
-                                        <span asp-validation-for="ProductName" class="text-danger"></span>
-                                    </div>
+                                            <div class=" form-group">
+                                                <label class="control-label">產品類型</label>
+                                                <select asp-for="ProductTypeId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                                    @foreach (ProductTypeList type in Model.types)
+                                                    {
+                                                        <option value="@type.ProductTypeId">@type.ProductType</option>
+                                                    }
 
-                                    <div class=" form-group">
-                                        <label class="control-label">產品類型</label>
-                                        <select asp-for="ProductTypeId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (ProductTypeList type in Model.types)
-                                            {
-                                                <option value="@type.ProductTypeId">@type.ProductType</option>
-                                            }
+                                                </select>
+                                            </div>
 
-                                        </select>
-                                    </div>
+                                            <div class=" form-group">
+                                                <label class="control-label">所在國家</label>
+                                                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                                    @foreach (string type in Model.countries)
+                                                    {
+                                                        <option>@type</option>
+                                                    }
+                                                </select>
+                                            </div>
 
-                                    <div class=" form-group">
-                                        <label class="control-label">所在國家</label>
-                                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (string type in Model.countries)
-                                            {
-                                                <option>@type</option>
-                                            }
-                                        </select>
-                                    </div>
+                                            <div class=" form-group">
+                                                <label class="control-label">所在城市</label>
+                                                <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                                    @foreach (CityList type in Model.cities)
+                                                    {
+                                                        <option value="@type.CityId">@type.City</option>
+                                                    }
+                                                </select>
+                                            </div>
 
-                                    <div class=" form-group">
-                                        <label class="control-label">所在城市</label>
-                                        <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                            @foreach (CityList type in Model.cities)
-                                            {
-                                                <option value="@type.CityId">@type.City</option>
-                                            }
-                                        </select>
-                                    </div>
+                                            <div class="form-group">
+                                                <label class="control-label">產品地址</label>
+                                                <input asp-for="Address" class="form-control" />
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">輪播圖</label>
+                                                <input name="photos" type="file" class="form-control" id="photoInput" multiple />
 
-                                    <div class="form-group">
-                                        <label class="control-label">產品地址</label>
-                                        <input asp-for="Address" class="form-control" />
-                                        <span asp-validation-for="Address" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">輪播圖</label>
-                                        <input name="photos" type="file" class="form-control" id="photoInput" multiple />
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                        @*<!-- Basic Card Example -->*@
-                        <div class="col-md-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">產品標籤</h6>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var c in Model.categoryAndTags)
-                                    {
-
-                                        <div class="controls-display-row category-click">
-                                            <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
-                                            <div class="d-flex justify-content-end">
-                                                <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
-                                                <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
                                             </div>
                                         </div>
-                                        <div class="ms-lg-4 filter-block-toggle">
-                                            <ul class="list-unstyled m">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary cardTitle">產品標籤</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            @foreach (var c in Model.categoryAndTags)
+                                            {
+
+                                                <div class="controls-display-row category-click">
+                                                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+                                                    <div class="d-flex justify-content-end">
+                                                        <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
+                                                        <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
+                                                    </div>
+                                                </div>
+                                                <div class="ms-lg-4 filter-block-toggle">
+                                                    <ul class="list-unstyled m">
+                                                        @{
+                                                            int id = 0;
+                                                            foreach (var t in c.productTags.Distinct())
+                                                            {
+                                                                <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                                    <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" @(Model.Tags.Contains(t.ProductTagDetailsId) ? "checked" : "") />
+                                                                    <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
+                                                                </li>
+                                                                id++;
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                               </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @*<!-- Basic Card Example -->*@
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary cardTitle">產品描述</h6>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="form-group">
+                                                    <label class="control-label">搜尋頁大綱</label>
+                                                    <input asp-for="OutlineForSearch" class="form-control" />
+                                                    <span asp-validation-for="OutlineForSearch" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">大綱</label>
+                                                    <textarea name="Outline" class="form-control" ></textarea>
+                                                    <span asp-validation-for="Outline" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">產品描述</label>
+                                                    <textarea asp-for="Description" class="form-control col-lg-12"></textarea>
+                                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                     </div>
+                                </div>
+                          
+                        </div>
+                        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary cardTitle">方案</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label class="control-label">方案名稱</label>
+                                                    <input asp-for="PlanName" class="form-control" />
+                                                    <span asp-validation-for="PlanName" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">方案描述</label>
+                                                    <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
+                                                    <span asp-validation-for="PlanDescription" class="text-danger"></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        </div>
+                                  </div>
+
+                             </div>
+                            <div class="tab-pane fade" id="tripdetail" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                                <div class="row">
+                                        <div class="col-md-12">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary cardTitle">現有行程</h6>
+                                    </div>
+                                    <div class="card-body" id="contentContainer">
+                                        <ul id="sortable">
+
                                                 @{
-                                                    int id = 0;
-                                                    foreach (var t in c.productTags.Distinct())
+                                                    int i = 0;
+                                                    foreach (TripDetail t in Model.CtripDetail)
                                                     {
-                                                        <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                            <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" @(Model.Tags.Contains(t.ProductTagDetailsId) ? "checked" : "") />
-                                                            <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
-                                                        </li>
-                                                        id++;
+
+                                                    <li id="ui-state-default">
+                                                        <div class="card mb-3">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-4">
+                                                                        @if (t.ImagePath == null)
+                                                                        {
+                                                                        <img src="~/icons/logos/Logo_traveldate.png" class="img-fluid rounded-start" alt="...">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <img src="~/images/@t.ImagePath" class="img-fluid rounded-start" alt="...">
+                                                                        }
+
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="card-body">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="card-title">第 @t.TripDay 天</h5>
+
+                                                                        </div>
+                                                                        <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
+                                                                        <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
+                                                                        <input type="file" class="form-control" id="photoInput" name="triptest[@i].photo" />
+                                                                        <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetail">@t.TripDetail1</textarea>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                        i++;
                                                     }
                                                 }
-                                            </ul>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
 
-                        </div>
+                                             </ul>
 
-
-
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            @*<!-- Basic Card Example -->*@
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">產品描述</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <div class="form-group">
-                                        <label class="control-label">搜尋頁大綱</label>
-                                        <input asp-for="OutlineForSearch" class="form-control" />
-                                        <span asp-validation-for="OutlineForSearch" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">大綱</label>
-                                        <input asp-for="Outline" class="form-control" />
-                                        <span asp-validation-for="Outline" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">產品描述</label>
-                                        <textarea asp-for="Description" class="form-control col-lg-12"></textarea>
-                                        <span asp-validation-for="Description" class="text-danger"></span>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">方案</h6>
+                                        
                                 </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label class="control-label">方案名稱</label>
-                                        <input asp-for="PlanName" class="form-control" />
-                                        <span asp-validation-for="PlanName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">方案描述</label>
-                                        <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
-                                        <span asp-validation-for="PlanDescription" class="text-danger"></span>
-                                    </div>
+                                
+                               </div>
 
-                                </div>
-                            </div>
-
-
-                            @*<!-- Basic Card Example -->*@
-                            @* <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">行程詳情</h6>
-                                </div>
-                                <div class="card-body">
-                                    <label class="control-label">照片</label>
-                                    <input type="file" class="form-control" id="photoInput" />
-                                    <label class="control-label">行程描述</label>
-                                    <textarea class="col-lg-12" id="descriptionInput"></textarea>
-                                    <button type="button" id="addButton" class="form-control">新增</button>
-                                </div>
-                            </div> *@
-
-
-
-
-
-                            @*<!-- Basic Card Example -->*@
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">現有行程</h6>
-                                </div>
-                                <div class="card-body" id="contentContainer">
-                                    <ul id="sortable">
-                                        @*<li id="ui-state-default">
-                                            <div class="card mb-3">
-                                                <div class="row g-0">
-                                                    <div class="col-md-4">
-                                                        <img src="~/images/東清秘境-蘭嶼.png" class="img-fluid rounded-start" alt="...">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <div class="modal-header">
-                                                                <h5 class="card-title">第1天</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-
-                                                            <p class="card-text">清澈深藍的海水顏色是蘭嶼海域獨有，一年四季都可找到適合潛點的蘭嶼，裙狀珊瑚礁環繞，海底地形變化複雜，黑潮支流更帶來了眾多的迴游魚類。透明清澈的水質，長年維持能見度 30 - 50 公尺。低度的人為開發、達悟族人永續經營的精神讓蘭嶼的水域仍然保持豐富的海洋生態，小丑魚尼莫、藍刀鯛多莉、大型龍王鯛甚至是魔鬼魟都悠遊在這片海域。讓專業教練帶領你，學習水肺潛水的基本技巧，揹上氣瓶潛進潛進蘭嶼獨有魔力的湛藍海水。</p>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li id="ui-state-default">
-                                            <div class="card mb-3">
-                                                <div class="row g-0">
-                                                    <div class="col-md-4">
-                                                        <img src="~/images/促銷3.jpg" class="img-fluid rounded-start" alt="...">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                            <div class="modal-header">
-                                                                <h5 class="card-title">第2天</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-
-                                                            <p class="card-text">蘭嶼有著特殊的地理位置，豐富的水中生態、海上景觀、透明清澈的海面、一望無際的藍天，每年隨黑潮而來的飛魚，更是孕育了神秘且深度的達悟精神。當地的口說文化，沒有紙筆紀錄，口耳相傳，只有跟著當地教練一同深入蘭嶼，才能認識道地的蘭嶼精神。希望藉由提升旅遊品質，帶給旅人們最深度的一趟旅行，讓蘭嶼的文化之美，在旅人心中傳承且發芽。</p>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </li>*@
-                                        @{
-                                            int i = 0;
-                                            foreach (TripDetail t in Model.CtripDetail)
-                                        {
-                                            
-                                            <li id="ui-state-default">
-                                                <div class="card mb-3">
-                                                    <div class="row g-0">
-                                                        <div class="col-md-4">
-                                                            @if (t.ImagePath == null)
-                                                            {
-                                                                <img src="~/icons/logos/Logo_traveldate.png" class="img-fluid rounded-start" alt="...">
-                                                            }
-                                                            else
-                                                            {
-                                                                <img src="~/images/@t.ImagePath" class="img-fluid rounded-start" alt="...">
-                                                             }
-                                                            
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="card-body">
-                                                                <div class="modal-header">
-                                                                    <h5 class="card-title">第 @t.TripDay 天</h5>
-                                                                  @*   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
-                                                                </div>
-                                                                <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
-                                                                    <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
-                                                                    <input type="file" class="form-control" id="photoInput" name="triptest[@i].photo" />
-                                                                    <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetail">@t.TripDetail1</textarea>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                </li>
-                                               i++;
-                                            }
-                                       }
-
-                                    </ul>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" value="修改並儲存" class="btn btn-primary" />
-                                <a asp-action="List" class="btn btn-primary">取消</a>
-                            </div>
                             
 
                         </div>
-
+                    <div class="form-group text-right">
+                        <input type="submit" value="修改並儲存" class="btn btn-primary" />
+                        <a asp-action="List" class="btn btn-primary">取消</a>
                     </div>
-
                 </form>
 
             </div>
@@ -380,10 +339,8 @@
         </div>
         <!-- End of Main Content -->
 
-
     </div>
     <!-- End of Content Wrapper -->
-
 </div>
 <!-- End of Page Wrapper -->
 @section Scripts {

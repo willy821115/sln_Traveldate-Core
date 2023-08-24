@@ -11,32 +11,34 @@
         .my-article-item{
             display:flex;
             flex-direction:row;
-            margin:0 0 5px 0;
+            margin:0 0 10px 0;
             justify-content:center;
             background:#fff;
             border-radius:10px;
             padding: 5px 0 5px 0;
-            height:100px;
+           
         }
 
         .my-article-item>div>p{
             margin:0 0 3px 0;
         }
-
+        .fs-4,.fs-3,.fs-5,span{
+            color:gray;
+        }
     </style>
 }
 
 <div class="row g-0 column-gap-5 justify-content-center main">
     <div class="col-3 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary">
+            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary fw-bold">
                 <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
                 <img class="write-icon-gif me-3" src="~/icons/icons8-pencil.gif" width="32" height="32">
                 我要發文
             </a>
         </div>
         <div class="p-3 mt-2 mb-2">
-            <span class="fs-4">搜尋文章</span>
+            <span class="fs-4 fw-bold">搜尋文章</span>
             <div class="controls-display-row search_container">
                 <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                 <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
@@ -44,6 +46,7 @@
             </div>
         </div>
         <div class="p-3 mt-2 mb-2">
+            <label class="fs-4 pl-2 pt-2 fw-bold">依旅遊地區</label>
                 @* <partial name="@Url.Content("~/Forum/Region")"></partial> *@
             @Html.Partial("Region",Model.regions)
         </div>
@@ -53,19 +56,18 @@
     </div>
     <div class="col-8 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <p class="fs-4 divide-line">精選文章</p>
+            <p class="fs-3 divide-line fw-bold">精選文章</p>
             <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
                 <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-inner ">
-                        @for (int i = 1; i < 7; i++)
+                        @foreach(var topTen in Model.forumList.OrderByDescending(t=>t.ForumListId))
                         {
-                            bool isFirstItem = i == 1; // 判斷是否是第一次迴圈
-                            <div class="carousel-item @if (isFirstItem) {
-                        <text>active</text>}">
+                            //bool isFirstItem = i == 1; // 判斷是否是第一次迴圈
+                            <div class="carousel-item">
                                 <div class="d-flex row g-0 justify-content-center">
                                     <div class="border rounded p-3 me-4 col-5">
                                             <a asp-action="ArticleView" class="text-secondary">
-                                            <p class="fs-4">文章標題 @i</p>
+                                            <p class="fs-4 text-black">文章標題 </p>
                                             <div class="d-flex align-items-end">
                                                 <img src="~/icons/icons8-person-100.png" width="64" height="64" />
                                                 <div>
@@ -81,10 +83,10 @@
                                     </div>
                                         <div class="border rounded p-3 col-5">
                                         @{
-                                            i++;
+                                           // i++;
                                         }
                                         <a asp-action="ArticleView" class="text-secondary">
-                                            <p class="fs-4">文章標題 @i</p>
+                                                <p class="fs-4 text-black">文章標題 </p>
                                             <div class="d-flex align-items-end">
                                                     <img src="~/icons/icons8-person-100.png" width="64" height="64" />
                                                     <div>
@@ -129,10 +131,14 @@
         @foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
         {
             <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
+                <div class="col-2 m-1">
+                    @if (Model.prodPhoto.Any(p => p.prodId == article.Trip.ProductId))
+                    {
+                        var imgPath = Model.prodPhoto.FirstOrDefault(p => p.prodId==article.Trip.ProductId).prodPhotoPath;
+                        <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.Trip.Product.ProductName" />
+                    }
+                </div>
 
-                <div class="border col-2 m-1">商品照片
-                    @* <img class="img-thumbnail" src="data:image/jpg;base64,@Convert.ToBase64String(article.Trip.Product.ProductPhotoLists.Where(p=>p.Photo== Model.prodPhoto.FirstOrDefault(s=>s.prodId==article.Trip.ProductId)) )" /> *@</div>
-                
                 <div class="border col-5 m-1 d-flex row p-0">
                         <p class="pt-1">@article.ForumList.Title</p>
                     <div class="d-flex align-items-end">
@@ -168,5 +174,5 @@
         </div>
     </div>
 </div>
-<script src="~/js/jquery-3.4.1.js"></script>
-<script src="~/js/search_jq.js"></script>
+@* <script src="~/js/jquery-3.4.1.js"></script> *@
+<script src="~/js/forumList_jq.js"></script>

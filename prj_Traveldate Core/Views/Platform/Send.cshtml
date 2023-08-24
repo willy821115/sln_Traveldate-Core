@@ -99,7 +99,14 @@
 
 
                                 <div class="form-group">
-                                    <label for="SelectedMemberIds">選擇會員：</label>
+                                    <label for="SelectedMemberIds">選擇發送對象：</label>
+                                    <div>
+                                    <input type="checkbox" />全部會員
+                                    <input type="checkbox" />一般會員
+                                    <input type="checkbox" />白銀會員
+                                    <input type="checkbox" />白金會員
+                                    <input type="checkbox" />黑鑽會員
+                                    </div>
                                     <select name="SelectedMemberIds" id="SelectedMemberIds" class="form-control" multiple>
                                         @foreach (var member in Model.Members)
                                         {
