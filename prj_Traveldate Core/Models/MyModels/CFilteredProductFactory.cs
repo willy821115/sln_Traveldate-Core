@@ -78,7 +78,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 double r = Convert.ToDouble(strStock.Split('/')[0]);
                 double m = Convert.ToDouble(strStock.Split('/')[1]);
                item.prodStock = r/ m;
-                if (item.prodStock > 0.01) 
+                if (item.prodStock > 0.3) 
                 {
                     item.strProdStock = "即將額滿";
                 }
