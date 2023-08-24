@@ -11,7 +11,7 @@ namespace prj_Traveldate_Core.Controllers
 {
     public class ProductController : CompanySuperController
     {
-        private TraveldateContext _db = null;
+        
         private int companyID = 0;
         private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
         public ProductController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
@@ -272,6 +272,26 @@ namespace prj_Traveldate_Core.Controllers
 
             db.SaveChanges();
             return RedirectToAction("List");
+        }
+
+        public IActionResult queryByType(int typeID)
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.ProductLists.Where(p => p.ProductTypeId == typeID && p.CompanyId == companyID).Select(p => new
+            {
+                productName = p.ProductName,
+                productType = p.ProductType.ProductType,
+                cityName = p.City.City,
+                productStatus = p.Status.Status1,
+                Discontinued = (bool)p.Discontinued ? "下架" : "上架",
+                productID=p.ProductId
+
+            }) ;
+            
+            
+            return Json(q);
         }
     }
 }

@@ -96,7 +96,7 @@
                                 <input type="text" class="search_box" /><input type="submit" value="搜尋" class="btn btn-outline-secondary" />
                                 <div>
                                     <label>產品類型</label>
-                                    <select class="form-select">
+                                    <select id="selecttype" class="form-select">
                                         @foreach (ProductTypeList type in Model.types )
                                         {
                                             <option value="@type.ProductTypeId">@type.ProductType</option>
@@ -110,8 +110,7 @@
                                         }
                                         
                                     </select>
-                                    <label>日期範圍</label>
-                                    <input type="text" id="productlistcalendar" class="form-control" />
+                                   
                                 </div>
                                
                             </div>
@@ -140,7 +139,7 @@
                                     </tr>
                                 </thead>
                                 
-                                <tbody>
+                                <tbody id="productlist">
 
                                    @foreach (var item in Model.list) {
                                     <tr>
@@ -168,12 +167,11 @@
                                             </td>
                                             
                                         <td>
-                                                <div>@Html.ActionLink("上架", "Details", "Product",new { productID=item.ProductId },new {@class="btn btn-primary"})</div>
-                                                <div>@Html.ActionLink("下架", "Details", "Product",new { productID=item.ProductId },new {@class="btn btn-danger"})</div>
-                                            
+                                                <button id="continue" class="btn btn-primary">上架</button>
+                                                <button id="discontinue" class="btn btn-danger">下架</button>
                                         </td>
                                         <td>
-                                                @Html.ActionLink("修改", "Edit", "Product",new {productID=item.ProductId },new {@class="btn btn-success"})
+                                                @Html.ActionLink("編輯", "Edit", "Product",new {productID=item.ProductId },new {@class="btn btn-success"})
                                         </td>
                                     </tr>
                                     }
@@ -186,8 +184,7 @@
                     </div>
                 </div>
 
-
-
+                
             </div>
             <!-- /.container-fluid -->
 
@@ -212,12 +209,40 @@
  @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+ <script>new DataTable('#dataTable');</script>
  <script>
-        new DataTable('#dataTable');
+        async function queryByType(typeID) {
+            const dashboard = document.getElementById('productlist');
+            const response = await fetch(`@Url.Content("~/Product/queryByType")?typeID=${typeID}`);
+            const datas = await response.json();
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                    return (
+                        ` <tr>
+                                           <td>${productName}</td>
+                                            <td>${productType}</td>
+                                            <td>${cityName}</td>
+                                             <td>${productStatus}</td>
+                                             <td>${discontinued}</td>
+                                              <td>
+                                                             <button id="continue" class="btn btn-primary">上架</button>
+                                                              <button id="discontinue" class="btn btn-danger">下架</button>
+                                               </td>
+                                                 <td>
+                                                             <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-success">編輯</a>
+                                                 </td>
 
-        $('#productlistcalendar').flatpickr({
-            mode: "range",
-            dateFormat: "Y-m-d"
+                                 </tr>`
+                    )
+
+                })
+                productlist.innerHTML = rows.join("");
+            }
+        }
+        $('#selecttype').change(function () {
+            var typeID = $(this).val();
+            queryByType(typeID);
         });
  </script>
  }
