@@ -15,11 +15,11 @@ namespace prj_Traveldate_Core.Controllers
         {
         _db= new TraveldateContext();
             //HttpContext.Session.SetInt32(CDictionary.SK_COMPANYID, 1);
-            //companyID = (int)HttpContext.Session.GetInt32(CDictionary.SK_LOGGEDIN_COMPANY);
+          
         }
         public IActionResult List()
         {
-            companyID = (int)HttpContext.Session.GetInt32(CDictionary.SK_LOGGEDIN_COMPANY);
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             var orderdetails = from o in _db.OrderDetails
                                where o.Trip.Product.Company.CompanyId == companyID
                                select new { productType=o.Trip.Product.ProductType.ProductType, date = o.Trip.Date,TripID=o.TripId,Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };

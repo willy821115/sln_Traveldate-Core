@@ -5,7 +5,7 @@ using prj_Traveldate_Core.ViewModels;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class TripController : Controller
+    public class TripController : CompanySuperController
     {
        
         private int companyID = 1;
@@ -21,6 +21,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult List()
         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             TraveldateContext _db = new TraveldateContext();
             var products = from p in _db.ProductLists
                            where p.CompanyId == companyID
@@ -119,6 +120,7 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Edit(CTripWrap t) 
         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             TraveldateContext db = new TraveldateContext();
             var tripEdit = db.Trips.FirstOrDefault(tr => tr.TripId == t.TripId);
             tripEdit.UnitPrice= t.UnitPrice;
