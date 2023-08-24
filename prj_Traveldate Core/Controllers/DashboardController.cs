@@ -50,11 +50,48 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult queryByType(int typeID)
         {
-            TraveldateContext db = new TraveldateContext();
-            var orderdetails = from o in _db.OrderDetails
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+             var orderdetails = from o in _db.OrderDetails
                                where o.Trip.Product.ProductTypeId==typeID&&o.Trip.Product.CompanyId == companyID
                                select new { productType = o.Trip.Product.ProductType.ProductType, date = o.Trip.Date, TripID = o.TripId, Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
-            return Json(orderdetails);
+            
+            List< CProductDetailViewModel > queryList= new List<CProductDetailViewModel>();
+            foreach (var order in orderdetails)
+            {
+                CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
+                CProductFactory cProductFactory = new CProductFactory();
+                cProductDetailViewModel.productDate = string.Format("{0:yyyy-MM-dd}", order.date);
+                cProductDetailViewModel.Email = order.Email;
+                cProductDetailViewModel.productType = order.productType;
+                cProductDetailViewModel.productName = order.productname;
+                cProductDetailViewModel.stock = cProductFactory.TripStock((int)order.TripID);
+                queryList.Add(cProductDetailViewModel);
+            }
+            return Json(queryList);
+        }
+
+        public IActionResult queryByDate(string dates) 
+         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            string[] querydate = dates.Replace(" ","").Split("to");
+            var orderdetails = from o in _db.OrderDetails
+                               where o.Trip.Date > DateTime.Parse(querydate[0])&& o.Trip.Date < DateTime.Parse(querydate[1]) && o.Trip.Product.CompanyId == companyID
+                               select new { productType = o.Trip.Product.ProductType.ProductType, date = o.Trip.Date, TripID = o.TripId, Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
+
+            List<CProductDetailViewModel> queryList = new List<CProductDetailViewModel>();
+            foreach (var order in orderdetails)
+            {
+                CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
+                CProductFactory cProductFactory = new CProductFactory();
+                cProductDetailViewModel.productDate = string.Format("{0:yyyy-MM-dd}", order.date);
+                cProductDetailViewModel.Email = order.Email;
+                cProductDetailViewModel.productType = order.productType;
+                cProductDetailViewModel.productName = order.productname;
+                cProductDetailViewModel.stock = cProductFactory.TripStock((int)order.TripID);
+                queryList.Add(cProductDetailViewModel);
+            }
+
+            return Json(queryList);
         }
 
 
