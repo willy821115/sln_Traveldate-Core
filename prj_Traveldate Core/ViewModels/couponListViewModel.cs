@@ -42,6 +42,7 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public decimal? Discount
         {
+            //get { return (this.Discount *10)+" 折"; }
             get { return _couponlist.Discount; }
             set { _couponlist.Discount = value; }
         }

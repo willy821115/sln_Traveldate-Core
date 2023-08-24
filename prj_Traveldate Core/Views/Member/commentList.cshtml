@@ -9,7 +9,19 @@
 
     <div class="cell" id="div3">
         <div class="cell d-flex flex-column">
-            <img src="~/icons/user profile - border vector image.png" class="userIcon" />
+            @{
+                if (ViewBag.photo != null)
+                {
+                    <div style="text-align:center;background-color:white;border-radius:10px">
+                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                    </div>
+                }
+                else
+                {
+                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                }
+            }
+
             <ul class="list-group leftarea mt-3">
                 <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
                 <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
@@ -20,12 +32,27 @@
             <ul class="list-group leftarea lgmenu mt-3 ">
                 <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                 <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
+                </li>
+                <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
+                </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
+                </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
+                </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -34,6 +61,14 @@
 
         <!-- 右半邊 - 內容容器 -->
 <h3 class="mb-4"><b>我的評論</b></h3>
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+        <li class="breadcrumb-item active" aria-current="page">我的評論</li>
+    </ol>
+</nav>
+<h3></h3>
 @using (Html.BeginForm("commentListDelete", "Member", FormMethod.Post))
 {
 <table id="table_id" class="display cell-border compact hover col-md-12">
@@ -41,11 +76,11 @@
         <tr>
             <th class="col-md-0.5"></th>
             <th class="col-md-2">商品名稱</th>
-            <th class="col-md-2">標題</th>
-            <th class="col-md-4">評論內容</th>
-            <th class="col-md-1.2">您的評分</th>
-            <th class="col-md-1.2">評論日期</th>
-            <th class="col-md-0.5">操作</th>                  
+            <th class="col-md-1">標題</th>
+            <th >內容</th>
+            <th class="col-md-1">您的評分</th>
+            <th class="col-md-1">評論日期</th>
+            <th >操作</th>
         </tr>
     </thead>
     <tbody>
@@ -59,14 +94,33 @@
                     <td >@item.ProductName</td>
                     <td >@item.Title</td>
                     <td >@item.Content</td>
-                    <td >@item.CommentScore</td>
+
+                        <td style='text-align: center; vertical-align: middle;'>
+                        @{
+                           for (int i = 1; i <= item.CommentScore; i++)
+                           {
+                              <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
+                           }
+                        }
+                    </td>
+
                     <td >@item.Date.ToString("yyyy-MM-dd")</td>
+
                         @using (Html.BeginForm("commentListDelete", "Member", FormMethod.Post))
                         {
-                   <td ><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                            <td ><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
                         }
                </tr>
-             }          
+
+
+
+
+
+
+
+
+             }
+
           }
     </tbody>
 </table>
@@ -98,6 +152,19 @@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+
+.star:last-child {
+    margin-right: 0;
+}
+.star:before {
+    content:'\2605';
+}
+.star.on {
+    color: gold;
+    font-size: x-large;
+    width: 50px;
+    display: inline-block;
+}
 
 }
 @section scripts{

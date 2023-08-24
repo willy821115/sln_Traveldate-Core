@@ -20,6 +20,72 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Index() // 左側欄 先維持原版V
         {
             int MemberId = 1;
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
+
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
+
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -47,7 +113,84 @@ namespace prj_Traveldate_Core.Controllers
         {
             int MemberId = 1;
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            //var memm = from m in context.Members
+            //          where m.MemberId == MemberId
+            //          select new CMemberModel
+            //          {
+            //              MemberId = m.MemberId,
+            //              LastName = m.LastName,
+            //              FirstName = m.FirstName,
+            //              Gender = m.Gender,
+            //              BirthDate = m.BirthDate,
+            //              Phone = m.Phone,
+            //              Email = m.Email,
+            //          };
 
+            Member mem2 =(from m in  context.Members where (m.MemberId == MemberId) select m).FirstOrDefault() ;
+            if (mem2 != null)
+            {
+                byte[] photo= mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
+
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             var levelvm = from m in context.Members
                           join l in context.LevelLists
                           on m.LevelId equals l.LevelId
@@ -120,6 +263,7 @@ namespace prj_Traveldate_Core.Controllers
                 mDB.Phone = edit.Phone;
                 mDB.Email = edit.Email;
                 mDB.MemberId = edit.MemberId;
+                mDB.Password = edit.Password;
 
                 context.SaveChanges();
             }
@@ -143,7 +287,71 @@ namespace prj_Traveldate_Core.Controllers
 
             prd.MemberId = MemberId;
             Member x = context.Members.FirstOrDefault(m => m.MemberId == prd.MemberId);
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             var levelvm = from m in context.Members
                           join l in context.LevelLists
                           on m.LevelId equals l.LevelId
@@ -185,7 +393,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
 
-                  Thread.Sleep(2000);
+                  Thread.Sleep(1000);
                 }
                 else if(edit.txtNewPassword != edit.txtCheckPassword )
                 {
@@ -210,11 +418,75 @@ namespace prj_Traveldate_Core.Controllers
                         {
                             CouponListId = cl.CouponListId,
                             CouponName = cl.CouponName,
-                            Discount = cl.Discount,
+                            Discount =(cl.Discount),
                             Description = cl.Description,
                             DueDate = cl.DueDate
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -251,9 +523,73 @@ namespace prj_Traveldate_Core.Controllers
                             LastName = cm.LastName,
                             FirstName = cm.FirstName,
                             Phone = cm.Phone,
-                            BirthDate = cm.BirthDate                           
+                           BirthDate= cm.BirthDate,
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -282,6 +618,71 @@ namespace prj_Traveldate_Core.Controllers
             int MemberId = 1;
             CCompanionViewModel cm = new CCompanionViewModel();
             cm.MemberId = MemberId;
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
+
+            var countscomment = from m in context.Members
+                                join cmm in context.CommentLists
+                                on m.MemberId equals cmm.MemberId
+                                join pl in context.ProductLists
+                                on cmm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cmm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
 
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
@@ -350,7 +751,71 @@ namespace prj_Traveldate_Core.Controllers
                             //Description = pl.Description,
                             Outline = pl.Outline,
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -405,7 +870,71 @@ namespace prj_Traveldate_Core.Controllers
             var datas = from o in context.OrderDetails
                         where o.Order.Member.MemberId == MemberId
                         select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -489,7 +1018,71 @@ namespace prj_Traveldate_Core.Controllers
                             Date = cm.Date,
                             ProductName = pl.ProductName
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -560,7 +1153,71 @@ namespace prj_Traveldate_Core.Controllers
                             Date = cm.Date,
                             ProductName = pl.ProductName
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -586,7 +1243,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         #endregion
         [HttpPost]
-        public IActionResult addcommentCreate()
+        public IActionResult addcomment(int? id)
         {
             //int MemberId = 1;
             //CcommentListViewModel vm = new CcommentListViewModel();
@@ -635,7 +1292,71 @@ namespace prj_Traveldate_Core.Controllers
                             Watches = fl.Watches,
                             Content = fl.Content
                         };
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                         join fl in context.ForumLists
+                         on m.MemberId equals fl.MemberId
+                         where m.MemberId == MemberId
+                         select new CForumListViewModel2
+                         {
+                             Title = fl.Title
+                        };
+            ViewBag.ForumLists = countsForum.ToList().Count();
 
+            var countscomment = from m in context.Members
+                        join cm in context.CommentLists
+                        on m.MemberId equals cm.MemberId
+                        join pl in context.ProductLists
+                        on cm.ProductId equals pl.ProductId
+                        where m.MemberId == MemberId
+                        select new CcommentListViewModel
+                        {
+                            Title = cm.Title,
+                        };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                        where o.Order.Member.MemberId == MemberId
+                        select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                        join c in context.Coupons
+                        on m.MemberId equals c.MemberId
+                        join cl in context.CouponLists
+                        on c.CouponListId equals cl.CouponListId
+                        where m.MemberId == MemberId
+                        select new couponListViewModel
+                        {
+                            CouponName = cl.CouponName,
+                        };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
             Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             var levelvm = from m in context.Members
                           join l in context.LevelLists
@@ -656,6 +1377,8 @@ namespace prj_Traveldate_Core.Controllers
 
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
+
+
 
             return View(datas);
         }

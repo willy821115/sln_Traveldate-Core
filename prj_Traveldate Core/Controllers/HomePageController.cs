@@ -54,8 +54,8 @@ namespace prj_Traveldate_Core.Controllers
                 var unitprice = db.Trips.Where(c => c.ProductId == p.productId).Min(c => c.UnitPrice);
                 var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
 
-                item.ImagePath = imagePath;
-                item.unitPrice = (decimal)unitprice;
+                //item.ImagePath = imagePath;
+                //item.unitPrice = (decimal)unitprice;
 
                 commentList.Add(item);
             }

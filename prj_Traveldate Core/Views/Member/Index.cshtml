@@ -1,4 +1,4 @@
-﻿
+﻿@using prj_Traveldate_Core.Models;
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,7 +12,19 @@
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
-                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        @{
+                            if (ViewBag.photo != null)
+                            {
+                                <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                            }
+                        }
+
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
                             <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
@@ -20,16 +32,33 @@
 
                     </div>
                     <div class="cell" id="div2">
-                        <ul class="list-group leftarea lgmenu mt-3" >
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("新增旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem border-0">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
-                        </ul>
+
+                            <ul class="list-group leftarea lgmenu mt-3 ">
+                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
+                            </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                            </li>
+                            </ul>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -38,12 +67,19 @@
         <!-- 右半邊 - 內容容器 -->
         <div class="col-9">
             <h1 class="mb-4" style="color:#00000098"><b>會員專區</b></h1>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">會員專區</li>
+                </ol>
+            </nav>
             <div id="rightPanel">
                 <!-- 這裡會顯示根據左邊所選擇的按鈕而改變的內容 -->
                 <div class="form-group">
-                    <h2 style="margin:150px 150px 310px 280px;line-height:80px; color:#9D9D9D; text-align:justify"><span>～TravelDate 與您一起～<br></span></h2>
-                    <h3 style="margin:-250px 260px 300px 300px; color:#9D9D9D; text-align:right">Enjoy Your Date </h3>
-                    <img src="~/images/Member-index-1.gif" style="width:900px;height:500px;border-radius:10px;margin-top:-650px;margin-left:0px;margin-right:-270x;margin-bottom:-60px; opacity:8%" />
+                    <h2 style="margin:150px 150px 310px 230px;line-height:80px; color:#9D9D9D; text-align:justify"><span>～TravelDate 與您一起～<br></span></h2>
+                    <h3 style="margin:-250px 260px 300px 260px; color:#9D9D9D; text-align:center">Enjoy Your Date </h3>
+                    <img src="~/images/Member-index-1.gif" style="width:825px;height:510px;border-radius:10px;margin-top:-750px;margin-left:0px;margin-right:-270x;margin-bottom:-90px; opacity:8%" />
                    
                 </div>
             </div>

@@ -1,4 +1,5 @@
 ﻿using prj_Traveldate_Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -52,6 +53,7 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _member.Idnumber; }
             set { _member.Idnumber = value; }
         }
+        [DataType(DataType.Date)]
         public DateTime? BirthDate
         {
             get { return _member.BirthDate; }

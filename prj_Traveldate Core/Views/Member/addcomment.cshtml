@@ -1,4 +1,4 @@
-﻿@model prj_Traveldate_Core.Models.CommentList;
+﻿@* model prj_Traveldate_Core.Models.CommentList; *@
 @{
     ViewData["Title"] = "addcomment";
 }
@@ -9,7 +9,19 @@
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
-                        <img src="~/icons/User profile - border vector image.png" class="userIcon" />
+                        @{
+                            if (ViewBag.photo != null)
+                            {
+                                <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                                </div>
+                            }
+                            else
+                            {
+                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                            }
+                        }
+
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
                             <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
@@ -17,15 +29,30 @@
 
                     </div>
                     <div class="cell" id="div2">
-                        <ul class="list-group leftarea lgmenu mt-3">
+                        <ul class="list-group leftarea lgmenu mt-3 ">
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                             <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("新增旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})</li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
+                            </li>
+                            <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -39,28 +66,37 @@
                 <div id="rightPanel">
 
                 @using (Html.BeginForm("addcommentCreate", "Member", FormMethod.Post))
-                { 
-                <h3></h3>
+                {
+                    <h3 class="mb-4"><b>新增評論</b></h3>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/orderList"> 會員訂單</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">新增評論</li>
+                        </ol>
+                    </nav>
+                    <h3></h3>
                     <i class='fas fa-edit' style='font-size:24px'><span> 熱評從你開始</span></i>
                     <hr />
 
                     <div class="form-group">
-                        <label  >ID</label>
-                        <input type="text" id="MemberId" name="MemberId" class="form-control" value="@Model.MemberId" />
-@*                         @Html.LabelFor(model=>model.MemberId)
+@*                      <label  >ID</label>
+                        <input type="text" id="MemberId" name="MemberId" class="form-control"  /> *@
+@*                      @Html.LabelFor(model=>model.MemberId)
                         @Html.EditorFor(model=>model.MemberId,"",new {htmlAttributes=new{@class="form-control"}})  *@
                     </div>
 
                     <div class="form-group">
                         <label  >標題</label>
-                        <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title" />
+                        <input type="text" id="Title" name="Title" class="form-control"  />
 @*                         @Html.LabelFor(model=>model.Title)
                         @Html.EditorFor(model=>model.Title,"",new {htmlAttributes=new{@class="form-control"}}) *@
                     </div>
 
                     <div class="form-group">
                         <label >內容</label>
-                        <input type="text" id="Content" name="Content" class="form-control" value="@Model.Content" />
+                        <input type="text" id="Content" name="Content" class="form-control"  />
 @*                         @Html.LabelFor(model=>model.Content)
                         @Html.EditorFor(model=>model.Content,"",new {htmlAttributes=new{@class="form-control"}}) *@
                     </div>
@@ -68,7 +104,7 @@
 
                     <div class="form-group">
                         <label  >您的評分</label>
-                        <select id="CommentScore" class="form-control" name="CommentScore" value="@Model.CommentScore"><option value="">請選擇</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>
+                        <select id="CommentScore" class="form-control" name="CommentScore" ><option value="">請選擇</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>
 @*                         @Html.LabelFor(model=>model.CommentScore)
                         @Html.EditorFor(model=>model.CommentScore,"",new {htmlAttributes=new{@class="form-control"}}) 
                         @Html.DropDownListFor(model => model.CommentScore, new SelectList(new List<int> { 1, 2, 3, 4, 5 }), "請選擇", new { @class = "form-control" })*@
@@ -76,8 +112,8 @@
 
 
                     <div class="form-group">
-                        <button type="submit" class="btn my-btn-primary"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("儲存", "orderList","Member","",new {@class="black-link2"})</button>
-                        <button type="submit" class="btn my-btn-primary"><td class="link-offset-2 link-underline link-underline-opacity-0" href="#">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</button>
+                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("儲存", "orderList","Member","",new {@class="black-link2"})</td></button>
+                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                     </div>
                 }
 

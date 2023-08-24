@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.Models;
 
@@ -17,6 +18,7 @@ public partial class Companion
 
     public int? MemberId { get; set; }
 
+    [DataType(DataType.Date)]
     public DateTime? BirthDate { get; set; }
 
     public virtual ICollection<CompanionList> CompanionLists { get; set; } = new List<CompanionList>();

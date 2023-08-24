@@ -1,5 +1,6 @@
 ﻿using prj_Traveldate_Core.Models;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -39,6 +40,7 @@ namespace prj_Traveldate_Core.ViewModels
         public int? MemberId { get; set; }
 
         [DisplayName("出生日期")]
+        [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
     }
 }

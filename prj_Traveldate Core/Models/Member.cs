@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.Models;
 
@@ -15,6 +16,7 @@ public partial class Member
 
     public string? Idnumber { get; set; }
 
+    [DataType(DataType.Date)]
     public DateTime? BirthDate { get; set; }
 
     public int? CityId { get; set; }
