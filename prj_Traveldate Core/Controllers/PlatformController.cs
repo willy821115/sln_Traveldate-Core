@@ -7,7 +7,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class PlatformController : Controller
+    public class PlatformController : PlatformSuperController
     {
         private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
         public PlatformController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new

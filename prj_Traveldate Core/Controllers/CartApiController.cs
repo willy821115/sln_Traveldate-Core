@@ -50,6 +50,7 @@ namespace prj_Traveldate_Core.Controllers
             _context.SaveChanges();
             return RedirectToAction("ShoppingCart", "Cart");
         }
+        //  刪除所有已選
         [HttpPost]
         public IActionResult DeleAll(int[] orderDetailID)
         {

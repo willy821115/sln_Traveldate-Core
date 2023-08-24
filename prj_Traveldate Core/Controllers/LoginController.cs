@@ -57,6 +57,25 @@ namespace prj_Traveldate_Core.Controllers
             return View();
         }
 
+        public ActionResult PlatformLogin()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult PlatformLogin(CLoginCompanyViewModel vm)
+        {
+            Employee emp = (new TraveldateContext()).Employees.FirstOrDefault(
+                t => t.EmployeeAccount.Equals(vm.clUsername) && t.EmployeePassword.Equals(vm.clPassword));
+            if (emp != null && emp.EmployeePassword.Equals(vm.clPassword))
+            {
+                //string json = JsonSerializer.Serialize(mem);
+                HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_EMPLOYEE, emp.EmployeeId.ToString());
+                return RedirectToAction("Review", "Platform");
+            }
+            ViewBag.Message = "帳號或密碼錯誤";
+            return View();
+        }
+
         public ActionResult CompanySignUp()
         {
             TraveldateContext db = new TraveldateContext();

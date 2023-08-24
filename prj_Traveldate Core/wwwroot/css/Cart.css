@@ -333,7 +333,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: whitesmoke;
     border-radius:10px;
 }
     .Confirm-Prod-Info .prodbox {
@@ -376,6 +375,10 @@
     text-align:center;
     margin-top:2em;
     margin-bottom:2em;
+}
+
+.modal {
+     background-color: rgba(0,0,0,0.2); 
 }
 /***完成頁*************************************************************/
 .Complete-box {
