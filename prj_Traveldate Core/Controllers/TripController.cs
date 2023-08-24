@@ -64,7 +64,7 @@ namespace prj_Traveldate_Core.Controllers
 CProductFactory cProductFactory = new CProductFactory();
             var trips = from t in db.Trips
                         where t.Product.ProductId == productID
-                        select new { tripID = t.TripId,  tripName = t.Product.ProductName, tripType = t.Product.ProductType.ProductType, tripDate = t.Date,tripDay = cProductFactory.TripDays(t.ProductId), stock= cProductFactory.TripStock(t.TripId) };
+                        select new { tripID = t.TripId,  tripName = t.Product.ProductName, tripType = t.Product.ProductType.ProductType, tripDate = string.Format("{0:yyyy-MM-dd}", t.Date) ,tripDay =  cProductFactory.TripDays(t.ProductId), stock= cProductFactory.TripStock(t.TripId) };
        
             return Json(trips);
         }
@@ -104,13 +104,31 @@ CProductFactory cProductFactory = new CProductFactory();
 
         public IActionResult Edit(int tripID) 
         {
-            //TraveldateContext db = new TraveldateContext();
-            //var trips = db.Trips.Where(t => t.TripId == tripID).Select(new { 
-            
-            
-            
-            //});
-            return View(); 
+            TraveldateContext db = new TraveldateContext();
+            var trips = db.Trips.FirstOrDefault(t => t.TripId == tripID);
+            CTripWrap tr = new CTripWrap();
+            tr.tripDates = string.Format("{0:yyyy-MM-dd}", trips.Date);
+            tr.discountLimitDate = string.Format("{0:yyyy-MM-dd}", trips.DiscountExpirationDate);
+            tr.MaxNum = trips.MaxNum;
+            tr.MinNum = trips.MinNum;
+            tr.UnitPrice = trips.UnitPrice;
+            tr.Discount = trips.Discount;
+            tr.TripId = tripID;
+            return View(tr); 
+        }
+        [HttpPost]
+        public IActionResult Edit(CTripWrap t) 
+        {
+            TraveldateContext db = new TraveldateContext();
+            var tripEdit = db.Trips.FirstOrDefault(tr => tr.TripId == t.TripId);
+            tripEdit.UnitPrice= t.UnitPrice;
+            tripEdit.Discount = t.Discount;
+            tripEdit.DiscountExpirationDate = DateTime.Parse(t.discountLimitDate);
+            tripEdit.MaxNum = t.MaxNum;
+            tripEdit.MinNum = t.MinNum;
+            tripEdit.Date = DateTime.Parse(t.tripDates);
+            db.SaveChanges();
+            return RedirectToAction("List");
         }
     }
 }
