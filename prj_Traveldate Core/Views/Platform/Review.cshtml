@@ -156,7 +156,6 @@
                                                                     data-target="#exampleModalScrollable-@item.ProductId" data-product-id="@item.ProductId">
                                                                 查看
                                                             </button>
-
                                                         }
                                                         else
                                                         {
@@ -170,17 +169,13 @@
                                 </tbody>
                               
                             </table>
-                            @foreach (var item in Model.product)
-{
+                            
                                     <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalScrollable-@item.ProductId" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                        <div class="modal fade"@* id="exampleModalScrollable-@item.ProductId"*@ tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="card-body">
@@ -257,7 +252,7 @@
 
 
                         </div>
-                    }
+                    
                     </div>
                 </div>
 
@@ -338,6 +333,14 @@
                 updateTable();
             });
 
+                const selCou = document.querySelector('#SelectedCouponId');
+
+                async function loadCouponInfo() {
+                    const response = await fetch(`@Url.Content("/Platform/CouponDetails")?couponId=${selCou.value}`)
+                    const data = await response.json()
+                }
+
+
             $('.btn-view-product').on('click', function () {
                 var productId = $(this).data('product-id');
                     alert(productId);
@@ -346,6 +349,7 @@
                     method: 'GET',
                     data: { productId: productId },
                     success: function (response) {
+                            alert(productId)
                         $('#modalTitle').text(response.ProductName);
                         $('#modalCity').text(response.city);
                         $('#modalDescription').text(response.description);
