@@ -12,72 +12,71 @@
         <form asp-action="CompanySignUp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TaxIdNumber" class="control-label"></label>
+                <label asp-for="TaxIdNumber" class="control-label">公司統一編號</label>
                 <input asp-for="TaxIdNumber" class="form-control" />
                 <span asp-validation-for="TaxIdNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
+                <label asp-for="CompanyName" class="control-label">法定公司名稱</label>
                 <input asp-for="CompanyName" class="form-control" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
+                <label asp-for="Country" class="control-label">國家</label>
+                <select asp-for="Country" class="form-control" asp-items="ViewBag.Country"></select>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <label asp-for="City" class="control-label">縣市</label>
+                <select asp-for="City" class="form-control" asp-items="ViewBag.City"></select>
             </div>
             <div class="form-group">
-                <label asp-for="PostalCode" class="control-label"></label>
+                <label asp-for="PostalCode" class="control-label">郵遞區號</label>
                 <input asp-for="PostalCode" class="form-control" />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
+                <label asp-for="Address" class="control-label">公司地址</label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
+                <label asp-for="Phone" class="control-label">聯絡電話</label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Url" class="control-label"></label>
+                <label asp-for="Url" class="control-label">官方網站</label>
                 <input asp-for="Url" class="form-control" />
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Principal" class="control-label"></label>
+                <label asp-for="Principal" class="control-label">負責人姓名</label>
                 <input asp-for="Principal" class="form-control" />
                 <span asp-validation-for="Principal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contact" class="control-label"></label>
+                <label asp-for="Contact" class="control-label">聯絡人姓名</label>
                 <input asp-for="Contact" class="form-control" />
                 <span asp-validation-for="Contact" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">聯絡人職稱</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label">聯絡E-mail</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
+                <label asp-for="Password" class="control-label">密碼</label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServerDescription" class="control-label"></label>
+                <label asp-for="ServerDescription" class="control-label">服務描述</label>
                 <input asp-for="ServerDescription" class="form-control" />
                 <span asp-validation-for="ServerDescription" class="text-danger"></span>
             </div>
@@ -88,6 +87,10 @@
     </div>
 </div>
 
+@section Styles
+ {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

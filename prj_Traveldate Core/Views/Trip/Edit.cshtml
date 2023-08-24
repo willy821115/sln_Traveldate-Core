@@ -36,7 +36,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>供應商專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -85,9 +85,9 @@
         <div id="content">
 
             <!-- Begin Page Content -->
-            <h2>新增行程</h2>
+            <h2>編輯行程</h2>
             <div class="container-fluid">
-                <form asp-action="Create">
+                <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row">
@@ -96,6 +96,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">基本資料</h6>
+                                    <input asp-for="TripId" class="form-control" type="hidden" />
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -134,7 +135,8 @@
                                 </div>
                                 <div class="card-body">
                                     <label asp-for="tripDates" class="control-label">商品日期</label>
-                                    <input asp-for="tripDates" class="control-label" type="text" id="tripcalendar" />
+                                    @* <input type="text" id="tripcalendar" class="form-control" /> *@
+                                    <input id="tripcalendar" name="tripDates" class="form-control" type="text" value="@Model.tripDates" />
                                     <span asp-validation-for="Date" class="text-danger"></span>
                                 </div>
                             </div>
@@ -154,7 +156,8 @@
 
                                     <div class="form-group">
                                         <label asp-for="discountLimitDate" class="control-label">折扣期限</label>
-                                        <input asp-for="discountLimitDate" class="form-control" type="text" id="discountcalendar" />
+                                        @* <input type="text" id="discountcalendar" class="form-control" /> *@
+                                        <input id="discountcalendar" name="discountLimitDate" class="form-control" type="text" value="@Model.discountLimitDate" />
                                         <span asp-validation-for="DiscountExpirationDate" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -165,7 +168,7 @@
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-right">
                         <input type="submit" value="修改" class="btn btn-primary" />
                         <a asp-action="List" class="btn btn-primary">取消</a>
                     </div>
@@ -186,13 +189,20 @@
 
 </div>
 <!-- End of Page Wrapper -->
-
-
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <style>
+        .card-body {
+            height: unset;
+        }
+    </style>
+ }
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         $('#tripcalendar').flatpickr({
                dateFormat: "Y-m-d",
@@ -204,11 +214,5 @@
     </script>
 
 }
-@section Styles{
-    <style>
-        .card-body {
-            height: unset;
-        }
-    </style>
- }
+
 

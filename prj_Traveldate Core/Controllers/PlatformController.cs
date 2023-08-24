@@ -9,7 +9,12 @@ namespace prj_Traveldate_Core.Controllers
 {
     public class PlatformController : Controller
     {
-       public IActionResult Review(CPlatformViewModel vm)
+        private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
+        public PlatformController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
+        {
+            _enviro = p;
+        }
+        public IActionResult Review(CPlatformViewModel vm)
         {
             TraveldateContext db = new TraveldateContext();
             CProductFactory factory = new CProductFactory();
@@ -93,6 +98,8 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Coupon(CPlatformViewModel vm)
         {
             TraveldateContext db = new TraveldateContext();
+            CPlatformFactory pf = new CPlatformFactory();
+             
             vm.coupon = new List<CCouponWrap>();
 
             var datas = from c in db.CouponLists
@@ -115,6 +122,12 @@ namespace prj_Traveldate_Core.Controllers
                 CouponWrap.Description = item.Description;
                 CouponWrap.DueDate = item.DueDate;
                 CouponWrap.ImagePath = item.ImagePath;
+                int couponNum = pf.couponNum(item.CouponListId);
+                int couponUsedNum = pf.couponUsedNum(item.CouponListId);
+
+                // 将计算结果存入对象
+                CouponWrap.CouponNum = couponNum;
+                CouponWrap.CouponUsedNum = couponUsedNum;
                 vm.coupon.Add(CouponWrap);
 
             }
@@ -130,55 +143,82 @@ namespace prj_Traveldate_Core.Controllers
             save.Discount = cou.Discount;
             save.Description = cou.Description;
             save.DueDate = cou.DueDate;
-            save.ImagePath = cou.ImagePath;
-
+            if (cou.photo != null)
+            {
+                string photoName = Guid.NewGuid().ToString() + ".jpg";
+                save.ImagePath = photoName;
+                cou.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+            }
             db.CouponLists.Add(save);
             db.SaveChanges();
 
             return RedirectToAction("Coupon");
         }
 
-        public IActionResult Send(int id)
+        [HttpPost]
+        public IActionResult EditCoupon(CCouponWrap cou)
         {
             TraveldateContext db = new TraveldateContext();
-            // 根據 CouponListId 取得優惠券資訊
-            var coupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == id);
-
-            if (coupon == null)
+            //存入CouponList
+            CouponList save = db.CouponLists.FirstOrDefault(c => c.CouponListId == cou.CouponListId);
+            if (save != null)
             {
-                // 優惠券不存在，處理異常情況
-                return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
+                save.CouponName = cou.CouponName;
+                save.Discount = cou.Discount;
+                save.Description = cou.Description;
+                save.DueDate = cou.DueDate;
+                if (cou.photo != null)
+                {
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";
+                    save.ImagePath = photoName;
+                    cou.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                }
+                db.SaveChanges();
             }
+           
 
-            // 取得所有會員，供選擇會員進行發放
-            var members = db.Members.ToList();
+            return RedirectToAction("Coupon");
+        }
 
-            // 將優惠券和會員列表傳遞到 View
+
+
+
+        public IActionResult Send()
+        {
+            TraveldateContext db = new TraveldateContext();
+
             var viewModel = new CCouponSendViewModel
             {
-                Coupon = coupon,
-                Members = members
+               Coupons = db.CouponLists.ToList(),
+                Members = db.Members.ToList()
             };
-
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult SendCoupon(int SelectedMemberId, int CouponListId)
+        public IActionResult Send(CCouponSendViewModel vm)
         {
             TraveldateContext db = new TraveldateContext();
-            var coupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == CouponListId);
-            var member = db.Members.FirstOrDefault(m => m.MemberId == SelectedMemberId);
+                var selectedCoupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == vm.SelectedCouponId);
 
-            if (coupon == null || member == null)
-            {
-                // 優惠券或會員不存在，處理異常情況
-                return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
-            }
+                if (selectedCoupon != null)
+                {
+                    foreach (var memberId in vm.SelectedMemberIds)
+                    {
+                        var coupon = new Coupon
+                        {
+                            CouponListId = selectedCoupon.CouponListId,
+                            MemberId = memberId
+                        };
+                        db.Coupons.Add(coupon);
+                    }
 
-            // 執行優惠券發放的邏輯，例如建立關聯表等
+                    db.SaveChanges();
 
-            return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
+                TempData["CouponSentMessage"] = "優惠券已成功發放";
+                return RedirectToAction("Coupon");
+                }
+            return View(vm);
         }
 
 
@@ -250,7 +290,27 @@ namespace prj_Traveldate_Core.Controllers
             
         }
 
-        
+
+        [HttpGet]
+        public IActionResult CouponDetails(int couponId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var couponDetails = db.CouponLists.FirstOrDefault(c => c.CouponListId == couponId);
+            if (couponDetails == null)
+            {
+                return Content("no data"); 
+            }
+
+            return Json(new
+            {
+                couponName = couponDetails.CouponName,
+                couponDiscount = couponDetails.Discount,
+                couponDescription = couponDetails.Description,
+                couponImage = couponDetails.ImagePath
+            });
+        }
+
+
 
         public ActionResult content1()
         {

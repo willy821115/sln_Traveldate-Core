@@ -1,5 +1,6 @@
-﻿@model prj_Traveldate_Core.ViewModels.CHomePresent
+﻿@model prj_Traveldate_Core.ViewModels.CHomePresent 
 @section TopImage{
+
  
     <section class="mt-0 pl-0 pr-0">
         <form>
@@ -36,11 +37,6 @@
 
 
 
-
-
-
-
-
 <section class="hot-destinations-section" id="hot-destinations-section">
     <h2>熱門行程</h2>
 
@@ -48,20 +44,43 @@
         @foreach (var p in Model.popularList)
         {
             <div class="destination-item">
+                <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                 <div class="card-1">
-                    <div class="card" style="width:340px ; border-radius: 20px">
+                    <div class="card" style="width: 340px; border-radius: 20px">
                         <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                         <div class="card-body">
+                            <div class="flame-icon"></div> 
                             <p class="card-text">@p.productName</p>
-                            <p class="card-text">價格：＄@p.unitPrice</p>
-                            <p class="card-text">評價：@p.commentScore/5</p>
+                            <p class="card-text">
+                                價格：＄@p.unitPrice
+                                <br />
+                                    <div class="rating-container">
+                                        <span class="rating-text">評價：@p.commentScore/5</span>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <div class="star-container">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        <div class="star @GetStarClass(p.commentScore, i)"></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </p>
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
         }
     </div>
 </section>
+
+
+
+
 
 
 
@@ -79,16 +98,34 @@
                 @foreach (var p in Model.commentList)
                 {
                     <div class="destination-item">
+                        <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                         <div class="card-1">
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                                 <div class="card-body">
+                                    <div class="top-icon"></div>
                                     <p class="card-text">@p.productName</p>
-                                    <p class="card-text">價格：＄@p.unitPrice</p>
-                                    <p class="card-text">評價：@p.commentScore/5</p>
+                                    <p class="card-text">
+                                        價格：＄@p.unitPrice
+                                        <br />
+                                        <div class="rating-container">
+                                            <span class="rating-text">評價：@p.commentScore/5</span>
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <div class="star-container">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <div class="star @GetStarClass(p.commentScore, i)"></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
                 }
             </div>
@@ -110,16 +147,34 @@
                 @foreach (var p in Model.discountList)
                 {
                     <div class="destination-item">
+                        <a asp-action="Product" asp-controller="Program" asp-route-id="@p.productId" class="text-secondary">
                         <div class="card-1">
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                                 <div class="card-body">
+                                    <div class="discount-icon"></div>
                                     <p class="card-text">@p.productName</p>
-                                    <p class="card-text">價格：＄@p.unitPrice</p>
-                                    <p class="card-text">評價：@p.commentScore/5</p>
+                                    <p class="card-text">
+                                        價格：＄@p.unitPrice
+                                        <br />
+                                        <div class="rating-container">
+                                            <span class="rating-text">評價：@p.commentScore/5</span>
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <div class="star-container">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <div class="star @GetStarClass(p.commentScore, i)"></div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
                 }
             </div>
@@ -170,14 +225,25 @@
 </section>
 
 
-
-
-
-
-
-
-
-
+@functions {
+    public string GetStarClass(double? rating, int index)
+    {
+        if (rating.HasValue)
+        {
+            int filledStars = (int)Math.Floor(rating.Value);
+            double remainder = rating.Value - filledStars;
+            if (index <= filledStars)
+            {
+                return "active";
+            }
+            else if (index == filledStars + 1 && remainder >= 0.5)
+            {
+                return "half-filled";
+            }
+        }
+        return "";
+    }
+}
 
 
 
@@ -185,7 +251,82 @@
 
 @section Styles
 {
+
+
+  
+
+
+
     <style>
+
+
+        .flame-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px; /* 调整火焰图标在垂直方向上的位置 */
+            left: 5px; /* 调整火焰图标在水平方向上的位置 */
+            background-image: url('images/fire.png'); /* 设置火焰图标的图片路径 */     
+            background-size: cover; /* 调整图标大小以填充容器 */
+            z-index: 100; /* 或更高的值 */
+        }
+
+
+        .top-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px; 
+            left: 5px;
+            background-image: url('images/top.png');
+            background-size: cover; 
+            z-index: 100;
+        }
+
+        .discount-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px;
+            left: 5px;
+            background-image: url('images/discount.png');
+            background-size: cover;
+            z-index: 100;
+        }
+
+
+
+
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-text {
+            text-align: left;
+            margin-right: 5px;
+        }
+
+        .star {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            background-color: gray;
+            margin-right: 2px;
+            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+            transition: transform 0.3s ease-in-out;
+        }
+     
+        .star.active {
+            background-color: #00F0F0;
+            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+              
+        }
+
+        .half-filled {
+            background: linear-gradient(to right, #00F0F0 50%, gray 50%);
+        }
 
 
         /* 全局樣式 */
@@ -247,7 +388,7 @@
         .search-input{
             /*202308017 移除 position:absolute 避免搜尋按鈕沒有對其*/
             /*position:absolute;*/
-          /*  left:5px;*/
+            /*left:5px;*/
             bottom:0;
             top:0;
             width:100%;
@@ -256,7 +397,6 @@
 
         /* 底部樣式 */
         
-
 
         /*-----------------------------------------------------------------------------*/
 
@@ -282,23 +422,8 @@
         }
 
 
-           
-   
-        
-        .fill-block{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transition: opacity 0.3s, transform 0.3s;
-            border-radius: 10px;
-        }
-
-
-
-        /*-----------------------------------------------------------------------------*/
-     
+        /*下方熱門地區*/
+    
 
         .hot-place-section {
             text-align: center;
@@ -326,17 +451,17 @@
             font-size: 16px; /* 設置子元素的 font-size 為適當的值 */
         }
 
-            .hot-place-item img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                margin: 5px;
-                border-radius: 10px 
-            }
+        .hot-place-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 10px 
+        }
 
-            .hot-place-item:hover {
-                width: 300px; /* 滑鼠移到圖片上時，調整圖片寬度為 300px */
-            }
+        .hot-place-item:hover {
+            width: 300px; /* 滑鼠移到圖片上時，調整圖片寬度為 300px */
+        }
 
         .hot-place-item {
             position: relative;
@@ -392,7 +517,9 @@
                 transition: background-color 0.3s; /* 添加平滑過渡效果 */
             }
 
-            /*-------------------------------------------*/
+        /*-------------------------------------------*/
+
+        /*卡片樣式*/
         .destination-item .card-text {
             text-align: left;
         }
@@ -413,17 +540,11 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .destination-item:hover {
-            transform: scale(1.1);
-        }
+
+        /*-------------------------------------------*/
 
 
-        .centered-slider {
-            position: relative;
-        }
-
-        .slider responsive {
-        }
+       
     </style>
 
         }
@@ -456,9 +577,6 @@
         justify-content: center; /* 水平居中 */
     }
 
-    .slider-list {
-    }
-
 
 </style>
         
@@ -482,7 +600,7 @@
    
     $(".responsive").slick({
         dots: true,
-        infinite: false,
+        infinite: true,
         speed: 300,
         slidesToShow: 4, // 一次显示的图像数量
         slidesToScroll: 4, // 每次滑动滚动的图像数量

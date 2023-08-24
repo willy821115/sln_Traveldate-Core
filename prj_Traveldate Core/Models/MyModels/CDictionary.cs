@@ -2,7 +2,7 @@
 {
     public class CDictionary
     {
-        public static readonly string SK_COMPANYID = "SK_COMPANYID";
+        //public static readonly string SK_COMPANYID = "SK_COMPANYID";
         public static readonly string SK_FILETREDPRODUCTS_INFO = "SK_FILETREDPRODUCTS_INFO";
         public static readonly string SK_LOGGEDIN_USER = "SK_LOGGEDIN_USER";
         public static readonly string SK_LOGGEDIN_COMPANY = "SK_LOGGEDIN_COMPANY";

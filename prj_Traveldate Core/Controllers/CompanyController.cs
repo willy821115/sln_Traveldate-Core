@@ -3,7 +3,7 @@ using prj_Traveldate_Core.Models;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class CompanyController : Controller
+    public class CompanyController : CompanySuperController
     {
         private TraveldateContext _db = null;
 

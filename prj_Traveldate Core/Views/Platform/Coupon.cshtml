@@ -56,18 +56,28 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
+                @if (TempData.ContainsKey("CouponSentMessage"))
+                {
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        @TempData["CouponSentMessage"]
+                    </div>
+                }
                 <h2 style="margin-top:10px; margin-left:15px">優惠券管理</h2>
 
                 <div class="col-md-16">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">優惠券名稱</h6>
-                           @* <a asp-action="Create" class="btn btn-success">新增優惠券</a>*@
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCoupon">新增優惠券</button>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn my-btn-primary mr-2" data-toggle="modal" data-target="#createCoupon">新增優惠券</button>
+                                <a asp-action="Send" class="btn btn-success">
+                                    發放優惠券 <i class="fas fa-paper-plane"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable" class="display" style="width:100%">
+                                <table id="datatable" class="display">
                                     <thead>
                                         <tr>
                                             <th>id</th>
@@ -77,7 +87,7 @@
                                             <th>截止日</th>
                                             <th>照片</th>
                                             <th>發放／使用數量</th>
-                                            <th>發放</th>
+                                            <th>修改</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -95,16 +105,18 @@
                                                     @item.Description
                                                 </td>
                                                 <td>
-                                                    @string.Format("{0:yyyy/MM/dd}",item.DueDate.ToString())
+                                                    @string.Format("{0:yyyy-MM-dd}", item.DueDate)
+                                                </td>
+                                                <td class="imagetd">
+                                                    <img src="~/Images/@item.ImagePath" class="couponImg img-thumbnail" alt="noimages" />
+                                                </td>
+                                                <td class ="counum">
+                                                    @item.CouponNum/@item.CouponUsedNum
                                                 </td>
                                                 <td>
-                                                    @item.ImagePath
-                                                </td>
-                                                <td>
-                                                    0/0
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink("發放", "Send", new { id = item.CouponListId })
+                                                    <img class="btn" src="~/icons/edit_pencil_icon.png"
+                                                         onclick="openEditModal('@item.CouponListId', '@item.CouponName', '@item.Discount', '@item.Description', '@string.Format("{0:yyyy-MM-dd}", item.DueDate)')"
+                                                         data-toggle="modal" data-target="#EditCoupon" />
                                                 </td>
                                             </tr>
                                         }
@@ -119,17 +131,19 @@
 
             </div>
             <!-- End of Main Content -->
+
+            <!-- 新增優惠券 -->
             <div class="modal fade" id="createCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">新增優惠券</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">x</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/Platform/CreateCoupon" method="post">
+                            <form action="/Platform/CreateCoupon" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">優惠券名稱</label>
                                     <input type="text" class="form-control" id="CouponName" name="cou.CouponName">
@@ -147,22 +161,63 @@
                                     <input type="date" class="form-control" id="DueDate" name="cou.DueDate">
                                 </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">照片</label>
-                                    <input type="file" class="form-control" id="ImagePath" name="cou.ImagePath">
+                                    <label for="formFile" class="col-form-label">照片</label>
+                                    <input type="file" class="form-control" id="formFile" name="cou.photo">
+                                    <img id="imagePreview" class="w-100 mt-5" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" value="新增優惠券" class="btn btn-primary" />
-                                    <a asp-action="Coupon" class="btn btn-primary">取消</a>
+                                    <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
+                                    <input type="submit" value="新增優惠券" class="btn my-btn-primary" />
                                 </div>
                             </form>
                         </div>
-                        @*<div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send message</button>
-                        </div>*@
+                      
                     </div>
                 </div>
             </div>
+
+            <!-- 修改優惠券 -->
+            <div class="modal fade" id="EditCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">修改優惠券</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/Platform/EditCoupon" method="post" enctype="multipart/form-data">
+                                <input type="hidden" id="EditCouponListId" name="cou.CouponListId" />
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">優惠券名稱</label>
+                                    <input type="text" class="form-control" id="EditCouponName" name="cou.CouponName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">優惠折扣數</label>
+                                    <input type="text" class="form-control" id="EditDiscount" name="cou.Discount">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">描述</label>
+                                    <textarea class="form-control" id="EditDescription" name="cou.Description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">優惠截止日</label>
+                                    <input type="date" class="form-control" id="EditDueDate" name="cou.DueDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="formFile" class="col-form-label">照片</label>
+                                    <input type="file" class="form-control" id="EditImagePath" name="cou.photo">
+                                    <img id="imagePreview" class="w-100" />
+                                </div>
+                                <div class="form-group">
+                                    <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
+                                    <input type="submit" value="確認修改" class="btn my-btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
 
         </div>
         <!-- End of Content Wrapper -->
@@ -170,13 +225,26 @@
     </div>
     <!-- End of Page Wrapper -->
     @section Styles{
+        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
         <style>
             .card-body {
                 height: unset;
             }
+            .imagetd{
+                width: 100px;
+            }
+
+            .couponImg{
+                width:60px;
+            }
+
+            .counum{
+                width: 100px;
+            }
 
         </style>
-        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
+       
+
     }
 
     @section Scripts{
@@ -194,8 +262,54 @@
                 var button = $(event.relatedTarget) 
             })
 
+            const formFileInput = document.getElementById('formFile');
+            const previewImg = document.getElementById('imagePreview');
+
+            formFileInput.addEventListener('change', function () {
+                const file = formFileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.addEventListener('load', () => {
+                        previewImg.setAttribute('src', event.target.result)
+                    })
+
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.innerHTML = '';
+                }
+            });
+
+            function formatDate(date) {
+                var year = date.getFullYear();
+                var month = String(date.getMonth() + 1).padStart(2, '0');
+                var day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
 
 
+            function openEditModal(id, name, discount, description, dueDate) {
+                console.log(id, name, discount, description, dueDate);
+                $('#EditCouponListId').val(id);
+                $('#EditCouponName').val(name);
+                $('#EditDiscount').val(discount);
+                $('#EditDescription').val(description);
+                var formattedDueDate = formatDate(new Date(dueDate)); 
+                $('#EditDueDate').val(formattedDueDate); 
+                console.log(formattedDueDate);
+
+                $('#EditCoupon').modal('show');
+            }
+
+            $(document).ready(function () {
+                var successMessage = $('#successMessage');
+                if (successMessage.length > 0) {
+                    successMessage.fadeIn();
+                    setTimeout(function () {
+                        successMessage.fadeOut();
+                    }, 3000);
+                }
+            });
         </script>
     }
 

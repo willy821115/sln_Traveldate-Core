@@ -41,12 +41,13 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    border-radius: 10px;
 }
 
     .image-box .prodimg {
         width: 100%;
         object-fit: contain;
-        /*border-radius: 10px;*/
+        border-radius: 10px;
     }
 
 .CommonButton {
@@ -80,7 +81,7 @@
     line-height: 50px;
 }
 
-#prodcb, #selectall, .checkall, .cartUnlike {
+.prodcb, #selectall, .checkall {
     display: none;
 }
 
@@ -130,13 +131,16 @@
 }
 
 .Cart-Items {
-    margin: 2% auto;
-    width: 90%;
+    margin: 0.5em auto;
+    padding: 0.5em 2em; 
     height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+    .Cart-Items:hover{
+        background-color: whitesmoke;
+    }
 .about {
     height: 100%;
     width: 40%;
@@ -172,9 +176,9 @@
 }
 
 .prices {
-    width: 20%;
+    width: 15%;
     height: 100%;
-    text-align: right;
+    text-align: center;
 }
 
 .amount {

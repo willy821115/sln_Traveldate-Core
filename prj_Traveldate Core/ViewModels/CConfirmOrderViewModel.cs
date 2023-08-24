@@ -7,6 +7,6 @@ namespace prj_Traveldate_Core.ViewModels
         public Member member { get; set; }
         public List<Companion> companions { get; set; }
         public List<CouponList> coupons { get; set; }
-        public List<int> checkedItems { get; set; } //orderDetailsID
+        public List<OrderDetail> orders { get;  set; }
     }
 }

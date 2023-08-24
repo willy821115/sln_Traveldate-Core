@@ -2,7 +2,7 @@
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class AnalysisController : Controller
+    public class AnalysisController : CompanySuperController
     {
         public IActionResult SellAnalysis()
         {
