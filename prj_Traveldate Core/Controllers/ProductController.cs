@@ -9,10 +9,10 @@ using System.IO;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : CompanySuperController
     {
         private TraveldateContext _db = null;
-        private int companyID = 3;
+        private int companyID = 0;
         private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
         public ProductController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
         {
@@ -26,6 +26,7 @@ namespace prj_Traveldate_Core.Controllers
         //}
         public IActionResult List()
         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             TraveldateContext _db = new TraveldateContext();
                 var q = from p in _db.ProductLists
                     where p.CompanyId == companyID
@@ -51,6 +52,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Create()
         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             CProductWrap list = new CProductWrap();
             CProductFactory factory = new CProductFactory();
             list.categoryAndTags = factory.loadCategories();
@@ -63,6 +65,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Create(CProductWrap pro)
          {
+            
             int productID = 0;
             TraveldateContext db = new TraveldateContext();
             //存入ProductLists
@@ -136,6 +139,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult Edit(int productID) 
         {
+           
             TraveldateContext db = new TraveldateContext();
             CProductWrap list = new CProductWrap();
             CProductFactory factory = new CProductFactory();
@@ -153,6 +157,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult Edit(CProductWrap pro) 
         {
+            
             TraveldateContext db = new TraveldateContext();
             ProductList proDb=db.ProductLists.FirstOrDefault(p=>p.ProductId==pro.ProductId);
            //存入ProductList

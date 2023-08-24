@@ -23,7 +23,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
             <a class="nav-link" href="~/Platform/Review">
-                <span>商品審核</span>
+                <span>行程審核</span>
             </a>
         </li>
 
@@ -64,15 +64,51 @@
                             <h6 class="m-0 font-weight-bold text-primary">發放優惠券</h6>
                         </div>
                         <div class="card-body">
+                            <form action="/Platform/Send" method="post">
+                                <div class="form-group">
+                                    <label for="SelectedCouponId">選擇優惠券：</label>
+                                    <select name="SelectedCouponId" id="SelectedCouponId" class="form-select">
+                                        <option>選擇優惠券</option>
+                                        @foreach (var coupon in Model.Coupons)
+                                        {
+                                            <option value="@coupon.CouponListId">@coupon.CouponName</option>
+                                        }
+                                    </select>
+                                </div>
 
-                            <p>優惠券名稱：@Model.Coupon.CouponName</p>
-                            <p>優惠折扣數：@Model.Coupon.Discount</p>
-                            <!-- 其他優惠券相關資訊... -->
+                                <!--優惠券顯示-->
+                                <div class="card mb-3 col-8 p-0" id="couponDetails" style="display: none;">
+                                    <div class="row g-0">
+                                        <div class="col-md-4 pr-0 ">
+                                            <div class="overflow-hidden my-rounded-start d-flex justify-content-center" style="background:#408080	">
+                                                <img id="couponImage" src="" alt="優惠券照片" style="height:200px"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 pl-0">
+                                            <div class="card-body d-flex justify-content-around row">
+                                                <div class="pl-4 pr-4">
+                                                    <h5 class="card-title fw-bold" id="couponName"></h5>
+                                                    <p>優惠折扣數：<span id="couponDiscount"></span></p>
+                                                    <p>描述：<span id="couponDescription"></span></p>
+                                                    <p>優惠到期日： <span id=""></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <form action="/Platform/SendCoupon" method="post">
-                                @*@Html.DropDownList("SelectedMemberId", new SelectList(Model.Members, "MemberId", "MemberName"), "選擇會員")*@
-                                <input type="hidden" name="CouponListId" value="@Model.Coupon.CouponListId" />
-                                <input type="submit" value="發放優惠券" class="btn btn-primary" />
+
+                                <div class="form-group">
+                                    <label for="SelectedMemberIds">選擇會員：</label>
+                                    <select name="SelectedMemberIds" id="SelectedMemberIds" class="form-control" multiple>
+                                        @foreach (var member in Model.Members)
+                                        {
+                                            <option value="@member.MemberId">@member.Phone</option>
+                                        }
+                                    </select>
+                                </div>
+                                 <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
+                                <button type="submit" class="btn btn-primary">發放優惠券</button>
                             </form>
                         </div>
 
@@ -101,10 +137,29 @@
 
 
         <script>
-            new DataTable('#datatable', {
-                order: [[0, 'desc']]
-            });
+           
 
+            const selCou = document.querySelector('#SelectedCouponId');
+
+            async function loadCouponInfo(){
+                const response = await fetch(`@Url.Content("/Platform/CouponDetails")?couponId=${selCou.value}`)
+                const data = await response.json()
+                const couponNameSpan = document.getElementById("couponName");
+                const couponDiscountSpan = document.getElementById("couponDiscount");
+                const couponDescriptionSpan = document.getElementById("couponDescription");
+                const couponImage = document.getElementById("couponImage");
+
+                couponNameSpan.textContent = data.couponName;
+                couponDiscountSpan.textContent = data.couponDiscount;
+                couponDescriptionSpan.textContent = data.couponDescription;
+                couponImage.src = /images/+data.couponImage;
+                console.log(data.couponImage);
+                document.getElementById("couponDetails").style.display = "block";
+            }
+
+            $("#SelectedCouponId").change(function () { 
+                loadCouponInfo();
+            });
 
         </script>
     }

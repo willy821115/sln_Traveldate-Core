@@ -10,18 +10,19 @@ namespace prj_Traveldate_Core.Controllers
     {
         private TraveldateContext _db = null;
 
-        private int companyID=1;
+        private int companyID=0;
         public DashboardController() 
         {
         _db= new TraveldateContext();
             //HttpContext.Session.SetInt32(CDictionary.SK_COMPANYID, 1);
-           //companyID=  (int)HttpContext.Session.GetInt32(CDictionary.SK_COMPANYID);
+          
         }
         public IActionResult List()
         {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             var orderdetails = from o in _db.OrderDetails
                                where o.Trip.Product.Company.CompanyId == companyID
-                               select new { productType=o.Trip.Product.ProductType.ProductType, date = o.Trip.Date,TripID=o.TripId,Phone = o.Order.Member.Phone, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
+                               select new { productType=o.Trip.Product.ProductType.ProductType, date = o.Trip.Date,TripID=o.TripId,Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
 
           
             COrderState cOrderState = new COrderState();
@@ -30,20 +31,30 @@ namespace prj_Traveldate_Core.Controllers
             {
                  CProductDetailViewModel cProductDetailViewModel = new CProductDetailViewModel();
                 CProductFactory cProductFactory = new CProductFactory();
-                cProductDetailViewModel.productDate = order.date.Value.Date.ToString();
-                cProductDetailViewModel.Phone = order.Phone;
+                cProductDetailViewModel.productDate = string.Format("{0:yyyy-MM-dd}", order.date) ;
+                cProductDetailViewModel.Email = order.Email;
                 cProductDetailViewModel.productType = order.productType;
                 cProductDetailViewModel.productName = order.productname;
                 cProductDetailViewModel.stock = cProductFactory.TripStock((int)order.TripID);
                 cOrderState.ProductDetail.Add(cProductDetailViewModel);
             }
-
+            CProductFactory factory = new CProductFactory();
+            cOrderState.status = factory.loadStauts();
+            cOrderState.types = factory.loadTypes();
             cOrderState.orderQuantity = cOrderState.OrderCount(companyID);
             cOrderState.turnover = cOrderState.Turnover(companyID);
             cOrderState.top3product = cOrderState.Top3(companyID);
+             
             
             return View(cOrderState);
         }
-        
+        //public IActionResult queryByType(int typeID) 
+        //{
+        //    TraveldateContext db = new TraveldateContext();
+        //    var list = db.OrderDetails
+        //    return Json();
+        //}
+
+
     }
 }

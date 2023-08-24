@@ -9,6 +9,10 @@ namespace prj_Traveldate_Core.Models.MyModels
         public decimal? turnover { get; set; }
         public List<string>? top3product { get; set; }
 
+        public List<ProductTypeList> types { get; set; }
+
+        public List<string> status { get; set; }
+
         public int OrderCount(int companyID) 
         {
         TraveldateContext _db=new TraveldateContext();
