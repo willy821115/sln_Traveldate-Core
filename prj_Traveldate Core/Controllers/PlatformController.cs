@@ -199,51 +199,119 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Send(CCouponSendViewModel vm)
         {
             TraveldateContext db = new TraveldateContext();
-                var selectedCoupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == vm.SelectedCouponId);
+            var selectedCoupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == vm.SelectedCouponId);
 
-                if (selectedCoupon != null)
+            if (selectedCoupon != null)
+            {
+                List<int> memberIdsToSend = new List<int>();
+
+                if (vm.SendToAllMembers)
                 {
-                    foreach (var memberId in vm.SelectedMemberIds)
+                    memberIdsToSend = db.Members.Select(m => m.MemberId).ToList();
+                }
+                else
+                {
+                    if (vm.SendToNormalMembers)
                     {
-                        var coupon = new Coupon
-                        {
-                            CouponListId = selectedCoupon.CouponListId,
-                            MemberId = memberId
-                        };
-                        db.Coupons.Add(coupon);
+                        var normalMemberIds = db.Members.Where(m => m.LevelId == 1).Select(m => m.MemberId).ToList();
+                        memberIdsToSend.AddRange(normalMemberIds);
                     }
+                    if (vm.SendToSilverMembers)
+                    {
+                        var silverMemberIds = db.Members.Where(m => m.LevelId == 2).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(silverMemberIds);
+                    }
+                    if (vm.SendToGoldMembers)
+                    {
+                        var goldMemberIds = db.Members.Where(m => m.LevelId == 3).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(goldMemberIds);
+                    }
+                    if (vm.SendToDiamondMembers)
+                    {
+                        var diamondMemberIds = db.Members.Where(m => m.LevelId == 4).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(diamondMemberIds);
+                    }
+                }
 
-                    db.SaveChanges();
+                foreach (var memberId in memberIdsToSend)
+                {
+                    var coupon = new Coupon
+                    {
+                        CouponListId = selectedCoupon.CouponListId,
+                        MemberId = memberId
+                    };
+                    db.Coupons.Add(coupon);
+                }
+
+                db.SaveChanges();
 
                 TempData["CouponSentMessage"] = "優惠券已成功發放";
                 return RedirectToAction("Coupon");
-                }
+            }
+
             return View(vm);
         }
 
 
-
-
         [HttpPost]
-        public ActionResult DisableMember(int memberId, bool enable)
+        public ActionResult SusMember(int memberId)
         {
-            try
-            {
                 TraveldateContext db = new TraveldateContext();
                 var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
 
                 if (member != null)
                 {
-                    member.Enable = enable; 
-                    db.SaveChanges();
-                    return Content(enable.ToString());
+                    if(member.Enable == true)
+                    {
+                        member.Enable = false;
                 }
+                    else if(member.Enable == false)
+                        {
+                            member.Enable = true;
+                }
+                db.SaveChanges();
+                return RedirectToAction("AccountSuspend");
+            }
                 return Content("沒有此會員");
-            }
-            catch (Exception ex)
+        }
+
+        [HttpPost]
+        public ActionResult SusAllMember(List<int> memberIds)
+        {
+            using (var db = new TraveldateContext())
             {
-                return Content("");
+                foreach (var memberId in memberIds)
+                {
+                    var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+
+                    if (member != null)
+                    {
+                        member.Enable = !member.Enable; 
+                    }
+                }
+                db.SaveChanges();
             }
+
+            return RedirectToAction("AccountSuspend");
+        }
+
+
+        [HttpPost]
+        public ActionResult DisableMember(int memberId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+
+            if (member != null)
+            {
+                member.Enable = !member.Enable; // Toggle the status
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, message = "沒有此會員" });
         }
         [HttpPost]
         public IActionResult BulkDisableMembers(List<int> memberIds, bool enable)
@@ -271,23 +339,35 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult GetProductDetails(int productId)
         {
             TraveldateContext db = new TraveldateContext();
-            var product = (from p in db.ProductLists where p.ProductId == productId select p)
-                          .FirstOrDefault();
+            var product = db.ProductLists.FirstOrDefault(p => p.ProductId == productId);
 
-                var productDetails = new
+            if (product != null)
+            {
+                var city = db.CityLists.FirstOrDefault(c => c.CityId == product.CityId);
+                var protype = db.ProductTypeLists.FirstOrDefault(c => c.ProductTypeId == product.ProductTypeId);
+                var tripdetail = db.TripDetails.Where(t=>t.ProductId == product.ProductId ).Select(t=>t.TripDetail1).ToList();
+
+                if (city != null)
                 {
-                    ProductName = product.ProductName,
-                    city = product.CityId,
-                    description = product.Description,
-                    planName = product.PlanName,
-                    plandescription = product.PlanDescription,
-                    outline = product.Outline,
-                    outlineforsearch = product.OutlineForSearch,
-                    address = product.Address,
-                };
+                    var productDetails = new
+                    {
+                        ProductName = product.ProductName,
+                        ProductType = protype.ProductType,
+                        CityName = city.City,
+                        Description = product.Description,
+                        PlanName = product.PlanName,
+                        PlanDescription = product.PlanDescription,
+                        Outline = product.Outline,
+                        OutlineForSearch = product.OutlineForSearch,
+                        Address = product.Address,
+                    };
 
-                return Json(productDetails);
-            
+                    return Json(productDetails);
+                }
+            }
+
+            return NotFound();
+
         }
 
 
