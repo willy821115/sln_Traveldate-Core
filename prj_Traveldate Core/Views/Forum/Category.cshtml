@@ -4,7 +4,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 <div class="filter_block">
-    <label class="fs-4 pl-2 pt-2">所有商品類別</label>
+    <label class="fs-4 pl-2 pt-2 fw-bold">依文章類別</label>
     @foreach (var c in Model)
     {
 
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="ms-lg-4 filter-block-toggle">
-            <ul class="list-unstyled m">
+            <ul class="list-unstyled divFiltered_tag">
                 @foreach (var t in c.tags.Distinct())
                 {
                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
