@@ -22,7 +22,7 @@ namespace prj_Traveldate_Core.Controllers
             companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             var orderdetails = from o in _db.OrderDetails
                                where o.Trip.Product.Company.CompanyId == companyID
-                               select new { productType=o.Trip.Product.ProductType.ProductType, date = o.Trip.Date,TripID=o.TripId,Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
+                               select new { productType=o.Trip.Product.ProductType.ProductType, date = o.Trip.Date,TripID=o.TripId, Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
 
           
             COrderState cOrderState = new COrderState();
@@ -48,12 +48,14 @@ namespace prj_Traveldate_Core.Controllers
             
             return View(cOrderState);
         }
-        //public IActionResult queryByType(int typeID) 
-        //{
-        //    TraveldateContext db = new TraveldateContext();
-        //    var list = db.OrderDetails
-        //    return Json();
-        //}
+        public IActionResult queryByType(int typeID)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var orderdetails = from o in _db.OrderDetails
+                               where o.Trip.Product.ProductTypeId==typeID&&o.Trip.Product.CompanyId == companyID
+                               select new { productType = o.Trip.Product.ProductType.ProductType, date = o.Trip.Date, TripID = o.TripId, Email = o.Order.Member.Email, productname = o.Trip.Product.ProductName, max = o.Trip.MaxNum };
+            return Json(orderdetails);
+        }
 
 
     }
