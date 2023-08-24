@@ -101,18 +101,21 @@
                                 <div class="form-group">
                                     <label for="SelectedMemberIds">選擇發送對象：</label>
                                     <div>
-                                    <input type="checkbox" />全部會員
-                                    <input type="checkbox" />一般會員
-                                    <input type="checkbox" />白銀會員
-                                    <input type="checkbox" />白金會員
-                                    <input type="checkbox" />黑鑽會員
+                                        <input type="checkbox" name="SendToAllMembers" class="mb-3 mr-1" value="true" />全部會員
                                     </div>
-                                    <select name="SelectedMemberIds" id="SelectedMemberIds" class="form-control" multiple>
+                                    <label for="SelectedMemberIds">選擇會員等級：</label>
+                                    <div>
+                                        <input type="checkbox" name="SendToNormalMembers" class="mr-1" value="true" />一般會員
+                                        <input type="checkbox" name="SendToSilverMembers" class="mr-1" value="true" />白銀會員
+                                        <input type="checkbox" name="SendToGoldMembers" class="mr-1" value="true" />白金會員
+                                        <input type="checkbox" name="SendToDiamondMembers" class="mr-1" value="true" />黑鑽會員
+                                    </div>
+                                    @*<select name="SelectedMemberIds" id="SelectedMemberIds" class="form-control" multiple>
                                         @foreach (var member in Model.Members)
                                         {
                                             <option value="@member.MemberId">@member.Phone</option>
                                         }
-                                    </select>
+                                    </select>*@
                                 </div>
                                  <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
                                 <button type="submit" class="btn btn-primary">發放優惠券</button>
