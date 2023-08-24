@@ -23,7 +23,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="~/Platform/Review">
+            <a class="nav-link align-items-center" href="~/Platform/Review">
                 <span>行程審核</span>
             </a>
         </li>
@@ -71,7 +71,7 @@
                         <div class="table-responsive">
                                     <form id="bulkDisableForm">
                                         <div style="display: flex; align-items: center;">
-                                            <input class="btn my-btn-primary mb-4" type="submit" value="一鍵停權／復原" />
+                                            <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
                                             <div style="margin-left: 10px; display: flex; align-items: center;">
                                                 <label style="margin-right: 10px;">會員狀態</label>
                                                 <select class="form-select" name="memberSelect">
@@ -101,8 +101,8 @@
                                     @foreach (var member in Model.Members)
                                     {
                                         <tr>
-                                           　<td><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
-                                            <td>@member.LastName@member.FirstName</td>
+                                           　<td class="chkbox"><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
+                                                    <td class="memname">@member.LastName@member.FirstName</td>
                                             <td>@member.Gender</td>
                                             <td>@member.Idnumber</td>
                                             <td>@member.BirthDate.ToShortDateString()</td>
@@ -110,16 +110,19 @@
                                             <td>@member.Email</td>
                                                     <td>@member.Discount</td>
                                                     <td>
-                                                        <button id="btnsuspend-@member.MemberId" class="btn @((!member.Enable) ? "btn-outline-success" : "btn-outline-danger")">
+                                                        <form asp-action="SusMember" method="post">
+                                                            <input type="hidden" name="memberId" value="@member.MemberId" />
+                                                            <button type="submit" class="btn @(member.Enable ? "btn-outline-dark" : "btn-danger")">
                                                                 @if (member.Enable)
-                                                                {
-                                                                    <span>停權</span>
-                                                                }
-                                                                else
                                                                 {
                                                                     <span>復原</span>
                                                                 }
+                                                                else
+                                                                {
+                                                                    <span>停權</span>
+                                                                }
                                                             </button>
+                                                        </form>
                                                     </td>
                                         </tr>
                                     }
@@ -192,6 +195,8 @@
     </div>
     <!-- End of Page Wrapper -->
     @section Styles{
+
+    <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
         <style>
             .card-body {
                 height: unset;
@@ -256,8 +261,14 @@
                 content: none !important;
             }
 
+        .chkbox{
+            width:15px;
+        }
+
+        .memname{
+            width:80px;
+        }
         </style>
-        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
     }
 
 @section Scripts{
@@ -382,35 +393,61 @@
             }
         }
 
-        
-        function bulkDisableMembers(memberIds, enable) {
-            var newEnable = !enable;
-            console.log(newEnable);
-            if (confirm("確定要" + (newEnable ? "復原" : "停權") + "所選的會員嗎？")) {
-                $.ajax({
-                    url: '/Platform/BulkDisableMembers', // Replace with your API endpoint
-                    method: 'POST',
-                    data: { memberIds: memberIds, enable: newEnable },
-                    success: function (response) {
-                        if (response.success) {
-                            // Loop through the selected member ids and update the UI for each member
-                            memberIds.forEach(function (memberId) {
-                                var row = $(`tr[data-member-id="${memberId}"]`);
-                                row.find(".btn").text(newEnable ? "停權" : "復原");
-                                row.find(".btn").toggleClass("btn-outline-success btn-danger");
-                                row.find(".enable-column").text(newEnable);
-                            });
 
-                            location.reload(); // Reload the page
-                        } else {
-                            // Handle error response
-                        }
-                    },
-                    error: function (error) {
-                        // Handle error
-                    }
+        //function bulkToggleMembers() {
+        //    var selectedMembers = [];
+        //    $(".memberCheckbox:checked").each(function () {
+        //        selectedMembers.push($(this).val());
+        //    });
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "@Url.Action("SusAllMember")",
+        //        data: { memberIds: selectedMembers },
+        //        success: function (response) {
+        //            const btnsuspend = document.querySelector(`#btnsuspend-${memberId}`);
+
+        //            if (response === "True") {
+        //                btnsuspend.innerHTML = "<span>停權</span>";
+        //                btnsuspend.classList.remove('btn-outline-success');
+        //                btnsuspend.classList.add('btn', 'btn-outline-danger');
+        //            } else if (response === "False") {
+        //                btnsuspend.innerHTML = "<span>復原</span>";
+        //                btnsuspend.classList.remove('btn-outline-danger');
+        //                btnsuspend.classList.add('btn-outline-success');
+        //            }
+        //        }
+        //    });
+        //}
+
+        $(document).ready(function () {
+            $("#bulkToggleButton").click(function () {
+                var selectedMembers = [];
+                $("input[name='memberCheckbox']:checked").each(function () {
+                    selectedMembers.push(parseInt($(this).val())); // Convert to integer
                 });
-            }
+
+                if (selectedMembers.length > 0) {
+                    bulkToggleMembers(selectedMembers);
+                } else {
+                    // Handle case when no members are selected
+                }
+            });
+        });
+
+        function bulkToggleMembers(memberIds) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SusAllMember")",
+                data: { memberIds: memberIds },
+                traditional: true, // To properly send array
+                success: function (response) {
+                    // Handle success response, update UI if needed
+                },
+                error: function () {
+                    // Handle error
+                }
+            });
         }
       
         </script>

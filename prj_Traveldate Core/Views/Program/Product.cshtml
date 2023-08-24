@@ -9,6 +9,8 @@
             <span>台灣 > @Model.city.City > @Model.product.ProductName</span>
         </div>
     </div>
+
+    <!--ProductPhoto-->
     <div class="outer-wrappers">
     <div class="outer-wrapper col-10 mb-3">
         <div class="s-wrap s-type-1" role="slider">
@@ -61,9 +63,13 @@
         </div>
     </div>
     </div>
+
+    <!--Productname-->
     <div class="mt-2">
         <h3>@Model.product.ProductName</h3>
     </div>
+
+    <!--Outline、立即預定-->
     <div class="plancal-container mb-3">
         <div class="product-description">
             <ul>
@@ -89,7 +95,7 @@
         </div>
     </div>
 
-
+    <!--評價專區-->
     <div class="plan-container">
         <div class="be-comment-block">
             @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
@@ -176,7 +182,7 @@
     </div>
    
 
-
+    <!--訂購專區(日曆、購買)-->
     <div class="plancal-container" id="booking-section" style="background-color:white">
         <div class="lendar-container">
             
@@ -240,7 +246,7 @@
                     <form id="addToCartForm" action="@Url.Action("AddToCart", "Program")" method="post">
                         <input type="hidden" id="tripId" name="tripId" value="">
                         <input type="hidden" id="num" name="num" value="">
-                        <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg" value="加入購物車" />
+                        <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg addToCartButton" value="加入購物車" />
                         <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary btn-lg">立即購買</a>
                     </form>
                   </div>
@@ -283,7 +289,7 @@
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    <div class="btn btn-outline-dark">加入購物車</div>
+                                    @*<button class="btn btn-outline-dark addToCartButton" data-trip-id="@tripId" data-quantity="1">加入購物車</button>*@
                                     <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary">立即購買</a>
                                 </div>
                             </div>
@@ -294,6 +300,7 @@
         }
     </div>
 
+    <!--商品詳細說明-->
     <div class="plan-container p-4">
         <div class="comments-title">
             <p>商品詳細說明</p>
@@ -303,6 +310,8 @@
             <pre>@Model.product.Description</pre>
         </div>
     </div>
+
+    <!--商品行程說明-->
     <div class="plan-container">
         <div class="naccs">
             <div class="comments-title">
@@ -326,7 +335,7 @@
                                 <div>
                                     <p>@Model.program.fTripDetails[i]</p>
                                     <div class="image-container">
-                                        <img src="~/images/@Model.program.fTTripPhotoList[i]" alt="第 @(i+1) 天 Image" class="w-300 h-200" />
+                                        <img src="~/images/@Model.program.fTTripPhotoList[i]" alt="第 @(i+1) 天 Image" class="img-thumbnail w-300 h-200" />
                                     </div>
                                 </div>
                             </li>
@@ -336,7 +345,8 @@
             </div>
         </div>
     </div>
-    
+
+    <!--Googlemap-->
     <div class="plan-container">
         <div class="comments-title">
             <p>體驗地點</p>
@@ -345,6 +355,8 @@
         <hr />
         <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
     </div>
+
+    <!--更多評論區-->
     @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
             {
         <div class="plan-container">
@@ -412,6 +424,7 @@
         </div>
     </div>
     }
+
 </div>
 @section Scripts{
 
@@ -427,7 +440,7 @@
         console.log(addressData)
 
         let map;
-
+        //Google Maps API
         function initMap() {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address: addressData }, (results, status) => {
@@ -734,16 +747,13 @@
         const minPeopleSpan = document.getElementById('minPeople');
         const priceSpan = document.getElementById('price');
 
-        // 初始值为 1
         let value = 1;
 
-        // 监听 "+" 按钮点击事件
         plusButton.addEventListener('click', function () {
             value++;
             valueSpan.textContent = value;
         });
 
-        // 监听 "-" 按钮点击事件
         minusButton.addEventListener('click', function () {
             if (value > 1) {
                 value--;
@@ -762,10 +772,18 @@
         });
         
         //加購物車
-        const addCart = document.getElementById('addtocart');
-        addCart.addEventListener('click',function(){
+        //const addCart = document.getElementById('addtocart');
+        //addCart.addEventListener('click',function(){
+        //    swal('已加入購物車!', '', 'success');
+        //})
+
+        const addToCartButtons = document.querySelectorAll('.addToCartButton');
+        function handleAddToCartClick() {
             swal('已加入購物車!', '', 'success');
-        })
+        }
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', handleAddToCartClick);
+        });
 
         var modal = document.getElementById("myModal");
 
@@ -786,21 +804,6 @@
             modal.style.display = "none";
         }
 
-        // $(document).ready(function () {
-        //     $(".addtocart").click(function (event) {
-        //         event.preventDefault();
-
-        //         // 增加计数器
-        //         var count = $(this).data("count");
-        //         count++;
-        //         $(this).data("count", count);
-
-        //         // 添加或移除 counter 类
-        //         $("a.cart > span").toggleClass("counter", count > 0);
-
-        //         // 其他代码...
-        //     });
-        // });
 
     </script>
     }
@@ -811,44 +814,6 @@
             color: #155074;
             background-color: #F0F0F0;
         }
-/* 
-        a.cart {
-            position: relative;
-        }
-
-            a.cart > span.counter {
-                width: 24px;
-                height: 24px;
-                font-size: 16px;
-                color: #fff;
-                line-height: 24px;
-                position: absolute;
-                top: -10px;
-                right: 5px; /* 调整此值来控制右上角的偏移量 */
-                border-radius: 12px;
-                background: #ffab00;
-                box-shadow: 0 3px 6px rgba(255, 171, 0, 0.16), 0 3px 6px rgba(255, 171, 0, 0.23);
-                transition: .2s linear;
-                transform: scale(1);
-            }
-
-            a.cart > span {
-                display: block;
-                width: 24px;
-                height: 24px;
-                background: #ffab00;
-                border-radius: 50%;
-                text-align: center;
-                line-height: 24px;
-                font-size: 16px;
-                color: #fff;
-                position: absolute;
-                top: -10px;
-                right: 5px; /* 调整此值来控制右上角的偏移量 */
-                box-shadow: 0 3px 6px rgba(255, 171, 0, 0.16), 0 3px 6px rgba(255, 171, 0, 0.23);
-                transition: .2s linear;
-                transform: scale(1);
-            } */
     </style>
     }
 

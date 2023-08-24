@@ -104,7 +104,10 @@ input,
 .category-click,
 .write-conatiner,
 .insert-photo-container,
-.clearKeyword {
+.clearKeyword,
+.btnPlusTrip,
+.btnDeleteTrip,
+.btnEditTrip {
     cursor: pointer;
 }
 

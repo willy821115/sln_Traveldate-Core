@@ -3,118 +3,163 @@
     ViewData["Title"] = "Create";
 }
 @section Styles{
-    
-}
-<div class="row justify-content-center pb-4">
-    <div class="col-10 bg-white rounded-3 p-4">
-        <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group fs-5">
-                <label class="control-label"></label>
-                <input class="form-control" />
-                @*<span asp-validation-for="Title" class="text-danger"></span>*@
-            </div>
-            <p class="fs-5">選擇商品與日期</p>
-            <div class="d-flex">
-                <div class="form-group col-5 pl-0">
-                    <input name="keyword" class="form-control form-select form-select-md" id="inputTrip" placeholder="請選擇商品" />
-                    <div id="divTrip" class="rounded">
 
-                    </div>
-                </div>
-                
-                <div class="form-group col-4 ">
-                    <input class="form-control form-select form-select-md" id="inputTripDate" placeholder="請選擇日期" />
-                    <div id="divTripDate" class="rounded">
-                    </div>
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  }
+<div class="row justify-content-center pb-4">
+    <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
+        <div class="col-10">
+            <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group fs-5">
+                    <p class="control-label divide-line">文章標題</p>
+                    <input class="form-control" />
+                    @*<span asp-validation-for="Title" class="text-danger"></span>*@
                 </div>
                 <div>
-                    <span class="fs-5" id="showPrice"></span>
-                </div>
-                <div class="form-group col-2">
-                    <input type="button" value="確定" class="btn btn-secondary" />
-                </div>
-            </div>
+                    <p class="fs-5 divide-line">選擇旅行項目與日期</p>
+                    <div class=" divAddTrips">
+                        <div class="d-flex mb-2">
 
-            <div class="form-group col-5 pl-0 fs-5">
-                <label class="control-label">截團日期</label>
-                <input class="form-control" />
-                
-            </div>
-            <div class="form-group fs-5">
-                <label class="control-label"></label>
-                <textarea class="form-control content-input"></textarea>
-                
-            </div>
-            <div class="form-group d-flex justify-content-between">
-                <div class="insert-photo-container">
-                    <img class="insert-photo-gif" src="~/icons/icons8-photo.gif" />
-                    <img class="insert-photo-static" src="~/icons/icons8-photo-64.png" />
+                            <div class="form-group col-6 pl-0 mb-0">
+                                <input name="keyword" class="form-control form-select form-select-md inputTrip" id=""
+                                       placeholder="請選擇旅行項目" />
+                                <div id="" class="rounded divTrip">
+                                </div>
+                            </div>
+                            <div class="form-group col-4 mb-0">
+                                <input class="form-control form-select form-select-md inputTripDate" id="" placeholder="請選擇日期" />
+                                <div id="" class="rounded divTripDate">
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end">
+                                <span class="fs-5 fw-bolder text-block showPrice" id=""></span>
+                            </div>
+                            <div class="ml-2">
+                                <img class="btnDeleteTrip d-none" src="~/icons/icons8-close-48.png" height="36" />
+                               <img class="btnEditTrip d-none" src="~/icons/icons8-edit-48.png" height="36" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <img class="btnPlusTrip" src="~/icons/icons8-btn-plus-create-article-48.png" height="36" />
+                        <div class="d-flex align-items-center"><span class="fs-5 fw-bold text-gray-700">加入更多旅行項目</span></div>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center">
-                    <input type="submit" value="捨棄" class="btn btn-secondary h-75 ml-1" />
-                    <input type="submit" value="儲存草稿" class="btn btn-secondary h-75 ml-1" />
-                    <input id="payment-area" type="submit" value="下一步" class="btn btn-secondary h-75 ml-1" />
+
+                <div class="form-group col-5 pl-0 fs-5">
+                    <p class="control-label divide-line">截團日期</p>
+                    <input class="form-control" />
                 </div>
-            </div>
-            <div class="border border-black">
-                付款區
-            </div>
-        </form>
+                <div class="form-group fs-5">
+                    <textarea id="summernote"></textarea>
+                </div>
+                <div class="form-group d-flex justify-content-end">
+                    <div class="d-flex align-items-center">
+                        <input type="submit" value="捨棄" class="btn btn-secondary ml-1" />
+                        <input type="submit" value="儲存草稿" class="btn btn-secondary ml-1" />
+                        <input id="payment-area" type="submit" value="下一步" class="btn btn-secondary ml-1" />
+                    </div>
+                </div>
+                <div class="border border-black">
+                    付款區
+                </div>
+            </form>
+            <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">返回文章列表</a>
+        </div>
+    </div>
+    <div>
     </div>
 </div>
-<div>
-    <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">返回文章列表</a>
-</div>
+
+
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $('.btnPlusTrip').on('click', function () {
+            $('.btnDeleteTrip').removeClass('d-none');
+            $('.btnEditTrip').removeClass('d-none');
+            const divAddTrips = document.querySelector('.divAddTrips').innerHTML +=
+                `
+                                 <div class="d-flex mb-2">
+                                  <div class="form-group col-6 pl-0 mb-0">
+                                      <input name="keyword" class="form-control form-select form-select-md" id="inputTrip" placeholder="請選擇商品" />
+                                              <div id="" class="rounded divTrip">
+                                      </div>
+                                  </div>
+                                          <div class="form-group col-4 mb-0">
+                                      <input class="form-control form-select form-select-md" id="inputTripDate" placeholder="請選擇日期" />
+                                              <div id="" class="rounded divTripDate">
+                                      </div>
+                                  </div>
+                                  <div>
+                                              <span class="fs-5 showPrice" id=""></span>
+                                          </div>
+                                          <div>
+                                             
+                                                      <img class="btnDeleteTrip d-none" src="/icons/icons8-close-48.png" height="36" />
+                                            <img class="btnEditTrip d-none" src="/icons/icons8-edit-48.png" height="36" />
+                                              </div>
+                                          </div>
+                              </div>
+                                                      `
+            
+        })
+    </script>
     <script>
         //把trip名字放在畫面上
-        const inputTrip = document.querySelector('#inputTrip');
-        const inputTripDate = document.querySelector('#inputTripDate');
-        const divTrip = document.querySelector('#divTrip');
-        const divTripDate = document.querySelector('#divTripDate');
-        const showPrice = document.querySelector('#showPrice');
+        const inputTrip = document.querySelector('.inputTrip');
+        const inputTripDate = document.querySelector('.inputTripDate');
+        const divTrip = document.querySelector('.divTrip');
+        const divTripDate = document.querySelector('.divTripDate');
+        const showPrice = document.querySelector('.showPrice');
         inputTrip.addEventListener('focus', () => {
             loadTrips();
             inputTripDate.value = "";
         })
-  
-        inputTrip.addEventListener('input',()=>{
+
+        inputTrip.addEventListener('input', () => {
             loadTrips(inputTrip.value);
             inputTripDate.value = "";
         })
 
-        
+
 
         async function loadTrips(keyword) {
             const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?keyword=${keyword}`)
             const datas = await resopnse.json();
             if (datas != null) {
-            const trips = datas.map(trip => {
-                const { productName, productId } = trip
-                return (
+                const trips = datas.map(trip => {
+                    const { productName, productId } = trip
+                    return (
                         `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems">${productName}</a>`
-                )
-            })
+                    )
+                })
                 divTrip.innerHTML = trips.join("");
                 const tripOptItems = document.querySelectorAll('.tripOptItems');
-                    tripOptItems.forEach(tripItem => {
-                        tripItem.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const clickedTrip = e.target.textContent;
+                tripOptItems.forEach(tripItem => {
+                    tripItem.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const clickedTrip = e.target.textContent;
                         const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
                         inputTripDate.addEventListener('focus', () => {
                             loadTripDate(productId);
                         })
-                            divTrip.innerHTML = "";
-                            inputTrip.value = clickedTrip;
-                        });
-                    })
+                        divTrip.innerHTML = "";
+                        inputTrip.value = clickedTrip;
+                    });
+                })
             }
         }
 
@@ -123,7 +168,7 @@
             const datas = await response.json();
             if (datas != null) {
                 const dates = datas.map(date => {
-                    const {  price,tripDate } = date
+                    const { price, tripDate } = date
                     return (
                         `<a asp-action="selectDate" asp-route-id="${price}" class="list-group-item list-group-item-action dateOptItems">${tripDate}</a>`
                     )
@@ -141,5 +186,16 @@
             }
         }
     </script>
-}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                placeholder: '請輸入內容...',
+                height: 300 // 設定編輯器的高度
+            });
+        });
+    </script>
 
+  }

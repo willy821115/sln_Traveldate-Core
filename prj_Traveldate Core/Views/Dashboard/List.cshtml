@@ -36,7 +36,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>供應商專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -171,7 +171,7 @@
                                     <select id="selecttype" class="form-select">
                                         @foreach (ProductTypeList type in Model.types)
                                         {
-                                            <option value="@type.ProductTypeId">@type.ProductType</option>
+                                            <option  value="@type.ProductTypeId">@type.ProductType</option>
                                         }
                                     </select>
                                     <label>日期範圍</label>
@@ -201,7 +201,7 @@
                         </tr>
                     </thead>
                     
-                    <tbody>
+                    <tbody id="dashboard">
                        
                         @foreach (var item in Model.ProductDetail) {
                                 <tr>
@@ -245,23 +245,100 @@
 
 </div>
 <!-- End of Page Wrapper -->
-@section Scripts{
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        new DataTable('#dataTable');
-        $('#dashboardcalendar').flatpickr({
-            mode: "range",
-            dateFormat: "Y-m-d"
-         });
-        $('#selecttype').change(function () {
-            var type = $(this).value;
-
-        });
-    </script>
-}
-
 @section Styles{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 }
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script> 
+        new DataTable('#dataTable');
+    $('#dashboardcalendar').flatpickr({
+            mode: "range",
+            dateFormat: "Y-m-d"
+         });
+    </script>
+    <script>
+               
+        async function queryByType(typeID) {
+            const dashboard = document.getElementById('dashboard');
+            const response = await fetch(`@Url.Content("~/Dashboard/queryByType")?typeID=${typeID}`);
+            const datas = await response.json();
+            if (datas != null) 
+            {
+                const rows = datas.map(row => {
+                    const { productName, productDate, email, stock, productType } = row
+                    return(
+                        ` <tr>
+                                                      <td>${productDate}</td>
+                                                       <td>${productType}</td>
+                                                <td>${email}</td>
+                                                        <td>${productName}</td>
+                                                        <td>${stock}</td>
+                         </tr>`
+                    )
+
+                })
+                dashboard.innerHTML = rows.join("");
+            }
+        }
+
+        async function queryByDate(dates) {
+            const dashboard = document.getElementById('dashboard');
+            const response = await fetch(`@Url.Content("~/Dashboard/queryByDate")?dates=${dates}`);
+            const datas = await response.json();
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { productName, productDate, email, stock, productType } = row
+                    return (
+                        ` <tr>
+                                                              <td>${productDate}</td>
+                                                               <td>${productType}</td>
+                                                        <td>${email}</td>
+                                                                <td>${productName}</td>
+                                                                <td>${stock}</td>
+                                 </tr>`
+                    )
+
+                })
+                dashboard.innerHTML = rows.join("");
+            }
+        }
+
+        $('#selecttype').change(function () {
+            var typeID = $(this).val();
+            queryByType(typeID);
+        });
+
+        var inputValue = ""; // 用于存储输入的值
+        var changeCount = 0; // 用于计数值改变的次数
+
+        $('#dashboardcalendar').change(function () {
+
+            var currentInputValue = $(this).val();
+
+            // 检查当前值是否与之前的值不同
+            if (currentInputValue !== inputValue) {
+                changeCount++; // 值改变次数加1
+                inputValue = currentInputValue; // 更新存储的值
+
+                // 当值改变两次时触发事件
+                if (changeCount === 2) {
+                    var dates = $(this).val();
+                    queryByDate(dates);
+
+                    // 在这里执行其他操作，根据输入的值进行不同的处理
+
+                    // 重置计数器，以便下一次触发事件
+                    changeCount = 0;
+                }
+            }
+            
+            
+        });
+
+
+    </script>
+}
+

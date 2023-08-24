@@ -1,0 +1,34 @@
+﻿@model prj_Traveldate_Core.ViewModels.CLoginCompanyViewModel
+@{
+    ViewData["Title"] = "PlatformLogin";
+}
+<h1>平台登入</h1>
+
+<form asp-action="PlatformLogin">
+
+    <div class="mb-3">
+        <label for="clUsername" class="form-label">帳號</label>
+        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" value="yahoo001" />
+        <br>
+
+        <div class="mb-3">
+            <label for="clPassword" class="form-label">密碼</label>
+            <input type="password" class="form-control" id="clPassword" asp-for="clPassword" value="001">
+            <span class="loginAlert ml-1">@ViewBag.Message</span>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">記住密碼</label>
+        </div>
+        <input type="submit" class="btn my-btn-primary" value="登入" />
+        <br>
+    </div>
+</form>
+
+<br>
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }

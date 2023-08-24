@@ -56,18 +56,28 @@
             <!-- Begin Page Content -->
 
             <div class="container-fluid">
+                @if (TempData.ContainsKey("CouponSentMessage"))
+                {
+                    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                        @TempData["CouponSentMessage"]
+                    </div>
+                }
                 <h2 style="margin-top:10px; margin-left:15px">優惠券管理</h2>
 
                 <div class="col-md-16">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">優惠券名稱</h6>
-                           @* <a asp-action="Create" class="btn btn-success">新增優惠券</a>*@
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCoupon">新增優惠券</button>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn my-btn-primary mr-2" data-toggle="modal" data-target="#createCoupon">新增優惠券</button>
+                                <a asp-action="Send" class="btn btn-success">
+                                    發放優惠券 <i class="fas fa-paper-plane"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable" class="display" style="width:100%">
+                                <table id="datatable" class="display">
                                     <thead>
                                         <tr>
                                             <th>id</th>
@@ -77,7 +87,7 @@
                                             <th>截止日</th>
                                             <th>照片</th>
                                             <th>發放／使用數量</th>
-                                            <th>發放</th>
+                                            <th>修改</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,14 +107,16 @@
                                                 <td>
                                                     @string.Format("{0:yyyy-MM-dd}", item.DueDate)
                                                 </td>
-                                                <td>
-                                                    <img src="~/Images/@item.ImagePath" class="w-25" alt="noimages" />
+                                                <td class="imagetd">
+                                                    <img src="~/Images/@item.ImagePath" class="couponImg img-thumbnail" alt="noimages" />
                                                 </td>
-                                                <td>
+                                                <td class ="counum">
                                                     @item.CouponNum/@item.CouponUsedNum
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditCoupon" onclick="openEditModal('@item.CouponListId', '@item.CouponName', '@item.Discount', '@item.Description', '@string.Format("{0:yyyy-MM-dd}", item.DueDate)')">修改</button> | @Html.ActionLink("發放", "Send", new { id = item.CouponListId })
+                                                    <img class="btn" src="~/icons/edit_pencil_icon.png"
+                                                         onclick="openEditModal('@item.CouponListId', '@item.CouponName', '@item.Discount', '@item.Description', '@string.Format("{0:yyyy-MM-dd}", item.DueDate)')"
+                                                         data-toggle="modal" data-target="#EditCoupon" />
                                                 </td>
                                             </tr>
                                         }
@@ -127,7 +139,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">新增優惠券</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">x</span>
                             </button>
                         </div>
                         <div class="modal-body">
@@ -154,8 +166,8 @@
                                     <img id="imagePreview" class="w-100 mt-5" />
                                 </div>
                                 <div class="form-group">
-                                    <a asp-action="Coupon" class="btn btn-primary">取消</a>
-                                    <input type="submit" value="新增優惠券" class="btn btn-primary" />
+                                    <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
+                                    <input type="submit" value="新增優惠券" class="btn my-btn-primary" />
                                 </div>
                             </form>
                         </div>
@@ -170,9 +182,6 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">修改優惠券</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
                         <div class="modal-body">
                             <form action="/Platform/EditCoupon" method="post" enctype="multipart/form-data">
@@ -199,8 +208,8 @@
                                     <img id="imagePreview" class="w-100" />
                                 </div>
                                 <div class="form-group">
-                                    <a asp-action="Coupon" class="btn btn-primary">取消</a>
-                                    <input type="submit" value="確認修改" class="btn btn-primary" />
+                                    <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
+                                    <input type="submit" value="確認修改" class="btn my-btn-primary" />
                                 </div>
                             </form>
                         </div>
@@ -216,13 +225,26 @@
     </div>
     <!-- End of Page Wrapper -->
     @section Styles{
+        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
         <style>
             .card-body {
                 height: unset;
             }
+            .imagetd{
+                width: 100px;
+            }
+
+            .couponImg{
+                width:60px;
+            }
+
+            .counum{
+                width: 100px;
+            }
 
         </style>
-        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
+       
+
     }
 
     @section Scripts{
@@ -272,13 +294,22 @@
                 $('#EditCouponName').val(name);
                 $('#EditDiscount').val(discount);
                 $('#EditDescription').val(description);
-                var formattedDueDate = formatDate(new Date(dueDate)); // 格式化日期
-                $('#EditDueDate').val(formattedDueDate); // 设置日期输入框的值
+                var formattedDueDate = formatDate(new Date(dueDate)); 
+                $('#EditDueDate').val(formattedDueDate); 
                 console.log(formattedDueDate);
 
                 $('#EditCoupon').modal('show');
             }
 
+            $(document).ready(function () {
+                var successMessage = $('#successMessage');
+                if (successMessage.length > 0) {
+                    successMessage.fadeIn();
+                    setTimeout(function () {
+                        successMessage.fadeOut();
+                    }, 3000);
+                }
+            });
         </script>
     }
 

@@ -7,7 +7,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class PlatformController : Controller
+    public class PlatformController : PlatformSuperController
     {
         private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
         public PlatformController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
@@ -183,72 +183,135 @@ namespace prj_Traveldate_Core.Controllers
 
 
 
-        public IActionResult Send(int id)
+        public IActionResult Send()
         {
             TraveldateContext db = new TraveldateContext();
-            // 根據 CouponListId 取得優惠券資訊
-            var coupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == id);
 
-            if (coupon == null)
-            {
-                // 優惠券不存在，處理異常情況
-                return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
-            }
-
-            // 取得所有會員，供選擇會員進行發放
-            var members = db.Members.ToList();
-
-            // 將優惠券和會員列表傳遞到 View
             var viewModel = new CCouponSendViewModel
             {
-                Coupon = coupon,
-                Members = members
+               Coupons = db.CouponLists.ToList(),
+                Members = db.Members.ToList()
             };
-
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult SendCoupon(int SelectedMemberId, int CouponListId)
+        public IActionResult Send(CCouponSendViewModel vm)
         {
             TraveldateContext db = new TraveldateContext();
-            var coupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == CouponListId);
-            var member = db.Members.FirstOrDefault(m => m.MemberId == SelectedMemberId);
+            var selectedCoupon = db.CouponLists.FirstOrDefault(c => c.CouponListId == vm.SelectedCouponId);
 
-            if (coupon == null || member == null)
+            if (selectedCoupon != null)
             {
-                // 優惠券或會員不存在，處理異常情況
-                return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
+                List<int> memberIdsToSend = new List<int>();
+
+                if (vm.SendToAllMembers)
+                {
+                    memberIdsToSend = db.Members.Select(m => m.MemberId).ToList();
+                }
+                else
+                {
+                    if (vm.SendToNormalMembers)
+                    {
+                        var normalMemberIds = db.Members.Where(m => m.LevelId == 1).Select(m => m.MemberId).ToList();
+                        memberIdsToSend.AddRange(normalMemberIds);
+                    }
+                    if (vm.SendToSilverMembers)
+                    {
+                        var silverMemberIds = db.Members.Where(m => m.LevelId == 2).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(silverMemberIds);
+                    }
+                    if (vm.SendToGoldMembers)
+                    {
+                        var goldMemberIds = db.Members.Where(m => m.LevelId == 3).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(goldMemberIds);
+                    }
+                    if (vm.SendToDiamondMembers)
+                    {
+                        var diamondMemberIds = db.Members.Where(m => m.LevelId == 4).Select(m => m.MemberId);
+                        memberIdsToSend.AddRange(diamondMemberIds);
+                    }
+                }
+
+                foreach (var memberId in memberIdsToSend)
+                {
+                    var coupon = new Coupon
+                    {
+                        CouponListId = selectedCoupon.CouponListId,
+                        MemberId = memberId
+                    };
+                    db.Coupons.Add(coupon);
+                }
+
+                db.SaveChanges();
+
+                TempData["CouponSentMessage"] = "優惠券已成功發放";
+                return RedirectToAction("Coupon");
             }
 
-            // 執行優惠券發放的邏輯，例如建立關聯表等
-
-            return RedirectToAction("Coupon"); // 假設這是返回到優惠券列表的動作
+            return View(vm);
         }
 
 
-
-
         [HttpPost]
-        public ActionResult DisableMember(int memberId, bool enable)
+        public ActionResult SusMember(int memberId)
         {
-            try
-            {
                 TraveldateContext db = new TraveldateContext();
                 var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
 
                 if (member != null)
                 {
-                    member.Enable = enable; 
-                    db.SaveChanges();
-                    return Content(enable.ToString());
+                    if(member.Enable == true)
+                    {
+                        member.Enable = false;
                 }
+                    else if(member.Enable == false)
+                        {
+                            member.Enable = true;
+                }
+                db.SaveChanges();
+                return RedirectToAction("AccountSuspend");
+            }
                 return Content("沒有此會員");
-            }
-            catch (Exception ex)
+        }
+
+        [HttpPost]
+        public ActionResult SusAllMember(List<int> memberIds)
+        {
+            using (var db = new TraveldateContext())
             {
-                return Content("");
+                foreach (var memberId in memberIds)
+                {
+                    var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+
+                    if (member != null)
+                    {
+                        member.Enable = !member.Enable; 
+                    }
+                }
+                db.SaveChanges();
             }
+
+            return RedirectToAction("AccountSuspend");
+        }
+
+
+        [HttpPost]
+        public ActionResult DisableMember(int memberId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+
+            if (member != null)
+            {
+                member.Enable = !member.Enable; // Toggle the status
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, message = "沒有此會員" });
         }
         [HttpPost]
         public IActionResult BulkDisableMembers(List<int> memberIds, bool enable)
@@ -276,26 +339,58 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult GetProductDetails(int productId)
         {
             TraveldateContext db = new TraveldateContext();
-            var product = (from p in db.ProductLists where p.ProductId == productId select p)
-                          .FirstOrDefault();
+            var product = db.ProductLists.FirstOrDefault(p => p.ProductId == productId);
 
-                var productDetails = new
+            if (product != null)
+            {
+                var city = db.CityLists.FirstOrDefault(c => c.CityId == product.CityId);
+                var protype = db.ProductTypeLists.FirstOrDefault(c => c.ProductTypeId == product.ProductTypeId);
+                var tripdetail = db.TripDetails.Where(t=>t.ProductId == product.ProductId ).Select(t=>t.TripDetail1).ToList();
+
+                if (city != null)
                 {
-                    ProductName = product.ProductName,
-                    city = product.CityId,
-                    description = product.Description,
-                    planName = product.PlanName,
-                    plandescription = product.PlanDescription,
-                    outline = product.Outline,
-                    outlineforsearch = product.OutlineForSearch,
-                    address = product.Address,
-                };
+                    var productDetails = new
+                    {
+                        ProductName = product.ProductName,
+                        ProductType = protype.ProductType,
+                        CityName = city.City,
+                        Description = product.Description,
+                        PlanName = product.PlanName,
+                        PlanDescription = product.PlanDescription,
+                        Outline = product.Outline,
+                        OutlineForSearch = product.OutlineForSearch,
+                        Address = product.Address,
+                    };
 
-                return Json(productDetails);
-            
+                    return Json(productDetails);
+                }
+            }
+
+            return NotFound();
+
         }
 
-        
+
+        [HttpGet]
+        public IActionResult CouponDetails(int couponId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var couponDetails = db.CouponLists.FirstOrDefault(c => c.CouponListId == couponId);
+            if (couponDetails == null)
+            {
+                return Content("no data"); 
+            }
+
+            return Json(new
+            {
+                couponName = couponDetails.CouponName,
+                couponDiscount = couponDetails.Discount,
+                couponDescription = couponDetails.Description,
+                couponImage = couponDetails.ImagePath
+            });
+        }
+
+
 
         public ActionResult content1()
         {
