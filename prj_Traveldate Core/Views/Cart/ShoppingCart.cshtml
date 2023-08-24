@@ -57,13 +57,13 @@
                 <div class="checkboxes">
                         <img class="checkbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
                         <img class="uncheckbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
-                    <input type="checkbox" id="prodcb" checked>
+                        <input type="checkbox" class="form-check-input prodcb" id="orderDetailID" name="orderDetailID" value="@item.orderDetailID" checked>
                 </div>
                 <div class="image-box">
-                        <img class="prodimg" src="data:image/jpg;base64,@Convert.ToBase64String(item.photo)" />
+                        <img class="prodimg" src="~/images/@item.ImagePath" />
                 </div>
                 <div class="about">
-                    <h1 class="title">@item.planName</h1>
+                        <h1 class="title">@item.planName + @item.orderDetailID</h1>
                         <h3 class="subtitle">@item.date</h3>
                 </div>
                 <div class="counter">
@@ -74,9 +74,29 @@
                 <div class="prices d-flex flex-column justify-content-between">
                     <div>
                         <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal">
-                        <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
-                        <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
-                        <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
+                            @{
+                                if (!item.favo)
+                                {
+                                    <a asp-controller="CartApi" asp-action="AddToFavo" name="pdid" asp-route-id="@item.productID">
+                                        <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
+                                    </a>
+                                    <a asp-controller="CartApi" asp-action="DeleFromFavo" name="pdid" asp-route-id="@item.productID" style="display:none">
+                                        <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="CartApi" asp-action="AddToFavo" asp-route-id="@item.productID" style="display:none">
+                                        <img src="~/icons/icons8-like-48 (1).png" class="CartIconbtn cartLike">
+                                    </a>
+                                    <a asp-controller="CartApi" asp-action="DeleFromFavo" asp-route-id="@item.productID">
+                                        <img src="~/icons/icons8-like-48.png" class="CartIconbtn cartUnlike">
+                                    </a>
+                                }
+                            }
+                            <a asp-controller="CartApi" asp-action="DeleFromCart" asp-route-id="@item.orderDetailID">
+                                <img src="~/icons/icons8-close-48.png" class="CartIconbtn cartDele">
+                            </a>
                     </div>
                     <div class="mt-2">
                         <span class="amount">NTD </span>
@@ -117,7 +137,7 @@
             <img class="uncheckall CartIconbtn" src="~/icons/icons8-check-all-48.png" />
             <input type="checkbox" id="selectall">
             <label for="selectall" class="mr-2">全選</label>
-            <span class="btn btn-outline-dark btn-sm">刪除所有已選項目</span>
+            <button asp-controller="CartApi" asp-action="DeleAll" class="btn btn-outline-dark btn-sm">刪除所有已選項目</button>
         </div>
         <div class="checkout m-auto">
             <div>
@@ -135,12 +155,12 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="mt-2 btn my-btn-primary btn-lg" value="去結帳" />
+            <input asp-action="ConfirmOrder" id="GoConfirm" type="submit" class="mt-2 btn my-btn-primary btn-lg" value="去結帳" />
         </div>
     </div>
 }
 
-<h4 class="mt-lg-4" style="color: #155074;font-weight:600;">您可能也會喜歡...</h4>
+<h4 class="mt-lg-5" style="color: #155074;font-weight:600;">您可能也會喜歡...</h4>
 <div class="card-deck">
     <div class="card">
                 <img class="card-img-top" src="~/images/熱門1.jpg" alt="澎湖｜一日遊 吉貝暢玩水上活動＆來回船票">
@@ -229,5 +249,10 @@
 @section Scripts{
     <script src="~/js/jsCart.js"></script>
     <script src="~/js/jquery-3.4.1.js"></script>
+    <script>
+        $('#GoConfirm').on('click', function(){
+            
+        })
+    </script>
 }
 
