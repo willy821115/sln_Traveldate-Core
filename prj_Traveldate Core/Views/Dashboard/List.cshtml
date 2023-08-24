@@ -36,7 +36,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>供應商專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -171,7 +171,7 @@
                                     <select id="selecttype" class="form-select">
                                         @foreach (ProductTypeList type in Model.types)
                                         {
-                                            <option value="@type.ProductTypeId">@type.ProductType</option>
+                                            <option  value="@type.ProductTypeId">@type.ProductType</option>
                                         }
                                     </select>
                                     <label>日期範圍</label>
@@ -245,23 +245,35 @@
 
 </div>
 <!-- End of Page Wrapper -->
-@section Scripts{
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        new DataTable('#dataTable');
-        $('#dashboardcalendar').flatpickr({
-            mode: "range",
-            dateFormat: "Y-m-d"
-         });
-        $('#selecttype').change(function () {
-            var type = $(this).value;
-
-        });
-    </script>
-}
-
 @section Styles{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 }
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script> 
+        new DataTable('#dataTable');
+    $('#dashboardcalendar').flatpickr({
+            mode: "range",
+            dateFormat: "Y-m-d"
+         });
+    </script>
+    <script>
+               
+        async function queryByType(typeID) {
+            const response = await fetch(`@Url.Content("~/Dashboard/queryByType")?typeID=${typeID}`);
+            const datas = await response.json();
+            if (datas != null) 
+            {
+                console.log(datas)
+            }
+        }
+        $('#selecttype').change(function () {
+            var typeID = $(this).val();
+            console.log(typeID);
+            queryByType(typeID);
+        });
+    </script>
+}
+
