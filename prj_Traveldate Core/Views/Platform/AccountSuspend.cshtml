@@ -23,7 +23,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="~/Platform/Review">
+            <a class="nav-link align-items-center" href="~/Platform/Review">
                 <span>行程審核</span>
             </a>
         </li>
@@ -101,8 +101,8 @@
                                     @foreach (var member in Model.Members)
                                     {
                                         <tr>
-                                           　<td><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
-                                            <td>@member.LastName@member.FirstName</td>
+                                           　<td class="chkbox"><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
+                                                    <td class="memname">@member.LastName@member.FirstName</td>
                                             <td>@member.Gender</td>
                                             <td>@member.Idnumber</td>
                                             <td>@member.BirthDate.ToShortDateString()</td>
@@ -192,6 +192,8 @@
     </div>
     <!-- End of Page Wrapper -->
     @section Styles{
+
+    <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
         <style>
             .card-body {
                 height: unset;
@@ -256,8 +258,14 @@
                 content: none !important;
             }
 
+        .chkbox{
+            width:15px;
+        }
+
+        .memname{
+            width:80px;
+        }
         </style>
-        <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
     }
 
 @section Scripts{

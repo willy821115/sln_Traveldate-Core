@@ -88,6 +88,7 @@ namespace prj_Traveldate_Core.Controllers
         public ActionResult CompanySignUp(Company c)
         {
             TraveldateContext db = new TraveldateContext();
+            c.Enable = true;
             db.Companies.Add(c);
             db.SaveChanges();
             return RedirectToAction("CompanyLogin", "Login");

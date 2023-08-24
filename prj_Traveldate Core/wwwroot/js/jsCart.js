@@ -4,6 +4,7 @@
     $('.uncheckall').hide();
     $('.uncheckall').prev('.checkall').show();
     $(this).closest('.Cart-Items').removeClass("cartChecked");
+    $(this).siblings('.prodcb').prop("checked", false);
     calculateTotalPrice();
 });
 
@@ -11,6 +12,7 @@ $('.checkbox').on('click', function () {
     $(this).hide();
     $(this).next('.uncheckbox').show();
     $(this).closest('.Cart-Items').addClass("cartChecked");
+    $(this).siblings('.prodcb').prop("checked", true);
     calculateTotalPrice();
 });
 
@@ -20,6 +22,7 @@ $('.uncheckall').on('click', function () {
     $('.Cart-Items .uncheckbox').hide();
     $('.Cart-Items .checkbox').show();
     $('.Cart-Items').removeClass("cartChecked");
+    $('.Cart-Items .prodcb').prop("checked", false);
     calculateTotalPrice();
 });
 
@@ -29,18 +32,19 @@ $('.checkall').on('click', function () {
     $('.Cart-Items .uncheckbox').show();
     $('.Cart-Items .checkbox').hide();
     $('.Cart-Items').addClass("cartChecked");
+    $('.Cart-Items .prodcb').prop("checked", true);
     calculateTotalPrice();
 });
 
-$('.cartLike').on('click', function () {
-    $(this).hide();
-    $(this).next('.cartUnlike').show();
-});
+//$('.cartLike').on('click', function () {
+//    $(this).hide();
+//    $(this).next('.cartUnlike').show();
+//});
 
-$('.cartUnlike').on('click', function () {
-    $(this).hide();
-    $(this).prev('.cartLike').show();
-});
+//$('.cartUnlike').on('click', function () {
+//    $(this).hide();
+//    $(this).prev('.cartLike').show();
+//});
 
 function calculateTotalPrice() {
     let totalPrice = 0;

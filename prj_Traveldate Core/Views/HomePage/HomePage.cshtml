@@ -49,23 +49,25 @@
                     <div class="card" style="width: 340px; border-radius: 20px">
                         <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                         <div class="card-body">
+                            <div class="flame-icon"></div> 
                             <p class="card-text">@p.productName</p>
                             <p class="card-text">
                                 價格：＄@p.unitPrice
                                 <br />
-                                <div class="rating-container">
-                                    <span class="rating-text">評價：@p.commentScore/5</span>
-                                    <div class="rating">
-                                        <div class="stars">
-                                            <div class="star-container">
-                                                @for (int i = 1; i <= 5; i++)
-                                                {
-                                                    <div class="star @GetStarClass(p.commentScore, i)"></div>
-                                                }
+                                    <div class="rating-container">
+                                        <span class="rating-text">評價：@p.commentScore/5</span>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <div class="star-container">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        <div class="star @GetStarClass(p.commentScore, i)"></div>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+
                             </p>
                         </div>
                     </div>
@@ -101,6 +103,7 @@
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                                 <div class="card-body">
+                                    <div class="top-icon"></div>
                                     <p class="card-text">@p.productName</p>
                                     <p class="card-text">
                                         價格：＄@p.unitPrice
@@ -149,6 +152,7 @@
                             <div class="card" style="width: 17rem; border-radius: 20px">
                                 <img src="~/images/@p.ImagePath" style="border-radius: 20px 20px 0 0 " class="card-img-top" alt="..." />
                                 <div class="card-body">
+                                    <div class="discount-icon"></div>
                                     <p class="card-text">@p.productName</p>
                                     <p class="card-text">
                                         價格：＄@p.unitPrice
@@ -227,11 +231,12 @@
         if (rating.HasValue)
         {
             int filledStars = (int)Math.Floor(rating.Value);
+            double remainder = rating.Value - filledStars;
             if (index <= filledStars)
             {
                 return "active";
             }
-            else if (index == filledStars + 1 && rating.Value % 1 > 0)
+            else if (index == filledStars + 1 && remainder >= 0.5)
             {
                 return "half-filled";
             }
@@ -253,32 +258,45 @@
 
 
     <style>
-        .rating {
-            display: inline-block;
-            font-size: 0; /* Remove whitespace between stars */
+
+
+        .flame-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px; /* 调整火焰图标在垂直方向上的位置 */
+            left: 5px; /* 调整火焰图标在水平方向上的位置 */
+            background-image: url('images/fire.png'); /* 设置火焰图标的图片路径 */     
+            background-size: cover; /* 调整图标大小以填充容器 */
+            z-index: 100; /* 或更高的值 */
         }
 
-        .stars {
-            display: inline-block;
-            position: relative;
+
+        .top-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px; 
+            left: 5px;
+            background-image: url('images/top.png');
+            background-size: cover; 
+            z-index: 100;
         }
 
-        .star {
-            display: inline-block;
-            width: 13px;
-            height: 13px;
-            background-color: gray;
-            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
-            margin-right: 2px;
-            transition: transform 0.3s ease-in-out; /* 添加動畫過渡效果 */
+        .discount-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 5px;
+            left: 5px;
+            background-image: url('images/discount.png');
+            background-size: cover;
+            z-index: 100;
         }
 
-            /* Adjust the color of stars based on rating */
-            .star.active {
-                background-color: #00F0F0;
-                clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
-              
-            }
+
+
+
 
         .rating-container {
             display: flex;
@@ -286,10 +304,30 @@
         }
 
         .rating-text {
-       
             text-align: left;
             margin-right: 5px;
         }
+
+        .star {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            background-color: gray;
+            margin-right: 2px;
+            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+            transition: transform 0.3s ease-in-out;
+        }
+     
+        .star.active {
+            background-color: #00F0F0;
+            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+              
+        }
+
+        .half-filled {
+            background: linear-gradient(to right, #00F0F0 50%, gray 50%);
+        }
+
 
         /* 全局樣式 */
         body {

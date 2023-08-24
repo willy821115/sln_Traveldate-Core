@@ -1,0 +1,26 @@
+﻿.downlabel label:hover,
+.downlabel a:hover {
+    color: #9BE8D8; /* 滑鼠滑過時的文字顏色 */
+}
+
+.downlabel label {
+    margin-right: 30px;
+    font-size: 16px;
+}
+
+/* 定義輸入框的默認樣式 */
+.form-control {
+    border: 3px solid #ccc; /* 默認的邊框顏色 */
+    border-radius: 10px;
+    width: 500px;
+}
+
+    /* 定義輸入框在聚焦時的樣式 */
+    .form-control:focus {
+        border-color: #E2F6CA; /* 選中時將邊框顏色更改為 #9BE8D8 */
+        outline: none; /* 這將移除默認的聚焦輪廓（藍色輪廓） */
+    }
+
+.form-label {
+    color: #155074
+}
