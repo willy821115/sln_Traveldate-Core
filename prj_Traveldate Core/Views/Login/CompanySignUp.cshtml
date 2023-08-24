@@ -23,13 +23,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
+                <select asp-for="Country" class="form-control" asp-items="ViewBag.Country"></select>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <select asp-for="City" class="form-control" asp-items="ViewBag.City"></select>
             </div>
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
@@ -81,6 +80,7 @@
                 <input asp-for="ServerDescription" class="form-control" />
                 <span asp-validation-for="ServerDescription" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="Enable" class="form-control" value="1" />
             <div class="form-group">
                 <input type="submit" value="送出資料" class="btn my-btn-primary" />
             </div>

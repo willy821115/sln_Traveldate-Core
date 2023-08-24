@@ -41,12 +41,13 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    border-radius: 10px;
 }
 
     .image-box .prodimg {
         width: 100%;
         object-fit: contain;
-        /*border-radius: 10px;*/
+        border-radius: 10px;
     }
 
 .CommonButton {
@@ -130,13 +131,17 @@
 }
 
 .Cart-Items {
-    margin: 2% auto;
+    margin: 0.5em auto;
+    padding: 0.5em 2em; 
     width: 90%;
     height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+    .Cart-Items:hover{
+        background-color: whitesmoke;
+    }
 .about {
     height: 100%;
     width: 40%;

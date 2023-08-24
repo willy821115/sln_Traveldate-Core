@@ -41,8 +41,10 @@
             set { _coupon.ImagePath = value; }
         }
 
-       
 
+        public IFormFile? photo { get; set; }
+        public int CouponNum { get; set; }
+        public int CouponUsedNum { get; set; }
 
     }
 }

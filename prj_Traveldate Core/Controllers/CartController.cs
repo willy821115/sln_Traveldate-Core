@@ -65,6 +65,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public ActionResult CompleteOrder()
         {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             ViewData["email"] = _context.Members.Find(_memberID).Email;
             return View();
         }

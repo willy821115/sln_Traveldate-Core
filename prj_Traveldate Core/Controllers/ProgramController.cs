@@ -30,6 +30,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fComMem=pf.loadCommentMem((int)id);
             vm.program.fPlanPrice = pf.loadPlanprice((int)id);
             vm.program.fTripDetails = pf.loadTripdetails((int)id);
+            vm.program.fTTripPhotoList = pf.loadTripPhoto((int)id);
             vm.program.fTripPrice = pf.loadPlanpriceStart((int)id);
             vm.program.fComMemGender= pf.memgender((int)id);
             vm.program.fCommentDate = pf.loadCommentDate((int)id);
