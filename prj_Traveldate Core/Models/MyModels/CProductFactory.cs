@@ -199,6 +199,11 @@ namespace prj_Traveldate_Core.Models.MyModels
             List<string> tripdetail = db.TripDetails.Where(td => td.ProductId == id).OrderBy(t => t.TripDay).Select(t => t.TripDetail1).ToList();
             return tripdetail;
         }
+        public List<string> loadTripPhoto(int id)
+        {
+            List<string> tripphoto = db.TripDetails.Where(td => td.ProductId == id).OrderBy(t => t.TripDay).Select(t => t.ImagePath).ToList();
+            return tripphoto;
+        }
 
 
 
