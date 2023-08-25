@@ -59,7 +59,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="~/Product/List">產品列表</a>
                     <a class="collapse-item" href="~/Product/Create">新增產品</a>
-                    <a class="collapse-item" href="~/Trip/List">產品行程</a>
+                    <a class="collapse-item" href="~/Trip/List">產品日期</a>
                 </div>
             </div>
         </li>
@@ -96,20 +96,40 @@
                             </div>
                             <div class="card-body">
                                 <div>
-                                    <label>產品類型</label>
-                                    <select class="form-select">
-                                        @foreach (ProductTypeList type in Model.types)
+                                     <div>
+                                        <label>產品類型</label>
+                                        @* <select id="selecttype" class="form-select">
+                                        @foreach (ProductTypeList type in Model.types )
                                         {
-                                            <option value="@type.ProductTypeId">@type.ProductType</option>
+                                        <option value="@type.ProductTypeId">@type.ProductType</option>
                                         }
-                                    </select>
-                                    <label>審核狀態</label>
-                                    <select class="form-select">
-                                    @foreach (string status in Model.statuses)
-                                    {
-                                        <option value="@status">@status</option>
-                                    }
-                                    </select>
+                                        </select> *@
+                                        <div>
+                                            @{
+                                                int j = 0;
+                                                foreach (ProductTypeList type in Model.types)
+                                            {
+                                                    <input class="typeradio" type="radio" value="@type.ProductTypeId" name="type" id="typeradio @j" />
+                                                    <label for="typeradio @j" class="control-label">@type.ProductType</label>
+                                                    j++;
+                                                }
+                                            }
+                                        </div>
+                                        <label>審核狀態</label>
+                                        <div>
+                                            <input class="statusradio" type="radio" value="1" name="status" id="statusradio1" />
+                                            <label for="statusradio1" class="control-label">已審核</label>
+
+                                            <input class="statusradio" type="radio" value="2" name="status" id="statusradio2" />
+                                            <label for="statusradio2" class="control-label">待審核</label>
+
+                                            <input class="statusradio" type="radio" value="3" name="status" id="statusradio3" />
+                                            <label for="statusradio3" class="control-label">退審</label>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
                                
                                 

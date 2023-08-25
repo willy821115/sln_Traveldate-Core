@@ -59,7 +59,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="~/Product/List">產品列表</a>
                     <a class="collapse-item" href="~/Product/Create">新增產品</a>
-                    <a class="collapse-item" href="~/Trip/List">產品行程</a>
+                    <a class="collapse-item" href="~/Trip/List">產品日期</a>
                 </div>
             </div>
         </li>
@@ -168,12 +168,23 @@
                               
                                 <div>
                                     <label>產品類型</label>
-                                    <select id="selecttype" class="form-select">
+                                    <div>
+                                    @* <select id="selecttype" class="form-select">
                                         @foreach (ProductTypeList type in Model.types)
                                         {
                                             <option  value="@type.ProductTypeId">@type.ProductType</option>
                                         }
-                                    </select>
+                                    </select> *@
+                                        @{
+                                            int i = 0;
+                                            foreach (ProductTypeList type in Model.types)
+                                    {
+                                                <input class="typeradio" type="radio" value="@type.ProductTypeId" name="type" id="typeradio @i" />
+                                                <label for="typeradio @i" class="control-label">@type.ProductType</label>
+                                                i++;
+                                            }
+                                        }
+                                    </div>
                                     <label>日期範圍</label>
                                     <input type="text" id="dashboardcalendar" class="form-control" />
                                     
@@ -318,7 +329,7 @@
             }
         }
 
-        $('#selecttype').change(function () {
+        $('.typeradio').change(function () {
             var typeID = $(this).val();
             queryByType(typeID);
         });
