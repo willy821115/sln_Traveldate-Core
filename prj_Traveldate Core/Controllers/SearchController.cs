@@ -113,7 +113,7 @@ namespace prj_Traveldate_Core.Controllers
             return Json(filterCitiess);
         }
 
-        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice, int page)
+        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice, int page=1)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo();
             //有篩選條件做篩選
