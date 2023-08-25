@@ -65,7 +65,7 @@
 
                 <div id="rightPanel">
 
-                @using (Html.BeginForm("addcommentCreate", "Member", FormMethod.Post))
+                @using (Html.BeginForm("addcomment", "Member", FormMethod.Post))
                 {
                     <h3 class="mb-4"><b>新增評論</b></h3>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -112,7 +112,7 @@
 
 
                     <div class="form-group">
-                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("儲存", "orderList","Member","",new {@class="black-link2"})</td></button>
+                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">儲存</td></button>
                         <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                     </div>
                 }
