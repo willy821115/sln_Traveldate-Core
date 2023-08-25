@@ -39,6 +39,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fComContent = pf.loadCommentContent((int)id);
             vm.program.fStatus = pf.loadStatus((int)id);
             vm.product.ProductId = (int)id;
+            vm.program.fProdTags = pf.loadProductTags((int)id);
             return View(vm);
         }
         
