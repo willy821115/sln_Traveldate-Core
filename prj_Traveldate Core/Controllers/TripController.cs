@@ -56,6 +56,7 @@ namespace prj_Traveldate_Core.Controllers
             //                list.cTripWraps.Add(tr);
             //             }
             list.types = cProductFactory.loadTypes();
+            list.statuses = cProductFactory.loadStauts();
             return View(list);
         }
 

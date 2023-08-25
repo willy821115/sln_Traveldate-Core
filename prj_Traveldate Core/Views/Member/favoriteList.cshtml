@@ -90,12 +90,14 @@
                                    <td>@item.ProductId </td> *@
                             <td>@item.ProductName </td>
                     <td>@item.Outline </td>
-                    @using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
+                    @* using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
                     {
                         <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
-                    }
+                    } *@
+                    <td>@Html.ActionLink("移除", "favoriteListDelete","Member","",new {@class="black-link"})</td>
                         </tr>
                         }
+             @* new{favoriteID=item.} *@
     </tbody>
 </table>
 }

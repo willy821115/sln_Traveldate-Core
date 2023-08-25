@@ -90,7 +90,7 @@
                                                     <h5 class="card-title fw-bold" id="couponName"></h5>
                                                     <p>優惠折扣數：<span id="couponDiscount"></span></p>
                                                     <p>描述：<span id="couponDescription"></span></p>
-                                                    <p>優惠到期日： <span id=""></span></p>
+                                                    <p>優惠到期日： <span id="couponDate"></span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,10 +158,12 @@
                 const couponDiscountSpan = document.getElementById("couponDiscount");
                 const couponDescriptionSpan = document.getElementById("couponDescription");
                 const couponImage = document.getElementById("couponImage");
+                const couponDateSpan = document.getElementById("couponDate");
 
                 couponNameSpan.textContent = data.couponName;
                 couponDiscountSpan.textContent = data.couponDiscount;
                 couponDescriptionSpan.textContent = data.couponDescription;
+                couponDateSpan.textContent = data.couponDate;
                 couponImage.src = /images/+data.couponImage;
                 console.log(data.couponImage);
                 document.getElementById("couponDetails").style.display = "block";

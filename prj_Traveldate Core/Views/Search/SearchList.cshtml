@@ -236,7 +236,7 @@
                     <span>　|　</span>
                     <a id="sortByPrice" href="#" class=" fw-bolder" name="status">價格排序(低到高)</a>
                     <span>　|　</span>
-                    <a id="sortByStock" href="#" class=" fw-bolder" name="status">即將售完</a>
+                    <a id="sortByStock" href="#" class=" fw-bolder" name="status">即將額滿</a>
                 </div>
             </div>
             <div class="alert alert-light d-none">
@@ -358,7 +358,8 @@
                 data: {
                     tags: selectedTags, cities: selectedCities, types: selectedTypes,
                     startTime: startTime, endTime: endTime,
-                    minPrice: minPrice, maxPrice: maxPrice
+                    minPrice: minPrice, maxPrice: maxPrice,
+                   page: pageNumber
                 },
                 success: function (response) {
                     hideLoadingIcon()

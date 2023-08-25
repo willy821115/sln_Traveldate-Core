@@ -98,7 +98,7 @@ namespace prj_Traveldate_Core.Controllers
                     db.ProductTagLists.Add(t);
                 }
             }
-
+            //輪播圖
             //存入ProductPhotoList            
             if (pro.photos != null) 
             {

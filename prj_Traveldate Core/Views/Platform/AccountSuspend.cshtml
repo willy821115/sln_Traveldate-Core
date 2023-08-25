@@ -56,130 +56,165 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <h2 style="margin-top:10px; margin-left:15px">會員／旅行社停權管理</h2>
+                
+                    <ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom:none !important; padding-left:18px">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">會員停權管理</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">供應商停權管理</button>
+                        </li>
+                    </ul>
 
-            <div class="col-md-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <div class="tab">
-                                <button class="tablinks m-0 font-weight-bold text-primary" onclick="openAccount(event, 'Member')">會員停權</button>
-                                <button class="tablinks m-0 font-weight-bold text-primary" onclick="openAccount(event, 'Company')">旅行社停權</button>
-                        </div>
-                    </div>
-                <div id="Member" class="tabcontent">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                                    <form id="bulkDisableForm">
-                                        <div style="display: flex; align-items: center;">
-                                            <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
-                                            <div style="margin-left: 10px; display: flex; align-items: center;">
-                                                <label style="margin-right: 10px;">會員狀態</label>
-                                                <select class="form-select" name="memberSelect">
-                                                    <option value="all">全部狀態</option>
-                                                    <option value="false">停權會員</option>
-                                                    <option value="true">正常會員</option>
-                                                </select>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">會員停權</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <form id="bulkDisableForm">
+                                            <div style="display: flex; align-items: center;">
+                                                <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
+                                                <div style="margin-left: 10px; display: flex; align-items: center;">
+                                                    <label style="margin-right: 10px;">會員狀態</label>
+                                                    <select class="form-select" name="memberSelect">
+                                                        <option value="all">全部狀態</option>
+                                                        <option value="false">停權會員</option>
+                                                        <option value="true">正常會員</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                    
-                            <table id="memberTable" class="display" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="no-datatable-style"><input type="checkbox" id="selectAllCheckbox" /></th>
-                                        <th>姓名</th>
-                                        <th>性別</th>
-                                        <th>身份證號</th>
-                                        <th>出生日期</th>
-                                        <th>電話</th>
-                                        <th>電子郵件</th>
-                                        <th>折扣</th>
-                                        <th>狀態</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var member in Model.Members)
-                                    {
-                                        <tr>
-                                           　<td class="chkbox"><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
-                                                    <td class="memname">@member.LastName@member.FirstName</td>
-                                            <td>@member.Gender</td>
-                                            <td>@member.Idnumber</td>
-                                            <td>@member.BirthDate.ToShortDateString()</td>
-                                            <td>@member.Phone</td>
-                                            <td>@member.Email</td>
-                                                    <td>@member.Discount</td>
-                                                    <td>
-                                                        <form asp-action="SusMember" method="post">
-                                                            <input type="hidden" name="memberId" value="@member.MemberId" />
-                                                            <button type="submit" class="btn @(member.Enable ? "btn-outline-dark" : "btn-danger")">
-                                                                @if (member.Enable)
-                                                                {
-                                                                    <span>復原</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span>停權</span>
-                                                                }
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                        </form>
+
+                                        <table id="memberTable" class="display" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="no-datatable-style"><input type="checkbox" id="selectAllCheckbox" /></th>
+                                                    <th>姓名</th>
+                                                    <th>性別</th>
+                                                    <th>身份證號</th>
+                                                    <th>出生日期</th>
+                                                    <th>電話</th>
+                                                    <th>電子郵件</th>
+                                                    <th>折扣</th>
+                                                    <th>狀態</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var member in Model.Members)
+                                                {
+                                                    <tr>
+                                                        <td class="chkbox"><input type="checkbox" name="memberCheckbox" value="@member.MemberId" /></td>
+                                                        <td class="memname">@member.LastName@member.FirstName</td>
+                                                        <td>@member.Gender</td>
+                                                        <td>@member.Idnumber</td>
+                                                        <td>@member.BirthDate.ToShortDateString()</td>
+                                                        <td>@member.Phone</td>
+                                                        <td>@member.Email</td>
+                                                        <td>@member.Discount</td>
+                                                        <td>
+                                                            <form asp-action="SusMember" method="post">
+                                                                <input type="hidden" name="memberId" value="@member.MemberId" />
+                                                                <button type="submit" class="btn @(member.Enable ? "btn-danger" : "btn-outline-dark")">
+                                                                    @if (member.Enable)
+                                                                    {
+                                                                        <span>停權</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>復原</span>
+                                                                    }
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">供應商停權</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <form id="bulkDisableForm">
+                                            <div style="display: flex; align-items: center;">
+                                                <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
+                                                <div style="margin-left: 10px; display: flex; align-items: center;">
+                                                    <label style="margin-right: 10px;">會員狀態</label>
+                                                    <select class="form-select" name="memberSelect">
+                                                        <option value="all">全部狀態</option>
+                                                        <option value="false">停權會員</option>
+                                                        <option value="true">正常會員</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <table id="companyTable" class="display" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="no-datatable-style"><input type="checkbox" id="selectAllComCheckbox" /></th>
+                                                    <th>旅行社編號</th>
+                                                    <th>統編</th>
+                                                    <th>旅行社名稱</th>
+                                                    <th>城市</th>
+                                                    <th>地址</th>
+                                                    <th>電話</th>
+                                                    <th>聯絡人</th>
+                                                    <th>聯絡人職位</th>
+                                                    <th>信箱</th>
+                                                    <th>服務項目</th>
+                                                    <th>狀態</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var com in Model.Companies)
+                                                {
+                                                    <tr>
+                                                        <td><input type="checkbox" name="companyCheckbox" value="@com.CompanyId" /></td>
+                                                        <td>@com.CompanyId</td>
+                                                        <td>@com.TaxIdNumber</td>
+                                                        <td>@com.CompanyName</td>
+                                                        <td>@com.City</td>
+                                                        <td>@com.Address</td>
+                                                        <td>@com.CompanyPhone</td>
+                                                        <td>@com.Contact</td>
+                                                        <td>@com.Title</td>
+                                                        <td>@com.ComEmail</td>
+                                                        <td>@com.ServerDescription</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success">停權</button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     </div>
                 </div>
 
-                <div id="Company" class="tabcontent">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                                    <button class="btn my-btn-primary mb-4">一鍵停權</button>
-                            <table id="companyTable" class="display" style="width:100%">
-                                <thead>
-                                    <tr>
-                                                <th class="no-datatable-style"><input type="checkbox" id="selectAllComCheckbox" /></th>
-                                        <th>旅行社編號</th>
-                                        <th>統編</th>
-                                        <th>旅行社名稱</th>
-                                        <th>城市</th>
-                                        <th>地址</th>
-                                        <th>電話</th>
-                                        <th>聯絡人</th>
-                                        <th>聯絡人職位</th>
-                                        <th>信箱</th>
-                                        <th>服務項目</th>
-                                         <th>狀態</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var com in Model.Companies)
-                                    {
-                                        <tr>
-                                                    <td><input type="checkbox" name="companyCheckbox" value="@com.CompanyId" /></td>
-                                            <td>@com.CompanyId</td>
-                                            <td>@com.TaxIdNumber</td>
-                                            <td>@com.CompanyName</td>
-                                            <td>@com.City</td>
-                                            <td>@com.Address</td>
-                                            <td>@com.CompanyPhone</td>
-                                            <td>@com.Contact</td>
-                                            <td>@com.Title</td>
-                                            <td>@com.ComEmail</td>
-                                           <td>@com.ServerDescription</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success">停權</button>
-                                                    </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
+
+
+          
             </div>
                
           
@@ -209,39 +244,7 @@
                 width: 100%;
             }
 
-            div.dataTables_wrapper {
-                margin-bottom: 3em;
-            }
-
-            .tab {
-                overflow: hidden;
-            background-color: #f8f9fc;
-            }
-
-                .tab button {
-                    background-color: inherit;
-                    float: left;
-                    border: none;
-                    outline: none;
-                    cursor: pointer;
-                    padding: 14px 16px;
-                    transition: 0.3s;
-                    font-size: 17px;
-                }
-
-                    .tab button:hover {
-                        background-color: #ddd;
-                    }
-
-                    .tab button.active {
-                        background-color: #ccc;
-                    }
-
-            .tabcontent {
-                display: none;
-                padding: 6px 12px;
-                border-top: none;
-            }
+           
 
         .no-datatable-style.sorting {
             background-image: none !important;
@@ -280,7 +283,6 @@
             $(document).ready(function () {
                 $('#memberTable').DataTable();
                 $('#companyTable').DataTable();
-            openAccount(null, 'Member');
 
             $('#bulkDisableForm').submit(function (event) {
                 event.preventDefault();
@@ -331,19 +333,19 @@
         }
 
 
-            function openAccount(evt, AccountName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                tablinks[i].style.backgroundColor = ""; 
-                }
-            document.getElementById(AccountName).style.display = "block";
-        }
+        //     function openAccount(evt, AccountName) {
+        //         var i, tabcontent, tablinks;
+        //         tabcontent = document.getElementsByClassName("tabcontent");
+        //         for (i = 0; i < tabcontent.length; i++) {
+        //             tabcontent[i].style.display = "none";
+        //         }
+        //         tablinks = document.getElementsByClassName("tablinks");
+        //         for (i = 0; i < tablinks.length; i++) {
+        //             tablinks[i].className = tablinks[i].className.replace(" active", "");
+        //         tablinks[i].style.backgroundColor = ""; 
+        //         }
+        //     document.getElementById(AccountName).style.display = "block";
+        // }
 
       //會員全選
             var selectAllCheckbox = document.getElementById("selectAllCheckbox");

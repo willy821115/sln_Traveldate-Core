@@ -23,7 +23,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
             <a class="nav-link" href="~/Platform/Review">
-                <span>商品審核</span>
+                <span>行程審核</span>
             </a>
         </li>
 
@@ -86,7 +86,7 @@
                                             <th>描述</th>
                                             <th>截止日</th>
                                             <th>照片</th>
-                                            <th>發放／使用數量</th>
+                                            <th>發放／使用　數量</th>
                                             <th>修改</th>
                                         </tr>
                                     </thead>
@@ -114,7 +114,7 @@
                                                     @item.CouponNum/@item.CouponUsedNum
                                                 </td>
                                                 <td>
-                                                    <img class="btn" src="~/icons/edit_pencil_icon.png"
+                                                    <img class="btn" src="~/icons/icon_edit.png"
                                                          onclick="openEditModal('@item.CouponListId', '@item.CouponName', '@item.Discount', '@item.Description', '@string.Format("{0:yyyy-MM-dd}", item.DueDate)')"
                                                          data-toggle="modal" data-target="#EditCoupon" />
                                                 </td>
@@ -239,7 +239,7 @@
             }
 
             .counum{
-                width: 100px;
+                width: 65px;
             }
 
         </style>

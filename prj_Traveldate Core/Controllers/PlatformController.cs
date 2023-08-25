@@ -3,6 +3,7 @@ using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 using System.ComponentModel.Design;
+using System.Drawing;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace prj_Traveldate_Core.Controllers
@@ -386,6 +387,7 @@ namespace prj_Traveldate_Core.Controllers
                 couponName = couponDetails.CouponName,
                 couponDiscount = couponDetails.Discount,
                 couponDescription = couponDetails.Description,
+                couponDate = String.Format("{0:yyyy-MM-dd}", couponDetails.DueDate),
                 couponImage = couponDetails.ImagePath
             });
         }
