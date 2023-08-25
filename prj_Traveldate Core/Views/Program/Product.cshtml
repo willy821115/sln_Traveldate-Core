@@ -2,6 +2,28 @@
 @{
     ViewData["Title"] = "Product";
 }
+
+<nav class="navbar navbar-expand-md fixed-top" style="display:none; background-color:white;box-shadow:none">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a class="nav-link" href="#section1" style="color:#155074;margin-left:100px;">商品詳細說明</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#section2" style="color:#155074">行程說明</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#section2" style="color:#155074">體驗地點</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 <button type="button" id="BackTop" class="toTop-arrow"></button>
 <div class="product-detail">
     <div>
@@ -65,14 +87,24 @@
     </div>
 
     <!--Productname-->
+ 
     <div class="mt-2">
         <h3>@Model.product.ProductName</h3>
     </div>
+    
 
     <!--Outline、立即預定-->
     <div class="plancal-container mb-3">
         <div class="product-description">
             <ul>
+                <li style="list-style-image: url('/icons/icons8-tag-16.png');">
+                    <div style="display:flex;align-items:center;">
+                        @foreach( var tags in Model.program.fProdTags){
+                            <p class="mb-0" style="color:#6C6C6C; margin-right:5px;">#@tags </p>
+                        }
+                    </div>
+                </li>
+
                 @foreach (var detail in Model.program.fOutline)
                 {
                     if (!string.IsNullOrEmpty(detail))  //加個判斷避免顯示時多出空行
@@ -426,6 +458,10 @@
     }
 
 </div>
+
+
+
+
 @section Scripts{
 
 
@@ -815,6 +851,46 @@
                     $('#BackTop').stop().fadeOut(222);
                 }
             }).scroll();
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            var windowHeight = $(window).height();
+            var scrollThreshold = 1200; // 滚动到页面的1/2位置
+            var navbar = $('.navbar.navbar-expand-md');
+            var navbarHeight = navbar.outerHeight();
+            var navbarPosition = 90; // 导航栏位置在页面的1/6位置
+
+            // 初始时隐藏导航栏并设置初始位置在页面顶部以上
+            navbar.css({
+                'top': -navbarHeight,
+                'transform': 'translateY(' + navbarPosition + 'px)'
+            });
+
+            $(window).scroll(function () {
+                var scrollPosition = $(this).scrollTop();
+
+                if (scrollPosition > scrollThreshold) {
+                    navbar.css({
+                        'top': navbarPosition,
+                        'transform': 'translateY(0)'
+                    });
+                } else {
+                    navbar.css({
+                        'top': -navbarHeight,
+                        'transform': 'translateY(' + navbarPosition + 'px)'
+                    });
+                }
+
+                // 控制导航栏的显示/隐藏
+                if (scrollPosition > scrollThreshold) {
+                    navbar.show(); // 显示导航栏
+                } else {
+                    navbar.hide(); // 隐藏导航栏
+                }
+            });
         });
     </script>
     }

@@ -31,6 +31,15 @@ namespace prj_Traveldate_Core.Models.MyModels
             return productName?.ToString();
         }
 
+        //Producttags
+        public List<string> loadProductTags(int id)
+        {
+            List<string> tags = db.ProductTagLists.Where(p=>p.ProductId == id).Select(p=>p.ProductTagDetails.ProductTagDetailsName).ToList();
+            return tags;
+        }
+
+
+
         public List<string> loadOutlineDetails(int id)
         {
             var outline = db.ProductLists.Where(p => p.ProductId == id).Select(p => p.Outline).FirstOrDefault();
