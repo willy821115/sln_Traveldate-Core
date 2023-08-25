@@ -100,7 +100,7 @@
                     </div>
                     <div class="mt-2">
                         <span class="amount">NTD </span>
-                            <span class="amount itemprice">@(item.unitPrice * item.quantity)</span>
+                            <span class="amount itemprice">@string.Format("{0:0}",((item.unitPrice-item.discount) * item.quantity))</span>
                     </div>
                 </div>
                 <div class="modal fade" id="EditCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -144,7 +144,7 @@
                 <div class="totalPriceBox">
                     <div class="d-flex align-items-center flex-column align-self-center">
                         <div class="Subtotal">總金額</div>
-                        <div class="items">1 項商品</div>
+                        <div class="items" id="prodcount">1 項旅程</div>
                     </div>
                     <div class="d-flex align-items-center flex-column">
                         <span class="badge badge-light" id="earnpoint">可獲得 0 點!</span>

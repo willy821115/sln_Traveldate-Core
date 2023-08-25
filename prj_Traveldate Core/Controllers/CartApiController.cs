@@ -69,8 +69,7 @@ namespace prj_Traveldate_Core.Controllers
 
         //  修改數量
         //  編輯訂購內容(修改OD)
-        //  個人化推薦(抓OD 搜尋商品 回傳)
-        //  瀏覽紀錄(抓Session回傳)
+
 
         //確認訂購內容
 

@@ -48,12 +48,15 @@ $('.checkall').on('click', function () {
 
 function calculateTotalPrice() {
     let totalPrice = 0;
+    let count = 0;
     $('.cartChecked').find('.itemprice').each(function () {
         let price = Number($(this).text());
         totalPrice += price;
+        count++;
     });
     $('#totalPrice').text(totalPrice);
     $('#earnpoint').text("可獲得" + Math.ceil(totalPrice / 100) + "點!")
+    $('#prodcount').text( count + " 項旅程")
 }
 
 // 初始化頁面時計算總價
@@ -93,8 +96,37 @@ $('.cartDele').on('click', function () {
 })
 
 $('#usepoint').on('input', function () {
-    $(this).closest('.Confirm-Container-Content').next('.Confirm-summary').text("共可折抵 " + $('#usepoint').val() +" 元");
+/*    $(this).closest('.Confirm-Container-Content').next('.Confirm-summary').text("共可折抵 " + $('#usepoint').val() + " 元");*/
+    refreshDiscount();
 })
 
+function refreshDiscount() {
+    const totalD = Number($('#usepoint').val()) + Number($('#coupondisc').val());
+    const checkout = Number($('#prodsum').val()) - totalD;
+    $('#totalDiscount').text("共可折抵 " + totalD + " 元")
+    $('#totalDsc').text(totalD);
+    $('#checkuotamount').val(checkout);
+    $('#checkuotamount_lbl').text("總金額 NTD " + checkout);
+    $('#getpt').text("共可獲得 " + Math.ceil(checkout / 100) + " 點!");
+}
 
+$('.useCouponButton').on('click', function () {
+    const Cid = $(this).prev('input').val();
+    const CNameID = "#couponName_" + Cid;
+    const CDiscountID = "#couponDiscount_" + Cid;
+    const CID = "#couponID_" + Cid;
+    $('#usecouponID').val($(CID).val());
+    $('#usecoupon').text($(CNameID).text() + " - " + $(CDiscountID).text());
+
+
+    if (Number($('#couponOriginal').val()) < 1) {
+        $('#coupondisc').val((Number($('#prodsum').val()) * (1 - Number($('#couponOriginal').val()))).toFixed(0));
+    }
+    else {
+        $('#coupondisc').val(Number($('#couponOriginal').val()));
+    }
+
+    refreshDiscount();
+
+})
 
