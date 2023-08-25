@@ -10,6 +10,8 @@ namespace prj_Traveldate_Core.ViewModels
 
         public List<ProductTypeList> types { get; set; }
 
+        public List<string> statuses { get; set; }
+
         public int TripStock(int tripID)
         {
             TraveldateContext _db = new TraveldateContext();

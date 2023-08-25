@@ -52,14 +52,14 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                aria-expanded="true" aria-controls="collapseUtilities">
                 <img src="~/icons/edit.png" class="subicon" />
-                <span>商品管理</span>
+                <span>產品管理</span>
             </a>
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="~/Product/List">商品列表</a>
-                    <a class="collapse-item" href="~/Product/Create">新增商品</a>
-                    <a class="collapse-item" href="~/Trip/List">商品日期</a>
+                    <a class="collapse-item" href="~/Product/List">產品列表</a>
+                    <a class="collapse-item" href="~/Product/Create">新增產品</a>
+                    <a class="collapse-item" href="~/Trip/List">產品日期</a>
                 </div>
             </div>
         </li>
@@ -95,7 +95,7 @@
                             @*<!-- Basic Card Example -->*@
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">基本資料</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">基本資料</h6>
                                     </div>
                                     <div class="card-body">
                                     <input asp-for="ProductId" type="hidden" class="form-control" value="@Model.ProductId" />
@@ -131,7 +131,7 @@
                                @*<!-- Basic Card Example -->*@
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">日期</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">日期</h6>
                                     </div>
                                     <div class="card-body">
                                     <label asp-for="Date" class="control-label">商品日期</label>
@@ -143,7 +143,7 @@
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">折扣</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary cardTitle">折扣</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -195,7 +195,10 @@
         .card-body {
             height: unset;
         }
-          
+
+        .cardTitle {
+            font-size: 25px;
+        }
         
     </style>
  }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
 using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 using System.Diagnostics;
 using System.Globalization;
@@ -1243,36 +1244,36 @@ namespace prj_Traveldate_Core.Controllers
         }
         #endregion
         [HttpPost]
-        public IActionResult addcomment(int? id)
+        public IActionResult addcomment(CCommentListWrap vm)
         {
             //int MemberId = 1;
             //CcommentListViewModel vm = new CcommentListViewModel();
             //vm.MemberId = MemberId;
             //Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
 
-            var commentList = new CommentList();
-            
+            //var commentList = new CommentList();
+
             CommentList cmDB = new CommentList();
-            cmDB.MemberId = Convert.ToInt32(Request.Form["MemberId"]);
-            cmDB.Title = Request.Form["Title"];
-            cmDB.Content = Request.Form["Content"];
-            cmDB.CommentScore = Convert.ToInt32(Request.Form["CommentScore"]);
+            //cmDB.MemberId = Convert.ToInt32(Request.Form["MemberId"]);
+            //cmDB.Title = Request.Form["Title"];
+            //cmDB.Content = Request.Form["Content"];
+            //cmDB.CommentScore = Convert.ToInt32(Request.Form["CommentScore"]);
 
             //cmDB.Date = Request.Form["txtTitle"];
             //cmDB.ProductId = Request.Form["txtTitle"];
 
-            //if (cmDB != null)
-            //{
-            //    cmDB.Title = vm.Title;
-            //    cmDB.Content = vm.Content;
-            //    cmDB.CommentScore = vm.CommentScore;
-            //    cmDB.MemberId = vm.MemberId;
-            //    cmDB.Date = vm.Date;
-            //    cmDB.ProductId = vm.ProductId;
-            
+            if (cmDB != null)
+            {
+                cmDB.Title = vm.Title;
+                cmDB.Content = vm.Content;
+                cmDB.CommentScore = vm.CommentScore;
+                cmDB.MemberId = vm.MemberId;
+                cmDB.Date = DateTime.Now;
+                cmDB.ProductId =2;
+
                 context.CommentLists.Add(cmDB);
                 context.SaveChanges();
-            //}
+            }
             return RedirectToAction("orderList");
         }
         public IActionResult forumList() //我的揪團new V
