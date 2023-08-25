@@ -98,51 +98,37 @@
             const newDiv = document.createElement('div');
             newDiv.classList.add('d-flex', 'mb-2');
             newDiv.innerHTML =
-                `
-                                 <div class="d-flex mb-2">
-                                  <div class="form-group col-6 pl-0 mb-0">
-                                                      <input name="keyword" class="form-control form-select form-select-md inputTrip" id="inputTrip-${ordinal_number}" placeholder="請選擇旅行項目" />
-                                              <div id="divTrip-${ordinal_number}" class="rounded divTrip">
-                                      </div>
-                                  </div>
-                                          <div class="form-group col-4 mb-0">
-                                                 <input class="form-control form-select form-select-md inputTripDate" id="inputTripDate-${ordinal_number}" placeholder="請選擇日期" />
-                                                <div id="divTripDate-${ordinal_number}" class="rounded divTripDate">
-                                      </div>
-                                  </div>
-                                  <div>
-                                                  <span class="fs-5 showPrice" id="showPrice-${ordinal_number}"></span>
-                                          </div>
-                                          <div>
-                                                      <img class="btnDeleteTrip d-none" src="/icons/icons8-close-48.png" height="36" />
-                                            <img class="btnEditTrip d-none" src="/icons/icons8-edit-48.png" height="36" />
-                                              </div>
-                                          </div>
-                              </div>
-                                                      `
-            
+                `<div class="form-group col-6 pl-0 mb-0">
+          <input name="keyword" class="form-control form-select form-select-md inputTrip" id="inputTrip-${ordinal_number}"
+            placeholder="請選擇旅行項目" />
+          <div id="divTrip-${ordinal_number}" class="rounded divTrip">
+          </div>
+        </div>
+        <div class="form-group col-4 mb-0">
+          <input class="form-control form-select form-select-md inputTripDate" id="inputTripDate-${ordinal_number}"
+            placeholder="請選擇日期" />
+          <div id="divTripDate-${ordinal_number}" class="rounded divTripDate">
+          </div>
+        </div>
+        <div>
+                  <span class="fs-5 fw-bolder text-block showPrice" id="showPrice-${ordinal_number}"></span>
+        </div>
+        <div class="ml-2">
+          <img class="btnDeleteTrip d-none" src="/icons/icons8-close-48.png" height="36" />
+          <img class="btnEditTrip d-none" src="/icons/icons8-edit-48.png" height="36" />
+        </div>
+        </div>
+             `
+           divAddTrips.appendChild(newDiv);
         })
-        divAddTrips.appendChild(newDiv);
+       
     </script>
 
     
 
     <script>
         // //把trip名字放在畫面上
-         // const inputTrip = document.querySelector('.inputTrip');
-         // const inputTripDate = document.querySelector('.inputTripDate');
-         // const divTrip = document.querySelector('.divTrip');
-        // const divTripDate = document.querySelector('.divTripDate');
-        // const showPrice = document.querySelector('.showPrice');
-        // inputTrip.addEventListener('focus', () => {
-        //     loadTrips();
-        //     inputTripDate.value = "";
-        // })
-
-        // inputTrip.addEventListener('input', () => {
-        //     loadTrips(inputTrip.value);
-        //     inputTripDate.value = "";
-        // })
+         
         $('.divAddTrips').on('focus', '.inputTrip', function () {
             const id = $(this).attr('id'); // 獲取目前 input 元素的 id
             const ordinal_number = parseInt(id.split('-')[1]); // 從 id 中解析出 ordinal_number
@@ -153,11 +139,6 @@
             const ordinal_number = parseInt(id.split('-')[1]); // 從 id 中解析出 ordinal_number
             loadTrips(ordinal_number,$(this).val());
         });
-
-        // $(`#inputTrip-${ordinal_number}`).on('input', function () {
-        //     loadTrips(ordinal_number, $(`#inputTrip-${ordinal_number}`).val());
-        //     console.log(ordinal_number)
-        // })
 
         async function loadTrips(ordinal_num,keyword) {
             console.log(ordinal_num)
@@ -179,7 +160,7 @@
                         const clickedTrip = e.target.textContent;
                         const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
                         $(`#inputTripDate-${ordinal_num}`).on('focus',function() {
-                            loadTripDate(productId);
+                            loadTripDate(productId, ordinal_num);
                         })
                         $(`#divTrip-${ordinal_num}`).html("");
                         $(`#inputTrip-${ordinal_num}`).val(clickedTrip);
@@ -188,7 +169,7 @@
             }
         }
 
-        async function loadTripDate(productId) {
+        async function loadTripDate(productId, ordinal_num) {
             const response = await fetch(`@Url.Content("~/Forum/selectDate")?id=${productId}`)
             const datas = await response.json();
             if (datas != null) {
@@ -198,14 +179,15 @@
                         `<a asp-action="selectDate" asp-route-id="${price}" class="list-group-item list-group-item-action dateOptItems">${tripDate}</a>`
                     )
                 })
-                divTripDate.innerHTML = dates.join("")
+
+                $(`#divTripDate-${ordinal_number}`).html(dates.join(""))
                 const dateOptItems = document.querySelectorAll('.dateOptItems');
                 dateOptItems.forEach(dateItem => {
                     dateItem.addEventListener('click', (e) => {
                         e.preventDefault();
-                        inputTripDate.value = e.target.textContent;
-                        showPrice.innerText = '$  ' + dateItem.getAttribute('asp-route-id');
-                        divTripDate.innerHTML = "";
+                        $(`#inputTripDate-${ordinal_number}`).val(e.target.textContent);
+                        $(`#showPrice-${ordinal_number}`).text('$  ' + dateItem.getAttribute('asp-route-id'))
+                        $(`#divTripDate-${ordinal_number}`).html("")
                     })
                 })
             }
