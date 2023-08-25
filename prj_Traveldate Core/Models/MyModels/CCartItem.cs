@@ -11,6 +11,7 @@
         public byte[]? photo { get; set; }
         public string? ImagePath { get; set; }
         public decimal? unitPrice { get; set; }
+        public decimal? discount { get; set; }
         public bool favo { get; set; }
     }
 }

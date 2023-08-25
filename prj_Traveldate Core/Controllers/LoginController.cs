@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.Collections.Generic;
 using System.Text.Json;
 
 //TODO: 登入: 第三方登入 & 記住帳號密碼(cookie) & 確認Enable & 登入後跳轉
@@ -29,9 +30,26 @@ namespace prj_Traveldate_Core.Controllers
                 t => t.Phone.Equals(vm.mlUsername) && t.Password.Equals(vm.mlPassword));
             if (mem != null && mem.Password.Equals(vm.mlPassword))
             {
+                if (!(bool)mem.Enable)
+                {
+                    ViewBag.Message = "您的帳號已被停權，如有疑異請洽客服人員。";
+                    return View();
+                }
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER, mem.MemberId.ToString());
-                return RedirectToAction((string)TempData[CDictionary.SK_BACK_TO_ACTION], (string)TempData[CDictionary.SK_BACK_TO_CONTROLLER]);
+
+                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER))
+                {
+                    string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
+                    string goaction = TempData[CDictionary.SK_BACK_TO_ACTION].ToString();
+
+                    TempData.Remove(CDictionary.SK_BACK_TO_CONTROLLER);
+                    TempData.Remove(CDictionary.SK_BACK_TO_ACTION);
+
+                    return RedirectToAction(goaction, gocontroller);
+                }
+
+                return RedirectToAction("HomePage", "HomePage");
             }
             ViewBag.Message = "帳號或密碼錯誤";
             return View();

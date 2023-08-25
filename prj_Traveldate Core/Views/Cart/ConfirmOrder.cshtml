@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "填寫資料與付款";
     int count = 0;
+    int count_amount = 0;
     decimal sum = 0;
     decimal discount = 0;
     decimal totalPrice = 0;
@@ -61,10 +62,10 @@
                             <div class="accordion-body">
                                 @foreach(var item in Model.orders)
                                 {
-                                    count++;
                                     <div class="accordion mb-2" id="accordionProd">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingP_@count">
+                                                <input type="hidden" name="vm.ods[@count].TripId" value="@item.tripID">
                                                 <button class="accordion-button mt-2 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP_@count" aria-expanded="true" aria-controls="collapseP_@count">
                                                 <div class="Confirm-Prod-Info">
                                                     <div class="image-box" style="width:25%;">
@@ -88,20 +89,20 @@
                                                     <div class="Confirm-Container-Content">
                                                         <div class="radio-group">
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_same" checked>
-                                                                <label class="form-check-label" for="traveler_same">
+                                                                <input class="form-check-input" type="radio" name="radio_traveler_@count" id="traveler_same_@count" checked>
+                                                                <label class="form-check-label" for="traveler_same_@count">
                                                                     同訂購人
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_choose">
-                                                                <label class="form-check-label" for="traveler_choose">
+                                                                <input class="form-check-input" type="radio" name="radio_traveler_@count" id="traveler_choose_@count">
+                                                                <label class="form-check-label" for="traveler_choose_@count">
                                                                     自旅伴名單中選擇
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="radio_traveler" id="traveler_input">
-                                                                <label class="form-check-label" for="traveler_input">
+                                                                <input class="form-check-input" type="radio" name="radio_traveler_@count" id="traveler_input_@count">
+                                                                <label class="form-check-label" for="traveler_input_@count">
                                                                     自行填寫
                                                                 </label>
                                                             </div>
@@ -132,14 +133,14 @@
                                                     <div class="Confirm-Container-Content">
                                                         <div class="radio-group">
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="radio_companion" id="companion_input" checked>
-                                                                <label class="form-check-label" for="traveler_input">
+                                                                <input class="form-check-input" type="radio" name="radio_companion_@count" id="companion_input_@count" checked>
+                                                                <label class="form-check-label" for="companion_input_@count">
                                                                     自行填寫
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="radio_companion" id="companion_choose">
-                                                                <label class="form-check-label" for="companion_choose">
+                                                                <input class="form-check-input" type="radio" name="radio_companion_@count" id="companion_choose_@count">
+                                                                <label class="form-check-label" for="companion_choose_@count">
                                                                     自旅伴名單中選擇
                                                                 </label>
                                                             </div>
@@ -168,12 +169,13 @@
                                                         特殊需求備註
                                                     </div>
                                                     <div class="Confirm-Container-Content">
-                                                        <textarea class="form-control" id="order_note" rows="3"></textarea>
+                                                        <textarea name="vm.ods[@count].Note" class="form-control" id="order_note" rows="3"></textarea>
                                                     </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                    count++;
                                 }
 
                             </div>
@@ -193,7 +195,8 @@
                                 </div>
                                 <button type="button" class="btn my-btn-primary ml-4" data-bs-toggle="modal" data-bs-target="#couponModal">
                                     選擇優惠券
-                                </button>
+                                </button> <span id="usecoupon" class="ml-2" style="color:#155074;font-weight:bold;"></span>
+                                <input type="hidden" name="vm.newOrder.CouponListId" id="usecouponID"><br>
                                 <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg modal-dialog-centered">
                                         <div class="modal-content">
@@ -208,26 +211,32 @@
                                                         for (int i = 0; i < Model.coupons.Count; i++)
                                                         {
                                                             <div class="confirm-coupon-content">
-                                                                <div style="width:80%;">
-                                                                    <h5>
+                                                            <div style="width:15%;">
+                                                            <img src="~/images/@Model.coupons[i].ImagePath" style="max-width:100%">
+                                                            </div>
+                                                                <div style="width:60%;">
+                                                                    <h5 id="couponName_@i">
                                                                         @Model.coupons[i].CouponName
                                                                     </h5>
                                                                     <p>
                                                                         @Model.coupons[i].Description
                                                                     </p>
+                                                                    <input type="hidden" id="couponOriginal" value="@(Model.coupons[i].Discount)">
                                                                     @{
                                                                         if (Model.coupons[i].Discount > 1)
                                                                         {
-                                                                            <p>折 @(Model.coupons[i].Discount) 元</p>
+                                                                            <p id="couponDiscount_@i">折 @(Model.coupons[i].Discount) 元</p>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <p>單筆訂單 @string.Format("{0:0.#}", (Model.coupons[i].Discount * 10)) 折</p>
+                                                                            <p id ="couponDiscount_@i">單筆訂單 @string.Format("{0:0.#}", (Model.coupons[i].Discount * 10)) 折</p>
                                                                         }
                                                                     }
                                                                     <h6>使用期限：@string.Format("{0:yyyy/MM/dd}",Model.coupons[i].DueDate.ToString())</h6>
                                                                 </div>
-                                                                <button type="button" class="btn btn-outline-secondary col-2" data-bs-dismiss="modal">使用</button>
+                                                                <input type="hidden" value="@Model.coupons[i].CouponListId" id="couponID_@i">
+                                                                <input type="hidden" value="@i">
+                                                                <button type="button" class="btn btn-outline-secondary col-2 useCouponButton" data-bs-dismiss="modal" >使用</button>
                                                             </div>
 
                                                         }
@@ -251,9 +260,11 @@
                                 <div class="Confirm-Container-Content">
                                     <h6 class="subtitle" style="margin-bottom:1em;">目前持有 @Model.member.Discount 點，1點可折抵1元。</h6>
                                     <label for="usepoint">使用點數　</label>
-                                    <input type="text" name="usepoint" id="usepoint" size="10">
+                                    <input type="number" name="vm.newOrder.Discount" id="usepoint" size="10" oninput="if(value>@Model.member.Discount)value=@Model.member.Discount;if(value<0)value=0">
                                 </div>
-                                <h5 class="Confirm-summary">共可折抵 0 元</h5>
+                                <input type="hidden" id="pointsNow" value="@Model.member.Discount">
+                                <input type="hidden" id="coupondisc">
+                                <h5 class="Confirm-summary" id="totalDiscount">共可折抵 0 元</h5>
                             </div>
                         </div>
                     </div>
@@ -309,32 +320,38 @@
                     <div class="accordion-body">
                         @foreach(var item in Model.orders)
                         {
-                            <div>
+                            <div class="hover-smokewhite p-1">
                                 <h5 class="confirm-subtitle" style="margin:0.3em 0;">
                                     @item.planName
                                 </h5>
                                 <h6 class="subtitle">數量：@item.quantity</h6>
                                 <h6 class="subtitle">@item.date</h6>
-                                <h6 class="Confirm-subtotal">NTD @(item.unitPrice * item.quantity)</h6>
+                                <h6 class="Confirm-subtotal">NTD @string.Format("{0:0}",((item.unitPrice-item.discount) * item.quantity))</h6>
+                                <input type="hidden" name="vm.ods[@count_amount].Quantity" value="@item.quantity">
+                                <input type="hidden" name="vm.ods[@count_amount].SellingPrice" value="@(item.unitPrice-item.discount)">
+
                             </div>
-                            sum += (decimal)(item.unitPrice * item.quantity);
+                            sum += (decimal)((item.unitPrice - item.discount) * item.quantity);
+                            count_amount++;
                         }
                         <hr style="width:100%;">
                         <table>
-                            <tr><td class="col"><h6 class="Confirm-subtotal">商品金額 NTD</h6></td><td class="col-4"><h6 class="Confirm-subtotal">@sum</h6></td></tr>
-                            <tr><td class ="col"><h6 class="Confirm-subtotal">折扣金額 NTD</h6></td><td class="col-4"><h6 class="Confirm-subtotal">@discount</h6></td></tr>
+                            <tr><td class="col"><h6 class="Confirm-subtotal">商品金額 NTD</h6></td><td class="col-4"><h6 class="Confirm-subtotal">@string.Format("{0:0}",sum)</h6></td></tr>
+                            <tr><td class="col"><h6 class="Confirm-subtotal">折扣金額 NTD</h6></td><td class="col-4"><h6 class="Confirm-subtotal" id="totalDsc">0</h6></td></tr>
                         </table>
                         
                         @{
                             totalPrice = sum - discount;
                             getPoint = Math.Ceiling(totalPrice / 100);
                         }
-                        <h6 class="Confirm-total col">總金額 NTD @totalPrice</h6>
-                        <span class="badge bg-secondary Confirm-earnpoint">共可獲得 @getPoint 點!</span>
+                        <input type="hidden" id="prodsum" value="@sum">
+                        <input type="hidden" name="vm.checkoutAmount" id="checkuotamount">
+                        <h6 class="Confirm-total col" id="checkuotamount_lbl">總金額 NTD @string.Format("{0:0}",totalPrice)</h6>
+                        <span class="badge bg-secondary Confirm-earnpoint" id="getpt">共可獲得 @getPoint 點!</span>
 
                     </div>
                 </div>
-                <input type="submit" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
+                <input type="submit" asp-action="CompleteOrder" id="ConfirmAndPay" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
                 @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
             </div>
 
@@ -348,4 +365,7 @@
 
 @section Scripts{
     <script src="~/js/jsCart.js"></script>
+    <script>
+
+    </script>
 }
