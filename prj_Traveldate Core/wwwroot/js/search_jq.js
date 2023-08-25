@@ -30,6 +30,7 @@ function clearAllFiltered() {
     endTime = ""
     minPrice = ""
     maxPrice = ""
+    pageNumber = 1;
     filteredByConditions()
     isFirstButton = true; // 重設為第一次新增狀態
 }
@@ -39,6 +40,7 @@ $('.divFiltered_city').on('click', '.uncheckbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
@@ -66,6 +68,7 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
@@ -93,6 +96,7 @@ $('.divFiltered_type').on('click', '.uncheckbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
