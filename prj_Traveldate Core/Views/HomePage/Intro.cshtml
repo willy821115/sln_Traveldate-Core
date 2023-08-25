@@ -136,7 +136,10 @@
                 transform: translateX(0);
             }
 
-
+            .background {
+                background-color: #D0D0D0;
+               
+            }
 
         </style>
     }
@@ -145,6 +148,7 @@
     <div class="header">
         <h1>關於我們<span style="color: #007bff;">TravelDate</span></h1>
     </div>
+   
     <div class="container">
 
         <div class="section">
@@ -199,6 +203,24 @@
             </div>
         </div>
 
-    </div>
+    </div >
+   
+
+    <script>
+        // 使用滾輪事件監聽器來觸發滑出效果
+        const contentBlocks = document.querySelectorAll('.content13, .content24');
+
+        window.addEventListener('scroll', () => {
+            contentBlocks.forEach(contentBlock => {
+                const contentBlockTop = contentBlock.getBoundingClientRect().top;
+                if (contentBlockTop < window.innerHeight) {
+                    contentBlock.style.opacity = '1';
+                    contentBlock.style.transform = 'translateX(0)';
+                }
+            });
+        });
+    </script>
+
+
 </body>
-</html>
+</html>     
