@@ -103,6 +103,11 @@
                                             <option value="@type.ProductTypeId">@type.ProductType</option>
                                         }
                                     </select>
+                                    <label>審核狀態</label>
+                                    @foreach (string status in Model.statuses)
+                                    {
+                                        <option value="@status">@status</option>
+                                    }
                                 </div>
                                
                                 
