@@ -258,9 +258,45 @@
                 productlist.innerHTML = rows.join("");
             }
         }
+
+        async function queryByStatus(statusID) {
+            const dashboard = document.getElementById('productlist');
+            const response = await fetch(`@Url.Content("~/Product/queryByStatus")?statusID=${statusID}`);
+            const datas = await response.json();
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                    return (
+                        ` <tr>
+                                                   <td>${productName}</td>
+                                                    <td>${productType}</td>
+                                                    <td>${cityName}</td>
+                                                     <td>${productStatus}</td>
+                                                     <td>${discontinued}</td>
+                                                      <td>
+                                                                     <button id="continue" class="btn btn-primary">上架</button>
+                                                                      <button id="discontinue" class="btn btn-danger">下架</button>
+                                                       </td>
+                                                         <td>
+                                                                     <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-success">編輯</a>
+                                                         </td>
+
+                                         </tr>`
+                    )
+
+                })
+                productlist.innerHTML = rows.join("");
+            }
+        }
+
         $('.typeradio').change(function () {
             var typeID = $(this).val();
             queryByType(typeID);
+        });
+
+        $('.statusradio').change(function () {
+            var statusID = $(this).val();
+            queryByStatus(statusID);
         });
  </script>
  }

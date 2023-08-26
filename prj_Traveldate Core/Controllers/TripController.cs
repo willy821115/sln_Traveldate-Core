@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
@@ -132,6 +133,54 @@ CProductFactory cProductFactory = new CProductFactory();
             tripEdit.Date = DateTime.Parse(t.tripDates);
             db.SaveChanges();
             return RedirectToAction("List");
+        }
+
+        public IActionResult queryByType(int typeID) 
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.ProductLists.Where(p => p.ProductTypeId == typeID && p.CompanyId == companyID).Select(p => new
+            {
+                productName = p.ProductName,
+                productType = p.ProductType.ProductType,
+                productStatus = p.Status.Status1,
+                productID = p.ProductId
+
+            });
+
+
+            return Json(q);
+        }
+
+        public IActionResult queryByStatus(int statusID)
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.ProductLists.Where(p => p.StatusId == statusID && p.CompanyId == companyID).Select(p => new
+            {
+                productName = p.ProductName,
+                productType = p.ProductType.ProductType,
+                productStatus = p.Status.Status1,
+                productID = p.ProductId
+            });
+            return Json(q);
+        }
+
+        public IActionResult queryByDate(string dates)
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            string[] querydate = dates.Replace(" ", "").Split("to");
+
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory cProductFactory = new CProductFactory();
+            var trips = from t in db.Trips
+                        where t.Date > DateTime.Parse(querydate[0]) && t.Date < DateTime.Parse(querydate[1]) && t.Product.CompanyId == companyID
+                        select new { tripID = t.TripId, tripName = t.Product.ProductName, tripType = t.Product.ProductType.ProductType, tripDate = string.Format("{0:yyyy-MM-dd}", t.Date), tripDay = cProductFactory.TripDays(t.ProductId), stock = cProductFactory.TripStock(t.TripId) };
+
+
+            return Json(trips);
         }
     }
 }

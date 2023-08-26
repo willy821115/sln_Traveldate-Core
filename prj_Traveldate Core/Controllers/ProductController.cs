@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -283,14 +284,26 @@ namespace prj_Traveldate_Core.Controllers
             {
                 productName = p.ProductName,
                 productType = p.ProductType.ProductType,
+                productStatus = p.Status.Status1,
+                productID=p.ProductId
+            }) ;
+            return Json(q);
+        }
+
+        public IActionResult queryByStatus(int statusID) 
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.ProductLists.Where(p => p.StatusId== statusID && p.CompanyId == companyID).Select(p => new
+            {
+                productName = p.ProductName,
+                productType = p.ProductType.ProductType,
                 cityName = p.City.City,
                 productStatus = p.Status.Status1,
                 Discontinued = (bool)p.Discontinued ? "下架" : "上架",
-                productID=p.ProductId
-
-            }) ;
-            
-            
+                productID = p.ProductId
+            });
             return Json(q);
         }
     }
