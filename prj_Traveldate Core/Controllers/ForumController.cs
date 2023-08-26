@@ -42,10 +42,37 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Create()
         {
-            List<Trip> trips= _context.Trips.Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId).ToList();
-            return View(trips);
+            return View();
         }
-       
+        [HttpPost]
+        public IActionResult Create(CCreatArticleViewModel creatArticle)
+        {
+            if (creatArticle.isSave== "儲存草稿")
+            {
+                creatArticle.forum.IsPublish = false;
+            }
+            if (creatArticle.isPublish == "結帳成功")
+            {
+                creatArticle.forum.IsPublish=true;
+            }
+            creatArticle.forum.ReleaseDatetime = DateTime.Now; 
+            _context.Add(creatArticle.forum);
+            _context.SaveChanges();
+           
+            foreach(int tripId in creatArticle.tripIds)
+            {
+                var newSchedule = new ScheduleList
+                {
+                    ForumListId = creatArticle.forum.ForumListId,
+                    TripId = tripId
+                };
+                _context.Add(newSchedule);
+            }
+            
+            _context.SaveChanges();
+            return View();
+        }
+
         public IActionResult ArticleView(int? id)
         {
            if(id == null)
@@ -94,21 +121,23 @@ namespace prj_Traveldate_Core.Controllers
             if (!string.IsNullOrEmpty(keyword) && keyword!="undefined")
             {
                 var filteredTrips = _context.Trips
-                    .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
-                    .Where(t=>t.Product.ProductName.Contains(keyword))
+                    .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId
+                    && t.Product.ProductName.Contains(keyword)
+                    && t.Date.Value > DateTime.Now.AddDays(3))
                     .Select(t => new { t.Product.ProductName, t.Product.ProductId })
                     .Distinct().ToList();
                 return Json(filteredTrips);
             }
             var trips = _context.Trips
-                .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId)
+                .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId
+                && t.Date.Value > DateTime.Now.AddDays(3))
                 .Select(t => new { t.Product.ProductName, t.Product.ProductId }).Distinct().ToList();
             return Json(trips);
         }
         //選到的發文商品的日期
         public IActionResult selectDate(int? id)
         {
-            var dates = _context.Trips.Where(t=>t.ProductId==id).OrderBy(t=>t.Date).Select(t=>new { tripDate = t.Date.Value.ToString("yyyy/MM/dd"),price =t.UnitPrice }).ToList();
+            var dates = _context.Trips.Where(t=>t.ProductId==id && t.Date.Value > DateTime.Now.AddDays(3)).OrderBy(t=>t.Date).Select(t=>new { tripDate = t.Date.Value.ToString("yyyy-MM-dd"),price =t.UnitPrice,tripId = t.TripId }).ToList();
             return Json(dates);
         }
 
@@ -141,6 +170,16 @@ namespace prj_Traveldate_Core.Controllers
             List<CCategoryAndTags> categories = factory.qureyFilterCategories();
             return PartialView(categories);
         }
-        //CreateArticle()
+        //CreateArticle
+        public IActionResult saveArticle(ForumList forum)
+        {
+            _context.ForumLists.Add(forum);
+            _context.SaveChanges();
+            return Content("成功儲存草稿");
+        }
+        public IActionResult tee() 
+        {
+            return View();
+        }
     }
 }
