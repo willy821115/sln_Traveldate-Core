@@ -285,7 +285,8 @@ namespace prj_Traveldate_Core.Controllers
                 productName = p.ProductName,
                 productType = p.ProductType.ProductType,
                 productStatus = p.Status.Status1,
-                productID=p.ProductId
+                Discontinued = (bool)p.Discontinued ? "下架" : "上架",
+                productID =p.ProductId
             }) ;
             return Json(q);
         }
@@ -306,5 +307,26 @@ namespace prj_Traveldate_Core.Controllers
             });
             return Json(q);
         }
+        public IActionResult SaleOperate(int productID)
+        {
+            companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.ProductLists.FirstOrDefault(p => p.ProductId == productID);
+            q.Discontinued = !q.Discontinued;
+            db.SaveChanges();
+            var q2 = db.ProductLists.Where(p=>p.CompanyId == companyID).Select(p => new
+            {
+                productName = p.ProductName,
+                productType = p.ProductType.ProductType,
+                cityName = p.City.City,
+                productStatus = p.Status.Status1,
+                Discontinued = (bool)p.Discontinued ? "下架" : "上架",
+                productID = p.ProductId
+            });
+            return Json(q2.ToList());
+
+        }
     }
+    
 }
