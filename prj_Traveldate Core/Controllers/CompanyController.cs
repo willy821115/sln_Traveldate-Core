@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.Models.MyModels;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -16,12 +17,15 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Edit()
         {
             int companyID = 1;
-            var datas = _db.Companies.Where(c => c.CompanyId == companyID).FirstOrDefault();
-
-            return View(datas);
+            CCompanyWrap cCompany= new CCompanyWrap();
+            CProductFactory productFactory = new CProductFactory();
+            cCompany.company = _db.Companies.Where(c => c.CompanyId == companyID).FirstOrDefault();
+            cCompany.cities=productFactory.loadCities();
+            cCompany.country=productFactory.loadCountries();
+            return View(cCompany);
         }
         [HttpPost]
-        public IActionResult Edit(Company edit) 
+        public IActionResult Edit(CCompanyWrap edit) 
         {
         Company cDB =_db.Companies.FirstOrDefault(p=>p.CompanyId==edit.CompanyId);
             if (cDB != null) 
@@ -49,21 +53,31 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Password() 
         {
             int companyID = 1;
-            var datas = _db.Companies.Where(c => c.CompanyId == companyID).FirstOrDefault();
+            CCompanyWrap cCompany = new CCompanyWrap();
+            cCompany.company = _db.Companies.Where(c => c.CompanyId == companyID).FirstOrDefault();
 
-            return View(datas);
+            return View(cCompany);
             
         }
         [HttpPost]
-        public IActionResult Password(Company edit)
+        public IActionResult Password(CCompanyWrap edit)
         {
-            Company cDB = _db.Companies.FirstOrDefault(p => p.CompanyId == edit.CompanyId);
-            if (cDB != null)
+            if (edit.Password == edit.newPasswordCheck)
             {
-                cDB.Password = edit.Password;
+                Company cDB = _db.Companies.FirstOrDefault(p => p.CompanyId == edit.CompanyId);
+                if (cDB != null)
+                {
+                    cDB.Password = edit.Password;
 
-                _db.SaveChanges();
+                    _db.SaveChanges();
+                }
+
             }
+            else 
+            {
+                ViewBag.CompanyPasswordAlarm = "新密碼與確認密碼不一致";
+            }
+            
             return View();
         }
     }
