@@ -19,6 +19,8 @@ public partial class CouponList
 
     public string? ImagePath { get; set; }
 
+    public DateTime? CreateDate { get; set; }
+
     public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
