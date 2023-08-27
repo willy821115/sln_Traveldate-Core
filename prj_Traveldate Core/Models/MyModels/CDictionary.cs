@@ -9,6 +9,5 @@
         public static readonly string SK_LOGGEDIN_EMPLOYEE = "SK_LOGGEDIN_EMPLOYEE";
         public static readonly string SK_BACK_TO_CONTROLLER = "SK_BACK_TO_CONTROLLER";
         public static readonly string SK_BACK_TO_ACTION = "SK_BACK_TO_ACTION";
-
     }
 }
