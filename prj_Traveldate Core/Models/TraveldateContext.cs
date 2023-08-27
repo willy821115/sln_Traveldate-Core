@@ -253,6 +253,7 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.CouponListId).HasColumnName("CouponListID");
             entity.Property(e => e.CouponName).HasMaxLength(50);
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.ImagePath).HasMaxLength(50);

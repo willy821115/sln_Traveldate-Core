@@ -83,7 +83,7 @@ namespace prj_Traveldate_Core.Controllers
                                   Title = c.Title,
                                   ComEmail = c.Email,
                                   ServerDescription = c.ServerDescription,
-                                  ComEnablel = c.Enable
+                                  ComEnable = c.Enable
                               };
 
             var combinedData = new CPlatformViewModel
@@ -111,6 +111,7 @@ namespace prj_Traveldate_Core.Controllers
                             CouponName = c.CouponName,
                             Discount = c.Discount,
                             Description = c.Description,
+                            CreateDate = c.CreateDate,
                             DueDate = c.DueDate,
                             ImagePath = c.ImagePath
                         };
@@ -122,6 +123,7 @@ namespace prj_Traveldate_Core.Controllers
                 CouponWrap.Discount = item.Discount;
                 CouponWrap.Description = item.Description;
                 CouponWrap.DueDate = item.DueDate;
+                CouponWrap.CreateDate = item.CreateDate;
                 CouponWrap.ImagePath = item.ImagePath;
                 int couponNum = pf.couponNum(item.CouponListId);
                 int couponUsedNum = pf.couponUsedNum(item.CouponListId);
@@ -144,6 +146,7 @@ namespace prj_Traveldate_Core.Controllers
             save.Discount = cou.Discount;
             save.Description = cou.Description;
             save.DueDate = cou.DueDate;
+            save.CreateDate = cou.CreateDate;
             if (cou.photo != null)
             {
                 string photoName = Guid.NewGuid().ToString() + ".jpg";
@@ -296,45 +299,48 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("AccountSuspend");
         }
 
-
         [HttpPost]
-        public ActionResult DisableMember(int memberId)
+        public ActionResult SusCompany(int comId)
         {
             TraveldateContext db = new TraveldateContext();
-            var member = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+            var com= db.Companies.FirstOrDefault(c => c.CompanyId== comId);
 
-            if (member != null)
+            if (com != null)
             {
-                member.Enable = !member.Enable; // Toggle the status
-
-                db.SaveChanges();
-
-                return Json(new { success = true });
-            }
-
-            return Json(new { success = false, message = "沒有此會員" });
-        }
-        [HttpPost]
-        public IActionResult BulkDisableMembers(List<int> memberIds, bool enable)
-        {
-            try
-            {
-                TraveldateContext db = new TraveldateContext();
-                var membersToUpdate = db.Members.Where(m => memberIds.Contains(m.MemberId)).ToList();
-
-                foreach (var member in membersToUpdate)
+                if (com.Enable == true)
                 {
-                    member.Enable = enable; 
+                    com.Enable = false;
                 }
-                db.SaveChanges(); 
-                var success = true;
-                return Json(new { success = success });
+                else if (com.Enable == false)
+                {
+                    com.Enable = true;
+                }
+                db.SaveChanges();
+                return RedirectToAction("AccountSuspend");
             }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, error = ex.Message });
-            }
+            return Content("沒有此供應商");
         }
+
+        [HttpPost]
+        public ActionResult SusAllCom(List<int> comIds)
+        {
+            using (var db = new TraveldateContext())
+            {
+                foreach (var comId in comIds)
+                {
+                    var com = db.Companies.FirstOrDefault(c => c.CompanyId == comId);
+
+                    if (com != null)
+                    {
+                        com.Enable = !com.Enable;
+                    }
+                }
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("AccountSuspend");
+        }
+
 
         [HttpGet]
         public IActionResult GetProductDetails(int productId)
@@ -391,6 +397,7 @@ namespace prj_Traveldate_Core.Controllers
                 couponImage = couponDetails.ImagePath
             });
         }
+
 
 
 

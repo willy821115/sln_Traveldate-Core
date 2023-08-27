@@ -56,7 +56,7 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                
+                <h2 style="margin-top:10px; margin-left:15px">停權管理</h2>
                     <ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom:none !important; padding-left:18px">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">會員停權管理</button>
@@ -75,21 +75,19 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">會員停權</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <form id="bulkDisableForm">
-                                            <div style="display: flex; align-items: center;">
-                                                <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
-                                                <div style="margin-left: 10px; display: flex; align-items: center;">
-                                                    <label style="margin-right: 10px;">會員狀態</label>
-                                                    <select class="form-select" name="memberSelect">
-                                                        <option value="all">全部狀態</option>
-                                                        <option value="false">停權會員</option>
-                                                        <option value="true">正常會員</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    <div style="display: flex; align-items: center;">
+                                        <button id="AllAccountSus" class="btn btn-outline-danger" style="margin-right: 15px; margin-bottom: 10px;">一鍵停權／復權</button>
+                                        <label style="margin-right: 15px;">會員狀態</label>
+                                        <div>
+                                            <select class="form-select" name="status" id="statusselect" style="margin-bottom:5px;">
+                                                <option value="all">所有會員</option>
+                                                <option value="active">停權會員</option>
+                                                <option value="suspend">正常會員</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
+                                    <div class="table-responsive">
                                         <table id="memberTable" class="display" style="width:100%">
                                             <thead>
                                                 <tr>
@@ -140,6 +138,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                         <div class="col-md-12">
                             <div class="card shadow mb-4">
@@ -147,26 +146,22 @@
                                     <h6 class="m-0 font-weight-bold text-primary cardTitle">供應商停權</h6>
                                 </div>
                                 <div class="card-body">
+                                    <div style="display: flex; align-items: center;">
+                                        <button id="AllComSus" class="btn btn-outline-danger" style="margin-right: 15px; margin-bottom: 10px;">一鍵停權／復權</button>
+                                        <label style="margin-right: 15px;">供應商狀態</label>
+                                        <div>
+                                            <select class="form-select" name="comstatus" id="statusselectcom" style="margin-bottom:5px;">
+                                                <option value="allcom">所有供應商</option>
+                                                <option value="activecom">停權供應商</option>
+                                                <option value="suspendcom">正常供應商</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive">
-                                        <form id="bulkDisableForm">
-                                            <div style="display: flex; align-items: center;">
-                                                <button id="bulkToggleButton" class="btn btn-primary">批量操作</button>
-                                                <div style="margin-left: 10px; display: flex; align-items: center;">
-                                                    <label style="margin-right: 10px;">會員狀態</label>
-                                                    <select class="form-select" name="memberSelect">
-                                                        <option value="all">全部狀態</option>
-                                                        <option value="false">停權會員</option>
-                                                        <option value="true">正常會員</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-
                                         <table id="companyTable" class="display" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th class="no-datatable-style"><input type="checkbox" id="selectAllComCheckbox" /></th>
-                                                    <th>旅行社編號</th>
                                                     <th>統編</th>
                                                     <th>旅行社名稱</th>
                                                     <th>城市</th>
@@ -183,8 +178,7 @@
                                                 @foreach (var com in Model.Companies)
                                                 {
                                                     <tr>
-                                                        <td><input type="checkbox" name="companyCheckbox" value="@com.CompanyId" /></td>
-                                                        <td>@com.CompanyId</td>
+                                                        <td class ="chkbox"><input type="checkbox" name="companyCheckbox" value="@com.CompanyId" /></td>
                                                         <td>@com.TaxIdNumber</td>
                                                         <td>@com.CompanyName</td>
                                                         <td>@com.City</td>
@@ -195,7 +189,19 @@
                                                         <td>@com.ComEmail</td>
                                                         <td>@com.ServerDescription</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-success">停權</button>
+                                                            <form asp-action="SusCompany" method="post">
+                                                                <input type="hidden" name="comId" value="@com.CompanyId" />
+                                                                <button type="submit" class="btn @(com.ComEnable ? "btn-danger" : "btn-outline-dark")">
+                                                                    @if (com.ComEnable)
+                                                                    {
+                                                                        <span>停權</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>復原</span>
+                                                                    }
+                                                                </button>
+                                                            </form>
                                                         </td>
                                                     </tr>
                                                 }
@@ -276,77 +282,16 @@
 
 @section Scripts{
 
-     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-        <script>
+     <script>
             $(document).ready(function () {
                 $('#memberTable').DataTable();
                 $('#companyTable').DataTable();
-
-            $('#bulkDisableForm').submit(function (event) {
-                event.preventDefault();
-                var enableValue = $('select[name="memberSelect"]').val();
-                var memberIds = [];
-                $('input[name="memberCheckbox"]:checked').each(function () {
-                    memberIds.push(parseInt($(this).val()));
-                });
-                bulkDisableMembers(memberIds, enableValue === 'true');
-            });
-            $('select[name="memberSelect"]').change(function () {
-                var selectedValue = $(this).val();
-                console.log(selectedValue);
-                    var enableFilter = null;
-                    if (selectedValue === 'false') {
-                        enableFilter = 'false'; 
-                    } else if (selectedValue === 'true') {
-                        enableFilter = 'true'; 
-                    } else if (selectedValue === 'all') {
-                        filterMemberTable(null);
-                    }
-                    filterMemberTable(enableFilter);
-            });
         });
+    </script>
 
-        function filterMemberTable(enableFilter) {
-            var table = $('#memberTable').DataTable();
-            if (enableFilter === null) {
-                table.search('').columns().search('').draw();
-            } else {
-                var columnData = table.column(7).data(); // Assuming the discount column is the 8th column (index 7)
-                table.search('').columns(8).search('').draw(); // Clear other filters
-
-                var matchingIndexes = [];
-                for (var i = 0; i < columnData.length; i++) {
-                    var discount = columnData[i];
-                    var match = (enableFilter === 'true' && discount === true);
-                    if (match) {
-                        matchingIndexes.push(i);
-                    }
-                }
-
-                // Apply the filter using filter() method
-                table.column(8).data().filter(function (value, index) {
-                    return matchingIndexes.includes(index);
-                }).draw();
-            }
-        }
-
-
-        //     function openAccount(evt, AccountName) {
-        //         var i, tabcontent, tablinks;
-        //         tabcontent = document.getElementsByClassName("tabcontent");
-        //         for (i = 0; i < tabcontent.length; i++) {
-        //             tabcontent[i].style.display = "none";
-        //         }
-        //         tablinks = document.getElementsByClassName("tablinks");
-        //         for (i = 0; i < tablinks.length; i++) {
-        //             tablinks[i].className = tablinks[i].className.replace(" active", "");
-        //         tablinks[i].style.backgroundColor = ""; 
-        //         }
-        //     document.getElementById(AccountName).style.display = "block";
-        // }
-
+        <script>
       //會員全選
             var selectAllCheckbox = document.getElementById("selectAllCheckbox");
             var memberCheckboxes = document.querySelectorAll('input[name="memberCheckbox"]');
@@ -365,93 +310,78 @@
             }
         });
 
-      
-
-        function disableMember(memberId, enable) {
-            var isEnable = (enable === "true");
-
-            var newEnable = !isEnable;
-            console.log(newEnable);
-            if (confirm("確定要" + (newEnable ? "復原" : "停權") + "這個會員嗎？")) {
-                $.ajax({
-                    url: '/Platform/DisableMember',
-                    method: 'POST',
-                    data: { memberId: memberId, enable: newEnable },
-                    success: function (response) {
-                        alert(response);
-                           const btnsuspend = document.querySelector(`#btnsuspend-${memberId}`);
-
-                        if (response === "True") {
-                            btnsuspend.innerHTML = "<span>停權</span>";
-                            btnsuspend.classList.remove('btn-outline-success');
-                            btnsuspend.classList.add('btn', 'btn-outline-danger');
-                        } else if (response === "False") {
-                            btnsuspend.innerHTML = "<span>復原</span>";
-                            btnsuspend.classList.remove('btn-outline-danger');
-                            btnsuspend.classList.add('btn-outline-success');
-                        }
-                    },
-                });
-            }
-        }
-
-
-        //function bulkToggleMembers() {
-        //    var selectedMembers = [];
-        //    $(".memberCheckbox:checked").each(function () {
-        //        selectedMembers.push($(this).val());
-        //    });
-
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "@Url.Action("SusAllMember")",
-        //        data: { memberIds: selectedMembers },
-        //        success: function (response) {
-        //            const btnsuspend = document.querySelector(`#btnsuspend-${memberId}`);
-
-        //            if (response === "True") {
-        //                btnsuspend.innerHTML = "<span>停權</span>";
-        //                btnsuspend.classList.remove('btn-outline-success');
-        //                btnsuspend.classList.add('btn', 'btn-outline-danger');
-        //            } else if (response === "False") {
-        //                btnsuspend.innerHTML = "<span>復原</span>";
-        //                btnsuspend.classList.remove('btn-outline-danger');
-        //                btnsuspend.classList.add('btn-outline-success');
-        //            }
-        //        }
-        //    });
-        //}
-
         $(document).ready(function () {
-            $("#bulkToggleButton").click(function () {
-                var selectedMembers = [];
+            $("#AllAccountSus").click(function (e) {
+                e.preventDefault();
+                var statusValue = $("input[name='status']:checked").val();
+                var selectedMemberIds = [];
+
                 $("input[name='memberCheckbox']:checked").each(function () {
-                    selectedMembers.push(parseInt($(this).val())); // Convert to integer
+                    selectedMemberIds.push($(this).val());
                 });
 
-                if (selectedMembers.length > 0) {
-                    bulkToggleMembers(selectedMembers);
-                } else {
-                    // Handle case when no members are selected
-                }
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SusAllMember", "Platform")",
+                    data: { memberIds: selectedMemberIds, status: statusValue },
+                    success: function (result) {
+                        location.reload(); 
+                    },
+                    error: function (error) {
+                    }
+                });
             });
         });
 
-        function bulkToggleMembers(memberIds) {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("SusAllMember")",
-                data: { memberIds: memberIds },
-                traditional: true, // To properly send array
-                success: function (response) {
-                    // Handle success response, update UI if needed
-                },
-                error: function () {
-                    // Handle error
-                }
+        $(document).ready(function () {
+            var statusSelect = $("#statusselect");
+
+            // 初始設置為所有會員
+            filterMembers("all");
+
+            // 當下拉選單變更時
+            statusSelect.change(function () {
+                var selectedStatus = $(this).val();
+                filterMembers(selectedStatus);
             });
-        }
-      
+
+            // 過濾表格行
+            function filterMembers(status) {
+                // 顯示所有行
+                $("tbody tr").show();
+
+                // 根據選擇的狀態過濾行
+                if (status === "suspend") {
+                    $("tbody tr").not(":has(button.btn-danger)").hide();
+                } else if (status === "active") {
+                    $("tbody tr").not(":has(button.btn-outline-dark)").hide();
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            $("#AllComSus").click(function (e) {
+                e.preventDefault();
+                var statusValue = $("input[name='comstatus']:checked").val();
+                var selectedComIds = [];
+
+                $("input[name='companyCheckbox']:checked").each(function () {
+                    selectedComIds.push($(this).val());
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SusAllCom", "Platform")",
+                    data: { memberIds: selectedComIds, status: statusValue },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function (error) {
+                    }
+                });
+            });
+        });
+
         </script>
 
     }
