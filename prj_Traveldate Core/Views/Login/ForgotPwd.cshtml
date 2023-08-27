@@ -1,0 +1,31 @@
+﻿@model prj_Traveldate_Core.ViewModels.CForgotPwdViewModel
+@{
+    ViewData["Title"] = "忘記密碼";
+}
+
+<h1>忘記密碼</h1>
+
+<form asp-action="ForgotPwd">
+
+    <br>
+    <br>
+    <div class="mb-3">
+        <label asp-for="email" class="form-label"></label>
+        <input type="email" class="form-control" asp-for="email" required/>
+        <br>
+        <input type="submit" class="btn my-btn-primary" value="寄送驗證信" />
+        <br>
+    </div>
+</form>
+
+<br>
+
+<div class="downlabel">
+    <a asp-area="" asp-controller="Login" asp-action="Login">回到登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+</div>
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }

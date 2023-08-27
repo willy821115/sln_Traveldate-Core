@@ -3,11 +3,6 @@ using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 
-//抓推薦欄 抓瀏覽紀錄
-//購物車刪除 愛心 修改 API
-//確認訂單
-//結帳後加入購物車 確認內容 扣點數 加點數 累積消費
-
 namespace prj_Traveldate_Core.Controllers
 {
     public class CartController : SuperController

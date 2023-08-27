@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "RedirectTo";
+}
+
+<h1>重新導向</h1>
+<p style="color: red;">@TempData["ErrorMsg"]</p>
+<p>@TempData["resultMsg"]</p>
+<input type="hidden" id="destination" value="@TempData["destination"]" />
+
+
+
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }
+
+ @section Scripts
+{
+    <script>
+        const url = document.querySelector('#destination').value;
+        function go(){
+            setTimeout(`location.href=${url}`, 4000);
+        }
+        go();
+    </script>
+}

@@ -17,8 +17,9 @@
 
         <div class="mb-3">
             <label for="mlPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" asp-for="mlPassword" value="qwertyuiop">
+            <input type="password" class="form-control" asp-for="mlPassword" value="11">
             <span class="loginAlert ml-1">@ViewBag.Message</span>
+            <span class="loginAlert ml-1">@TempData["ErrorMsg"]</span>
         </div>
 
         <div class="mb-3 form-check">
@@ -34,8 +35,8 @@
 
 <div class="downlabel">
 
-        <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
-        <label for="exampleInputEmail1" class="form-label">忘記密碼</label>
+        <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a> 
+        <a asp-area="" asp-controller="Login" asp-action="ForgotPwd">忘記密碼</a>
     <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">切換廠商登入</a>
     <br />
 <a asp-area="" asp-controller="Member" asp-action="Index">開發用會員登入</a>
