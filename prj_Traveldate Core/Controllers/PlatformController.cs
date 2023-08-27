@@ -418,5 +418,56 @@ namespace prj_Traveldate_Core.Controllers
         {
             return View();
         }
+
+        public IActionResult SusAccount(int memberId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory(); 
+            var q = db.Members.FirstOrDefault(m => m.MemberId == memberId);
+            q.Enable = !q.Enable;
+            db.SaveChanges();
+            var q2 = db.Members.Where(m => m.MemberId == memberId).Select(m => new
+            {
+                MemberId = m.MemberId,
+                LastName = m.LastName,
+                FirstName = m.FirstName,
+                Gender = m.Gender,
+                Idnumber = m.Idnumber,
+                BirthDate = m.BirthDate,
+                Phone = m.Phone,
+                Email = m.Email,
+                Discount = m.Discount,
+                Enable = (bool)m.Enable ? "停權" : "復原"
+            });
+            return Json(q2.ToList());
+
+        }
+
+
+        public IActionResult SusComAccount(int comId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            var q = db.Companies.FirstOrDefault(m => m.CompanyId == comId);
+            q.Enable = !q.Enable;
+            db.SaveChanges();
+            var q2 = db.Companies.Where(c => c.CompanyId == comId).Select(c => new
+            {
+                CompanyId = c.CompanyId,
+                TaxIdNumber = c.TaxIdNumber,
+                CompanyName = c.CompanyName,
+                City = c.City,
+                Address = c.Address,
+                CompanyPhone = c.Phone,
+                Principal = c.Principal,
+                Contact = c.Contact,
+                Title = c.Title,
+                ComEmail = c.Email,
+                ServerDescription = c.ServerDescription,
+                 ComEnable = (bool)c.Enable ? "停權" : "復原"
+            });
+            return Json(q2.ToList());
+
+        }
     }
 }

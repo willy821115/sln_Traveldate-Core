@@ -102,7 +102,7 @@
                                                     <th>狀態</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="memberlist">
                                                 @foreach (var member in Model.Members)
                                                 {
                                                     <tr>
@@ -174,7 +174,7 @@
                                                     <th>狀態</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="companylist">
                                                 @foreach (var com in Model.Companies)
                                                 {
                                                     <tr>
@@ -188,7 +188,7 @@
                                                         <td>@com.Title</td>
                                                         <td>@com.ComEmail</td>
                                                         <td>@com.ServerDescription</td>
-                                                        <td>
+                                                      @*  <td>
                                                             <form asp-action="SusCompany" method="post">
                                                                 <input type="hidden" name="comId" value="@com.CompanyId" />
                                                                 <button type="submit" class="btn @(com.ComEnable ? "btn-danger" : "btn-outline-dark")">
@@ -202,6 +202,17 @@
                                                                     }
                                                                 </button>
                                                             </form>
+                                                        </td>*@
+                                                        <td>
+                                                            @if ((bool)com.ComEnable)
+                                                            {
+                                                                <button class="btn  btn-danger SusCom" value="@com.CompanyId">停權</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button class="btn btn-outline-dark SusCom" value="@com.CompanyId">復原</button>
+                                                            }
+
                                                         </td>
                                                     </tr>
                                                 }
@@ -359,29 +370,67 @@
             }
         });
 
-        $(document).ready(function () {
-            $("#AllComSus").click(function (e) {
-                e.preventDefault();
-                var statusValue = $("input[name='comstatus']:checked").val();
-                var selectedComIds = [];
+        //$(document).ready(function () {
+        //    $("#AllComSus").click(function (e) {
+        //        e.preventDefault();
+        //        var statusValue = $("input[name='comstatus']:checked").val();
+        //        var selectedComIds = [];
 
-                $("input[name='companyCheckbox']:checked").each(function () {
-                    selectedComIds.push($(this).val());
-                });
+        //        $("input[name='companyCheckbox']:checked").each(function () {
+        //            selectedComIds.push($(this).val());
+        //        });
 
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("SusAllCom", "Platform")",
-                    data: { memberIds: selectedComIds, status: statusValue },
-                    success: function (result) {
-                        location.reload();
-                    },
-                    error: function (error) {
-                    }
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "@Url.Action("SusAllCom", "Platform")",
+        //            data: { memberIds: selectedComIds, status: statusValue },
+        //            success: function (result) {
+        //                location.reload();
+        //            },
+        //            error: function (error) {
+        //            }
+        //        });
+        //    });
+        //});
+
+
+        async function SusComAccount(CompanyId) {
+            const companylist = document.getElementById('companylist');
+            const response = await fetch(`@Url.Content("~/Platform/SusComAccount")?comId=${CompanyId}`)
+            const datas = await response.json();
+            console.log(datas);
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { TaxIdNumber, CompanyName, City, Address, CompanyPhone, Contact, Title, ComEmail, ServerDescription } = row
+                    console.log(row)
+                    const continueButton = row.ComEnable === '復原'
+                        ? `<button id="continue" class="btn btn-outline-dark SusCom" value="${CompanyId}">復原</button>`
+                        : `<button id="continue" class="btn btn-danger SusCom" value="${CompanyId}">停權</button>`;
+                    return (
+                        ` <tr>
+                                 <td class ="chkbox" > <input type="checkbox" name = "companyCheckbox" value = "CompanyId" /> </td>
+                                                                           <td>${TaxIdNumber}</td>
+                                                                         <td>${CompanyName}</td>
+                                                                            <td>${City}</td>
+                                                                             <td>${Address}</td>
+                                                                             <td>${CompanyPhone}</td>
+                                                                           <td>${Contact}</td>
+                                                                            <td>${Title}</td>
+                                                                             <td>${ComEmail}</td>
+                                                                            <td>${ServerDescription}</td>
+                                                                          <td>${continueButton}</td>
+
+                                                         </tr>`
+                    );
+
                 });
-            });
+                companylist.innerHTML = rows.join("");
+            }
+        }
+        $(document).on('click', '.SusCom', function () {
+            var CompanyId = $(this).val();
+            SusComAccount(CompanyId);
         });
-
         </script>
 
     }
