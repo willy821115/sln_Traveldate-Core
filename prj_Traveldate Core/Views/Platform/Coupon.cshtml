@@ -80,10 +80,10 @@
                                 <table id="datatable" class="display">
                                     <thead>
                                         <tr>
-                                            <th>id</th>
                                             <th>優惠券名稱</th>
                                             <th>折扣</th>
                                             <th>描述</th>
+                                            <th>建立日期</th>
                                             <th>截止日</th>
                                             <th>照片</th>
                                             <th>發放／使用　數量</th>
@@ -94,7 +94,7 @@
                                         @foreach (var item in Model.coupon)
                                         {
                                             <tr>
-                                                <td>@item.CouponListId</td>
+                                                
                                                 <td>
                                                     @item.CouponName
                                                 </td>
@@ -104,6 +104,7 @@
                                                 <td>
                                                     @item.Description
                                                 </td>
+                                                <td>@string.Format("{0:yyyy-MM-dd}", item.CreateDate)</td>
                                                 <td>
                                                     @string.Format("{0:yyyy-MM-dd}", item.DueDate)
                                                 </td>
@@ -144,6 +145,7 @@
                         </div>
                         <div class="modal-body">
                             <form action="/Platform/CreateCoupon" method="post" enctype="multipart/form-data">
+                                <input type="hidden" id="CreateDate" name="cou.CreateDate" readonly>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">優惠券名稱</label>
                                     <input type="text" class="form-control" id="CouponName" name="cou.CouponName">
@@ -186,6 +188,7 @@
                         <div class="modal-body">
                             <form action="/Platform/EditCoupon" method="post" enctype="multipart/form-data">
                                 <input type="hidden" id="EditCouponListId" name="cou.CouponListId" />
+                                <input type="hidden" id="CreateDate" name="cou.CreateDate" />
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">優惠券名稱</label>
                                     <input type="text" class="form-control" id="EditCouponName" name="cou.CouponName">
@@ -254,7 +257,7 @@
 
         <script>
             new DataTable('#datatable', {
-                order: [[0, 'desc']]
+                order: [[3, 'desc']]
             });
 
 
@@ -309,6 +312,11 @@
                         successMessage.fadeOut();
                     }, 3000);
                 }
+            });
+
+            $('.my-btn-primary').on('click', function () {
+                // 在點擊"確認修改"按鈕時，設定當前時間給 CreateDate 字段
+                $('#CreateDate').val(new Date().toISOString());
             });
         </script>
     }

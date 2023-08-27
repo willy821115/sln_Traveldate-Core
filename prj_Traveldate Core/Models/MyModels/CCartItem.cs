@@ -13,5 +13,6 @@
         public decimal? unitPrice { get; set; }
         public decimal? discount { get; set; }
         public bool favo { get; set; }
+        public int? ProductTypeID { get; set; }
     }
 }

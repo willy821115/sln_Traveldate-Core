@@ -139,7 +139,7 @@ namespace prj_Traveldate_Core.ViewModels
             get { return member.Enable; }
             set { member.Enable = value; }
         }
-        public bool? ComEnablel
+        public bool? ComEnable
         {
             get { return company.Enable; }
             set { company.Enable = value; }

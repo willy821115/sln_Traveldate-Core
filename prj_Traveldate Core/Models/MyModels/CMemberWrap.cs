@@ -107,7 +107,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             set { _member.ImagePath = value; }
         }
 
-        public IFormFile photo { get; set; }
+        public IFormFile? photo { get; set; }
 
     }
 }
