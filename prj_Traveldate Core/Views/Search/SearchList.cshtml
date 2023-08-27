@@ -365,6 +365,10 @@
                     hideLoadingIcon()
                     $('#filterBody').html(response)
                     roadRating()
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
                     var resultCount = $('#updateTotal').val()
                     $('#total').html(resultCount)
                      $(".pagination > a").filter(function () {

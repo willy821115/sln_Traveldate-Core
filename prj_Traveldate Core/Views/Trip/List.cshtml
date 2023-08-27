@@ -156,7 +156,7 @@
                                     </tr>
                                 </thead>
                                
-                                <tbody>
+                                <tbody id="productlist">
                                    @foreach(var item in Model.cProductWraps)
                                     {
                                         <tr>
@@ -294,12 +294,122 @@
              triptable.innerHTML = rows.join("");
          }
      }
+
+     async function queryByType(typeID){
+            const productlist = document.getElementById('productlist');
+            const response = await fetch(`@Url.Content("~/Trip/queryByType")?typeID=${typeID}`);
+            const datas = await response.json();
+            if(datas!=null){
+                console.log(datas)
+                const rows = datas.map(row=>{
+                    const{productID,productName,productType,productStatus}=row
+                    return(
+                        ` <tr>
+                                              <td>${productName}</td>
+                                               <td>${productType}</td>
+                                                <td>${productStatus}</td>
+                                                <td><button  value="${productID}" class="btn btn-primary btnDetail">現有行程</button></td>
+                                          <td>
+                                                   <a href="@Url.Content("~/Trip/Create")?id=${productID}" class="btn btn-primary">編輯</a>
+                                          </td>
+                                  </tr>`
+                    )
+                })
+                productlist.innerHTML = rows.join("");
+            }
+     }
+
+     async function queryByStatus(statusID){
+            const productlist = document.getElementById('productlist');
+            const response = await fetch(`@Url.Content("~/Trip/queryByStatus")?statusID=${statusID}`);
+            const datas = await response.json();
+            if (datas != null) {
+            const rows = datas.map(row=>{
+             const { productID, productName, productType, productStatus } = row
+             return(
+                    ` <tr>
+                                                      <td>${productName}</td>
+                                                       <td>${productType}</td>
+                                                        <td>${productStatus}</td>
+                                                        <td><button  value="${productID}" class="btn btn-primary btnDetail">現有行程</button>
+                                                           <a href="@Url.Content("~/Trip/Create")?id=${productID}" class="btn btn-primary">編輯</a>
+                                                  </td>
+                                          </tr>`
+             )
+                
+                 });
+            productlist.innerHTML = rows.join("");
+            }
+
+     }
+
+        async function queryByDate(dates) {
+            const triptable = document.getElementById('triptable');
+            const response = await fetch(`@Url.Content("~/Trip/queryByDate")?dates=${dates}`);
+            const datas = await response.json();
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { tripID, tripName, tripType, stock, tripDay, tripDate } = row
+                    return (
+                        ` <tr>
+                                      <td>${tripName}</td>
+                                       <td>${tripType}</td>
+                                        <td>${tripDate}</td>
+                                        <td>${tripDay}</td>
+                                        <td>${stock}</td>
+                                          <td>
+                                                 <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                          </td>
+                                  </tr>`
+                    )
+
+                })
+                triptable.innerHTML = rows.join("");
+            }
+        }
       
      $('.btnDetail').click(function () {
          var productID = $(this).val();
             loadTripTable(productID);
 
      });
+
+        $('.typeradio').change(function(){
+        var typeID = $(this).val();
+        queryByType(typeID);
+        });
+
+        $('.statusradio').change(function () {
+            var statusID = $(this).val();
+            queryByStatus(statusID);
+        });
+
+        var inputValue = ""; // 用于存储输入的值
+        var changeCount = 0; // 用于计数值改变的次数
+
+        $('#tripdates').change(function () {
+
+            var currentInputValue = $(this).val();
+
+            // 检查当前值是否与之前的值不同
+            if (currentInputValue !== inputValue) {
+                changeCount++; // 值改变次数加1
+                inputValue = currentInputValue; // 更新存储的值
+
+                // 当值改变两次时触发事件
+                if (changeCount === 2) {
+                    var dates = $(this).val();
+                    queryByDate(dates);
+
+                    // 在这里执行其他操作，根据输入的值进行不同的处理
+
+                    // 重置计数器，以便下一次触发事件
+                    changeCount = 0;
+                }
+            }
+
+
+        });
 
  </script>
  }

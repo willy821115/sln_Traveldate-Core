@@ -81,7 +81,7 @@ public partial class TraveldateContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=ZB14TW\\SQLEXPRESS;Initial Catalog=Traveldate;Integrated Security=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Traveldate;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -253,6 +253,7 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.CouponListId).HasColumnName("CouponListID");
             entity.Property(e => e.CouponName).HasMaxLength(50);
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.ImagePath).HasMaxLength(50);
@@ -295,9 +296,12 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.IsPublish).HasColumnName("isPublish");
+            entity.Property(e => e.Likes).HasDefaultValueSql("((0))");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ReleaseDatetime).HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(50);
+            entity.Property(e => e.Watches).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.Member).WithMany(p => p.ForumLists)
                 .HasForeignKey(d => d.MemberId)
