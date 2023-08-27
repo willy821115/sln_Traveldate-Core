@@ -130,3 +130,33 @@ $('.useCouponButton').on('click', function () {
 
 })
 
+$('.companion_choose').on('change', function () {
+    if ($(this).is(':checked')) {
+        $(this).siblings('.chooseCompanion').show();
+    }
+})
+
+$('.companion_input').on('change', function () {
+    if ($(this).is(':checked')) {
+        $(this).parent().next('div').find('.chooseCompanion').hide();
+        // 找到父級元素的下一個Confirm-Container-Content容器
+        var $container = $(this).closest('.radio-group').next('.Confirm-Container-Content');
+
+        // 在該容器中找到對應的輸入欄位並清空值
+        $container.find('.lastname').val("");
+        $container.find('.firstname').val("");
+        $container.find('.idnumber').val("");
+        $container.find('.phone').val("");
+        $container.find('.bdate').val("");
+        $container.find('.companionList').val("");
+
+        $container.find('.lastname').prop("disabled", false);
+        $container.find('.firstname').prop("disabled", false);
+        $container.find('.idnumber').prop("disabled", false);
+        $container.find('.phone').prop("disabled", false);
+        $container.find('.bdate').prop("disabled", false);
+
+
+    }
+})
+
