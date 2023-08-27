@@ -1,4 +1,5 @@
 ﻿using prj_Traveldate_Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -51,6 +52,8 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _commentList.CommentScore; }
             set { _commentList.CommentScore = value; }
         }
+
+        [DataType(DataType.Date)]
         public DateTime? Date
         {
             get { return _commentList.Date; }
@@ -61,10 +64,17 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _productList.ProductName; }
             set { _productList.ProductName = value; }
         }
-        public int ProductId
+        public int? ProductId
         {
             get { return _productList.ProductId; }
             set { _productList.ProductId = value; }
         }
+        public List<IFormFile> photos { get; set; }
+
+        public int CommentPhotoListId { get; set; }
+
+        public int? CommentId { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }

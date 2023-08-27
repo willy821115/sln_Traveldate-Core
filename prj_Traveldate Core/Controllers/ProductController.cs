@@ -87,7 +87,7 @@ namespace prj_Traveldate_Core.Controllers
             db.ProductLists.Add(save);
             db.SaveChanges();
             //獲取ProductID
-            productID = db.ProductLists.Where(p => p.ProductName == pro.ProductName).Select(p => p.ProductId).FirstOrDefault();
+            productID = db.ProductLists.Where(p => p.ProductName == pro.ProductName).Select(p => Convert.ToInt32( p.ProductId)).FirstOrDefault();
             //存入ProductTagList
             if (pro.Tags != null)
             {

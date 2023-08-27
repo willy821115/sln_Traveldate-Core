@@ -1,4 +1,4 @@
-﻿@* model prj_Traveldate_Core.Models.CommentList; *@
+﻿
 @{
     ViewData["Title"] = "addcomment";
 }
@@ -96,31 +96,59 @@
 
                     <div class="form-group">
                         <label >內容</label>
-                        <input type="text" id="Content" name="Content" class="form-control"  />
-@*                         @Html.LabelFor(model=>model.Content)
-                        @Html.EditorFor(model=>model.Content,"",new {htmlAttributes=new{@class="form-control"}}) *@
+                        <input type="text" id="Content" name="Content" class="form-control" />
                     </div>
-
 
                     <div class="form-group">
                         <label  >您的評分</label>
-                        <select id="CommentScore" class="form-control" name="CommentScore" ><option value="">請選擇</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>
+                        <select id="CommentScore" class="form-control" name="CommentScore" >
+                            <option value="">請選擇</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
 @*                         @Html.LabelFor(model=>model.CommentScore)
                         @Html.EditorFor(model=>model.CommentScore,"",new {htmlAttributes=new{@class="form-control"}}) 
                         @Html.DropDownListFor(model => model.CommentScore, new SelectList(new List<int> { 1, 2, 3, 4, 5 }), "請選擇", new { @class = "form-control" })*@
                     </div>
 
-
-                    <div class="form-group">
-                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">儲存</td></button>
-                        <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
+                    <div>
+                        <label>照片</label>
+                        <input type="file" class="form-control" id="photoInput" name="photos" @*multiple *@ />
                     </div>
-                }
+                    <br />
 
+                    <div>
+                        @*<label>MemberId</label>*@
+                        <input type="hidden" id="MemberId" name="MemberId" class="form-control" />
+@*                         <input type="hidden" id="MemberId" name="MemberId" class="form-control/> *@
+                    </div>
+                    <div>
+                        @*<label>ProductId</label>*@
+                        <input type="hidden" name="ProductId" value="ProductId" class="form-control" />
+@*                         <input type="hidden" id="ProductId" name="ProductId" class="form-control/> *@
+                    </div>
+                    <div>
+                        @*<label>photos</label>*@
+                        <input type="hidden" name="photos" value="photos" class="form-control" />
+                        @*                         <input type="hidden" id="photos" name="photos" class="form-control/> *@
+                    </div>
+                    <div>
+                        @*<label>ImagePath</label>*@
+                        <input type="hidden" name="ImagePath" value="ImagePath" class="form-control" />
+                        @*                         <input type="hidden" id="ImagePath" name="ImagePath" class="form-control/> *@
+                    </div>
+
+                    <div>
+                          <div class="form-group">
+                              <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送"/>
+                              <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
+                          </div>              
+                    </div>                 
+                }
                 </div>
-             </div>
-            
-    </div>
 </div>
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
