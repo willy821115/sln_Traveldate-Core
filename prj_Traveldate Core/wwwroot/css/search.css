@@ -43,6 +43,7 @@ body {
     color: #00000098;
 }
 
+
 .my-text-secondary {
     color: #88A8BC;
 }
@@ -107,7 +108,8 @@ input,
 .clearKeyword,
 .btnPlusTrip,
 .btnDeleteTrip,
-.btnEditTrip {
+.btnEditTrip,
+.btnCheck {
     cursor: pointer;
 }
 

@@ -21,6 +21,8 @@ public partial class ForumList
 
     public int? Watches { get; set; }
 
+    public bool? IsPublish { get; set; }
+
     public virtual ICollection<ArticlePhoto> ArticlePhotos { get; set; } = new List<ArticlePhoto>();
 
     public virtual ICollection<LikeList> LikeLists { get; set; } = new List<LikeList>();

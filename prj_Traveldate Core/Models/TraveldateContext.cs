@@ -253,6 +253,7 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.CouponListId).HasColumnName("CouponListID");
             entity.Property(e => e.CouponName).HasMaxLength(50);
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.Discount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.ImagePath).HasMaxLength(50);
@@ -295,9 +296,12 @@ public partial class TraveldateContext : DbContext
 
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.IsPublish).HasColumnName("isPublish");
+            entity.Property(e => e.Likes).HasDefaultValueSql("((0))");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ReleaseDatetime).HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(50);
+            entity.Property(e => e.Watches).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.Member).WithMany(p => p.ForumLists)
                 .HasForeignKey(d => d.MemberId)
