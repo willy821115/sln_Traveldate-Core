@@ -32,12 +32,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=HomePage}/{action=HomePage}/{id?}");
-
 //app.MapControllerRoute(
 //    name: "default",
-//    pattern: "{controller=Forum}/{action=Create}/{id?}");
+//    pattern: "{controller=HomePage}/{action=HomePage}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Forum}/{action=ForumList}/{id?}");
 
 app.Run();

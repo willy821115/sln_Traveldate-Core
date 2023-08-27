@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "請重新選購";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="cart_body">
+        <div class="Header">
+            <h3 class="Heading">@ViewData["Title"]</h3>
+        </div>
+        <div class="Steps">
+            <ol class="breadcrumb">
+                <li id="Step_cart" class="breadcrumb-item">購物車</li>
+                <li id="Step_Confirm" class="breadcrumb-item">填寫資料與付款</li>
+                <li id="Step_Finish" class="breadcrumb-item">訂購完成</li>
+            </ol>
+        </div>
+        <div class="Complete-box m-auto">
+            <h4 class="Complete-title">Oops！</h4>
+            <div class="Complete-content">
+                <p>@ViewBag.message</p>
+                @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="mt-2 btn my-btn-primary btn-lg col-4", style="margin:0 auto;"})
+                <br>
+                @Html.ActionLink("回到首頁","HomePage","HomePage",null,new {@class="mt-2 btn btn-outline-dark btn-lg col-4", style="margin:0 auto;"})
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
+
+}
+
+@section Scripts{
+    <script src="~/js/jsCart.js"></script>
+}

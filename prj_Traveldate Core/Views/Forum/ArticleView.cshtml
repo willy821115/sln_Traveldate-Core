@@ -20,6 +20,52 @@
         #btnReply:hover{
                 background: #d3d4d5;
         }
+
+        .dialog-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height:400px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        .showTop{
+            position: absolute;
+            right:0;
+            max-height:320px;
+            overflow-y: auto;
+            z-index:100;
+            background:#fff;
+            width:340px;
+            border: 1px solid gray;
+            padding: 2px;
+            border-radius:7px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #155074;
+            border-radius: 5px;
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #74abcc;
+            }
     </style>
 }
 
@@ -27,8 +73,7 @@
     <div class="col-10 bg-white rounded-3">
         <div class="divide-line">
         <div class="divide-line pl-4 pt-4">
-            <h2>揪3~5人遊蘭嶼</h2>
-              <h6>@Model.forum.Title</h6>
+                <h2>@Model.forum.Title</h2>
         </div>
             <div class="mb-4 pl-4">
                 <img src="~/icons/icons8-eye-24.png" />　<span>@Model.forum.Watches　|</span>
@@ -37,10 +82,26 @@
         </div>
             <div class="d-flex divide-line pl-4 pr-4 pb-4">
             <div>
-                <img src="~/icons/icons8-person-female-100.png" />
+                    @if (!string.IsNullOrEmpty(ViewBag.PhotoBase64))
+                    {
+                        <img src="@ViewBag.PhotoBase64" height="100" width="100" />
+                    }
+                    else
+                    {
+                        if (Model.forum.Member.Gender == "男")
+                        {
+                            <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
+                        }
+                        else
+                        {
+                            <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
+                        }
+
+                    }
+
             </div>
-            <div class="col">
-                <h4>王曉明</h4>
+            <div class="col-8">
+                <h4>@Model.forum.Member.FirstName</h4>
                 <div>
                     <span>發文日期 : 2023/07/15　|　</span>
                     <span><img src="~/icons/icons8-position-16.png" />台東</span>
@@ -49,9 +110,22 @@
                     <span><img src="~/icons/icons8-tag-16.png" />　#水上活動　|　#一日遊</span>
                 </div>
             </div>
+            <div class="col-2 d-block">
+                    <div class="mb-2 d-inline-flex">
+                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2">聊聊</button>
+                        <a class="btn my-btn-primary col-6 pr-2 pl-2" href="#">追蹤</a>
+                    </div>
+                    <button id="otherArticles" class="btn btn-secondary col">其他揪團文</button>
+                    <div id="showOtherArticles" class="showTop"></div>
+            </div>
         </div>
-      
+            <div class="plan-container">
+                <div class="comments-title bg-gray-200">
+                    <p>揪團詳情</p>
+                </div>
+            </div>
         <div class="d-flex p-3 justify-content-around">
+                
             <div class="card text-bg-dark col-5 p-0 ">
                 <img src="~/images/蘭嶼.jpg" class="card-img h-100" alt="蘭嶼" />
                 <div class="card-img-overlay">
@@ -71,29 +145,17 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex p-3 justify-content-start pl-4">
-            <p>
-                揪旅伴2~3名,女性~<br />
-                Day1:野銀白沙冷泉<br />
-                Day2:野銀白沙冷泉<br />
-                <br />
-                費用:大約3500~4000元
-            </p>
-        </div>
-        <div class="d-flex p-3 justify-content-center">
-            <img class="col-6" src="~/images/蘭嶼舊燈塔.jpg" width="auto" />
-            <img class="col-6" src="~/images/蘭嶼情人洞.jpg" width="auto" />
-        </div>
+                <div class="d-flex justify-content-center p-3 pl-4 fs-5">
+                    <div class="col-10">@Html.Raw(Model.forum.Content)</div>
+                </div>
             <div class="plan-container">
-                <div class="comments-title">
+                <div class="comments-title bg-gray-200">
                     <p>體驗地點</p>
                 </div>
-                <hr />
                 <div id="map" style="height:500px;width:509px;margin:5px auto;"></div>
             </div>
-        </div>
-        <div name="activeForm" class="d-flex justify-content-around p-2 mt-2 mb-2">
-            @*<input type="hidden" name="@Model.forum.ForumListId"/>*@
+            <div name="activeForm" class="d-flex justify-content-around p-2 mt-2 mb-2 bg-gray-200">
+            
             <div>
                 <img src="~/icons/icons8-like-64.png" />
                 <input id="btnLike" class="btn btn-light" type="button" value="讚" />
@@ -138,16 +200,76 @@
         </div>
         <div class="pl-4 pr-4">
             <form name="replyForm">
-                <input type="hidden" name="ForumListId" value="@Model.forum.ForumListId" />
+                    @if(Model.member != null)
+                    {<input type="hidden" name="ForumListId" value="@Model.forum.ForumListId" />
                 <input type="hidden" name="MemberId" value="@Model.member.MemberId" />
                 <input type="hidden" name="ReplyTime" value="@DateTime.Now"/>
-                @Html.Partial("ReplyToDiv",Model.member)
+                        @Html.Partial("ReplyToDiv",Model.member)
+                    }else{
+                        <div>
+                            <h3>登入後即可回覆文章!</h3>
+                        </div>
+                    }
+                    
             </form>
     </div>
     </div>
 </div>
 
+<div id ="dialogBox" class="dialog-box">
+    <div class="dialog-content">
+        <div class="d-flex justify-content-between align-items-center bg-gray-300">
+            <span>與 <span class="fw-bold text-black">@Model.forum.Member.FirstName</span> 聊聊中</span>
+            <img id="btnCloseTalk" src="~/icons//icons8-x-30.png" />
+        </div>
+        <h3>這是對話視窗的內容</h3>
+        <p>你可以在這裡放置任何內容。</p>
+    </div>
+</div>
+</div>
+<input id="isLogin" type="hidden" value="@Model.member"/>
 @section Scripts{
+    <script>
+        $('#btnCloseTalk').on('click', () => {
+            $('#dialogBox').hide()
+        })
+    </script>
+    <script src="~/js/wait_icon_function.js"></script>
+    <script>
+        const $showOtherArticles = $('#showOtherArticles');
+        $showOtherArticles.hide()
+        //查看此發文者的其他文章
+        var memeberId = @Model.forum.MemberId
+            $('#otherArticles').on('click', async function () {
+                const response = await fetch(`@Url.Content("~/Forum/ViewOtherArticle")?memberId=${memeberId}`)
+            const datas = await response.json();
+            if (datas != null) {
+                console.log(datas)
+                const forums = datas.map(forum => {
+                        const { title, likes, watches, releaseDatetime, forumListId, prodPhotoPath } = forum
+                    return (
+                            `<a href="@Url.Content("~/Forum/ArticleView")?id=${forumListId}" class="list-group-item list-group-item-action">
+                                    <div class="col">
+                                            <img src="/images/${prodPhotoPath}" class="img-fluid img-thumbnail"/>
+                                    </div> 
+                                    <div class="col">
+                                 <h5>${title}</h5>
+                                <img src = "/icons/icons8-like-24.png" height="16"/> <span>${likes} | </span>
+                                <img src= "/icons/icons8-eye-24.png" height="16"/> <span>${watches} | </span>
+                                <span>發文時間 : ${releaseDatetime}</span>
+                                </div>
+                        </a>`
+                    )
+                }) 
+                    const newHtml = forums.join("");
+                    $showOtherArticles.html(newHtml);
+                    // 切換顯示/隱藏
+                    $showOtherArticles.toggle();
+            }
+        })
+
+
+    </script>
     <script>
        /*****按讚/取消讚*****/
         $('#btnLike').click(function (b) {
@@ -167,24 +289,28 @@
             })
         })
       /******留言區即時更新**** */
-        const btnSubmit = document.querySelector('#btnSubmit')
-        const replyContent = document.querySelector('#replyContent')
-        btnSubmit.addEventListener('click',event=>{
-            event.preventDefault();
-            const formData = new FormData(document.replyForm);
-            fetch('@Url.Content("~/Forum/ReplyTo")', {
-                body: formData,
-                method: "post"
-            }).then(response => {
+        var isLogin = $('#isLogin').val()
+              if (isLogin){
+            const btnSubmit = document.querySelector('#btnSubmit')
+            const replyContent = document.querySelector('#replyContent')
+            btnSubmit.addEventListener('click', event => {
+                event.preventDefault();
+                const formData = new FormData(document.replyForm);
+                fetch('@Url.Content("~/Forum/ReplyTo")', {
+                    body: formData,
+                    method: "post"
+                }).then(response => {
                     console.log(response)
                     if (response.ok) {
-                    $('#replyBody').load('@Url.Content("~/Forum/Replied")' + '?id=' + @Model.forum.ForumListId)
-                    replyContent.value="";
+                        $('#replyBody').load('@Url.Content("~/Forum/Replied")' + '?id=' + @Model.forum.ForumListId)
+                        replyContent.value = "";
                     } else {
                         alert('新增失敗,請確認資料')
                     }
                 })
-        })
+            })
+      }
+        
 
         /******GoogleAPI**** */
         const googleMapsScript = document.createElement("script");
@@ -220,6 +346,16 @@
                 });
             }
         }
+
+
+        // 點擊按鈕時顯示對話視窗
+        document.getElementById('showDialogBtn').addEventListener('click', function () {
+            document.getElementById('dialogBox').style.display = 'block';
+        });
+
+      
+
+
 
     </script>
 }

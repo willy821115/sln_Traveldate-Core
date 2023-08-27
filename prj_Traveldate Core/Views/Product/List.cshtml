@@ -181,11 +181,18 @@
                                             </td>
                                             
                                         <td>
-                                                <button id="continue" class="btn btn-primary">上架</button>
-                                                <button id="discontinue" class="btn btn-danger">下架</button>
+                                                @if ((bool)item.Discontinued)
+                                                {
+                                                    <button class="btn btn-success SaleOperate" value="@item.ProductId">上架</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-danger SaleOperate" value="@item.ProductId">下架</button>
+                                                }
+                                                
                                         </td>
                                         <td>
-                                                @Html.ActionLink("編輯", "Edit", "Product",new {productID=item.ProductId },new {@class="btn btn-success"})
+                                                @Html.ActionLink("編輯", "Edit", "Product",new {productID=item.ProductId },new {@class="btn btn-primary"})
                                         </td>
                                     </tr>
                                     }
@@ -236,6 +243,9 @@
             if (datas != null) {
                 const rows = datas.map(row => {
                     const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                    const continueButton = discontinued === '上架'
+                        ? `<button id="continue" class="btn btn-danger SaleOperate" value="${productID}">下架</button>`
+                        : `<button id="continue" class="btn btn-success SaleOperate" value="${productID}">上架</button>`;
                     return (
                         ` <tr>
                                            <td>${productName}</td>
@@ -243,12 +253,9 @@
                                             <td>${cityName}</td>
                                              <td>${productStatus}</td>
                                              <td>${discontinued}</td>
-                                              <td>
-                                                             <button id="continue" class="btn btn-primary">上架</button>
-                                                              <button id="discontinue" class="btn btn-danger">下架</button>
-                                               </td>
+                                              <td>${continueButton} </td>
                                                  <td>
-                                                             <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-success">編輯</a>
+                                                             <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-primary">編輯</a>
                                                  </td>
 
                                  </tr>`
@@ -266,6 +273,9 @@
             if (datas != null) {
                 const rows = datas.map(row => {
                     const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                    const continueButton = discontinued === '上架'
+                        ? `<button id="continue" class="btn btn-danger SaleOperate" value="${productID}">下架</button>`
+                        : `<button id="continue" class="btn btn-success SaleOperate" value="${productID}">上架</button>`;
                     return (
                         ` <tr>
                                                    <td>${productName}</td>
@@ -273,12 +283,9 @@
                                                     <td>${cityName}</td>
                                                      <td>${productStatus}</td>
                                                      <td>${discontinued}</td>
-                                                      <td>
-                                                                     <button id="continue" class="btn btn-primary">上架</button>
-                                                                      <button id="discontinue" class="btn btn-danger">下架</button>
-                                                       </td>
+                                                                      <td>${continueButton}</td>
                                                          <td>
-                                                                     <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-success">編輯</a>
+                                                                             <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-primary">編輯</a>
                                                          </td>
 
                                          </tr>`
@@ -289,6 +296,37 @@
             }
         }
 
+        async function SaleOperate(productID) {
+            const productlist = document.getElementById('productlist');
+            const response = await fetch(`@Url.Content("~/Product/SaleOperate")?productID=${productID}`)
+            const datas = await response.json();
+            if(datas!=null){
+            const rows=datas.map(row=>{
+                const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                const continueButton = discontinued === '上架'
+                    ? `<button id="continue" class="btn btn-danger SaleOperate" value="${productID}">下架</button>`
+                    : `<button id="continue" class="btn btn-success SaleOperate" value="${productID}">上架</button>`;
+                return (
+                    ` <tr>
+                                                           <td>${productName}</td>
+                                                            <td>${productType}</td>
+                                                            <td>${cityName}</td>
+                                                             <td>${productStatus}</td>
+                                                             <td>${discontinued}</td>
+                                                                              <td>${continueButton}</td>
+                                                                 <td>
+                                                                                     <a href="@Url.Content("~/Product/Edit")?productID=${productID}" class="btn btn-primary">編輯</a>
+                                                                 </td>
+
+                                                 </tr>`
+                )
+
+            });
+            productlist.innerHTML = rows.join("");
+            }
+
+        }
+
         $('.typeradio').change(function () {
             var typeID = $(this).val();
             queryByType(typeID);
@@ -297,6 +335,11 @@
         $('.statusradio').change(function () {
             var statusID = $(this).val();
             queryByStatus(statusID);
+        });
+
+        $(document).on('click', '.SaleOperate', function () {
+            var productID = $(this).val();
+            SaleOperate(productID);
         });
  </script>
  }
