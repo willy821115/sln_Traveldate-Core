@@ -34,7 +34,15 @@
         {
             get { return _coupon.DueDate; }
             set { _coupon.DueDate = value; }
-        }   
+        }
+
+        public DateTime? CreateDate
+        {
+            get { return _coupon.CreateDate; }
+            set { _coupon.CreateDate = value; }
+        }
+
+
         public string? ImagePath
         {
             get { return _coupon.ImagePath; }

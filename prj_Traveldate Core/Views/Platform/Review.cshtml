@@ -171,7 +171,7 @@
                             </table>
                             
                                     <!-- Modal -->
-                                        <div class="modal fade"@* id="exampleModalScrollable-@item.ProductId"*@ tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -297,12 +297,14 @@
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
         <script>
             new DataTable('#datatable', {
                 order: [[4, 'desc']]
             });
+            </script>
 
+
+        <script>
             $(document).ready(function () {
                 function updateTable() {
                     var selectedCompany = String($('select[name="companySelect"]').val());
@@ -351,7 +353,7 @@
                     success: function (response) {
                             alert(productId)
                         $('#modalTitle').text(response.ProductName);
-                        $('#modalCity').text(response.city);
+                        $('#modalCity').text(response.CityName);
                         $('#modalDescription').text(response.description);
                         $('#modalPlanName').text(response.planName);
                         $('#modalPlanDescription').text(response.plandescription);
