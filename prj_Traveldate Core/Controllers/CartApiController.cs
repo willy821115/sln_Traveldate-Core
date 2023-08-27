@@ -67,11 +67,22 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("ShoppingCart", "Cart");
         }
 
-        //  修改數量
-        //  編輯訂購內容(修改OD)
+        //TODO  修改數量
+        //TODO  編輯訂購內容(修改OD)
+        //TODO  抓推薦
+        //TODO  抓瀏覽紀錄
 
 
-        //確認訂購內容
+        //透過ID取得同行者資料
+        public IActionResult GetCompanionByID(int id)
+        {
+            var companion = _context.Companions.Where(c=>c.CompanionId==id).Select(c=>c).FirstOrDefault();
+            return Json(companion);
+        }
 
+        //揪團用結帳
+
+
+        
     }
 }
