@@ -3,11 +3,6 @@ using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
 
-//抓推薦欄 抓瀏覽紀錄
-//購物車刪除 愛心 修改 API
-//確認訂單
-//結帳後加入購物車 確認內容 扣點數 加點數 累積消費
-
 namespace prj_Traveldate_Core.Controllers
 {
     public class CartController : SuperController
@@ -17,6 +12,22 @@ namespace prj_Traveldate_Core.Controllers
         public CartController()
         {
             _context = new TraveldateContext();
+
+            //////////////////////////////
+            //先填入所有sellingprice
+
+            var ods = _context.OrderDetails.Where(o=>o.Order.IsCart!=true).ToList();
+            foreach (var i in ods)
+            {
+                if (i.SellingPrice == null)
+                {
+                    i.SellingPrice = _context.Trips.Where(t => t.TripId == i.TripId).Select(t => t.UnitPrice).First();
+                }
+            }
+            _context.SaveChanges();
+
+            //////////////////////////////
+
         }
         public ActionResult ShoppingCart()
         {
@@ -76,6 +87,7 @@ namespace prj_Traveldate_Core.Controllers
                         ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
                         unitPrice = c.Trip.UnitPrice,
                         discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                        ProductTypeID = c.Trip.Product.ProductTypeId,
                     }).First();
                 vm.orders.Add(item);
             }
@@ -88,71 +100,146 @@ namespace prj_Traveldate_Core.Controllers
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
-            //減掉每個商品數量
-            //刪優惠券
-            //扣點數
-            //加點數
-            //計算累積消費金額 判斷階級 更新階級
-
-            Order newOrder = new Order()
+            using (var tran = _context.Database.BeginTransaction())
             {
-                MemberId = _memberID,
-                Datetime = DateTime.Now,
-                CouponListId = vm.newOrder.CouponListId, //
-                Discount = vm.newOrder.Discount, //
-                PaymentId = vm.newOrder.PaymentId, //
-                IsCart = false
-            };
-
-            _context.Orders.Add(newOrder);
-            _context.SaveChanges();
-
-            for(int i = 0; i < vm.ods.Count(); i++)
-            {
-                OrderDetail newOd = new OrderDetail()
+                Order newOrder = new Order()
                 {
-                    OrderId = newOrder.OrderId,
-                    Quantity = vm.ods[i].Quantity, //
-                    StatusId = 1,
-                    TripId = vm.ods[i].TripId, //
-                    SellingPrice = vm.ods[i].SellingPrice, //
-                    Note = vm.ods[i].Note
+                    MemberId = _memberID,
+                    Datetime = DateTime.Now,
+                    CouponListId = vm.newOrder.CouponListId, //
+                    Discount = vm.newOrder.Discount, //
+                    PaymentId = vm.newOrder.PaymentId, //
+                    IsCart = false
                 };
 
-                _context.OrderDetails.Add(newOd);
+                //刪優惠券
+                Coupon? c = _context.Coupons.Where(c=>c.MemberId==_memberID && c.CouponListId == vm.newOrder.CouponListId).FirstOrDefault();
+                if (c != null)
+                {
+                    _context.Coupons.Remove(c); 
+                }
+
+                //扣點數
+                Member mem = _context.Members.Where(m=>m.MemberId==_memberID).First();
+                mem.Discount -= vm.newOrder.Discount;
+
+                //加點數
+                mem.Discount += Decimal.ToInt32(Math.Ceiling(vm.checkoutAmount / 100));                
+
+
+                _context.Orders.Add(newOrder);
                 _context.SaveChanges();
 
-                if (vm.companions[i] != null)
+                for (int i = 0; i < vm.ods.Count(); i++)
                 {
-                    for(int j = 0; j < vm.companions[i].Count(); j++)
+                    OrderDetail newOd = new OrderDetail()
                     {
-                        Companion cpn = vm.companions[i][j];
-                        cpn.MemberId = _memberID;
-                        _context.Companions.Add(cpn);
-                        _context.SaveChanges();
+                        OrderId = newOrder.OrderId,
+                        Quantity = vm.ods[i].Quantity, //
+                        StatusId = 1,
+                        TripId = vm.ods[i].TripId, //
+                        SellingPrice = vm.ods[i].SellingPrice, //
+                        Note = vm.ods[i].Note
+                    };
 
-                        CompanionList cpnList = new CompanionList()
+                    //減掉商品數量
+                    Trip? trip = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).FirstOrDefault();
+                    if (trip != null && trip.MaxNum >= vm.ods[i].Quantity)
+                    {
+                        trip.MaxNum -= vm.ods[i].Quantity;
+                    }
+
+                    //刪除購物車裡的項目
+                    OrderDetail? oldOd = _context.OrderDetails.Where(o => o.OrderDetailsId == vm.ods[i].OrderDetailsId).FirstOrDefault();
+                    if (oldOd != null)
+                    {
+                        _context.OrderDetails.Remove(oldOd);
+                    }
+
+                    _context.OrderDetails.Add(newOd);
+                    _context.SaveChanges();
+
+                    if (vm.companions[i] != null)
+                    {
+                        for (int j = 0; j < vm.companions[i].Count(); j++)
                         {
-                            OrderDetailsId = newOd.OrderDetailsId,
-                            CompanionId = cpn.CompanionId
-                        };
-                        _context.CompanionLists.Add(cpnList);
-                        _context.SaveChanges();
+                            Companion cpn = vm.companions[i][j];
+                            if (cpn != null && cpn.LastName != null && cpn.FirstName != null && cpn.CompanionId == 0)
+                            {
+                                cpn.MemberId = _memberID;
+                                _context.Companions.Add(cpn);
+                                _context.SaveChanges();
+
+                                CompanionList cpnList = new CompanionList()
+                                {
+                                    OrderDetailsId = newOd.OrderDetailsId,
+                                    CompanionId = cpn.CompanionId
+                                };
+                                _context.CompanionLists.Add(cpnList);
+                                _context.SaveChanges();
+                            }
+                            else if (cpn != null && cpn.CompanionId != 0)
+                            {
+                                CompanionList cpnList = new CompanionList()
+                                {
+                                    OrderDetailsId = newOd.OrderDetailsId,
+                                    CompanionId = cpn.CompanionId
+                                };
+                                _context.CompanionLists.Add(cpnList);
+                                _context.SaveChanges();
+                            }
+                        }
                     }
                 }
-                if (vm.companionLists[i] != null)
+                tran.Commit();
+            }
+
+            //計算累積消費金額 判斷階級 更新階級
+            Member m = _context.Members.Where(m=>m.MemberId.Equals(_memberID)).First();
+            var orderHis = _context.Orders.Where(o => o.MemberId == _memberID && o.IsCart == false).ToList();
+            decimal[] consumption = new decimal[orderHis.Count];
+            decimal sum = 0;
+            for (int i = 0; i < orderHis.Count; i++)
+            {
+                decimal orderTotal = (decimal)_context.OrderDetails.Where(od => od.OrderId == orderHis[i].OrderId).Sum(od => od.SellingPrice);
+                int disc = (orderHis[i].Discount != null) ? (int)orderHis[i].Discount : 0;
+                decimal? cpamount = _context.CouponLists.Where(cl => cl.CouponListId == orderHis[i].CouponListId).Select(d => d.Discount).FirstOrDefault();
+                if (cpamount != null && cpamount < 1 && cpamount > 0)
                 {
-                    for(int j = 0; j< vm.companionLists[i].Count(); j++)
-                    {
-                        CompanionList cpnList = vm.companionLists[i][j];
-                        cpnList.OrderDetailsId = newOd.OrderDetailsId;
-                        _context.CompanionLists.Add(cpnList);
-                        _context.SaveChanges();
-                    }
+                    consumption[i] = orderTotal * (decimal)cpamount - disc;
+                }
+                else if (cpamount != null && cpamount >= 1)
+                {
+                    consumption[i] = orderTotal - (decimal)cpamount - disc;
+                }
+                else if (cpamount == null)
+                {
+                    consumption[i] = orderTotal - disc;
+                }
+                sum += consumption[i];
+            }
+            var levels = _context.LevelLists.OrderByDescending(l=>l.Standard).ToList();
+            foreach (var level in levels)
+            {
+                if (sum >= level.Standard)
+                {
+                    m.LevelId = level.LevelId;
+                    _context.SaveChanges();
+                    break;
                 }
             }
 
             ViewData["email"] = _context.Members.Find(_memberID).Email;
+            
+            //TODO 寄確認信
+            
+            return View();
+        }
+
+        public IActionResult OrderError(string e)
+        {
+
+            ViewBag.message = e;
             return View();
         }
     }

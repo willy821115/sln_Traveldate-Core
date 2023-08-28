@@ -1,4 +1,5 @@
 ﻿using prj_Traveldate_Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -10,6 +11,8 @@ namespace prj_Traveldate_Core.ViewModels
         private Order _order = null;
         private Member _member = null;
         private ProductList _productList = null;
+        private CommentList _commentList = null;
+        private CommentPhotoList _commentPhotoList = null;
 
         public TripDetail tripDetai
         {
@@ -42,11 +45,45 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _productList; }
             set { _productList = value; }
         }
+        public CommentList commentList
+        {
+            get { return _commentList; }
+            set { _commentList = value; }
+        }
+        public CommentPhotoList commentPhotoList
+        {
+            get { return _commentPhotoList; }
+            set { _commentPhotoList = value; }
+        }
+
         public int OrderId { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime? Date { get; set; }
+
+        [DataType(DataType.Date)]
         public string? Datetime { get; set; }
+
         public string? TripDetaill { get; set; }
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         public string? ProductName { get; set; }
+
+        public int MemberId { get; set; }
+
+        public string? Title { get; set; }
+
+        public string? Content { get; set; }
+
+        public int? CommentScore { get; set; }
+
+        public int CommentPhotoListId { get; set; }
+
+        public int? CommentId { get; set; }
+
+        public string? ImagePath { get; set; }
+
+        public List<IFormFile> photos { get; set; }
+
+        public virtual ICollection<COrdersViewModel> OrdersViewModel { get; set; } = new List<COrdersViewModel>();
     }
 }

@@ -5,7 +5,7 @@ namespace prj_Traveldate_Core.Models;
 
 public partial class ProductList
 {
-    public int ProductId { get; set; }
+    public int? ProductId { get; set; }
 
     public int CompanyId { get; set; }
 

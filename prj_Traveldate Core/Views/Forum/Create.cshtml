@@ -1,4 +1,5 @@
-﻿@model List<Trip>
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CCreatArticleViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -7,70 +8,114 @@
     <!-- Summernote CSS -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .my-Heading-color {
+            color: #155074;
+        }
+
+        .divScrollBar{
+            max-height:200px;
+            overflow-y: auto;
+            border:1px solid gray;
+            border-radius:7px;
+            padding:2px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #155074;
+            border-radius: 5px;
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #74abcc;
+            }
+    </style>
   }
 <div class="row justify-content-center pb-4">
+    <h3 class="pl-2 pr-2 my-Heading-color fw-bolder col-10">發表文章</h3>
     <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
-        <div class="col-10">
-            <h2 class="pl-2 pr-2 my-text-primary fw-bolder">發表文章</h2>
-            <form asp-action="Create">
+        <div class="col-11">
+            <form asp-action="Create" method="post" name="article">
+                <input type="hidden" asp-for="forum.MemberId" value="@ViewBag.memberId" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
-                    <p class="control-label divide-line">文章標題</p>
-                    <input class="form-control" />
+                    <p class="control-label divide-line fs-3">文章標題</p>
+                    <input asp-for="forum.Title" class="form-control fs-4" />
                     @*<span asp-validation-for="Title" class="text-danger"></span>*@
                 </div>
                 <div>
-                    <p class="fs-5 divide-line">選擇旅行項目與日期</p>
+                    <p class="fs-5 divide-line fs-3">選擇旅行項目與日期</p>
                     <div class="divAddTrips">
-                        <div class="d-flex mb-2">
+                        <div class="d-flex mb-2 d-1" >
                             <div class="form-group col-6 pl-0 mb-0">
-                                <input name="keyword" class="form-control form-select form-select-md inputTrip" id="inputTrip-1"
+                                <input name="keyword" class="form-control form-select form-select-md inputTrip fs-5" id="inputTrip-1"
                                        placeholder="請選擇旅行項目" />
-                                <div id="divTrip-1" class="rounded divTrip">
+                                    <div id="divTrip-1" class="rounded divTrip">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group col-4 mb-0">
-                                <input class="form-control form-select form-select-md inputTripDate" id="inputTripDate-1" placeholder="請選擇日期" />
+                            
+                            
+                            <div class="form-group col-3 mb-0">
+                                <input class="form-control form-select form-select-md inputTripDate fs-5" id="inputTripDate-1" placeholder="請選擇日期" />
+                                <input type="hidden" asp-for="tripIds[0]" id="tripId-1" />
                                 <div id="divTripDate-1" class="rounded divTripDate">
                                 </div>
                             </div>
-                            <div class="d-flex align-items-end">
-                                <span class="fs-5 fw-bolder text-block showPrice" id="showPrice-1"></span>
+                            <div class="d-flex align-items-center">
+                                <span class="fs-4 fw-bolder text-black showPrice" id="showPrice-1"></span>
                             </div>
                             <div class="ml-2">
-                                <img class="btnDeleteTrip d-none" src="~/icons/icons8-close-48.png" height="36" />
-                               <img class="btnEditTrip d-none" src="~/icons/icons8-edit-48.png" height="36" />
+                                <img id="btnDeleteTrip-1" class="btnDeleteTrip d-none" src="~/icons/icons8-close-48.png" />
+                                <img id="btnEditTrip-1" class="btnEditTrip d-none" src="~/icons/icons8-edit-48.png" />
+                                <img id="btnCheck-1" class="btnCheck d-none" src="~/icons/icons8-check--creat-article-48.png" />
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <img class="btnPlusTrip" src="~/icons/icons8-btn-plus-create-article-48.png" height="36" />
+                    <div class="d-flex justify-content-center d-none" id="divAddBtn">
+                        <img class="btnPlusTrip" src="~/icons/icons8-btn-plus-create-article-48.png"/>
                         <div class="d-flex align-items-center"><span class="fs-5 fw-bold text-gray-700">加入更多旅行項目</span></div>
                     </div>
                 </div>
 
-                <div class="form-group col-5 pl-0 fs-5">
-                    <p class="control-label divide-line">截團日期</p>
-                    <input class="form-control" />
+                <div class="form-group pl-0 fs-5 mt-4">
+                    <div class="control-label divide-line">
+                        <span class="fs-3">截團日期 </span>
+                        <i class="small text-gray-700">(請選擇最近旅行日期前三天)</i>
+                        <img src="~/icons//icons8-information.gif" height="18" data-bs-toggle="tooltip" data-bs-placement="top" title="為確保行程安排順暢,本平台將截團日期限制於旅行前三日,敬請見諒" />
+                    </div>
+                    <input asp-for="forum.DueDate" type="text" id="dashboardcalendar" class="form-control d-none col-5 fs-4 mt-2" />
                 </div>
                 <div class="form-group fs-5">
-                    <textarea id="summernote"></textarea>
+                    <textarea asp-for="forum.Content" id="summernote"></textarea>
                 </div>
                 <div class="form-group d-flex justify-content-end">
                     <div class="d-flex align-items-center">
-                        <input type="submit" value="捨棄" class="btn btn-secondary ml-1" />
-                        <input type="submit" value="儲存草稿" class="btn btn-secondary ml-1" />
-                        <input id="payment-area" type="submit" value="下一步" class="btn btn-secondary ml-1" />
+                        <button type="button" class="btn btn-outline-secondary ml-1 fs-5" onclick='deleteArticle()'>捨棄</button>
+                        <input asp-for="isSave" id="btnSaveArticle" type="submit" value="儲存草稿" class="btn btn-outline-secondary ml-1 fs-5" />
+                        <input id="payment-area" type="submit" value="下一步" class="btn my-btn-primary ml-1 fs-5" />
                     </div>
                 </div>
                 <div class="border border-black">
                     付款區
                 </div>
             </form>
-            <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">返回文章列表</a>
+            <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">找揪團</a>
         </div>
     </div>
     <div>
@@ -84,94 +129,174 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function deleteArticle() {
+            Swal.fire({
+                title: '確定要刪除文章嗎?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#155074',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '刪除',
+                cancelButtonText:'取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: '返回揪團區…',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+                    setTimeout(() => {
+                        location.href = '@Url.Content("~/Forum/ForumList")';
+                    }, 2000);
+                }
+            })
+        }
+        
+    </script>
+    
 
     <script>
+        //初始化tooltip
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
+    <script>
         var ordinal_number = 1;
-        // var divNum = 1;
+        var canAddNewTrip = false;
         $('.btnPlusTrip').on('click', function () {
-            ordinal_number ++;
-            // divNum++;
-            //console.log(divNum)
+            var $prevTripInput = $(`#inputTrip-${ordinal_number}`);
+            var $prevTripDateInput = $(`#inputTripDate-${ordinal_number}`);
+            $('#divAddBtn').addClass('d-none')
+
+            if ($prevTripInput.val() === "" || $prevTripDateInput.val()==="") {
+                canAddNewTrip = false;
+            }else{
+                canAddNewTrip=true;
+            }
+
+            if (canAddNewTrip){
+            $prevTripInput.attr("disabled", "disabled");
+            $prevTripDateInput.attr("disabled", "disabled");
             $('.btnDeleteTrip').removeClass('d-none');
             $('.btnEditTrip').removeClass('d-none');
             const divAddTrips = document.querySelector('.divAddTrips');
             const newDiv = document.createElement('div');
-            newDiv.classList.add('d-flex', 'mb-2');
+                ordinal_number++;
+                newDiv.classList.add('d-flex', 'mb-2', `d-${ordinal_number}`);
+           
             newDiv.innerHTML =
-                `
-                                 <div class="d-flex mb-2">
-                                  <div class="form-group col-6 pl-0 mb-0">
-                                                      <input name="keyword" class="form-control form-select form-select-md inputTrip" id="inputTrip-${ordinal_number}" placeholder="請選擇旅行項目" />
-                                              <div id="divTrip-${ordinal_number}" class="rounded divTrip">
-                                      </div>
-                                  </div>
-                                          <div class="form-group col-4 mb-0">
-                                                 <input class="form-control form-select form-select-md inputTripDate" id="inputTripDate-${ordinal_number}" placeholder="請選擇日期" />
-                                                <div id="divTripDate-${ordinal_number}" class="rounded divTripDate">
-                                      </div>
-                                  </div>
-                                  <div>
-                                                  <span class="fs-5 showPrice" id="showPrice-${ordinal_number}"></span>
-                                          </div>
-                                          <div>
-                                                      <img class="btnDeleteTrip d-none" src="/icons/icons8-close-48.png" height="36" />
-                                            <img class="btnEditTrip d-none" src="/icons/icons8-edit-48.png" height="36" />
-                                              </div>
-                                          </div>
-                              </div>
-                                                      `
-            
+                `<div class="form-group col-6 pl-0 mb-0">
+                  <input name="keyword" class="form-control form-select form-select-md inputTrip fs-5" id="inputTrip-${ordinal_number}"
+            placeholder="請選擇旅行項目" />
+          <div id="divTrip-${ordinal_number}" class="rounded divTrip">
+          </div>
+        </div>
+        <div class="form-group col-3 mb-0">
+                  <input class="form-control form-select form-select-md inputTripDate fs-5" id="inputTripDate-${ordinal_number}"
+            placeholder="請選擇日期" />
+               <input name="tripIds[${ordinal_number-1}]" id="tripId-${ordinal_number}" />
+                      
+          <div id="divTripDate-${ordinal_number}" class="rounded divTripDate">
+          </div>
+        </div>
+                <div class="d-flex align-items-center">
+                                  <span class="fs-4 fw-bolder text-black showPrice" id="showPrice-${ordinal_number}"></span>
+                                 
+        </div>
+        <div class="ml-2">
+                  <img id="btnDeleteTrip-${ordinal_number}" class="btnDeleteTrip d-none" src="/icons/icons8-close-48.png"/>
+                  <img id="btnEditTrip-${ordinal_number}" class="btnEditTrip d-none" src="/icons/icons8-edit-48.png"/>
+                  <img id="btnCheck-${ordinal_number}" class="btnCheck d-none" src="/icons/icons8-check--creat-article-48.png"/>
+        </div>
+        </div>
+             `
+           divAddTrips.appendChild(newDiv);
+            }
+           
         })
-        divAddTrips.appendChild(newDiv);
+       
     </script>
-
-    
-
     <script>
-        // //把trip名字放在畫面上
-         // const inputTrip = document.querySelector('.inputTrip');
-         // const inputTripDate = document.querySelector('.inputTripDate');
-         // const divTrip = document.querySelector('.divTrip');
-        // const divTripDate = document.querySelector('.divTripDate');
-        // const showPrice = document.querySelector('.showPrice');
-        // inputTrip.addEventListener('focus', () => {
-        //     loadTrips();
-        //     inputTripDate.value = "";
-        // })
+        //移除選取後的旅程
+        $('.divAddTrips').on('click', '.btnDeleteTrip', function () {
+            const delete_num = $(this).attr('id').split('-')[1];
+            $(`.d-${delete_num}`).remove();
+        })
+        function Editor(edit_num) {
+            $(`#inputTrip-${edit_num}`).removeAttr("disabled");
+            $(`#inputTripDate-${edit_num}`).removeAttr("disabled");
+            $(`#btnCheck-${edit_num}`).removeClass('d-none');
+            $(`#btnDeleteTrip-${edit_num}`).addClass('d-none');
+            $(`#btnEditTrip-${edit_num}`).addClass('d-none');
+        }
+        function Check(check_num) {
+            $(`#inputTrip-${check_num}`).attr("disabled", "disabled");
+            $(`#inputTripDate-${check_num}`).attr("disabled", "disabled");
+            $(`#btnCheck-${check_num}`).addClass('d-none');
+            $(`#btnDeleteTrip-${check_num}`).removeClass('d-none');
+            $(`#btnEditTrip-${check_num}`).removeClass('d-none');
+        }
 
-        // inputTrip.addEventListener('input', () => {
-        //     loadTrips(inputTrip.value);
-        //     inputTripDate.value = "";
-        // })
+        //修改disabled的旅程
+        $('.divAddTrips').on('click', '.btnEditTrip', function () {
+            const edit_num = $(this).attr('id').split('-')[1];
+            Editor(edit_num)
+        })
+        //確認修改的旅程
+        $('.divAddTrips').on('click', '.btnCheck', function () {
+            const check_num = $(this).attr('id').split('-')[1];
+            Check(check_num)
+            updateDueDate()
+        })
+    </script>
+    <script>
+        // 選取trip / tripDate         
         $('.divAddTrips').on('focus', '.inputTrip', function () {
             const id = $(this).attr('id'); // 獲取目前 input 元素的 id
             const ordinal_number = parseInt(id.split('-')[1]); // 從 id 中解析出 ordinal_number
             loadTrips(ordinal_number);
+            $(`#inputTripDate-${ordinal_number}`).val("");
         });
         $('.divAddTrips').on('input', '.inputTrip', function () {
             const id = $(this).attr('id'); // 獲取目前 input 元素的 id
             const ordinal_number = parseInt(id.split('-')[1]); // 從 id 中解析出 ordinal_number
             loadTrips(ordinal_number,$(this).val());
+            $(`#inputTripDate-${ordinal_number}`).val("");
         });
 
-        // $(`#inputTrip-${ordinal_number}`).on('input', function () {
-        //     loadTrips(ordinal_number, $(`#inputTrip-${ordinal_number}`).val());
-        //     console.log(ordinal_number)
-        // })
+
+        $('.divAddTrips').on('mousedown', function (event) {
+            if (!$(event.target).closest('.divTrip').length) {
+                // 若觸發事件的元素不是 .divTrip 或其子元素
+                $('.divTrip').html(""); // 清空內容
+                $('.divTrip').removeClass('divScrollBar')
+            }
+            if (!$(event.target).closest('.divTripDate').length) {
+                // 若觸發事件的元素不是 .divTrip 或其子元素
+                $('.divTripDate').html(""); // 清空內容
+                $('.divTripDate').removeClass('divScrollBar')
+            }
+        });
+        
 
         async function loadTrips(ordinal_num,keyword) {
-            console.log(ordinal_num)
+            
             const resopnse = await fetch(`@Url.Content("~/Forum/selectTrips")?keyword=${keyword}`)
             const datas = await resopnse.json();
-            console.log(datas)
+          
             if (datas != null) {
                 const trips = datas.map(trip => {
                     const { productName, productId } = trip
                     return (
-                        `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems">${productName}</a>`
+                        `<a asp-action="selectDate" asp-route-id="${productId}" class="list-group-item list-group-item-action tripOptItems fs-5">${productName}</a>`
                     )
                 })
                 $(`#divTrip-${ordinal_num}`).html(trips.join(""));
+                $(`#divTrip-${ordinal_num}`).addClass('divScrollBar');
                 const tripOptItems = document.querySelectorAll('.tripOptItems');
                 tripOptItems.forEach(tripItem => {
                     tripItem.addEventListener('click', (e) => {
@@ -179,42 +304,76 @@
                         const clickedTrip = e.target.textContent;
                         const productId = tripItem.getAttribute('asp-route-id'); // 獲取 asp-route-id 的值
                         $(`#inputTripDate-${ordinal_num}`).on('focus',function() {
-                            loadTripDate(productId);
+                            loadTripDate(productId, ordinal_num);
                         })
                         $(`#divTrip-${ordinal_num}`).html("");
                         $(`#inputTrip-${ordinal_num}`).val(clickedTrip);
+                        $(`#divTrip-${ordinal_num}`).removeClass('divScrollBar');
                     });
                 })
             }
         }
-
-        async function loadTripDate(productId) {
+        
+        async function loadTripDate(productId, ordinal_num) {
             const response = await fetch(`@Url.Content("~/Forum/selectDate")?id=${productId}`)
             const datas = await response.json();
             if (datas != null) {
                 const dates = datas.map(date => {
-                    const { price, tripDate } = date
+                    const { price, tripDate,tripId } = date
                     return (
-                        `<a asp-action="selectDate" asp-route-id="${price}" class="list-group-item list-group-item-action dateOptItems">${tripDate}</a>`
+                        `<a asp-action="selectDate" id="${tripId}" asp-route-id="${price}" class="list-group-item list-group-item-action dateOptItems fs-5">${tripDate}</a>
+                        `
                     )
                 })
-                divTripDate.innerHTML = dates.join("")
+
+                $(`#divTripDate-${ordinal_num}`).html(dates.join(""))
+                $(`#divTripDate-${ordinal_num}`).addClass('divScrollBar')
                 const dateOptItems = document.querySelectorAll('.dateOptItems');
                 dateOptItems.forEach(dateItem => {
                     dateItem.addEventListener('click', (e) => {
                         e.preventDefault();
-                        inputTripDate.value = e.target.textContent;
-                        showPrice.innerText = '$  ' + dateItem.getAttribute('asp-route-id');
-                        divTripDate.innerHTML = "";
+                        $(`#inputTripDate-${ordinal_num}`).val(e.target.textContent);
+                        $(`#showPrice-${ordinal_num}`).text('$  ' + dateItem.getAttribute('asp-route-id'))
+                        $(`#tripId-${ordinal_num}`).val(dateItem.getAttribute('id'));
+                        var $showPrice = $(`#showPrice-${ordinal_number}`).text();
+                        if ($showPrice !== "") {
+                            $('#divAddBtn').removeClass('d-none')
+                        }
+                        updateDueDate()
+                        $(`#divTripDate-${ordinal_num}`).html("")
+                        $(`#divTripDate-${ordinal_num}`).removeClass('divScrollBar')
                     })
                 })
             }
         }
+        function updateDueDate() {
+            let minDate1 = null;
+            const divAddTrips = document.querySelector('.divAddTrips');
+            const tripBlocks = divAddTrips.querySelectorAll('.d-flex.mb-2');
+            //取得行程中最小的日期
+            tripBlocks.forEach(tripBlock => {
+                const inputTripDate = tripBlock.querySelector('.inputTripDate');
+                const dateValue = inputTripDate.value;
+
+                if (dateValue) {
+                    const minusThreeDays = new Date(dateValue);
+                    minusThreeDays.setDate(minusThreeDays.getDate() - 3);
+                    if (!minDate1 || minusThreeDays < minDate1) {
+                        minDate1 = minusThreeDays;
+                    }
+                }
+            });
+            $('#dashboardcalendar').removeClass('d-none')
+            $('#dashboardcalendar').flatpickr({
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                //旅程裡日期最小的前三天 , 指定月份-1(0~11月)
+                maxDate: minDate1
+            });
+        }
     </script>
     
-
-    
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Summernote JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
@@ -222,9 +381,25 @@
         $(document).ready(function () {
             $('#summernote').summernote({
                 placeholder: '請輸入內容...',
-                height: 300 // 設定編輯器的高度
+                height: 500 // 設定編輯器的高度
             });
         });
     </script>
-
+    @* <script>
+        $('#btnSaveArticle').on('click', (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.article);
+            fetch('@Url.Content("~/Forum/saveArticle")', {
+                body:formData,
+                method:"post"
+            }).then(response => {
+                if (response.ok) {
+                    alert('新增成功!')  
+                }
+                else {
+                    alert('新增失敗,請確認資料')
+                }
+            })
+        })
+    </script> *@
   }

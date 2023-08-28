@@ -6,9 +6,11 @@ using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualBasic;
+using NuGet.Versioning;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -18,6 +20,12 @@ namespace prj_Traveldate_Core.Controllers
     public class MemberController : Controller
     {
         TraveldateContext context = new TraveldateContext();
+
+        private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
+        public MemberController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
+        {
+            _enviro = p;
+        }
         public IActionResult Index() // 左側欄 先維持原版V
         {
             int MemberId = 1;
@@ -524,7 +532,7 @@ namespace prj_Traveldate_Core.Controllers
                             LastName = cm.LastName,
                             FirstName = cm.FirstName,
                             Phone = cm.Phone,
-                           BirthDate= cm.BirthDate,
+                            BirthDate= cm.BirthDate,
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
@@ -612,9 +620,9 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas);
+            return View(datas.Distinct());
         }
-        public IActionResult addCompanion() //新增旅伴資料
+        public IActionResult addCompanion() //新增旅伴資料 V
         {
             int MemberId = 1;
             CCompanionViewModel cm = new CCompanionViewModel();
@@ -747,10 +755,11 @@ namespace prj_Traveldate_Core.Controllers
                         select new CfavoriteListViewModel
                         {
                             ProductName = pl.ProductName,
-                            ProductId = pl.ProductId,
-                            MemberId = m.MemberId,
+                            ProductId= pl.ProductId,
+                            MemberId = f.MemberId,
                             //Description = pl.Description,
                             Outline = pl.Outline,
+                            FavoriteId =f.FavoriteId
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
@@ -840,37 +849,43 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas.Distinct());
         }
-
-        public IActionResult favoriteListDelete()  //收藏清單Delete V
+        [HttpPost]
+        public IActionResult favoriteList(int? id)  //收藏清單Delete V
         {
-            int id = 1;
-            var pid = from p in context.ProductLists
-                      join f in context.Favorites
-                      on p.ProductId equals f.ProductId
-                      where f.MemberId == id
-                      select p.ProductId;
-            var mid = from f in context.Favorites
-                      join m in context.Members
-                      on f.MemberId equals m.MemberId
-                      where f.MemberId == id
-                      select f.MemberId;
-            Member mm = context.Members.FirstOrDefault(p => p.MemberId == id);
-            Favorite ff = context.Favorites.FirstOrDefault(p => p.MemberId == id);
+            int MemberId =1;
 
-            if (mm != null)
-            {
+            //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
+            Favorite ff = context.Favorites.Where(f => f.FavoriteId == id).FirstOrDefault();
+
+            //if (mm !=null)
+            //{
                 if (ff != null)
+                {
                     context.Favorites.Remove(ff);
                     context.SaveChanges();
-            }
+                //}
+        }
             return RedirectToAction("favoriteList");
         }
-        public IActionResult orderList() //會員訂單new V
+
+        public IActionResult orderList(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos) //會員訂單new V 
         {
             int MemberId = 1;
-            var datas = from o in context.OrderDetails
-                        where o.Order.Member.MemberId == MemberId
-                        select new COrdersViewModel { Date = o.Trip.Date, Datetime = string.Format("{0:yyyy-MM-dd}",o.Order.Datetime ) , ProductName = o.Trip.Product.ProductName };
+            var datas = from o in context.OrderDetails//.GroupBy(i => i.Order.OrderId).Select(d => d.First()).ToList()
+                        from c in context.CommentLists
+                        where c.MemberId== MemberId  //&& o.Order.MemberId== MemberId //&& c.ProductId==o.Trip.Product.ProductId
+                        //where o.Order.Member.MemberId == MemberId
+                        group new { o, c } by o.Trip.Date into grouped
+                        select new COrdersViewModel { 
+                            Date =grouped.Key, //o.Trip.Date, 
+                            Datetime = string.Format("{0:yyyy-MM-dd}", grouped.First().o.Order.Datetime),//Datetime = string.Format("{0:yyyy-MM-dd}", o.Order.Datetime), 
+                            ProductName = grouped.First().o.Trip.Product.ProductName,//ProductName = o.Trip.Product.ProductName, 
+                            ProductId = grouped.First().o.Trip.Product.ProductId,//ProductId = o.Trip.Product. ProductId, 
+                            CommentScore = grouped.First().c.CommentScore,//CommentScore =c.CommentScore,
+                            Content = grouped.First().c.Content,//Content=c.Content,
+                            Title = grouped.First().c.Title,//Title=c.Title    
+                            //ImagePath = grouped.First().c.CommentPhotoLists.//ImagePath![0].ToString() //ImagePath
+                        };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {
@@ -923,6 +938,7 @@ namespace prj_Traveldate_Core.Controllers
                                  };
             ViewBag.countsfavorite = countsfavorite.ToList().Count();
 
+            
             var countscoupon = from m in context.Members
                                join c in context.Coupons
                                on m.MemberId equals c.MemberId
@@ -958,6 +974,7 @@ namespace prj_Traveldate_Core.Controllers
                 ViewBag.LastName = x.LastName;
 
             return View(datas.Distinct());
+            //return View(data2.Distinct());
             #region 先註解掉的程式碼
             //var datas = from tripde in context.TripDetails
             //            join trip in context.Trips
@@ -1017,7 +1034,8 @@ namespace prj_Traveldate_Core.Controllers
                             Content = cm.Content,
                             CommentScore = cm.CommentScore,
                             Date = cm.Date,
-                            ProductName = pl.ProductName
+                            ProductName = pl.ProductName,
+                            CommentId=cm.CommentId
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
@@ -1108,36 +1126,37 @@ namespace prj_Traveldate_Core.Controllers
             return View(datas);
         }
 
-        public IActionResult commentListDelete() //我的評論Delete 
+        [HttpPost]
+        public IActionResult commentList(int? id) //我的評論Delete V
         {
-            int id = 1;
-            var cid = from c in context.CommentLists
-                      join m in context.Members
-                      on c.MemberId equals m.MemberId
-                      where m.MemberId == id
-                      select c.MemberId;
-            var pid = from c in context.CommentLists
-                      join p in context.ProductLists
-                      on c.ProductId equals p.ProductId
-                      where c.ProductId == p.ProductId
-                      select c.MemberId;
-            Member mm = context.Members.FirstOrDefault(p => p.MemberId == id);
-            CommentList ff = context.CommentLists.FirstOrDefault(p => p.MemberId == id);
-
-                if(mm!= null)
+            int MemberId = 1;
+            //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
+            if (id != null)
             {
-                if(ff!=null)
+                // 使用 .Where() 来选择所有匹配特定 CommentId 的记录
+                var recordsToDelete = context.CommentPhotoLists.Where(p => p.CommentId == id).ToList();
+
+                if (recordsToDelete.Count > 0)
+                {
+                    // 使用 RemoveRange() 删除所有匹配的记录
+                    context.CommentPhotoLists.RemoveRange(recordsToDelete);
+                    context.SaveChanges();
+                }
+            }
+            if (id != null)
+            {
+                CommentList ff = context.CommentLists.FirstOrDefault(p => p.CommentId == id);
+                if (ff != null)
                 {
                     context.CommentLists.Remove(ff);
                     context.SaveChanges();
                 }
             }
-
-            return RedirectToAction("index");
+            return RedirectToAction("commentList");
         }
 
         #region 添加評論view 暫時用不到2023.08.20
-        public IActionResult addcomment() //添加評論 先維持舊版V
+        public IActionResult addcomment(CCommentListWrap commentWrap) //添加評論 先維持舊版V
         {
             int MemberId = 1;
             var datas = from m in context.Members
@@ -1151,10 +1170,17 @@ namespace prj_Traveldate_Core.Controllers
                             Title = cm.Title,
                             Content = cm.Content,
                             CommentScore = cm.CommentScore,
+                            MemberId = m.MemberId,
                             Date = cm.Date,
-                            ProductName = pl.ProductName
+                            ProductName = pl.ProductName,
+                            ProductId = Convert.ToInt32(pl.ProductId),
+                            CommentId= cm.CommentId,
+                            ImagePath = commentWrap.ImagePath,
+                            photos = commentWrap.photos
                         };
-            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+
+
+                Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {
                 byte[] photo = mem2.Photo;
@@ -1240,41 +1266,56 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas);
+            return View(datas.Distinct());
         }
         #endregion
-        [HttpPost]
-        public IActionResult addcomment(CCommentListWrap vm)
-        {
-            //int MemberId = 1;
-            //CcommentListViewModel vm = new CcommentListViewModel();
-            //vm.MemberId = MemberId;
-            //Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
 
-            //var commentList = new CommentList();
+        [HttpPost]
+        public IActionResult addcomment(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos,string? ImagePath) //添加評論Create V
+        {
+
+            int MemberId = 1;
+            //COrdersViewModel vm = new COrdersViewModel();
+            CCommentListWrap vm=new CCommentListWrap();
+            vm.ProductId= id;
+            vm.Title = Title;
+            vm.Content = Content;
+            vm.CommentScore = CommentScore;
+            vm.photos= photos;
+            vm.ImagePath = ImagePath;
+           // vm.CommentId = comm;
 
             CommentList cmDB = new CommentList();
-            //cmDB.MemberId = Convert.ToInt32(Request.Form["MemberId"]);
-            //cmDB.Title = Request.Form["Title"];
-            //cmDB.Content = Request.Form["Content"];
-            //cmDB.CommentScore = Convert.ToInt32(Request.Form["CommentScore"]);
-
-            //cmDB.Date = Request.Form["txtTitle"];
-            //cmDB.ProductId = Request.Form["txtTitle"];
-
             if (cmDB != null)
             {
                 cmDB.Title = vm.Title;
                 cmDB.Content = vm.Content;
                 cmDB.CommentScore = vm.CommentScore;
-                cmDB.MemberId = vm.MemberId;
+                cmDB.MemberId = vm.MemberId=1;
                 cmDB.Date = DateTime.Now;
-                cmDB.ProductId =2;
+                cmDB.ProductId =vm.ProductId;
 
                 context.CommentLists.Add(cmDB);
                 context.SaveChanges();
             }
-            return RedirectToAction("orderList");
+
+            //CommentPhotoList photolist = context.CommentPhotoLists.FirstOrDefault(p => p.CommentId == vm.CommentId);
+            if (vm.photos != null)
+            {
+                foreach (IFormFile photo in vm.photos)
+                {
+                    CommentPhotoList photolistDB = new CommentPhotoList();
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                    photolistDB.ImagePath = photoName;
+                    photolistDB.CommentId = vm.CommentId;
+                    photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                    context.CommentPhotoLists.Add(photolistDB);
+                    context.SaveChanges();
+                }
+            }
+
+
+            return RedirectToAction("commentList");
         }
         public IActionResult forumList() //我的揪團new V
         {

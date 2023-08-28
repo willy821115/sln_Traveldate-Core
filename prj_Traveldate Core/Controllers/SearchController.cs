@@ -90,7 +90,7 @@ namespace prj_Traveldate_Core.Controllers
             if (!string.IsNullOrEmpty(txtKeyword) && txtKeyword != "undefined")
             {
                 var filterCities = _context.ProductLists
-                    .Where(p => _products.confirmedId.Contains(p.ProductId))
+                    .Where(p => _products.confirmedId.Contains(Convert.ToInt32( p.ProductId)))
                     .Where(c => c.City.City.Contains(txtKeyword))
                     .GroupBy(p => p.City.City)
                     .Select(g =>
@@ -102,7 +102,7 @@ namespace prj_Traveldate_Core.Controllers
                     }).ToList();
                 return Json(filterCities);
             }
-            var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(p.ProductId))
+            var filterCitiess = _context.ProductLists.Where(p => _products.confirmedId.Contains(Convert.ToInt32( p.ProductId)))
                 .GroupBy(p => p.City.City)
                 .Select(g => new
                 {

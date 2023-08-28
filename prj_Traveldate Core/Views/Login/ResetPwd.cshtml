@@ -1,0 +1,78 @@
+﻿@model prj_Traveldate_Core.ViewModels.CpasswordChangeViewModel
+@{
+    ViewData["Title"] = "重設密碼";
+}
+
+<h1>重設密碼</h1>
+
+<form asp-action="ResetPwd">
+
+    <br>
+    <br>
+    <div class="mb-3">
+        <br>
+        <div class="form-group">
+            <label asp-for="txtNewPassword">輸入新密碼</label>
+            <input type="password" class="form-control" asp-for="txtNewPassword" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="txtCheckPassword">確認新密碼</label>
+            <input type="password" class="form-control" asp-for="txtCheckPassword" required />
+        </div>
+        <input id="checkbox" type="checkbox" onclick="cbshow()" /> 顯示密碼
+        <input type="submit" class="btn my-btn-primary" id="btnChangePassword" value="更改密碼" />
+        <div class="form-group">
+            <div id="errorDiv" style="color: red;"></div>
+        </div>
+        <br>
+    </div>
+</form>
+
+<br>
+
+<div class="downlabel">
+    <a asp-area="" asp-controller="Login" asp-action="Login">回到登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+</div>
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }
+
+@section Scripts
+{
+    <script>
+        const txtNewPassword = document.getElementById('txtNewPassword');
+        const txtCheckPassword = document.getElementById('txtCheckPassword');
+        const btnChangePassword = document.getElementById('btnChangePassword');
+        const errorDiv = document.getElementById('errorDiv');
+        const checkbox = document.getElementById('checkbox');
+
+        function cbshow(){
+            if (txtNewPassword.type === "text" && txtCheckPassword.type === "text") {
+                txtNewPassword.type = "password";
+                txtCheckPassword.type = "password";
+            } else {
+                txtNewPassword.type = "text";
+                txtCheckPassword.type = "text";
+            }
+        }
+
+        btnChangePassword.addEventListener('click', () => {
+            if (txtNewPassword.value != txtCheckPassword.value) {
+                errorDiv.textContent = "新密碼與確認密碼不一致，請再確認一次";
+                setTimeout(() => {
+                    errorDiv.textContent = "新密碼與確認密碼不一致，請再確認一次";
+                }, 5000);
+            }
+            else {
+                swal("密碼更改成功！", "", "success")
+                setTimeout(() => {
+
+                }, 5000);
+            }
+        });
+    </script>
+}

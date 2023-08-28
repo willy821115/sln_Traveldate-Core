@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<prj_Traveldate_Core.ViewModels.CfavoriteListViewModel>;
 @{
     ViewData["Title"] = "favoriteList";
 }
@@ -67,14 +67,12 @@
         <li class="breadcrumb-item active" aria-current="page">收藏清單</li>
     </ol>
 </nav>
-@using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
-{
+@* @using (Html.BeginForm("favoriteList", "Member", FormMethod.Post))
+{ *@
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
-        <tr>
+                    <tr>
                         <th class="col-md-1"></th>
-@*                         <th >MId</th>
-                         <th >PId</th>  *@
                         <th class="col-md-4">名稱</th>
                         <th class="col-md-6">概述</th>
                         <th class="col-md-2">操作</th>
@@ -82,25 +80,27 @@
     </thead>
     <tbody>
                 @foreach (var item in Model)
-                        {
-                            //count++;
-                        <tr class="height">
+                {
+                    <tr>
                             <td><img style="width:28px;height:28px;margin-left:26px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
-@*                             <td>@item.MemberId </td>
-                                   <td>@item.ProductId </td> *@
                             <td>@item.ProductName </td>
-                    <td>@item.Outline </td>
-                    @* using (Html.BeginForm("favoriteListDelete", "Member", FormMethod.Post))
-                    {
-                        <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
-                    } *@
-                    <td>@Html.ActionLink("移除", "favoriteListDelete","Member","",new {@class="black-link"})</td>
-                        </tr>
-                        }
-             @* new{favoriteID=item.} *@
+                            <td>@item.Outline </td>
+
+                         <form method="post" action="@Url.Action("favoriteList", "Member")">
+                             @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
+                             <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                         </form>
+              
+@*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
+                             <td><button type="submit" value=@item.FavoriteId class="btn my-btn-primary btn-sm" />移除</td>   *@
+                             @* new{favoriteID=item.} *@
+                    </tr>
+                }
     </tbody>
 </table>
-}
+
+
+
 
 
 
