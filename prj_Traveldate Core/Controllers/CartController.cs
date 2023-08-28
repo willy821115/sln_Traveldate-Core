@@ -55,6 +55,8 @@ namespace prj_Traveldate_Core.Controllers
             CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
             vm.member = _context.Members.Find(_memberID);
             vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+            //TODO 加判斷期限
             vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID).Select(c => c.CouponList).ToList();
 
             vm.orders = new List<CCartItem>();
