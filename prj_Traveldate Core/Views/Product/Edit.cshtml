@@ -300,11 +300,11 @@
                                                                 <div class="col-md-4">
                                                                         @if (t.ImagePath == null)
                                                                         {
-                                                                        <img src="~/icons/logos/Logo_traveldate.png" class="img-fluid rounded-start" alt="...">
+                                                                            <img src="~/icons/logos/Logo_traveldate.png" class="img-fluid rounded-start" id="imgPreview-@i" alt="...">
                                                                         }
                                                                         else
                                                                         {
-                                                                        <img src="~/images/@t.ImagePath" class="img-fluid rounded-start" alt="...">
+                                                                            <img src="~/images/@t.ImagePath" class="img-fluid rounded-start" id="imgPreview-@i" alt="...">
                                                                         }
 
                                                                 </div>
@@ -316,7 +316,7 @@
                                                                         </div>
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
-                                                                        <input type="file" class="form-control" id="photoInput" name="triptest[@i].photo" />
+                                                                            <input type="file" class="form-control" name="triptest[@i].photo" id="uploadImage-@i" />
                                                                         <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetail">@t.TripDetail1</textarea>
                                                                     </div>
 
@@ -405,6 +405,30 @@
                     revert: "invalid"
                 });
                 $("ul, li").disableSelection();
+            });
+
+            $(document).ready(function () {
+                $(document).on('change', 'input[type="file"]', function () {
+                    var fileInput = this;
+                    var imgId = $(fileInput).attr('id').replace('uploadImage-', 'imgPreview-');
+                    var imgPreview = $('#' + imgId);
+
+                    if (fileInput.files && fileInput.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            imgPreview.attr('src', e.target.result);
+                        };
+
+                        reader.readAsDataURL(fileInput.files[0]);
+                    } else {
+                        // 如果没有选择文件，你可以设置一个默认的图片，例如：
+                        imgPreview.attr('src', "@Url.Content("~/icons/logos/Logo_traveldate.png")");
+
+                        // 或者隐蔽<img>元素
+                        // imgPreview.hide();
+                    }
+                });
             });
         </script>
     }

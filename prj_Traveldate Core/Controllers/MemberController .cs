@@ -1156,28 +1156,32 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         #region 添加評論view 暫時用不到2023.08.20
-        public IActionResult addcomment(CCommentListWrap commentWrap) //添加評論 先維持舊版V
+        public IActionResult addcomment(int? id) //添加評論 先維持舊版V
         {
+
             int MemberId = 1;
-            var datas = from m in context.Members
-                        join cm in context.CommentLists
-                        on m.MemberId equals cm.MemberId
-                        join pl in context.ProductLists
-                        on cm.ProductId equals pl.ProductId
-                        where m.MemberId == MemberId
-                        select new CcommentListViewModel
-                        {
-                            Title = cm.Title,
-                            Content = cm.Content,
-                            CommentScore = cm.CommentScore,
-                            MemberId = m.MemberId,
-                            Date = cm.Date,
-                            ProductName = pl.ProductName,
-                            ProductId = Convert.ToInt32(pl.ProductId),
-                            CommentId= cm.CommentId,
-                            ImagePath = commentWrap.ImagePath,
-                            photos = commentWrap.photos
-                        };
+            //var datas = from m in context.Members
+            //            join cm in context.CommentLists
+            //            on m.MemberId equals cm.MemberId
+            //            join pl in context.ProductLists
+            //            on cm.ProductId equals pl.ProductId
+            //            where m.MemberId == MemberId
+            //            select new CcommentListViewModel
+            //            {
+            //                Title = cm.Title,
+            //                Content = cm.Content,
+            //                CommentScore = cm.CommentScore,
+            //                MemberId = m.MemberId,
+            //                Date = cm.Date,
+            //                ProductName = pl.ProductName,
+            //                //ProductId = Convert.ToInt32(pl.ProductId),
+            //                ProductId = id,
+            //                CommentId= cm.CommentId,
+
+            //            };
+            CCommentListWrap z = new CCommentListWrap();
+            z.MemberId = MemberId;
+            z.ProductId = id;
 
 
                 Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -1266,23 +1270,23 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas.Distinct());
+            return View(z);
         }
         #endregion
 
         [HttpPost]
-        public IActionResult addcomment(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos,string? ImagePath) //添加評論Create V
+        public IActionResult addcomment(CCommentListWrap vm) //添加評論Create V
         {
-
+            //int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos,string? ImagePath
             int MemberId = 1;
             //COrdersViewModel vm = new COrdersViewModel();
-            CCommentListWrap vm=new CCommentListWrap();
-            vm.ProductId= id;
-            vm.Title = Title;
-            vm.Content = Content;
-            vm.CommentScore = CommentScore;
-            vm.photos= photos;
-            vm.ImagePath = ImagePath;
+            //CCommentListWrap vm=new CCommentListWrap();
+            //vm.ProductId= id;
+            //vm.Title = Title;
+            //vm.Content = Content;
+            //vm.CommentScore = CommentScore;
+            //vm.photos= photos;
+            //vm.ImagePath = ImagePath;
            // vm.CommentId = comm;
 
             CommentList cmDB = new CommentList();
@@ -1300,6 +1304,7 @@ namespace prj_Traveldate_Core.Controllers
             }
 
             //CommentPhotoList photolist = context.CommentPhotoLists.FirstOrDefault(p => p.CommentId == vm.CommentId);
+            int NewCommentID = context.CommentLists.Where(c=>c.Title==vm.Title).Select(c => c.CommentId).FirstOrDefault();
             if (vm.photos != null)
             {
                 foreach (IFormFile photo in vm.photos)
@@ -1307,7 +1312,7 @@ namespace prj_Traveldate_Core.Controllers
                     CommentPhotoList photolistDB = new CommentPhotoList();
                     string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
                     photolistDB.ImagePath = photoName;
-                    photolistDB.CommentId = vm.CommentId;
+                    photolistDB.CommentId = NewCommentID;
                     photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
                     context.CommentPhotoLists.Add(photolistDB);
                     context.SaveChanges();
