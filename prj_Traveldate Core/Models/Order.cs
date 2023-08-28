@@ -15,7 +15,7 @@ public partial class Order
 
     public int? Discount { get; set; }
 
-    public int? PaymentId { get; set; }
+    public string? PaymentId { get; set; }
 
     public bool? IsCart { get; set; }
 
@@ -25,5 +25,5 @@ public partial class Order
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual PaymentList? Payment { get; set; }
+    public virtual EcpayOrder? Payment { get; set; }
 }
