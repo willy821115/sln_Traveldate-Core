@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing;
 using NuGet.Packaging;
@@ -40,7 +41,7 @@ namespace prj_Traveldate_Core.Controllers
            vm.regions = factory.qureyFilterCountry();
             vm.categories = factory.qureyFilterCategories();
 
-            vm.forumList = _context.ArticlePhotos.Include(photo=>photo.ForumList).ToList();
+            //vm.forumList = _context.ArticlePhotos.Include(photo=>photo.ForumList).ToList();
             var firstSchedules = _context.ScheduleLists
                 .Include(s => s.ForumList)
                 .Include(s => s.Trip)
@@ -63,8 +64,23 @@ namespace prj_Traveldate_Core.Controllers
             
             prodPhotos.AddRange(forum_prodPhoto());
             vm.prodPhoto = prodPhotos;
+            
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
+            var topTenArticle = _context.ScheduleLists
+    .GroupBy(s => s.ForumListId)
+    .Select(group => new CForumList_topTen
+    {
+        forumlistid = group.Key,
+        totalPrice = group.Sum(s => s.Trip.UnitPrice),
+        title = group.First().ForumList.Title,
+        prodId = group.Select(t => t.Trip.ProductId).First()
+    })
+    .OrderByDescending(item => item.totalPrice)
+    .ToList();
+
+            vm.topTen = topTenArticle; 
+            vm.productTags = _context.ProductTagLists.Include(t=>t.ProductTagDetails).ToList();
             return View(vm);
         }
         //新增文章
@@ -105,7 +121,7 @@ namespace prj_Traveldate_Core.Controllers
             }
             
             _context.SaveChanges();
-            return View();
+            return RedirectToAction("forumList", "Member");
         }
         //修改文章
         public IActionResult Edit(int? forumlist)

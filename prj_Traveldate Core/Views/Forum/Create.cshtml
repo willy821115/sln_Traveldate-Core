@@ -153,6 +153,15 @@
                 }
             })
         }
+
+        function saveArticle() {
+            Swal.fire({
+                icon: 'success',
+                title: '儲存草稿成功!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
         
     </script>
     
@@ -385,21 +394,9 @@
             });
         });
     </script>
-    @* <script>
-        $('#btnSaveArticle').on('click', (e) => {
-            e.preventDefault();
-            const formData = new FormData(document.article);
-            fetch('@Url.Content("~/Forum/saveArticle")', {
-                body:formData,
-                method:"post"
-            }).then(response => {
-                if (response.ok) {
-                    alert('新增成功!')  
-                }
-                else {
-                    alert('新增失敗,請確認資料')
-                }
-            })
+    <script>
+        $('#btnSaveArticle').on('click', () => {
+            saveArticle();
         })
-    </script> *@
+    </script>
   }

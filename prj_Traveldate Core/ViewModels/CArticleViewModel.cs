@@ -6,7 +6,7 @@ namespace prj_Traveldate_Core.ViewModels
     {
         public ForumList? forum { get; set; }
         public List<ReplyList>? replys { get; set; }
-        public List<ArticlePhoto>? photos { get; set; }
+       
         public Member? member { get; set; }
         public List<string>? fforumAddress { get; set; }
     }
