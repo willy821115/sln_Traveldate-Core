@@ -20,10 +20,10 @@
                     <a class="nav-link" href="#section3" style="color:#155074">體驗地點</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#section3" style="color:#155074">旅客評價</a>
+                        <a class="nav-link" href="#section4" style="color:#155074">旅客評價</a>
                     </li>
                 <li class="nav-item">
-                    <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
+                    <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin-left:250px;font-size: 16px;">立即預訂</a>
                 </li>
                 </ul>
             </div>
@@ -127,7 +127,19 @@
                     <span>起</span>
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
-                <p class="card-text" style="margin-top:5px;color:red">@Model.program.fStatus</p>
+                @if(Model.program.fStatus == "熱賣中")
+                {
+                    <p class="card-text" style="margin-top:5px;color:green"><img src="/icons/icons8-fire-16.png" style="margin-bottom:5px"/>@Model.program.fStatus</p>
+                }
+                else if (Model.program.fStatus == "已截止")
+                {
+                    <p class="card-text" style="margin-top:5px;color:darkgray">@Model.program.fStatus</p>
+                }
+                else
+                {
+                    <p class="card-text" style="margin-top:5px;color:red">@Model.program.fStatus</p>
+                }
+
             </div>
         </div>
     </div>
@@ -288,7 +300,7 @@
                         <input type="hidden" id="tripId" name="tripId" value="">
                         <input type="hidden" id="num" name="num" value="">
                         <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg addToCartButton" value="加入購物車" />
-                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary btn-lg">立即購買</a>
+                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" asp-route-id="@Model.product.ProductId" data-orderdetailid="tripId" class="btn my-btn-primary btn-lg">立即購買</a>
                     </form>
                   </div>
             </div> 
@@ -323,15 +335,32 @@
                             </div>
                             <div class="col-auto">
                                 <ul class="list-inline pb-3">
-                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm">－</button></li>
-                                    <li class="list-inline-item"><span class="ml-3 mr-3">1</span></li>
-                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm">＋</button></li>
+                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm btn-minuss">－</button></li>
+                                    <li class="list-inline-item quantity"> <span class="ml-3 mr-3 var-values">1</span></li>
+                                    <li class="list-inline-item"><button class="btn btn-outline-secondary btn-sm btn-pluss">＋</button></li>
                                 </ul>
                             </div>
                             <div class="col d-flex justify-content-between">
                                 <div>
-                                    @*<button class="btn btn-outline-dark addToCartButton" data-trip-id="@tripId" data-quantity="1">加入購物車</button>*@
-                                    <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary">立即購買</a>
+                                    @{
+                                        string dateFormat = "yyyy-MM-dd";
+                                        DateTime tripDates = DateTime.ParseExact(Model.program.fTripDate[i], dateFormat, System.Globalization.CultureInfo.InvariantCulture);
+
+                                        if (tripDates < DateTime.Now)
+                                        {
+                                            <button class="btn btn-outline-dark addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                        }
+                                        else
+                                        {
+                                            <form id="addToCartForm" action="@Url.Action("AddToCart", "Program")" method="post">
+                                                <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                                <input type="hidden" id="nums" name="nums" value="1">
+                                                <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                                <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
+                                            </form>
+                                        }
+                                    }
+                                    
                                 </div>
                             </div>
                         </div>
@@ -887,6 +916,89 @@
             }).scroll();
         });
 
+       $(document).ready(function () {
+    $('.btn-minuss').click(function () {
+        var valueSpan = $(this).closest('.row').find('.var-values');
+        var value = parseInt(valueSpan.text());
+
+        if (value > 1) {
+            value--;
+            valueSpan.text(value);
+        }
+    });
+
+    $('.btn-pluss').click(function () {
+        var valueSpan = $(this).closest('.row').find('.var-values');
+        var value = parseInt(valueSpan.text());
+
+        value++;
+        valueSpan.text(value);
+    });
+});
+        $(document).ready(function () {
+            $('.addToCartButtonss').click(function () {
+                var tripId = $(this).data('tripid');
+                var quantity = $(this).closest('.card-container').find('.quantity .var-values').text();
+
+                var formData = new FormData();
+                formData.append('num', quantity);
+                formData.append('tripId', tripId);
+
+                fetch('/Program/AddToCart', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === "請登入會員") {
+                            swal('請登入會員', '', 'warning');
+                        } else {
+                            swal('已加入購物車!', '', 'success');
+                        }
+                    });
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('.addToCartButtonsss').click(function () {
+                event.preventDefault();
+                var tripId = $(this).data('tripid');
+                var quantity = $(this).closest('.card-container').find('.var-values').text();
+
+                var formData = new FormData();
+                formData.append('num', quantity);
+                formData.append('tripId', tripId);
+
+                fetch('/Program/AddDirectToCart', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === "請登入會員") {
+                            swal('請登入會員', '', 'warning');
+                        } else {
+                            // 在響應中獲取 orderDetailId 的值
+                            var orderDetailId = parseInt(data);
+
+                            // 將 orderDetailId 設置為全局變數，以便在 <a> 元素中使用
+                            window.orderDetailId = orderDetailId;
+
+                            // 重定向到购物车页面
+                            window.location.href = '/Cart/ConfirmOrder';
+                        }
+                    });
+            });
+        });
+
+
+
+
+
+
+
+
     </script>
 
 
@@ -927,6 +1039,8 @@
         });
 
     </script>
+
+
     }
 
     @section Styles{
