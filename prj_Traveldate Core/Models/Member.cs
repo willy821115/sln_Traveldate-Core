@@ -29,6 +29,8 @@ public partial class Member
 
     public int? Discount { get; set; }
 
+    public bool? Verified { get; set; }
+
     public bool? Enable { get; set; }
 
     public byte[]? Photo { get; set; }

@@ -13,20 +13,20 @@ namespace prj_Traveldate_Core.Controllers
         {
             _context = new TraveldateContext();
 
-            //////////////////////////////
-            //先填入所有sellingprice
+            ////////////////////////////////
+            ////先填入所有sellingprice
 
-            var ods = _context.OrderDetails.Where(o=>o.Order.IsCart!=true).ToList();
-            foreach (var i in ods)
-            {
-                if (i.SellingPrice == null)
-                {
-                    i.SellingPrice = _context.Trips.Where(t => t.TripId == i.TripId).Select(t => t.UnitPrice).First();
-                }
-            }
-            _context.SaveChanges();
+            //var ods = _context.OrderDetails.Where(o=>o.Order.IsCart!=true).ToList();
+            //foreach (var i in ods)
+            //{
+            //    if (i.SellingPrice == null)
+            //    {
+            //        i.SellingPrice = _context.Trips.Where(t => t.TripId == i.TripId).Select(t => t.UnitPrice).First();
+            //    }
+            //}
+            //_context.SaveChanges();
 
-            //////////////////////////////
+            ////////////////////////////////
 
         }
         public ActionResult ShoppingCart()
@@ -67,8 +67,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.member = _context.Members.Find(_memberID);
             vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
 
-            //TODO 加判斷期限
-            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID).Select(c => c.CouponList).ToList();
+            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate>DateTime.Now).Select(c => c.CouponList).ToList();
 
             vm.orders = new List<CCartItem>();
             for(int i = 0; i < orderDetailID.Length; i++)

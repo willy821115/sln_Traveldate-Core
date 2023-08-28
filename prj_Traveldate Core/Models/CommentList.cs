@@ -24,6 +24,4 @@ public partial class CommentList
     public virtual Member? Member { get; set; }
 
     public virtual ProductList? Product { get; set; }
-
-
 }
