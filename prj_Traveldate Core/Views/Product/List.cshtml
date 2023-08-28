@@ -300,9 +300,11 @@
             const productlist = document.getElementById('productlist');
             const response = await fetch(`@Url.Content("~/Product/SaleOperate")?productID=${productID}`)
             const datas = await response.json();
+            console.log(datas);
             if(datas!=null){
             const rows=datas.map(row=>{
                 const { productName, productType, cityName, productStatus, discontinued, productID } = row
+                    console.log(row)
                 const continueButton = discontinued === '上架'
                     ? `<button id="continue" class="btn btn-danger SaleOperate" value="${productID}">下架</button>`
                     : `<button id="continue" class="btn btn-success SaleOperate" value="${productID}">上架</button>`;

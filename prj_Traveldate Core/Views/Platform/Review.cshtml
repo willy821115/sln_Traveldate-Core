@@ -144,24 +144,39 @@
                                                         {
                                                             <div class="red-text">@Html.DisplayFor(modelItem => item.productStatus)</div>
                                                         }
+                                                        else if (item.productStatus == "退審")
+                                                        {
+                                                            <div class="red-text">@Html.DisplayFor(modelItem => item.productStatus)</div>
+                                                        }
                                                         else
                                                         {
-                                                            <div>@Html.DisplayFor(modelItem => item.productStatus)</div>
+                                                        <div>@Html.DisplayFor(modelItem => item.productStatus)</div>
                                                         }
                                                     </td>
                                             <td>
-                                                        @if (item.productStatus == "待審核")
+                                                      @*   @if (item.productStatus == "待審核")
                                                         {
                                                             <button type="button" class="btn btn-success btn-view-product" data-toggle="modal"
-                                                                    data-target="#exampleModalScrollable-@item.ProductId" data-product-id="@item.ProductId">
+                                                                    data-target="#exampleModalScrollable" data-product-id="@item.ProductId">
                                                                 查看
                                                             </button>
                                                         }
                                                         else
                                                         {
-                                                            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalScrollable">查看</button>
+                                                            <button type="button" class="btn btn-outline-dark btn-view-product" data-toggle="modal"
+                                                                    data-target="#exampleModalScrollable" data-product-id="@item.ProductId">
+                                                                查看
+                                                            </button>
+                                                        } *@
+                                                        @if (item.productStatus == "待審核")
+                                                        {
+                                                            @Html.ActionLink("查看", "ReviewProduct", "Platform",new {id=item.ProductId },new {@class="btn btn-success"})
                                                         }
-                                                        
+                                                        else
+                                                        {
+                                                            @Html.ActionLink("查看", "ReviewProduct", "Platform",new {id=item.ProductId },new {@class="btn btn-outline-dark"})
+                                                        }
+
                                             </td>
                                         </tr>
                                     }
@@ -172,13 +187,18 @@
                             
                                     <!-- Modal -->
                                         <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                            <div class="modal-content">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content" style="width:1200px !important;">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                                                    <h5 class="modal-title" id="exampleModalScrollableTitle">行程審核</h5>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="card-body">
+                                                        <div class=" form-group">
+                                                            <label class="control-label">供應商</label>
+                                                            <br />
+                                                            <span id="modalCompanyName"></span>
+                                                        </div>
                                                         <div class=" form-group">
                                                             <label class="control-label">產品名稱</label>
                                                             <br />
@@ -186,16 +206,19 @@
                                                         </div>
                                                         <div class=" form-group">
                                                             <label class="control-label">產品類型</label>
+                                                            <br />
+                                                            <span id="modalProType"></span>
                                                         </div>
                                                         <div class=" form-group">
                                                             <label class="control-label">所在國家</label>
+                                                            <br />
+                                                            <span>台灣</span>
                                                         </div>
                                                         <div class=" form-group">
                                                             <label class="control-label">所在城市</label>
                                                             <br />
                                                             <span id="modalCity"></span>
                                                         </div>
-
                                                         <div class="form-group">
                                                             <label class="control-label">產品地址</label>
                                                             <br />
@@ -203,12 +226,16 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label">輪播圖</label>
+                                                            <br />
+                                                            <img id="ModalImagePath"/>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label">產品標籤</label>
+                                                            <br />
+                                                            <span id="modalProdtags"></span>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="control-label">搜尋業大綱</label>
+                                                            <label class="control-label">簡介 (搜尋頁)</label>
                                                             <br />
                                                             <span id="modalOutlineForSearch"></span>
                                                         </div>
@@ -236,7 +263,12 @@
                                                         <div class="form-group">
                                                             <label class="control-label">行程詳情</label>
                                                             <br />
-                                                            <span id="modalOutline"></span>
+                                                            <span id="modalTripDetails"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">行程照片</label>
+                                                            <br />
+                                                            <img id="modalTripImagePath" />
                                                         </div>
 
                                                     </div>
@@ -288,6 +320,12 @@
                 color: red;
             }
 
+                .control-label {
+                    font-weight:bold;
+                    font-size:20px
+                }
+
+               
           
     </style>
         <link rel="stylesheet" href=https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css />
@@ -345,21 +383,33 @@
 
             $('.btn-view-product').on('click', function () {
                 var productId = $(this).data('product-id');
-                    alert(productId);
+                    console.log(productId);
                 $.ajax({
-                    url: '/Platform/GetProductDetails', 
+                        url: `/Platform/GetProductDetails?productId=${productId}`,
                     method: 'GET',
                     data: { productId: productId },
                     success: function (response) {
-                            alert(productId)
-                        $('#modalTitle').text(response.ProductName);
-                        $('#modalCity').text(response.CityName);
+                           // alert(productId)
+                            console.log(response)
+
+                            $('#modalCompanyName').text(response.companyName);
+                            $('#modalProductName').text(response.productName);
+                            $('#modalCity').text(response.cityName);
+                            $('#modalProType').text(response.productType);
                         $('#modalDescription').text(response.description);
                         $('#modalPlanName').text(response.planName);
                         $('#modalPlanDescription').text(response.plandescription);
                         $('#modalOutline').text(response.outline);
-                        $('#modalOutlineForSearch').text(response.outlineforsearch);
+                            $('#modalOutlineForSearch').text(response.outlineForSearch);
                         $('#modalAddress').text(response.address);
+                            // $('#modalImagePath').src(redponse.)
+                            $('#modalProdtags').text(response.prodtags);
+                            $('#modalPlanDescription').text(response.planDesc);
+                            $('#modalTripDetails').text(response.tripdetail);
+
+                            
+
+                            $('#exampleModalScrollable').modal('show');
                     },
                     error: function () {
                     }

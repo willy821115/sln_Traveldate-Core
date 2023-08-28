@@ -31,6 +31,7 @@ namespace prj_Traveldate_Core.Controllers
             }).ToList();
             return prod_photo;
         }
+      
      //////////////////////////////// /////////////////////////////////MVC/ ////////////////////////////////////////////////////////////////
         public IActionResult ForumList(CForumListViewModel vm)
         {
@@ -66,10 +67,13 @@ namespace prj_Traveldate_Core.Controllers
           
             return View(vm);
         }
+        //新增文章
         public IActionResult Create()
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
+                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_ACTION, "Create");
+                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_CONTROLLER, "Forum");
                 return RedirectToAction("Login", "Login");
             }
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
@@ -103,25 +107,52 @@ namespace prj_Traveldate_Core.Controllers
             _context.SaveChanges();
             return View();
         }
+        //修改文章
+        public IActionResult Edit(int? forumlist)
+        {
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
+            
+            List<ScheduleList> article = _context.ScheduleLists.Include(s=>s.ForumList).Include(s=>s.Trip).Include(s=>s.Trip.Product).Where(f=>f.ForumListId == forumlist).ToList(); 
+            return View(article);
+        }
+        [HttpPost]
+        public IActionResult Edit(ForumList article)
+        {
+            ForumList fDb = _context.ForumLists.FirstOrDefault(p => p.ForumListId == article.ForumListId);
+            if(fDb != null)
+            {
+                fDb.Content = article.Content;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "Member");
+        }
+
 
         public IActionResult ArticleView(int? id)
         {
-           if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("ForumList");
             }
+      
+
             CArticleViewModel vm = new CArticleViewModel();
-            vm.forum = _context.ForumLists.Include(f=>f.Member).FirstOrDefault(f => f.ForumListId == id);
+            vm.forum = _context.ForumLists.Include(f => f.Member).FirstOrDefault(f => f.ForumListId == id);
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+            //沒登入的情況
             vm.member = null;
-            
+            //有登入的情況
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
                 int memId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
                 vm.member = _context.Members.Find(memId);
             }
-            
+
             if (vm.forum != null)
             {
                 byte[] photo = vm.forum.Member.Photo;
@@ -201,7 +232,7 @@ namespace prj_Traveldate_Core.Controllers
                     n.ForumList.Title,
                     n.ForumList.Watches,
                     n.ForumList.Likes,
-                    releaseDatetime =n.ForumList.ReleaseDatetime,
+                    releaseDatetime =n.ForumList.ReleaseDatetime.Value.ToString("yyyy-MM-dd"),
                     n.Trip.ProductId
                 }).ToList();
             var articles = forumInfos.Join(prodPhoto, f => f.ProductId, p => p.prodId,

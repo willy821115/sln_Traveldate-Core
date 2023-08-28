@@ -236,13 +236,13 @@
 
                                                 <div class="form-group">
                                             <label class="control-label">產品特色</label>
-                                                    <textarea asp-for="Outline" class="form-control" ></textarea>
+                                                    <textarea asp-for="Outline" class="form-control" rows="10"></textarea>
                                                     <span asp-validation-for="Outline" class="text-danger"></span>
                                                 </div>
 
                                                 <div class="form-group">
                                             <label class="control-label">產品描述</label>
-                                                    <textarea asp-for="Description" class="form-control col-lg-12"></textarea>
+                                                <textarea asp-for="Description" class="form-control col-lg-12" rows="10"></textarea>
                                                     <span asp-validation-for="Description" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -268,7 +268,7 @@
                                                 </div>
                                                 <div class="form-group">
                                             <label class="control-label">產品內容</label>
-                                                    <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
+                                                <textarea asp-for="PlanDescription" class="form-control col-lg-12" rows="20"></textarea>
                                                     <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                                 </div>
 
@@ -317,7 +317,7 @@
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
                                                                             <input type="file" class="form-control" name="triptest[@i].photo" id="uploadImage-@i" />
-                                                                        <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetail">@t.TripDetail1</textarea>
+                                                                        <textarea class="col-lg-12 card-text" id="descriptionInput" name="triptest[@i].TripDetail" rows="8">@t.TripDetail1</textarea>
                                                                     </div>
 
                                                                 </div>
