@@ -118,7 +118,7 @@
                                             <input asp-for="CompanyId" type="hidden" value="@Model.CompanyId" />
                                             <div class="form-group">
                                                 <label class="control-label">產品名稱</label>
-                                                <input asp-for="ProductName" class="form-control" />
+                                                <input asp-for="ProductName" class="form-control" itemid="ProductName" />
                                                 <span asp-validation-for="ProductName" class="text-danger"></span>
                                             </div>
 
@@ -149,8 +149,8 @@
                                                         int i = 0;
                                                         foreach (ProductTypeList type in Model.types)
                                                         {
-                                                            <input asp-for="ProductTypeId" type="radio" value="@type.ProductTypeId" id="typeradio @i" />
-                                                            <label for="typeradio @i" class="control-label">@type.ProductType</label>
+                                                                        <input asp-for="ProductTypeId" type="radio" value="@type.ProductTypeId" id="typeradio-@i" />
+                                                                        <label for="typeradio-@i" class="control-label">@type.ProductType</label>
                                                             i++;
                                                         }
                                                     }
@@ -169,7 +169,7 @@
 
                                             <div class=" form-group">
                                                 <label class="control-label">所在城市</label>
-                                                <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                                <select asp-for="CityId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="CityId">
                                                     @foreach (CityList type in Model.cities)
                                                     {
                                                         <option value="@type.CityId">@type.City</option>
@@ -179,7 +179,7 @@
 
                                             <div class="form-group">
                                                 <label class="control-label">產品地址</label>
-                                                <input asp-for="Address" class="form-control" />
+                                                <input asp-for="Address" class="form-control" id="Address" />
                                                 <span asp-validation-for="Address" class="text-danger"></span>
                                             </div>
                                             <div class="form-group">
@@ -216,10 +216,10 @@
                                                             int id = 0;
                                                             foreach (var t in c.productTags.Distinct())
                                                             {
-                                                                <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                                    <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" />
-                                                                    <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
-                                                                </li>
+                                                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                                    <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" id="@t.ProductTagDetailsId" />
+                                                                                <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
+                                                                            </li>
                                                                 id++;
                                                             }
                                                         }
@@ -245,19 +245,19 @@
 
                                             <div class="form-group">
                                                 <label class="control-label">簡介(出現在搜尋頁面)</label>
-                                                <input asp-for="OutlineForSearch" class="form-control" />
+                                                <input asp-for="OutlineForSearch" class="form-control" id="OutlineForSearch" />
                                                 <span asp-validation-for="OutlineForSearch" class="text-danger"></span>
                                             </div>
 
                                             <div class="form-group">
                                                 <label class="control-label">產品特色</label>
-                                                <textarea name="Outline" class="form-control"></textarea>
+                                                <textarea name="Outline" class="form-control" id="Outline" rows="10"></textarea>
                                                 <span asp-validation-for="Outline" class="text-danger"></span>
                                             </div>
 
                                             <div class="form-group">
                                                 <label class="control-label">產品描述</label>
-                                                <textarea name="Description" class="form-control col-lg-12"></textarea>
+                                                <textarea name="Description" class="form-control col-lg-12" id="Description" rows="10"></textarea>
                                                 <span asp-validation-for="Description" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -277,12 +277,12 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label class="control-label">內容名稱</label>
-                                                <input asp-for="PlanName" class="form-control" />
+                                                <input asp-for="PlanName" class="form-control" id="PlanName" />
                                                 <span asp-validation-for="PlanName" class="text-danger"></span>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">產品內容</label>
-                                                <textarea asp-for="PlanDescription" class="form-control col-lg-12"></textarea>
+                                                <textarea asp-for="PlanDescription" class="form-control col-lg-12" id="PlanDescription" rows="20"></textarea>
                                                 <span asp-validation-for="PlanDescription" class="text-danger"></span>
                                             </div>
 
@@ -330,7 +330,10 @@
                     
 
                 </form>
-
+                <div style="margin-top:20px">
+                    <input type="button" value="Demo" class="btn btn-primary" id="demo" />
+                </div>
+                
               
 
             </div>
@@ -408,7 +411,7 @@
                                                                     </div>
                                                                             <input name="triptest[${i}].TripDay" type="hidden"  value="${day}" />
                                                                                      <input name="triptest[${i}].photo" type="file" class="form-control" id="uploadImage${i}" />
-                                                                              <textarea name="triptest[${i}].TripDetail" class="col-lg-12 card-text" id="descriptionInput"></textarea>
+                                                                                      <textarea name="triptest[${i}].TripDetail" class="col-lg-12 card-text" id="descriptionInput${i}" rows="8"></textarea>
                                                                 </div>
 
                                                             </div>
@@ -518,7 +521,36 @@
                 }
             });
         });
+        $('#demo').click(function () {
+            
+            $('#ProductName').val('台南住宿｜台灣兩天一夜｜台南雙春濱海遊憩區｜愛莊園 Vanaheim星空露營帳＆秘境遊船');
+            $('#Address').val('台南市北門區雙春 73 - 11 號');
+            $('#OutlineForSearch').val('立即預定台南北門雙春濱海遊憩區:「Vanaheim」星空露營帳住宿，實地走訪「俗女養成記2」拍攝景點，體驗浪漫星空蒙古包及湖上遊船體驗');
+            $('#Outline').html( `台南住宿一泊一食：天窗型蒙古星空露營帳住宿＆早餐
+        乘坐膠筏悠遊紅樹林水道，靜看樹林、湖水、陽光的交錯相映
+        漫步 1200 公尺紅樹林步道 ＆ 小忘憂森林，再享夜間潮汐生態導覽`);
+            $('#Description').html(`－ 景點介紹－
 
+        雙春濱海遊憩區
+        位於台南北門的生態遊憩場所，園區內規劃紅樹林觀察區，網羅台灣珍貴的 4 種原生紅樹林：海茄苳、水筆仔、欖李、紅海欖（亦稱五梨跤），適合帶著孩子一同前往，認識台灣特有生態。在成為遊憩區前，這裡多以漁塭養殖為主，地域稱為永春，後來面積擴大，延伸出了內外永春兩處，才成為今日的「雙春」。雙春濱海遊憩區設置有南北兩條木棧道，架設在紅樹林與防風林之間，讓遊客能夠近距離觀察溼地生態，除了紅樹林外，招潮蟹、彈塗魚還有水鳥，都是雙春最迷人的景緻。
+
+        紅樹林生態木棧道
+        雙春綠色隧道提供旅人悠閒地漫步，體會被翠綠簇擁的浪漫氛圍。除了紅樹林生態步道，雙春濱海遊憩區還擁有美麗的黃金沙灘，許多旅人會在落日時分，欣賞夕陽落下海平面壯觀美景。另有一處水上星空露營區，純白色的帳篷座落在海濱，所見景緻如畫。`);
+            $('#PlanName').val('愛莊園 Vanaheim｜星光帳篷 ｜一般帳');
+            $('#PlanDescription').html( `此帳型可住 2 - 6 人，但僅提供 2 人門票，第 3 人以上皆以市民門票收費。
+
+        此帳型皆「不含」：早餐、遊船、協力車一小時與夜間導覽，如有需要請另外加購。
+
+        請注意，此帳型內無傢俱、提供公共衛浴，需另自備睡墊、睡袋。`);
+            $('#descriptionInput0').html(`恣意坐臥在涼爽的河堤邊，帶著尚未完成的書本享受個人時刻->與最熟悉的好朋友、家人，一同在台南北門雙春濱海遊憩區戲水、坐賞太陽的日出日落->長達 1200 公尺紅樹林生態木棧道，親近自然的最佳方案`);
+            $('#descriptionInput1').html(`乘坐膠筏悠遊紅樹林水道，靜看樹林、湖水、陽光的交錯相映->訂購享協力車免費 1HR 服務，盡情感受微風輕撫雙頰的沁涼->每年 5 月 ～ 10月開放戲水池（週五、週六限定），提供給孩童一個放電的地方`);
+
+            $('#CityId').val(5);
+            $('#typeradio-2').prop("checked", true)
+            $('#11').prop("checked", true)
+            $('#14').prop("checked", true)
+            $('#22').prop("checked", true)
+        });
     </script>
 
 
@@ -532,5 +564,7 @@
         .cardTitle {
             font-size: 25px;
         }
+        
+        
     </style>
  }
