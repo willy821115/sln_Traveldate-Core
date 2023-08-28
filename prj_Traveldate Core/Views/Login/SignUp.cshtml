@@ -1,7 +1,7 @@
 ﻿@model prj_Traveldate_Core.Models.MyModels.CMemberWrap
 
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "會員註冊";
 }
 
 <h1>會員註冊</h1>
@@ -13,12 +13,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" required/>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" required />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,12 +41,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Idnumber" class="control-label"></label>
-                <input asp-for="Idnumber" class="form-control" />
+                <input asp-for="Idnumber" class="form-control" required />
                 <span asp-validation-for="Idnumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" type="date"/>
+                <input asp-for="BirthDate" class="form-control" type="date" required />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,17 +55,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
+                <input asp-for="Phone" class="form-control" required />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" type="email" class="form-control" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" type="password" class="form-control" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">

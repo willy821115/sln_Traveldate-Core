@@ -1,0 +1,103 @@
+﻿@model System.Collections.Generic.Dictionary<string, string>
+@{
+    ViewData["Title"] = "付款";
+}
+
+    <div class="cart_body">
+        <div class="Header">
+            <h3 class="Heading">@ViewData["Title"]</h3>
+        </div>
+        <div class="Steps">
+            <ol class="breadcrumb">
+                <li id="Step_cart" class="breadcrumb-item">購物車</li>
+                <li id="Step_Confirm" class="breadcrumb-item">確認訂購內容</li>
+                <li id="Step_Pay" class="breadcrumb-item Step_Current">付款</li>
+                <li id="Step_Finish" class="breadcrumb-item">訂購完成</li>
+            </ol>
+        </div>
+        <div class="Complete-box m-auto">
+            <div class="Confirm-Container">
+                <h2 class="accordion-header Confirm-Container-Title">
+                        <span class="title Confirm-Title ml-5">選擇付款方式</span>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse show">
+                    <div class="accordion-body Confirm-Container-Content">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_credit" checked>
+                            <label class="form-check-label" for="payment_credit">
+                                信用卡付款
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_linepay">
+                            <label class="form-check-label" for="payment_linepay">
+                                LINE Pay
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_jko">
+                            <label class="form-check-label" for="payment_jko">
+                                街口支付
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_cvs">
+                            <label class="form-check-label" for="payment_cvs">
+                                超商付款
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_paypal">
+                            <label class="form-check-label" for="payment_paypal">
+                                PayPal
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <form id="form" name="form" method="POST" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+                <div id="hiddendiv" style="display:none;">
+                    @foreach (var key in @Model.Keys.ToList())
+                    {
+                        @(key) <input type="text" name="@key" value="@Model[key]" />
+                        <br />
+                    }
+                </div>
+                <div class="d-flex">
+                    <input type="submit" id="checkoutBtn" class="btn my-btn-primary btn-lg" style="margin:1em auto;" value="確認付款" />
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
+
+}
+
+@section Scripts{
+    <script src="~/js/jsCart.js"></script>
+    <script>
+        $("#checkoutBtn").on('click', (e) => {
+            //e.preventDefault(); //因為送出就跳轉到綠界，這個可以停住確認自己的console.log的內容
+            let formData = $("#form").serializeArray();
+            var json = {};
+            $.each(formData, function () {
+                json[this.name] = this.value || "";
+            });
+            console.log(json);
+            console.log(JSON.stringify(json));
+            //step3 : 新增訂單到資料庫
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("/api/Ecpay/AddOrders")',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(json),
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (err) { console.log(err); },
+            });
+        });
+    </script>
+}

@@ -2,6 +2,10 @@
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.Drawing.Imaging;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -95,19 +99,39 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         [HttpPost]
-        public ActionResult CompleteOrder(CCreateOrderViewModel vm)
+        public ActionResult Payment(CCreateOrderViewModel vm)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
+            //產生付款ID填入Payment欄位
+            var orderIdForPay = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
+
+            DateTime dt = DateTime.Now;
             using (var tran = _context.Database.BeginTransaction())
             {
+                EcpayOrder ecpayOrder = new EcpayOrder()
+                {
+                    MerchantTradeNo = orderIdForPay,
+                    MemberId = "2000132",
+                    RtnCode = 0, //未付款
+                    RtnMsg = "訂購成功尚未付款",
+                    TradeNo = "2000132",
+                    TradeAmt = Decimal.ToInt32(vm.checkoutAmount),
+                    PaymentType = "aio",
+                    PaymentTypeChargeFee = "0",
+                    TradeDate = dt.ToString("yyyy/MM/dd HH:mm:ss"),
+                    SimulatePaid = 0,
+                
+            };
+                
+
                 Order newOrder = new Order()
                 {
                     MemberId = _memberID,
                     Datetime = DateTime.Now,
                     CouponListId = vm.newOrder.CouponListId, //
                     Discount = vm.newOrder.Discount, //
-                    PaymentId = vm.newOrder.PaymentId, //
+                    PaymentId = orderIdForPay, //
                     IsCart = false
                 };
 
@@ -120,12 +144,13 @@ namespace prj_Traveldate_Core.Controllers
 
                 //扣點數
                 Member mem = _context.Members.Where(m=>m.MemberId==_memberID).First();
+                
                 mem.Discount -= vm.newOrder.Discount;
 
                 //加點數
-                mem.Discount += Decimal.ToInt32(Math.Ceiling(vm.checkoutAmount / 100));                
+                mem.Discount += Decimal.ToInt32(Math.Ceiling(vm.checkoutAmount / 100));
 
-
+                _context.EcpayOrders.Add(ecpayOrder);
                 _context.Orders.Add(newOrder);
                 _context.SaveChanges();
 
@@ -228,12 +253,53 @@ namespace prj_Traveldate_Core.Controllers
                 }
             }
 
+
+            //準備付款所需資料
+            //網址
+            string website = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            string itemName = "";
+
+            for (int i = 0; i < vm.ods.Count; i++)
+            {
+                itemName += _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).Select(t => t.Product.ProductName).First() + "#";
+            }
+
+            var order = new Dictionary<string, string>
+            {
+                //綠界需要的參數
+                { "MerchantTradeNo",  orderIdForPay},
+                { "MerchantTradeDate",  dt.ToString("yyyy/MM/dd HH:mm:ss")},
+                { "TotalAmount",  Math.Floor(vm.checkoutAmount).ToString()},
+                { "TradeDesc",  "無"},
+                { "ItemName",  itemName},
+                { "CustomField1",  ""},
+                { "CustomField2",  ""},
+                { "CustomField3",  ""},
+                { "CustomField4",  ""},
+                { "ReturnURL",  $"{website}/api/Ecpay/AddPayInfo"},
+                { "OrderResultURL", $"{website}/Ecpay/PayInfo/{orderIdForPay}"},
+                { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
+                { "ClientRedirectURL",  $"{website}/Ecpay/AccountInfo/{orderIdForPay}"},
+                { "MerchantID",  "2000132"},
+                { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
+                { "PaymentType",  "aio"},
+                { "ChoosePayment",  "ALL"},
+                { "EncryptType",  "1"},
+            };
+            //檢查碼
+            order["CheckMacValue"] = GetCheckMacValue(order);
+            return View(order);
+        }
+
+        public IActionResult CompleteOrder()
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             ViewData["email"] = _context.Members.Find(_memberID).Email;
-            
             //TODO 寄確認信
-            
+
             return View();
         }
+
 
         public IActionResult OrderError(string e)
         {
@@ -241,5 +307,35 @@ namespace prj_Traveldate_Core.Controllers
             ViewBag.message = e;
             return View();
         }
+
+        private string GetCheckMacValue(Dictionary<string, string> order)
+        {
+            var param = order.Keys.OrderBy(x => x).Select(key => key + "=" + order[key]).ToList();
+            var checkValue = string.Join("&", param);
+            //測試用的 HashKey
+            var hashKey = "5294y06JbISpM5x9";
+            //測試用的 HashIV
+            var HashIV = "v77hoKGq4kWxNNIS";
+            checkValue = $"HashKey={hashKey}" + "&" + checkValue + $"&HashIV={HashIV}";
+            checkValue = HttpUtility.UrlEncode(checkValue).ToLower();
+            checkValue = GetSHA256(checkValue);
+            return checkValue.ToUpper();
+        }
+
+        private string GetSHA256(string value)
+        {
+            var result = new StringBuilder();
+            var sha256 = SHA256.Create();
+            var bts = Encoding.UTF8.GetBytes(value);
+            var hash = sha256.ComputeHash(bts);
+            for (int i = 0; i < hash.Length; i++)
+            {
+                result.Append(hash[i].ToString("X2"));
+            }
+            return result.ToString();
+        }
+
+        
     }
 }
+

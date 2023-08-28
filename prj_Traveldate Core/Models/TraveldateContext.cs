@@ -35,6 +35,8 @@ public partial class TraveldateContext : DbContext
 
     public virtual DbSet<CouponList> CouponLists { get; set; }
 
+    public virtual DbSet<EcpayOrder> EcpayOrders { get; set; }
+
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Favorite> Favorites { get; set; }
@@ -259,6 +261,22 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.ImagePath).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<EcpayOrder>(entity =>
+        {
+            entity.HasKey(e => e.MerchantTradeNo);
+
+            entity.Property(e => e.MerchantTradeNo).HasMaxLength(50);
+            entity.Property(e => e.MemberId)
+                .HasMaxLength(50)
+                .HasColumnName("MemberID");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentType).HasMaxLength(50);
+            entity.Property(e => e.PaymentTypeChargeFee).HasMaxLength(50);
+            entity.Property(e => e.RtnMsg).HasMaxLength(50);
+            entity.Property(e => e.TradeDate).HasMaxLength(50);
+            entity.Property(e => e.TradeNo).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<Employee>(entity =>
         {
             entity.HasNoKey();
@@ -378,7 +396,9 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.CouponListId).HasColumnName("CouponListID");
             entity.Property(e => e.Datetime).HasColumnType("datetime");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
+            entity.Property(e => e.PaymentId)
+                .HasMaxLength(50)
+                .HasColumnName("PaymentID");
 
             entity.HasOne(d => d.CouponList).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CouponListId)
@@ -391,7 +411,7 @@ public partial class TraveldateContext : DbContext
 
             entity.HasOne(d => d.Payment).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.PaymentId)
-                .HasConstraintName("FK_Orders_PaymentList");
+                .HasConstraintName("FK_Orders_EcpayOrders1");
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>

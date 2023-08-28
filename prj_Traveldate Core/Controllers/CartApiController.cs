@@ -81,8 +81,8 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         //揪團用結帳
+        //傳入ScheduleID + CouponListID + Discount (Quantity? SellingPrice?)
 
 
-        
     }
 }
