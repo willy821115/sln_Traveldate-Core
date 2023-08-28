@@ -41,6 +41,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.product.ProductId = (int)id;
             vm.program.fProdTags = pf.loadProductTags((int)id);
             vm.program.fCommentPhotoList = pf.loadCommentPhotoPath((int)id);
+            vm.program.fTripId = pf.loadTripId((int)id);
             vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             return View(vm);
         }
@@ -127,7 +128,7 @@ namespace prj_Traveldate_Core.Controllers
 
 
         [HttpPost]
-        public IActionResult AddDirectToCart(int num, int tripId, int orderDetailId)
+        public IActionResult AddDirectToCart(int num, int tripId)
         {
             TraveldateContext db = new TraveldateContext();
 
@@ -155,6 +156,12 @@ namespace prj_Traveldate_Core.Controllers
                         OrderId = cartOrderID
                     };
                     db.OrderDetails.Add(newOrderDetail);
+                    db.SaveChanges();
+                    int orderDetailId = newOrderDetail.OrderDetailsId;
+                    ViewBag.orderDetailId = orderDetailId;
+
+                    return Content(orderDetailId.ToString());
+                    //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
                 }
                 db.SaveChanges();
             }
@@ -167,9 +174,24 @@ namespace prj_Traveldate_Core.Controllers
                 };
                 db.Orders.Add(newCartOrder);
                 db.SaveChanges();
-            }
 
-            return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
+                int newCartOrderID = newCartOrder.OrderId;
+
+                OrderDetail newOrderDetail = new OrderDetail
+                {
+                    Quantity = num,
+                    TripId = tripId,
+                    OrderId = newCartOrderID
+                };
+
+                db.OrderDetails.Add(newOrderDetail);
+                db.SaveChanges();
+                int orderDetailId = newOrderDetail.OrderDetailsId;
+                ViewBag.orderDetailId = orderDetailId;
+
+                return Content(orderDetailId.ToString());
+            }
+            return RedirectToAction("ShoppingCart", "Cart");
         }
 
 

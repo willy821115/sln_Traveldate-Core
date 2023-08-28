@@ -67,6 +67,14 @@ namespace prj_Traveldate_Core.Models.MyModels
             return formattedDates;
         }
 
+        public List<int> loadTripId(int id)
+        {
+            List<int> tripId = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7))
+                .OrderBy(t => t.Date).Select(t => t.TripId).ToList();
+            return tripId;
+        }
+
+
         //最多可報名可賣數量
         public List<int?> loadQuantityMax(int id)
         {

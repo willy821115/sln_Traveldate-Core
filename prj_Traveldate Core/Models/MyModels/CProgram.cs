@@ -21,6 +21,7 @@
         public List<string> fTTripPhotoList { get; set; }
         public List<string> fCommentPhotoList { get; set; }
         public List<string> fProdTags { get; set; }
+        public List<int> fTripId { get; set; }
         public int floggedInMemberId { get; set; }
     }
 }
