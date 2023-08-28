@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewData["Title"] = "ReviewProduct";
+}
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <div class="sidebar-brand d-flex align-items-center justify-content-center">
+            <div class="sidebar-brand-icon">
+                <img src="~/icons/navigation.png" class="icon" id="sidebarToggleTop" />
+            </div>
+            <div class="sidebar-brand-text mx-3 nav-menu">主選單</div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Review">
+                <span>商品審核</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/AccountSuspend">
+                <span>停權管理</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Platform/Coupon">
+                <span>優惠券</span>
+            </a>
+        </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Begin Page Content -->
+
+            <div class="container-fluid">
+                <div class="myrow">
+                    <div class="col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">行程審核</h6>
+                            </div>
+                            <div class="card-body">
+                                <form action="/Platform/ReviewAction" method="post">
+                                <div>
+                                    <div>
+                                        <label>供應商</label>
+                                        <br />
+                                        <span>@Model.CompanyName</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>產品名稱</label>
+                                        <br />
+                                        <span>@Model.ProductName</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>產品類型</label>
+                                        <br />
+                                        <span>@Model.ProductType</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>所在國家／城市</label>
+                                        <br />
+                                        <span>台灣／@Model.CityName</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>產品地址</label>
+                                        <br />
+                                        <span>@Model.Address</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>輪播圖</label>
+                                        <br />
+                                        @foreach (var photo in Model.Photos)
+                                        {
+                                            <img src="/images/@photo" class="img-thumbnail" style="height:200px;width:300px;margin-right:5px;" />
+                                        }
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>產品標籤</label>
+                                        <br />
+                                        @foreach (var tags in Model.Prodtags)
+                                        {
+                                            <span>@tags <br /></span>
+                                        }
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>簡介 (搜尋頁)</label>
+                                        <br />
+                                        <span>@Model.OutlineForSearch</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label>產品大綱</label>
+                                        <br />
+                                        <span>@Model.Outline</span>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                            <label>產品描述</label>
+                                            <br />
+                                            <span>@Model.Description</span>
+                                        </div>
+                                   <div style="margin-top:10px;">
+                                            <label>方案名稱</label>
+                                            <br />
+                                            <span>@Model.PlanName</span>
+                                    </div>
+                                   <div style="margin-top:10px;">
+                                    <label>方案描述</label>
+                                    <br />
+                                    <span>@Model.PlanDescription</span>
+                                </div>
+                                    <div style ="margin-top:10px;">
+                                                <label>行程詳情</label>
+                                                <br />
+                                                @for (int i = 0; i < Model.tripdetail.Count; i++)
+                                                {
+                                                    <span>第 @(i + 1) 天：@Model.tripdetail[i] <br /></span>
+                                                }
+                                            </div>
+                                    <div style="margin-top:10px;">
+                                       <label>行程照片</label>
+                                       <br />
+                                                @foreach (var photo in Model.trippic)
+                                                {
+                                                    <img src="/images/@photo" class="img-thumbnail" style="height:200px;width:300px;margin-right:5px;" />
+                                                }
+                                </div>
+                                        <input type="hidden" name="productId" value="@Model.ProductId" />
+                                </div>
+                                    <div class="text-center" style="margin-top: 20px;margin-right:50px;">
+                                        <a asp-action="Review" class="btn btn-outline-dark m-2" style="width:20%">取消</a>
+                                        <button type="submit" name="action" value="reject" class="btn btn-outline-danger m-2" style="width: 20%">退審</button>
+                                        <button type="submit" name="action" value="approve" class="btn my-btn-primary m-2" style="width: 20%">審核</button>
+                                 </div>
+                            </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+        @section Styles{
+            <style>
+                .card-body {
+                    height: unset;
+                }
+
+                .myrow {
+                    display: flex;
+                    align-content: flex-start;
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .card-body label{
+                    font-weight:bold;
+                    font-size:20px;
+                }
+
+            </style>
+        }
+
+        @section Scripts{
+            <script>
+               
+
+            </script>
+
+        }
+
+

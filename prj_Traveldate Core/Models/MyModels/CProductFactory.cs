@@ -186,6 +186,14 @@ namespace prj_Traveldate_Core.Models.MyModels
             return comtiltle;
         }
 
+        public List<string> loadCommentPhotoPath(int id)
+        {
+            List<string> comphoto = (from t in db.CommentLists
+                                     join c in db.CommentPhotoLists on t.CommentId equals c.CommentId
+                                     where t.ProductId == id
+                                     select c.ImagePath).ToList();
+            return comphoto;
+        }
 
         //loadTripPrice
         public List<decimal?> loadPlanprice(int id)
