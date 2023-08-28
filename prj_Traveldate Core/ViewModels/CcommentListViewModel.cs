@@ -64,7 +64,7 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _productList.ProductName; }
             set { _productList.ProductName = value; }
         }
-        public int? ProductId
+        public int ProductId
         {
             get { return _productList.ProductId; }
             set { _productList.ProductId = value; }
