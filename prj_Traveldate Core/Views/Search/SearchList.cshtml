@@ -18,6 +18,10 @@
         }
         .card{
             border:0px solid white;
+           
+        }
+        .card:hover{
+                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         .pagination > li > a {
@@ -81,7 +85,7 @@
             @foreach (var city in Model.countryAndCities)
             {
                 <div class="controls-display-row category-click">
-                    <span class="fs-4">@Html.DisplayFor(modelItem => city.country)</span>
+                    <span class="fs-4">@Html.DisplayFor(modelItem => city.country) (@city.citys.Distinct().Count())</span>
                     <div>
                         <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                         <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -171,7 +175,7 @@
             @foreach (var c in Model.categoryAndTags)
             {
                 <div class="controls-display-row category-click">
-                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+                    <span class="fs-5">@Html.DisplayFor(modelItem => c.category) (@c.tags.Distinct().Count())</span>
                     <div class="d-flex justify-content-end">
                         <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                         <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -194,7 +198,7 @@
         </div>
         <div class="filter_block">
             <div class="controls-display-row category-click pt-2">
-                <span class="fs-4 fw-bolder">依旅遊性質</span>
+                <span class="fs-4 fw-bolder">依旅遊性質 (@Model.types.Distinct().Count())</span>
                 <div>
                     <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                     <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -292,7 +296,7 @@
                                 </p>
                                         </div>
                                 <div class="row align-items-end">
-                                    <div class="col-8 d-flex align-items-center">
+                                    <div class="col-9 d-flex align-items-center">
                                         <div class="rectangle-container me-2 d-flex position-relative">
                                             <div class="rectangle"></div>
                                             <img class="star-rating" src="~/icons/star-rating.png">
@@ -300,9 +304,11 @@
                                         </div>
                                         <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</span>
                                         <span class="text-body-secondary"> | <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
-                                                   @if (!string.IsNullOrEmpty(item.strProdStock))
+                                                @if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("即將額滿"))
                                                         {
                                                         <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                                        }else{
+                                                    <span class="text-body-secondary"> |  @item.strProdStock</span>
                                                         }
                                                    
                                                 </div>

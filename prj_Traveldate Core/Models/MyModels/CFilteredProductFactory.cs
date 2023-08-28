@@ -81,7 +81,11 @@ namespace prj_Traveldate_Core.Models.MyModels
                item.prodStock = r/ m;
                 if (item.prodStock > 0.01) 
                 {
-                    item.strProdStock = "即將額滿";
+                    item.strProdStock = $"即將額滿   名額:{strStock}";
+                }
+                else
+                {
+                    item.strProdStock = $"名額:{strStock}";
                 }
                 list.Add(item);
             }
