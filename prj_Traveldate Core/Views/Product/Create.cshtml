@@ -496,30 +496,23 @@
         });
 
         $(document).ready(function () {
-            $('input[type="file"]').change(function () {
-                // 获取当前文件选择框的值
+            $(document).on('change', 'input[type="file"]',function () {
                 var fileInput = this;
-
-                // 获取相应的<img>元素的ID
                 var imgId = $(fileInput).attr('id').replace('uploadImage', 'imgPreview');
-
-                // 获取<img>元素
                 var imgPreview = $('#' + imgId);
-                //檔案類型
-                var allowFileType = "image.*"
 
-                if (fileInput.files && fileInput.files[0] && fileInput.files[0].match(allowFileType)) {
+                if (fileInput.files && fileInput.files[0]) {
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        imgPreview.attr('src', e.target.result); // 更新<img>的src属性以显示预览
+                        imgPreview.attr('src', e.target.result);
                     };
 
                     reader.readAsDataURL(fileInput.files[0]);
                 } else {
                     // 如果没有选择文件，你可以设置一个默认的图片，例如：
                     imgPreview.attr('src', "@Url.Content("~/icons/logos/Logo_traveldate.png")");
-                    alert("格式不正確")
+                    
                     // 或者隐蔽<img>元素
                     // imgPreview.hide();
                 }
