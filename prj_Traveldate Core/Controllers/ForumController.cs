@@ -31,6 +31,7 @@ namespace prj_Traveldate_Core.Controllers
             }).ToList();
             return prod_photo;
         }
+      
      //////////////////////////////// /////////////////////////////////MVC/ ////////////////////////////////////////////////////////////////
         public IActionResult ForumList(CForumListViewModel vm)
         {
@@ -66,6 +67,7 @@ namespace prj_Traveldate_Core.Controllers
           
             return View(vm);
         }
+        //新增文章
         public IActionResult Create()
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
@@ -103,8 +105,32 @@ namespace prj_Traveldate_Core.Controllers
             _context.SaveChanges();
             return View();
         }
+        //修改文章
+        public IActionResult Edit(int? forumlist)
+        {
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
+            
+            List<ScheduleList> article = _context.ScheduleLists.Include(s=>s.ForumList).Include(s=>s.Trip).Include(s=>s.Trip.Product).Where(f=>f.ForumListId == forumlist).ToList(); 
+            return View(article);
+        }
+        [HttpPost]
+        public IActionResult Edit(ForumList article)
+        {
+            ForumList fDb = _context.ForumLists.FirstOrDefault(p => p.ForumListId == article.ForumListId);
+            if(fDb != null)
+            {
+                fDb.Content = article.Content;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "Member");
+        }
 
-        public IActionResult ArticleView(int? id)
+
+            public IActionResult ArticleView(int? id)
         {
            if(id == null)
             {

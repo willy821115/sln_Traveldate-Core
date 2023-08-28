@@ -94,9 +94,11 @@ footer {
     font-weight:bold;
 }
 
-.form-check-input:checked {
-    background-color: #155074;
-    border-color: #155074;
+#all-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    /* fallback height */
+    min-height: 100vh;
 }
-
 

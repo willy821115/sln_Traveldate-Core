@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "VerifyMailSent";
+}
+
+<h1>已寄出驗證信</h1>
+
+<br>
+<br>
+<div class="mb-3">
+    <p>
+        啟用帳號驗證信已寄至您的電子信箱，請於 30 分鐘內開啟驗證信中的連結以啟用會員功能。
+    </p>
+    <br>
+</div>
+<br>
+
+<div class="downlabel">
+    <a asp-area="" asp-controller="Login" asp-action="Login">回到登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+</div>
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }

@@ -55,7 +55,7 @@
                                 </p>
                             </div>
                             <div class="row align-items-end">
-                                <div class="col-8 d-flex align-items-center">
+                                <div class="col-9 d-flex align-items-center">
                                     <div class="rectangle-container me-2 d-flex position-relative">
                                         <div class="rectangle"></div>
                                         <img class="star-rating" src="~/icons/star-rating.png">
@@ -63,9 +63,13 @@
                                     </div>
                                     <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.strComment)</span>
                                     <span class="text-body-secondary"> | <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
-                                    @if (!string.IsNullOrEmpty(item.strProdStock))
+                                    @if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("即將額滿"))
                                     {
                                         <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-body-secondary"> |  @item.strProdStock</span>
                                     }
                                 </div>
                                 <div class="col">

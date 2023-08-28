@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace prj_Traveldate_Core.Controllers
 {
-    public class MemberController : Controller
+    public class MemberController : SuperController
     {
         TraveldateContext context = new TraveldateContext();
 
@@ -28,7 +28,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Index() // 左側欄 先維持原版V
         {
-            int MemberId = 1;
+            int MemberId =Convert.ToInt32( HttpContext.Session.GetString( CDictionary.SK_LOGGEDIN_USER));
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {
@@ -120,7 +120,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult basicInfo() //基本資料設定 V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             //var memm = from m in context.Members
             //          where m.MemberId == MemberId
@@ -261,7 +261,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult basicInfo(Member edit) //基本資料設定edit V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == edit.MemberId);
             if (mDB != null)
             {
@@ -291,7 +291,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             CpasswordChangeViewModel prd = new CpasswordChangeViewModel();
 
             prd.MemberId = MemberId;
@@ -391,7 +391,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult passwordChange(CpasswordChangeViewModel edit) //密碼更改 edit V
         {
-            int memberId = 1;
+            int memberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mDB = context.Members.FirstOrDefault(m => m.MemberId == memberId);
 
             if (mDB != null)
@@ -416,7 +416,7 @@ namespace prj_Traveldate_Core.Controllers
     
         public IActionResult couponList() //優惠券清單 new V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
                         join c in context.Coupons
                         on m.MemberId equals c.MemberId
@@ -522,7 +522,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult showCompanion() //顯示常用旅伴
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
                         join cm in context.Companions
                         on m.MemberId equals cm.MemberId
@@ -624,7 +624,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult addCompanion() //新增旅伴資料 V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             CCompanionViewModel cm = new CCompanionViewModel();
             cm.MemberId = MemberId;
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -745,7 +745,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult favoriteList() //收藏清單new V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from pl in context.ProductLists
                         join f in context.Favorites
                         on pl.ProductId equals f.ProductId
@@ -852,7 +852,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult favoriteList(int? id)  //收藏清單Delete V
         {
-            int MemberId =1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
             Favorite ff = context.Favorites.Where(f => f.FavoriteId == id).FirstOrDefault();
@@ -870,7 +870,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult orderList(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos) //會員訂單new V 
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from o in context.OrderDetails//.GroupBy(i => i.Order.OrderId).Select(d => d.First()).ToList()
                         from c in context.CommentLists
                         where c.MemberId== MemberId  //&& o.Order.MemberId== MemberId //&& c.ProductId==o.Trip.Product.ProductId
@@ -1021,7 +1021,7 @@ namespace prj_Traveldate_Core.Controllers
         #endregion
         public IActionResult commentList() //我的評論new V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
                         join cm in context.CommentLists
                         on m.MemberId equals cm.MemberId
@@ -1129,7 +1129,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult commentList(int? id) //我的評論Delete V
         {
-            int MemberId = 1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
             if (id != null)
             {
@@ -1156,28 +1156,32 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         #region 添加評論view 暫時用不到2023.08.20
-        public IActionResult addcomment(CCommentListWrap commentWrap) //添加評論 先維持舊版V
+        public IActionResult addcomment(int? id) //添加評論 先維持舊版V
         {
-            int MemberId = 1;
-            var datas = from m in context.Members
-                        join cm in context.CommentLists
-                        on m.MemberId equals cm.MemberId
-                        join pl in context.ProductLists
-                        on cm.ProductId equals pl.ProductId
-                        where m.MemberId == MemberId
-                        select new CcommentListViewModel
-                        {
-                            Title = cm.Title,
-                            Content = cm.Content,
-                            CommentScore = cm.CommentScore,
-                            MemberId = m.MemberId,
-                            Date = cm.Date,
-                            ProductName = pl.ProductName,
-                            ProductId = Convert.ToInt32(pl.ProductId),
-                            CommentId= cm.CommentId,
-                            ImagePath = commentWrap.ImagePath,
-                            photos = commentWrap.photos
-                        };
+
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            //var datas = from m in context.Members
+            //            join cm in context.CommentLists
+            //            on m.MemberId equals cm.MemberId
+            //            join pl in context.ProductLists
+            //            on cm.ProductId equals pl.ProductId
+            //            where m.MemberId == MemberId
+            //            select new CcommentListViewModel
+            //            {
+            //                Title = cm.Title,
+            //                Content = cm.Content,
+            //                CommentScore = cm.CommentScore,
+            //                MemberId = m.MemberId,
+            //                Date = cm.Date,
+            //                ProductName = pl.ProductName,
+            //                //ProductId = Convert.ToInt32(pl.ProductId),
+            //                ProductId = id,
+            //                CommentId= cm.CommentId,
+
+            //            };
+            CCommentListWrap z = new CCommentListWrap();
+            z.MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            z.ProductId = id;
 
 
                 Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -1266,23 +1270,23 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas.Distinct());
+            return View(z);
         }
         #endregion
 
         [HttpPost]
-        public IActionResult addcomment(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos,string? ImagePath) //添加評論Create V
+        public IActionResult addcomment(CCommentListWrap vm) //添加評論Create V
         {
-
-            int MemberId = 1;
+            //int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos,string? ImagePath
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             //COrdersViewModel vm = new COrdersViewModel();
-            CCommentListWrap vm=new CCommentListWrap();
-            vm.ProductId= id;
-            vm.Title = Title;
-            vm.Content = Content;
-            vm.CommentScore = CommentScore;
-            vm.photos= photos;
-            vm.ImagePath = ImagePath;
+            //CCommentListWrap vm=new CCommentListWrap();
+            //vm.ProductId= id;
+            //vm.Title = Title;
+            //vm.Content = Content;
+            //vm.CommentScore = CommentScore;
+            //vm.photos= photos;
+            //vm.ImagePath = ImagePath;
            // vm.CommentId = comm;
 
             CommentList cmDB = new CommentList();
@@ -1291,7 +1295,7 @@ namespace prj_Traveldate_Core.Controllers
                 cmDB.Title = vm.Title;
                 cmDB.Content = vm.Content;
                 cmDB.CommentScore = vm.CommentScore;
-                cmDB.MemberId = vm.MemberId=1;
+                cmDB.MemberId = vm.MemberId= Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
                 cmDB.Date = DateTime.Now;
                 cmDB.ProductId =vm.ProductId;
 
@@ -1300,6 +1304,7 @@ namespace prj_Traveldate_Core.Controllers
             }
 
             //CommentPhotoList photolist = context.CommentPhotoLists.FirstOrDefault(p => p.CommentId == vm.CommentId);
+            int NewCommentID = context.CommentLists.Where(c=>c.Title==vm.Title).Select(c => c.CommentId).FirstOrDefault();
             if (vm.photos != null)
             {
                 foreach (IFormFile photo in vm.photos)
@@ -1307,7 +1312,7 @@ namespace prj_Traveldate_Core.Controllers
                     CommentPhotoList photolistDB = new CommentPhotoList();
                     string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
                     photolistDB.ImagePath = photoName;
-                    photolistDB.CommentId = vm.CommentId;
+                    photolistDB.CommentId = NewCommentID;
                     photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
                     context.CommentPhotoLists.Add(photolistDB);
                     context.SaveChanges();
@@ -1319,7 +1324,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult forumList() //我的揪團new V
         {
-            int MemberId =1;
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
                         join fl in context.ForumLists
                         on m.MemberId equals fl.MemberId
