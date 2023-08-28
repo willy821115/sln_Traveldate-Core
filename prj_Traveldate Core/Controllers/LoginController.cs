@@ -53,7 +53,7 @@ namespace prj_Traveldate_Core.Controllers
                 }
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER, mem.MemberId.ToString());
-
+                HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER_NAME, mem.FirstName);
                 if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER))
                 {
                     string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
@@ -85,6 +85,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_COMPANY, com.CompanyId.ToString());
+                HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_COMPANY_NAME, com.CompanyName.ToString());
                 return RedirectToAction("List", "Dashboard");
             }
             ViewBag.Message = "帳號或密碼錯誤";
@@ -104,6 +105,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_EMPLOYEE, emp.EmployeeId.ToString());
+                HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_EMPLOYEE_NAME, "Admin");
                 return RedirectToAction("Review", "Platform");
             }
             ViewBag.Message = "帳號或密碼錯誤";

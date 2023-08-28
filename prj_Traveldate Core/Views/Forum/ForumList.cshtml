@@ -1,4 +1,6 @@
-﻿@using prj_Traveldate_Core.ViewModels;
+﻿
+@using prj_Traveldate_Core.ViewModels;
+
 @model CForumListViewModel
 @{
     ViewData["Title"] = "ForumList";
@@ -31,7 +33,7 @@
 <div class="row g-0 column-gap-5 justify-content-center main">
     <div class="col-3 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <a asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary fw-bold">
+            <a id="confirmedLoginStatus" asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary fw-bold">
                 <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
                 <img class="write-icon-gif me-3" src="~/icons/icons8-pencil.gif" width="32" height="32">
                 我要發文
@@ -174,5 +176,21 @@
         </div>
     </div>
 </div>
+
+
+
 @* <script src="~/js/jquery-3.4.1.js"></script> *@
-<script src="~/js/forumList_jq.js"></script>
+
+@section Scripts{
+    <script src="~/js/forumList_jq.js"></script>
+    <script>
+        var isLoggedIn = $('#isLoggedIn').val()
+        $('#confirmedLoginStatus').on('click', function () {
+            if (!isLoggedIn) {
+                alert('請登入會員');
+            }
+        });
+
+    </script>
+}
+

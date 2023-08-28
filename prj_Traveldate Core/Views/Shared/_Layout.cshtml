@@ -61,9 +61,11 @@
 
 
    
-
+  
 </head>
 <body>
+    @using prj_Traveldate_Core.Models.MyModels;
+    
     <div id="all-container">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm fixed-top pt-0 pb-0 fs-5">
@@ -73,7 +75,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="d-flex row w-75 pl-5">
+                <div class="d-flex row col-7 pl-5">
                     <div class="navbar-collapse collapse d-sm-inline-flex">
                         <ul class="navbar-nav flex-grow-1 justify-content-start">
                         <li class="nav-item mr-2">
@@ -90,28 +92,75 @@
                             </li>
                             <li class="nav-item mr-2">
                                 <a asp-area="" asp-controller="Forum" asp-action="ForumList">找揪團</a>
-                            </li>
-                            
+                            </li>   
                     </ul>
                 </div>
                 </div>
-                <ul class="navbar-nav flex-grow-1  justify-content-center w-25">
-                    <li class="nav-item mr-2">
+                <ul class="navbar-nav flex-grow-1 col-5">
+                    <li>
+                        @{
+                                string memName = Context.Session.GetString(CDictionary.SK_LOGGEDIN_USER_NAME);
+                                string comName = Context.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY_NAME);
+                                string empName = Context.Session.GetString(CDictionary.SK_LOGGEDIN_EMPLOYEE_NAME);
+                        }
+                        </li>
+                        @if (!string.IsNullOrEmpty(memName))
+                        {
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Login" asp-action="Login">
+                                    <img src="~/icons/icons8-login-member-layout.png" height="36" />
+                                <span>歡迎 ! @memName</span>    
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item mr-2">
                         <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
                     </li>
-                    <li class="nav-item mr-2">
-                        <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">供應商登入</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" class="cart">
-                            購物車@* <span class="badge rounded-pill bg-danger ml-1">
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(comName))
+                        {
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Login" asp-action="Login">
+                                    <img src="~/icons/icons8-company-login-layout.png" height="36" />
+                                    <span>歡迎 ! @comName</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">供應商登入</a>
+                            </li>
+                        }
+
+
+
+
+                   @if (!string.IsNullOrEmpty(memName))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" class="cart">
+                                    購物車@* <span class="badge rounded-pill bg-danger ml-1">
                                 @{
-                                    var cartItemCount = ViewBag.CartItemCount;
-                                    <p>Cart Item Count: @cartItemCount</p>
+                                var cartItemCount = ViewBag.CartItemCount;
+                                <p>Cart Item Count: @cartItemCount</p>
                                 }
-                            </span> *@
-                        </a>
-                    </li>
+                                </span> *@
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                             <li class="nav-item">
+                                <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" class="cart">
+                                    <img src="~/icons/icons8-cart-96.png" height="36"/>
+                                </a>
+                            </li>
+                        }
+                       
                     </ul>
               
             </div>
