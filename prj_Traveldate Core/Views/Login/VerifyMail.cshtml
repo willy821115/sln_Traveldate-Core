@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "驗證成功";
+}
+
+<h1>驗證成功</h1>
+
+<br>
+<br>
+<div class="mb-3">
+    <p>
+        信箱驗證成功！<br/>重新登入即可使用完整會員功能。
+    </p>
+    <br>
+</div>
+<br>
+
+<div class="downlabel">
+    <a asp-area="" asp-controller="Login" asp-action="Login">回到登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+</div>
+
+@section Styles
+    {
+    <link href="~/css/Login.css" rel="stylesheet" />
+ }

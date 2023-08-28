@@ -170,6 +170,7 @@
                                 <div class="form-group">
                                     <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
                                     <input type="submit" value="新增優惠券" class="btn my-btn-primary" />
+                                    <button type ="button" class="btn btn-light" id="demoButton">Demo</button>
                                 </div>
                             </form>
                         </div>
@@ -318,6 +319,25 @@
                 // 在點擊"確認修改"按鈕時，設定當前時間給 CreateDate 字段
                 $('#CreateDate').val(new Date().toISOString());
             });
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const demoButton = document.getElementById('demoButton');
+                demoButton.addEventListener('click', function () {
+                    // 填充表單輸入欄位
+                    
+                    document.getElementById('CouponName').value = '超級大優惠來臨';
+                    document.getElementById('Discount').value = 0.8;
+                    document.getElementById('Description').value = '一年一度超殺優惠來臨';
+                    document.getElementById('DueDate').value = '2023-10-01';
+
+                    // // 可選：顯示Demo照片
+                    // const imagePreview = document.getElementById('imagePreview');
+                    // imagePreview.src = '填充的圖片URL';
+                });
+            });
+
+
         </script>
     }
 

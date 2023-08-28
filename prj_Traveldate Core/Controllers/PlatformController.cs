@@ -351,13 +351,18 @@ namespace prj_Traveldate_Core.Controllers
             if (product != null)
             {
                 var city = db.CityLists.FirstOrDefault(c => c.CityId == product.CityId);
+                var company = db.Companies.FirstOrDefault(c => c.CompanyId == product.CompanyId);
                 var protype = db.ProductTypeLists.FirstOrDefault(c => c.ProductTypeId == product.ProductTypeId);
+                var protags = db.ProductTagLists.Where(c => c.ProductId == product.ProductId).Select(p => p.ProductTagDetails.ProductTagDetailsName).ToList(); ;
+               
                 var tripdetail = db.TripDetails.Where(t=>t.ProductId == product.ProductId ).Select(t=>t.TripDetail1).ToList();
+                var propic = db.ProductPhotoLists.Where(p => p.ProductId == product.ProductId).Select(p => p.ImagePath).ToList();
 
                 if (city != null)
                 {
                     var productDetails = new
                     {
+                        CompanyName = company.CompanyName,
                         ProductName = product.ProductName,
                         ProductType = protype.ProductType,
                         CityName = city.City,
@@ -367,6 +372,10 @@ namespace prj_Traveldate_Core.Controllers
                         Outline = product.Outline,
                         OutlineForSearch = product.OutlineForSearch,
                         Address = product.Address,
+                        Photos = propic,
+                        Prodtags = protags,
+                        PlanDesc = product.PlanDescription,
+                        tripdetail = tripdetail,
                     };
 
                     return Json(productDetails);
@@ -399,27 +408,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-
-
-        public ActionResult content1()
-        {
-            return View();
-        }
-        public ActionResult content2()
-        {
-            return View();
-        }
-        public ActionResult content3()
-        {
-            return View();
-        }
-
-        public ActionResult CouponCreate()
-        {
-            return View();
-        }
-
-        public IActionResult SusAccount(int memberId)
+        public IActionResult SusMemAccount(int memberId)
         {
             TraveldateContext db = new TraveldateContext();
             CProductFactory pro = new CProductFactory(); 
@@ -451,23 +440,168 @@ namespace prj_Traveldate_Core.Controllers
             var q = db.Companies.FirstOrDefault(m => m.CompanyId == comId);
             q.Enable = !q.Enable;
             db.SaveChanges();
-            var q2 = db.Companies.Where(c => c.CompanyId == comId).Select(c => new
+            var companyData = from c in db.Companies
+                              select new
+                              {
+                                  companyId = c.CompanyId,
+                                  taxIdNumber = c.TaxIdNumber,
+                                  companyName = c.CompanyName,
+                                  city = c.City,
+                                  address = c.Address,
+                                  companyPhone = c.Phone,
+                                  contact = c.Contact,
+                                  title = c.Title,
+                                  comEmail = c.Email,
+                                  serverDescription = c.ServerDescription,
+                                  comEnable = (bool)c.Enable ? "正常狀態" : "已停權"
+                              };
+            
+            return Json(companyData.ToList());
+        }
+       
+        public IActionResult SusAllComAccount([FromBody] List<int> comIds)
+        {
+            TraveldateContext db = new TraveldateContext();
+            CProductFactory pro = new CProductFactory();
+            foreach (var comId in comIds)
             {
-                CompanyId = c.CompanyId,
-                TaxIdNumber = c.TaxIdNumber,
-                CompanyName = c.CompanyName,
-                City = c.City,
-                Address = c.Address,
-                CompanyPhone = c.Phone,
-                Principal = c.Principal,
-                Contact = c.Contact,
-                Title = c.Title,
-                ComEmail = c.Email,
-                ServerDescription = c.ServerDescription,
-                 ComEnable = (bool)c.Enable ? "停權" : "復原"
-            });
-            return Json(q2.ToList());
+                var com = db.Companies.FirstOrDefault(c => c.CompanyId == comId);
 
+                if (com != null)
+                {
+                    com.Enable = !com.Enable;
+                }
+            }
+            db.SaveChanges();
+            var companyData = from c in db.Companies
+                              select new
+                              {
+                                  companyId = c.CompanyId,
+                                  taxIdNumber = c.TaxIdNumber,
+                                  companyName = c.CompanyName,
+                                  city = c.City,
+                                  address = c.Address,
+                                  companyPhone = c.Phone,
+                                  contact = c.Contact,
+                                  title = c.Title,
+                                  comEmail = c.Email,
+                                  serverDescription = c.ServerDescription,
+                                  comEnable = (bool)c.Enable ? "正常狀態" : "已停權"
+                              };
+
+            return Json(companyData.ToList());
+        }
+
+        public IActionResult queryByStatus(string statusId)
+        {
+            TraveldateContext db = new TraveldateContext();
+            IQueryable<Company> companies;
+
+            if (statusId == "allcom")
+            {
+                companies = db.Companies;
+            }
+            else if (statusId == "activecom")
+            {
+                companies = db.Companies.Where(c => c.Enable == true);
+            }
+            else if (statusId == "suspendcom")
+            {
+                companies = db.Companies.Where(c => (bool)c.Enable == false);
+            }
+            else
+            {
+                // 預設顯示所有供應商
+                companies = db.Companies;
+            }
+            var companyData = companies.Select(c => new
+            {
+                companyId = c.CompanyId,
+                taxIdNumber = c.TaxIdNumber,
+                companyName = c.CompanyName,
+                city = c.City,
+                address = c.Address,
+                companyPhone = c.Phone,
+                contact = c.Contact,
+                title = c.Title,
+                comEmail = c.Email,
+                serverDescription = c.ServerDescription,
+                comEnable = (bool)c.Enable ? "正常狀態" : "已停權"
+            });
+            return Json(companyData);
+        }
+
+
+
+        
+        public IActionResult ReviewProduct(int id)
+        {
+            TraveldateContext db = new TraveldateContext();
+            var product = db.ProductLists.FirstOrDefault(p => p.ProductId == id);
+
+            if (product != null)
+            {
+                var city = db.CityLists.FirstOrDefault(c => c.CityId == product.CityId);
+                var company = db.Companies.FirstOrDefault(c => c.CompanyId == product.CompanyId);
+                var protype = db.ProductTypeLists.FirstOrDefault(c => c.ProductTypeId == product.ProductTypeId);
+                var protags = db.ProductTagLists.Where(c => c.ProductId == product.ProductId).Select(p => p.ProductTagDetails.ProductTagDetailsName).ToList(); ;
+
+                var tripdetail = db.TripDetails.Where(t => t.ProductId == product.ProductId).Select(t => t.TripDetail1).ToList();
+                var propic = db.ProductPhotoLists.Where(p => p.ProductId == product.ProductId).Select(p => p.ImagePath).ToList();
+                var trippic = db.TripDetails.Where(td => td.ProductId == id).OrderBy(t => t.TripDay).Select(t => t.ImagePath).ToList();
+
+                if (city != null)
+                {
+                    var productDetails = new
+                    {
+                        ProductId = product.ProductId,
+                        CompanyName = company.CompanyName,
+                        ProductName = product.ProductName,
+                        ProductType = protype.ProductType,
+                        CityName = city.City,
+                        Description = product.Description,
+                        PlanName = product.PlanName,
+                        PlanDescription = product.PlanDescription,
+                        Outline = product.Outline,
+                        OutlineForSearch = product.OutlineForSearch,
+                        Address = product.Address,
+                        Photos = propic,
+                        Prodtags = protags,
+                        tripdetail = tripdetail,
+                        trippic = trippic
+                    };
+
+                    return View(productDetails);
+                }
+            }
+            return NotFound();
+        }
+
+
+
+        [HttpPost]
+        public IActionResult ReviewAction(string action, int productId)
+        {
+            using (var db = new TraveldateContext())
+            {
+                var product = db.ProductLists.FirstOrDefault(p => p.ProductId == productId);
+
+                if (product != null)
+                {
+                    if (action == "reject")
+                    {
+                        product.StatusId = 3; // 更新為拒絕狀態的 statusid
+                    }
+                    else if (action == "approve")
+                    {
+                        product.StatusId = 1; // 更新為批准狀態的 statusid
+                    }
+
+                    db.SaveChanges(); // 儲存變更到資料庫
+                    return RedirectToAction("Review");
+                }
+            }
+            return RedirectToAction("Review");
         }
     }
 }

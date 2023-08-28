@@ -11,14 +11,20 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" href="#section1" style="color:#155074;margin-left:100px;">商品詳細說明</a>
+                    <a class="nav-link" href="#section1" style="color:#155074;">商品詳細說明</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link" href="#section2" style="color:#155074">行程說明</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#section2" style="color:#155074">體驗地點</a>
+                    <a class="nav-link" href="#section3" style="color:#155074">體驗地點</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#section3" style="color:#155074">旅客評價</a>
+                    </li>
+                <li class="nav-item">
+                    <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
+                </li>
                 </ul>
             </div>
         </div>
@@ -87,7 +93,6 @@
     </div>
 
     <!--Productname-->
- 
     <div class="mt-2">
         <h3>@Model.product.ProductName</h3>
     </div>
@@ -177,7 +182,11 @@
                     <p>
                         @Model.program.fComContent[0]
                     </p>
-                        <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="myImg" />
+                        @if (Model.program.fCommentPhotoList != null)
+                        {
+                          @*   <img src="~/Images/@Model.program.fCommentPhotoList[0]" alt="commentpic" class="comment-pic" id="myImg" /> *@
+                        }
+                        
                     <div id="myModal" class="modal">
                         <div class="close">&times;</div>
                         <img class="modal-content" id="img01">
@@ -279,7 +288,7 @@
                         <input type="hidden" id="tripId" name="tripId" value="">
                         <input type="hidden" id="num" name="num" value="">
                         <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg addToCartButton" value="加入購物車" />
-                        <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary btn-lg">立即購買</a>
+                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" asp-route-id="@Model.product.ProductId" class="btn my-btn-primary btn-lg">立即購買</a>
                     </form>
                   </div>
             </div> 
@@ -331,14 +340,13 @@
             </div>
         }
     </div>
-
     <!--商品詳細說明-->
-    <div class="plan-container p-4">
+    <div class="plan-container p-4" id="section1">
         <div class="comments-title">
             <p>商品詳細說明</p>
         </div>
         <hr />
-        <div class="comments-title">
+        <div class="comments-title" id="section2">
             <pre>@Model.product.Description</pre>
         </div>
     </div>
@@ -379,7 +387,7 @@
     </div>
 
     <!--Googlemap-->
-    <div class="plan-container">
+    <div class="plan-container" id="section3">
         <div class="comments-title">
             <p>體驗地點</p>
             <pre>地址：@Model.product.Address</pre>
@@ -398,58 +406,74 @@
 
                 @for (int comIndex = 0; comIndex < Model.program.fComMem.Count; comIndex++)
                 {
-                    <div class="be-comment" style="margin-bottom:40px">
-                        <div class="be-img-comment">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                        </div>
-                        <div class="comment-header">
-                            @if (Model.program.fComMem[comIndex] != null)
-                            {
-                                if (Model.program.fComMemGender[comIndex] == "男")
+                    @if (Model.program.fComMem[comIndex] != null &&
+                                     Model.program.fComMemGender[comIndex] != null &&
+                                     Model.program.fCommentDate[comIndex] != null &&
+                                     Model.program.fComScore[comIndex] != null &&
+                                     Model.program.fComTitle[comIndex] != null &&
+                                     Model.program.fComContent[comIndex] != null)
+                    {
+                        <div class="be-comment" style="margin-bottom:40px">
+                            <div class="be-img-comment">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                            </div>
+                            <div class="comment-header">
+                                @if (Model.program.fComMem[comIndex] != null)
                                 {
-                                    <span class="be-comment-name">@Model.program.fComMem[comIndex] 先生</span>
+                                    if (Model.program.fComMemGender[comIndex] == "男")
+                                    {
+                                        <span class="be-comment-name">@Model.program.fComMem[comIndex] 先生</span>
+                                    }
+                                    else if (Model.program.fComMemGender[comIndex] == "女")
+                                    {
+                                        <span class="be-comment-name">@Model.program.fComMem[comIndex] 小姐</span>
+                                    }
                                 }
-                                else if (Model.program.fComMemGender[comIndex] == "女")
-                                {
-                                    <span class="be-comment-name">@Model.program.fComMem[comIndex] 小姐</span>
-                                }
-                            }
-                            <span class="be-comment-time">@Model.program.fCommentDate[comIndex]</span>
-                        </div>
-                        <div class="comments-title">
-                            <span class="rating">
-                                @for (int i = 1; i <= Model.program.fComScore[comIndex]; i++)
-                                {
-                                    <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                        </svg>
-                                    </i>
-                                }
-                                @for (int i = Model.program.fComScore[comIndex] + 1; i <= 5; i++)
-                                {
-                                    <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="	#ADADAD" class="bi bi-star" viewBox="0 0 16 16">
-                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                        </svg>
-                                    </i>
-                                }
-                            </span>
-                        </div>
+                                <span class="be-comment-time">@Model.program.fCommentDate[comIndex]</span>
+                            </div>
+                            <div class="comments-title">
+                                <span class="rating">
+                                    @for (int i = 1; i <= Model.program.fComScore[comIndex]; i++)
+                                    {
+                                        <i>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </i>
+                                    }
+                                    @for (int i = Model.program.fComScore[comIndex] + 1; i <= 5; i++)
+                                    {
+                                        <i>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="	#ADADAD" class="bi bi-star" viewBox="0 0 16 16">
+                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                            </svg>
+                                        </i>
+                                    }
+                                </span>
+                            </div>
 
-                        <div class="be-comment-text">
-                            <div class="be-comment-title">@Model.program.fComTitle[comIndex]</div>
-                            <p>
-                                @Model.program.fComContent[comIndex]
-                            </p>
-                            <img src="~/Images/蘭嶼.jpg" alt="commentpic" class="comment-pic" id="myImg" />
-                            <div id="myModal" class="modal">
-                                <div class="close">&times;</div>
-                                <img class="modal-content" id="img01">
-                                <div id="caption"></div>
+                            <div class="be-comment-text">
+                                @if (comIndex >= 0 && comIndex < Model.program.fComTitle.Count)
+                                {
+                                    <div class="be-comment-title">@Model.program.fComTitle[comIndex]</div>
+                                }
+                                @if (comIndex >= 0 && comIndex < Model.program.fComContent.Count)
+                                {
+                                    <p>@Model.program.fComContent[comIndex]</p>
+                                }
+                                @if (comIndex >= 0 && comIndex < Model.program.fCommentPhotoList.Count && Model.program.fCommentPhotoList[comIndex] != null)
+                                {
+                                    <img src="~/images/@Model.program.fCommentPhotoList[comIndex]" alt="Image" class="img-thumbnail w-300 h-200" />
+                                }
+                              
+                                <div id="myModal" class="modal">
+                                    <div class="close">&times;</div>
+                                    <img class="modal-content" id="img01">
+                                    <div id="caption"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
             
             
@@ -798,47 +822,57 @@
         });
 
         //commentpic
-        var image = document.getElementById('myImg');
-        image.addEventListener('mouseover', function () {
-            image.style.cursor = 'url("/icons/search_zoom.png"), auto';
-        });
+        // var image = document.getElementById('myImg');
+        // image.addEventListener('mouseover', function () {
+        //     image.style.cursor = 'url("/icons/search_zoom.png"), auto';
+        // });
 
-        image.addEventListener('mouseout', function () {
-            image.style.cursor = 'auto';
-        });
+        // image.addEventListener('mouseout', function () {
+        //     image.style.cursor = 'auto';
+        // });
         
         //加購物車
-        //const addCart = document.getElementById('addtocart');
-        //addCart.addEventListener('click',function(){
-        //    swal('已加入購物車!', '', 'success');
-        //})
-
         const addToCartButtons = document.querySelectorAll('.addToCartButton');
-        function handleAddToCartClick() {
-            swal('已加入購物車!', '', 'success');
+        function handleAddToCartClick(event) {
+            event.preventDefault();
+            const num = parseInt(event.target.getAttribute('data-num'));
+            const tripId = parseInt(event.target.getAttribute('data-tripId'));
+
+            fetch(`/Program/AddToCart?num=${num}&tripId=${tripId}`, {
+                method: 'POST',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "請登入會員") {
+                        swal('請登入會員', '', 'warning');
+                    } else {
+                        swal('已加入購物車!', '', 'success');
+                    }
+                });
         }
+
         addToCartButtons.forEach(button => {
             button.addEventListener('click', handleAddToCartClick);
         });
 
-        var modal = document.getElementById("myModal");
+        // var modal = document.getElementById("myModal");
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById("myImg");
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        img.onclick = function () {
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
+        // // Get the image and insert it inside the modal - use its "alt" text as a caption
+        // var img = document.getElementById("myImg");
+        // var modalImg = document.getElementById("img01");
+        // var captionText = document.getElementById("caption");
+        // img.onclick = function () {
+        //     modal.style.display = "block";
+        //     modalImg.src = this.src;
+        // }
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        // // Get the <span> element that closes the modal
+        // var span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
+        // // When the user clicks on <span> (x), close the modal
+        // span.onclick = function () {
+        //     modal.style.display = "none";
+        // }
 
         $(function () {
             $('#BackTop').click(function () {
@@ -852,18 +886,18 @@
                 }
             }).scroll();
         });
+
     </script>
 
 
     <script>
         $(document).ready(function () {
             var windowHeight = $(window).height();
-            var scrollThreshold = 1200; // 滚动到页面的1/2位置
+            var scrollThreshold = 1200; 
             var navbar = $('.navbar.navbar-expand-md');
             var navbarHeight = navbar.outerHeight();
-            var navbarPosition = 90; // 导航栏位置在页面的1/6位置
+            var navbarPosition = 90; 
 
-            // 初始时隐藏导航栏并设置初始位置在页面顶部以上
             navbar.css({
                 'top': -navbarHeight,
                 'transform': 'translateY(' + navbarPosition + 'px)'
@@ -884,14 +918,14 @@
                     });
                 }
 
-                // 控制导航栏的显示/隐藏
                 if (scrollPosition > scrollThreshold) {
-                    navbar.show(); // 显示导航栏
+                    navbar.show(); 
                 } else {
-                    navbar.hide(); // 隐藏导航栏
+                    navbar.hide(); 
                 }
             });
         });
+
     </script>
     }
 

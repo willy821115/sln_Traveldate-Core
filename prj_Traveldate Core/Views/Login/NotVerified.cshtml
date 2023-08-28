@@ -1,19 +1,23 @@
 ﻿@model prj_Traveldate_Core.ViewModels.CForgotPwdViewModel
+
 @{
-    ViewData["Title"] = "忘記密碼";
+    ViewData["Title"] = "帳號尚未驗證";
 }
 
-<h1>忘記密碼</h1>
+<h1>帳號尚未驗證</h1>
 
-<form asp-action="ForgotPwd">
+<form asp-action="NotVerified">
 
     <br>
     <br>
     <div class="mb-3">
-        <label asp-for="email" class="form-label"></label>
-        <input type="email" class="form-control" asp-for="email" required/>
+        <span class="loginAlert ml-1">您的帳號尚未完成信箱驗證，驗證後方可使用會員功能</span>
         <br>
-        <input type="submit" class="btn my-btn-primary" value="寄送驗證信" />
+        <br>
+        <label asp-for="email" class="form-label"></label>
+        <input type="email" class="form-control" asp-for="email" required />
+        <br>
+        <input type="submit" class="btn my-btn-primary" value="重寄驗證信" />
         <br>
     </div>
 </form>
