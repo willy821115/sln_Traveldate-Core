@@ -110,7 +110,16 @@
                                                         <td class="memname">@member.LastName@member.FirstName</td>
                                                         <td>@member.Gender</td>
                                                         <td>@member.Idnumber</td>
-                                                        <td>@member.BirthDate.ToShortDateString()</td>
+                                                        
+                                                            @if (@member.BirthDate!=null)
+                                                            {
+                                                            <td>@member.BirthDate.ToShortDateString()</td>
+                                                            }
+                                                            else
+                                                            {
+                                                            <td>null</td>
+                                                            }
+                                                        
                                                         <td>@member.Phone</td>
                                                         <td>@member.Email</td>
                                                         <td>@member.Discount</td>
@@ -147,13 +156,13 @@
                                 </div>
                                 <div class="card-body">
                                     <div style="display: flex; align-items: center;">
-                                        <button id="AllComSus" class="btn btn-outline-danger" style="margin-right: 15px; margin-bottom: 10px;">一鍵停權／復權</button>
+                                        <button id="AllComSus" class="btn btn-outline-danger SusAllCom" style="margin-right: 15px; margin-bottom: 10px;">一鍵停權／復權</button>
                                         <label style="margin-right: 15px;">供應商狀態</label>
                                         <div>
                                             <select class="form-select" name="comstatus" id="statusselectcom" style="margin-bottom:5px;">
                                                 <option value="allcom">所有供應商</option>
-                                                <option value="activecom">停權供應商</option>
-                                                <option value="suspendcom">正常供應商</option>
+                                                <option value="suspendcom">停權供應商</option>
+                                                <option value="activecom">正常供應商</option>
                                             </select>
                                         </div>
                                     </div>
@@ -172,12 +181,13 @@
                                                     <th>信箱</th>
                                                     <th>服務項目</th>
                                                     <th>狀態</th>
+                                                    <th>停權</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="companylist">
                                                 @foreach (var com in Model.Companies)
                                                 {
-                                                    <tr>
+                                                    <tr data-company-id="@com.CompanyId">
                                                         <td class ="chkbox"><input type="checkbox" name="companyCheckbox" value="@com.CompanyId" /></td>
                                                         <td>@com.TaxIdNumber</td>
                                                         <td>@com.CompanyName</td>
@@ -188,21 +198,16 @@
                                                         <td>@com.Title</td>
                                                         <td>@com.ComEmail</td>
                                                         <td>@com.ServerDescription</td>
-                                                      @*  <td>
-                                                            <form asp-action="SusCompany" method="post">
-                                                                <input type="hidden" name="comId" value="@com.CompanyId" />
-                                                                <button type="submit" class="btn @(com.ComEnable ? "btn-danger" : "btn-outline-dark")">
-                                                                    @if (com.ComEnable)
-                                                                    {
-                                                                        <span>停權</span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <span>復原</span>
-                                                                    }
-                                                                </button>
-                                                            </form>
-                                                        </td>*@
+                                                        <td>
+                                                            @if ((bool)com.ComEnable)
+                                                            {
+                                                                <div> 正常狀態</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div style="color:red"> 已停權</div>
+                                                            }
+                                                        </td>
                                                         <td>
                                                             @if ((bool)com.ComEnable)
                                                             {
@@ -321,6 +326,8 @@
             }
         });
 
+
+        //停權多個會員
         $(document).ready(function () {
             $("#AllAccountSus").click(function (e) {
                 e.preventDefault();
@@ -344,6 +351,7 @@
             });
         });
 
+        //會員狀態搜尋篩選
         $(document).ready(function () {
             var statusSelect = $("#statusselect");
 
@@ -370,54 +378,33 @@
             }
         });
 
-        //$(document).ready(function () {
-        //    $("#AllComSus").click(function (e) {
-        //        e.preventDefault();
-        //        var statusValue = $("input[name='comstatus']:checked").val();
-        //        var selectedComIds = [];
-
-        //        $("input[name='companyCheckbox']:checked").each(function () {
-        //            selectedComIds.push($(this).val());
-        //        });
-
-        //        $.ajax({
-        //            type: "POST",
-        //            url: "@Url.Action("SusAllCom", "Platform")",
-        //            data: { memberIds: selectedComIds, status: statusValue },
-        //            success: function (result) {
-        //                location.reload();
-        //            },
-        //            error: function (error) {
-        //            }
-        //        });
-        //    });
-        //});
-
-
+        
+        //供應商停權
         async function SusComAccount(CompanyId) {
             const companylist = document.getElementById('companylist');
             const response = await fetch(`@Url.Content("~/Platform/SusComAccount")?comId=${CompanyId}`)
             const datas = await response.json();
-            console.log(datas);
+            console.log(CompanyId,datas);
             if (datas != null) {
                 const rows = datas.map(row => {
-                    const { TaxIdNumber, CompanyName, City, Address, CompanyPhone, Contact, Title, ComEmail, ServerDescription } = row
+                    const { taxIdNumber, companyName, city, address, companyPhone, contact, title, comEmail, serverDescription, comEnable, companyId } = row
                     console.log(row)
-                    const continueButton = row.ComEnable === '復原'
-                        ? `<button id="continue" class="btn btn-outline-dark SusCom" value="${CompanyId}">復原</button>`
-                        : `<button id="continue" class="btn btn-danger SusCom" value="${CompanyId}">停權</button>`;
+                    const continueButton = comEnable === '正常狀態'
+                        ?  `<button class="btn btn-danger SusCom" value="${companyId}">停權</button>`
+                        :`<button class="btn btn-outline-dark SusCom" value="${companyId}">復原</button>`;
                     return (
                         ` <tr>
-                                 <td class ="chkbox" > <input type="checkbox" name = "companyCheckbox" value = "CompanyId" /> </td>
-                                                                           <td>${TaxIdNumber}</td>
-                                                                         <td>${CompanyName}</td>
-                                                                            <td>${City}</td>
-                                                                             <td>${Address}</td>
-                                                                             <td>${CompanyPhone}</td>
-                                                                           <td>${Contact}</td>
-                                                                            <td>${Title}</td>
-                                                                             <td>${ComEmail}</td>
-                                                                            <td>${ServerDescription}</td>
+                                         <td class ="chkbox" > <input type="checkbox" name = "companyCheckbox" value ="${companyId}" /> </td>
+                                                                           <td>${taxIdNumber}</td>
+                                                                         <td>${companyName}</td>
+                                                                            <td>${city}</td>
+                                                                             <td>${address}</td>
+                                                                             <td>${companyPhone}</td>
+                                                                           <td>${contact}</td>
+                                                                            <td>${title}</td>
+                                                                             <td>${comEmail}</td>
+                                                                               <td>${serverDescription}</td>
+                                                                                   <td class="${comEnable === '已停權' ? 'text-danger' : ''}">${comEnable}</td>
                                                                           <td>${continueButton}</td>
 
                                                          </tr>`
@@ -427,10 +414,104 @@
                 companylist.innerHTML = rows.join("");
             }
         }
+
         $(document).on('click', '.SusCom', function () {
             var CompanyId = $(this).val();
             SusComAccount(CompanyId);
         });
+
+        // 多個供應商停權
+        async function SusAllComAccount(companyIds) {
+            const companylist = document.getElementById('companylist');
+            const response = await fetch('@Url.Content("~/Platform/SusAllComAccount")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(companyIds) // 注意這裡直接傳遞選取的公司 ID 陣列
+            });
+            const datas = await response.json();
+            console.log(companyIds, datas);
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { taxIdNumber, companyName, city, address, companyPhone, contact, title, comEmail, serverDescription, comEnable, companyId } = row
+                    console.log(row)
+                    const continueButton = comEnable === '正常狀態'
+                        ? `<button class="btn btn-danger SusCom" value="${companyId}">停權</button>`
+                        : `<button class="btn btn-outline-dark SusCom" value="${companyId}">復原</button>`;
+                    return (
+                        ` <tr>
+                                                 <td class ="chkbox" > <input type="checkbox" name = "companyCheckbox" value ="${companyId}" /> </td>
+                                                                                   <td>${taxIdNumber}</td>
+                                                                                 <td>${companyName}</td>
+                                                                                    <td>${city}</td>
+                                                                                     <td>${address}</td>
+                                                                                     <td>${companyPhone}</td>
+                                                                                   <td>${contact}</td>
+                                                                                    <td>${title}</td>
+                                                                                     <td>${comEmail}</td>
+                                                                                       <td>${serverDescription}</td>
+                                                                                           <td class="${comEnable === '已停權' ? 'text-danger' : ''}">${comEnable}</td>
+                                                                                  <td>${continueButton}</td>
+
+                                                                 </tr>`
+                    );
+
+                });
+                companylist.innerHTML = rows.join("");
+            }
+        }
+
+        $(document).on('click', '.SusAllCom', function () {
+            var selectedCompanyCheckboxes = $('input[name="companyCheckbox"]:checked');
+           
+            var selectedCompanyIds = Array.from(selectedCompanyCheckboxes).map(checkbox => parseInt(checkbox.value));
+            console.log("Selected Company IDs:", selectedCompanyIds)
+            SusAllComAccount(selectedCompanyIds);
+        });
+
+
+        async function queryByStatus(status) {
+            const companylist = document.getElementById('companylist');
+            const response = await fetch(`/Platform/queryByStatus?statusID=${status}`);
+            const datas = await response.json();
+            console.log(datas,response);
+            if (datas != null) {
+                const rows = datas.map(row => {
+                    const { taxIdNumber, companyName, city, address, companyPhone, contact, title, comEmail, serverDescription, comEnable, companyId } = row;
+                    console.log(row);
+                    const continueButton = comEnable === '正常狀態' || comEnable === true
+                        ? `<button class="btn btn-danger SusCom" value="${companyId}">停權</button>`
+                        : `<button class="btn btn-outline-dark SusCom" value="${companyId}">復原</button>`;
+                    return (
+                        ` <tr>
+                            <td class="chkbox"><input type="checkbox" name="companyCheckbox" value="${companyId}" /></td>
+                            <td>${taxIdNumber}</td>
+                            <td>${companyName}</td>
+                            <td>${city}</td>
+                            <td>${address}</td>
+                            <td>${companyPhone}</td>
+                            <td>${contact}</td>
+                            <td>${title}</td>
+                            <td>${comEmail}</td>
+                            <td>${serverDescription}</td>
+                            <td class="${comEnable === '已停權' ? 'text-danger' : ''}">${comEnable}</td>
+                            <td>${continueButton}</td>
+                        </tr>`
+                    );
+                });
+                companylist.innerHTML = rows.join("");
+            }
+        }
+
+        $('.form-select').change(function () {
+            var status = $(this).val();
+            //alert(status);
+            queryByStatus(status);
+        });
+
+        
+
         </script>
 
     }

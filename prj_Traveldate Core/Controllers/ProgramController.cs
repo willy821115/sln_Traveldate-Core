@@ -40,6 +40,8 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fStatus = pf.loadStatus((int)id);
             vm.product.ProductId = (int)id;
             vm.program.fProdTags = pf.loadProductTags((int)id);
+            vm.program.fCommentPhotoList = pf.loadCommentPhotoPath((int)id);
+            vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             return View(vm);
         }
         
@@ -83,9 +85,10 @@ namespace prj_Traveldate_Core.Controllers
         {
             TraveldateContext db = new TraveldateContext();
 
-            int loggedInMemberId =1;
-            int productId = 1;
-
+            int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            if(loggedInMemberId == 0) {
+                return Content("請登入會員");
+            }
             var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
             if (existCart)
             {
@@ -122,6 +125,55 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("Product");
         }
 
+
+        [HttpPost]
+        public IActionResult AddDirectToCart(int num, int tripId, int orderDetailId)
+        {
+            TraveldateContext db = new TraveldateContext();
+
+            int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            if (loggedInMemberId == 0)
+            {
+                return Content("請登入會員");
+            }
+            var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
+            if (existCart)
+            {
+
+                if (db.OrderDetails.Any(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true))
+                {
+                    OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
+                    od.Quantity += num;
+                }
+                else
+                {
+                    int cartOrderID = db.Orders.FirstOrDefault(o => o.MemberId == loggedInMemberId && o.IsCart == true).OrderId;
+                    OrderDetail newOrderDetail = new OrderDetail
+                    {
+                        Quantity = num,
+                        TripId = tripId,
+                        OrderId = cartOrderID
+                    };
+                    db.OrderDetails.Add(newOrderDetail);
+                }
+                db.SaveChanges();
+            }
+            else
+            {
+                Order newCartOrder = new Order
+                {
+                    MemberId = loggedInMemberId,
+                    IsCart = true
+                };
+                db.Orders.Add(newCartOrder);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
+        }
+
+
+
         [HttpGet]
         public IActionResult GetTripID(string selectedDate, int productId)
         {
@@ -135,6 +187,21 @@ namespace prj_Traveldate_Core.Controllers
                 .FirstOrDefault();
 
             return Json(tripID);
+        }
+
+
+        public IActionResult CartItemCount()
+        {
+            TraveldateContext db = new TraveldateContext();
+            int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            int cartItemCount = (from o in db.Orders
+                                join od in db.OrderDetails on o.OrderId equals od.OrderId
+                                where o.MemberId == loggedInMemberId && o.IsCart == true
+                                select od.OrderId).Count();
+
+            ViewBag.CartItemCount = cartItemCount;
+
+            return View("_Layout");
         }
 
     }

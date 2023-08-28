@@ -103,7 +103,12 @@
                     </li>
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart" class="cart">
-                            購物車<span class="badge rounded-pill bg-danger ml-1">4</span>
+                            購物車<span class="badge rounded-pill bg-danger ml-1">
+                                @* @{
+                                    var cartItemCount = ViewBag.CartItemCount;
+                                    <p>Cart Item Count: @cartItemCount</p>
+                                } *@
+                            </span>
                         </a>
                     </li>
                     </ul>
