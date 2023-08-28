@@ -39,7 +39,7 @@
             overflow-y: auto;
             z-index:100;
             background:#fff;
-            width:340px;
+            width:550px;
             border: 1px solid gray;
             padding: 2px;
             border-radius:7px;
@@ -165,55 +165,67 @@
             <div><img src="~/icons/icons8-group-64.png" /><input id="btnJoin" class="btn btn-light" type="button" value="我要跟團" /></div>
         </div>
         <div id="replyBody">
-        @foreach (var reply in Model.replys)
-        {
-            <div class="d-flex divide-line-top" id="reply-@reply.ReplyId">
-                <div>
-                    @if (reply.Member.Photo != null)
+                @if(Model.replys == null)
+                {
+                    <h2>尚未有評論</h2>
+                }else
+                {
+                    @foreach (var reply in Model.replys)
                     {
-                        <img src="data:image/jpg;base64,@Convert.ToBase64String(reply.Member.Photo)" class="my-w100-h100" alt="@reply.MemberId">
-                    }
-                    else
-                    {
-                        if (reply.Member.Gender == "男")
-                        {
-                            <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
-                        }
-                        else
-                        {
-                            <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
-                        }
-                    }
+                        <div class="d-flex divide-line-top" id="reply-@reply.ReplyId">
+                            <div>
+                                @if (reply.Member.Photo != null)
+                                {
+                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(reply.Member.Photo)" class="my-w100-h100" alt="@reply.MemberId">
+                                }
+                                else
+                                {
+                                    if (reply.Member.Gender == "男")
+                                    {
+                                        <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
+                                    }
+                                }
 
-                </div>
-                <div class="col">
-                    <h4>@reply.Member.LastName@reply.Member.FirstName</h4>
-                    <div>
-                        <span>回覆日期 : @reply.Replytime.ToString()</span>
-                    </div>
-                    <div>
-                        <p>@reply.Content</p>
-                    </div>
-                </div>
-            </div>
-        }
+                            </div>
+                            <div class="col">
+                                <h4>@reply.Member.LastName@reply.Member.FirstName</h4>
+                                <div>
+                                    <span>回覆日期 : @reply.Replytime.ToString()</span>
+                                </div>
+                                <div>
+                                    <p>@reply.Content</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
         </div>
         <div class="pl-4 pr-4">
             <form name="replyForm">
                     @if(Model.member != null)
-                    {<input type="hidden" name="ForumListId" value="@Model.forum.ForumListId" />
-                <input type="hidden" name="MemberId" value="@Model.member.MemberId" />
-                <input type="hidden" name="ReplyTime" value="@DateTime.Now"/>
+                    {
+                        <input type="hidden" name="ForumListId" value="@Model.forum.ForumListId" />
+                        <input type="hidden" name="MemberId" value="@Model.member.MemberId" />
+                        <input type="hidden" name="ReplyTime" value="@DateTime.Now"/>
                         @Html.Partial("ReplyToDiv",Model.member)
                     }else{
-                        <div>
-                            <h3>登入後即可回覆文章!</h3>
+                        <div class="p-4 d-flex justify-content-center">
+                            <span class="fs-5">登入後即可回覆文章!</span>
+                            <a asp-action="Login" asp-controller="Login" class="ml-2 fs-5 link-info fw-bold">登入</a>
                         </div>
                     }
                     
             </form>
     </div>
-    </div>
+            @if(Model.member != null)
+            {
+                <a asp-action="forumList" asp-controller="Member">返回會員專區</a>
+            }
+        </div>
 </div>
 
 <div id ="dialogBox" class="dialog-box">
@@ -249,15 +261,17 @@
                         const { title, likes, watches, releaseDatetime, forumListId, prodPhotoPath } = forum
                     return (
                             `<a href="@Url.Content("~/Forum/ArticleView")?id=${forumListId}" class="list-group-item list-group-item-action">
-                                    <div class="col">
+                            <div class="d-flex">        
+                                <div class="col-4">
                                             <img src="/images/${prodPhotoPath}" class="img-fluid img-thumbnail"/>
                                     </div> 
-                                    <div class="col">
+                                    <div class="col-8 pt-2">
                                  <h5>${title}</h5>
                                 <img src = "/icons/icons8-like-24.png" height="16"/> <span>${likes} | </span>
                                 <img src= "/icons/icons8-eye-24.png" height="16"/> <span>${watches} | </span>
                                 <span>發文時間 : ${releaseDatetime}</span>
                                 </div>
+                            </div>
                         </a>`
                     )
                 }) 

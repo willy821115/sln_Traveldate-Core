@@ -1,7 +1,23 @@
 ﻿
 
 <div id="my-reply" class="d-flex divide-line-top col bg-white pt-2 pb-2">
+    @if (Model.Photo != null)
+    {
         <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.Photo)" class="my-w100-h100" alt="@Model.FirstName">
+    }
+    else
+    {
+        if (Model.Gender == "男")
+        {
+            <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
+        }
+        else
+        {
+            <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
+        }
+
+    }
+    
     <div class="col">
         <h4>@Model.LastName@Model.FirstName</h4>
         <div>
@@ -13,8 +29,3 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    <script>
-
-    </script>
-}

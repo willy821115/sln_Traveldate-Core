@@ -3,6 +3,17 @@
     ViewData["Title"] = "forumList3";
 }
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+    <style>
+        /*************如果覺得td太高改這裡*****************/
+        .content-cell {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+    </style>
+}
 @*<h1>forumList3</h1>*@
 
 <div class="left col-md-2">
@@ -97,9 +108,17 @@
                     <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
                     <td><img style="margin-top:-7px" src="~/icons/icon-fire-1.png"/> @item.Likes</td>
                     <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
-                    <td>@Html.Raw(item.Content)</td>
-                    <td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "orderList","Member","",new {@class="black-link"})</td>
-                    
+                    <td><div class="content-cell">@Html.Raw(item.Content)</div></td>
+                    @*<td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "orderList","Member","",new {@class="black-link"})</td>*@
+                    @if (!item.IsPublish)
+                    {
+                        <td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "Edit","Forum",new { forumlist = item.ForumListId },new {@class="black-link"})</td>
+                    }
+                    else
+                    {
+                        <td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("檢視", "ArticleView","Forum",new { id = item.ForumListId },new {@class="black-link"})</td>
+                    }
+
                 </tr>
             }
         }
@@ -129,8 +148,6 @@
     </div>
 </div>*@
 
-@section styles{
-    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 
 }
 @section scripts{

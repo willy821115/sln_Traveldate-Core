@@ -72,6 +72,8 @@ namespace prj_Traveldate_Core.Controllers
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
+                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_ACTION, "Create");
+                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_CONTROLLER, "Forum");
                 return RedirectToAction("Login", "Login");
             }
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
@@ -130,24 +132,27 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-            public IActionResult ArticleView(int? id)
+        public IActionResult ArticleView(int? id)
         {
-           if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("ForumList");
             }
+      
+
             CArticleViewModel vm = new CArticleViewModel();
-            vm.forum = _context.ForumLists.Include(f=>f.Member).FirstOrDefault(f => f.ForumListId == id);
+            vm.forum = _context.ForumLists.Include(f => f.Member).FirstOrDefault(f => f.ForumListId == id);
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+            //沒登入的情況
             vm.member = null;
-            
+            //有登入的情況
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
                 int memId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
                 vm.member = _context.Members.Find(memId);
             }
-            
+
             if (vm.forum != null)
             {
                 byte[] photo = vm.forum.Member.Photo;
@@ -227,7 +232,7 @@ namespace prj_Traveldate_Core.Controllers
                     n.ForumList.Title,
                     n.ForumList.Watches,
                     n.ForumList.Likes,
-                    releaseDatetime =n.ForumList.ReleaseDatetime,
+                    releaseDatetime =n.ForumList.ReleaseDatetime.Value.ToString("yyyy-MM-dd"),
                     n.Trip.ProductId
                 }).ToList();
             var articles = forumInfos.Join(prodPhoto, f => f.ProductId, p => p.prodId,

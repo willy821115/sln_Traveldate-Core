@@ -1337,7 +1337,8 @@ namespace prj_Traveldate_Core.Controllers
                             ReleaseDatetime = fl.ReleaseDatetime,
                             Likes = fl.Likes,
                             Watches = fl.Watches,
-                            Content = fl.Content
+                            Content = fl.Content,
+                            IsPublish = fl.IsPublish
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
