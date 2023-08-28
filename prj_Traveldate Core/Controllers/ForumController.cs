@@ -63,8 +63,8 @@ namespace prj_Traveldate_Core.Controllers
             
             prodPhotos.AddRange(forum_prodPhoto());
             vm.prodPhoto = prodPhotos;
+            ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
-          
             return View(vm);
         }
         //新增文章
@@ -72,8 +72,8 @@ namespace prj_Traveldate_Core.Controllers
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
-                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_ACTION, "Create");
-                HttpContext.Session.SetString(CDictionary.SK_BACK_TO_CONTROLLER, "Forum");
+                TempData[CDictionary.SK_BACK_TO_ACTION]= "Create";
+                TempData[CDictionary.SK_BACK_TO_CONTROLLER]= "Forum";
                 return RedirectToAction("Login", "Login");
             }
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);

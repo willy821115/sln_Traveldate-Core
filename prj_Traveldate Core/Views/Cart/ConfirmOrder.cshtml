@@ -1,6 +1,6 @@
 ﻿@model prj_Traveldate_Core.ViewModels.CConfirmOrderViewModel
 @{
-    ViewBag.Title = "填寫資料與付款";
+    ViewBag.Title = "確認訂購內容";
     int count = 0;
     int count_amount = 0;
     decimal sum = 0;
@@ -13,12 +13,13 @@
 {
     <div class="cart_body">
         <div class="Header">
-            <h3 class="Heading">@ViewBag.Title + @ViewBag.K</h3>
+            <h3 class="Heading">@ViewBag.Title</h3>
         </div>
         <div class="Steps">
             <ol class="breadcrumb">
                 <li id="Step_cart" class="breadcrumb-item">購物車</li>
-                <li id="Step_Confirm" class="breadcrumb-item Step_Current">填寫資料與付款</li>
+                <li id="Step_Confirm" class="breadcrumb-item Step_Current">確認訂購內容</li>
+                <li id="Step_Pay" class="breadcrumb-item">付款</li>
                 <li id="Step_Finish" class="breadcrumb-item">訂購完成</li>
             </ol>
         </div>
@@ -283,52 +284,11 @@
                                 <div class="Confirm-Container-Content">
                                     <h6 class="subtitle" style="margin-bottom:1em;">目前持有 @Model.member.Discount 點，1點可折抵1元。</h6>
                                     <label for="usepoint">使用點數　</label>
-                                    <input type="number" name="vm.newOrder.Discount" id="usepoint" size="10" oninput="if(value>@Model.member.Discount)value=@Model.member.Discount;if(value<0)value=0">
+                                    <input type="number" name="vm.newOrder.Discount" id="usepoint" size="10" value="0" oninput="if(value>@Model.member.Discount)value=@Model.member.Discount;if(value<0)value=0">
                                 </div>
                                 <input type="hidden" id="pointsNow" value="@Model.member.Discount">
                                 <input type="hidden" id="coupondisc">
                                 <h5 class="Confirm-summary" id="totalDiscount">共可折抵 0 元</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="Confirm-Container">
-                        <h2 class="accordion-header Confirm-Container-Title">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                <span class="title Confirm-Title">付款方式</span>
-                            </button>
-                        </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse show">
-                            <div class="accordion-body Confirm-Container-Content">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_credit" checked>
-                                    <label class="form-check-label" for="payment_credit">
-                                        信用卡付款
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_linepay">
-                                    <label class="form-check-label" for="payment_linepay">
-                                        LINE Pay
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_jko">
-                                    <label class="form-check-label" for="payment_jko">
-                                        街口支付
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_cvs">
-                                    <label class="form-check-label" for="payment_cvs">
-                                        超商付款
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio_payment" id="payment_paypal">
-                                    <label class="form-check-label" for="payment_paypal">
-                                        PayPal
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -368,13 +328,13 @@
                             getPoint = Math.Ceiling(totalPrice / 100);
                         }
                         <input type="hidden" id="prodsum" value="@sum">
-                        <input type="hidden" name="vm.checkoutAmount" id="checkuotamount">
+                        <input type="hidden" name="vm.checkoutAmount" id="checkuotamount" value="@totalPrice">
                         <h6 class="Confirm-total col" id="checkuotamount_lbl">總金額 NTD @string.Format("{0:0}",totalPrice)</h6>
                         <span class="badge bg-secondary Confirm-earnpoint" id="getpt">共可獲得 @getPoint 點!</span>
 
                     </div>
                 </div>
-                <input type="submit" asp-action="CompleteOrder" id="ConfirmAndPay" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="確認付款" />
+                <input type="submit" asp-action="Payment" id="ConfirmAndPay" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="前往付款" />
                 @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
             </div>
 
@@ -389,6 +349,7 @@
 @section Scripts{
     <script src="~/js/jsCart.js"></script>
     <script>
+
         function formatDate(date) {
             var d = new Date(date),
                 month = '' + (d.getMonth() + 1),
