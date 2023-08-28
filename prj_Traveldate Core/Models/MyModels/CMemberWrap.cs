@@ -100,6 +100,12 @@ namespace prj_Traveldate_Core.Models.MyModels
             get { return _member.Enable; }
             set { _member.Enable = value; }
         }
+        public bool? Verified
+        {
+            get { return _member.Verified; }
+            set { _member.Verified = value; }
+        }
+
 
         public string? ImagePath
         {

@@ -104,7 +104,7 @@
                         }
                     </td>
                     *@
-                    <td>@Html.ActionLink("評論", "addcomment","Member",new{id=@item.ProductId,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos },new {@class="btn my-btn-primary btn-sm"})</td>
+                    <td>@Html.ActionLink("評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
                 </tr>
             }
         }
