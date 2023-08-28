@@ -294,7 +294,7 @@
                                                     foreach (TripDetail t in Model.CtripDetail)
                                                     {
 
-                                                    <li id="ui-state-default">
+                                                        <li id="ui-state-default" class="draggableUnit">
                                                         <div class="card mb-3">
                                                             <div class="row g-0">
                                                                 <div class="col-md-4">
@@ -314,6 +314,7 @@
                                                                             <h5 class="card-title">第 @t.TripDay 天</h5>
 
                                                                         </div>
+                                                                            <input type="hidden" name="triptest[@i].ImagePath" value="@t.ImagePath"/>
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDay" value="@t.TripDay" />
                                                                         <input type="hidden" id="photoInput" name="triptest[@i].TripDetailId" value="@t.TripDetailId" />
                                                                             <input type="file" class="form-control" name="triptest[@i].photo" id="uploadImage-@i" />
@@ -405,6 +406,67 @@
                     revert: "invalid"
                 });
                 $("ul, li").disableSelection();
+            });
+
+            $(document).ready(function () {
+                // 更新天数和其他值的函数
+                function updateValues() {
+                    // 获取所有排序后的区块
+                    const sortedBlocks = $("#sortable").find(".draggableUnit");
+
+                    // 遍历所有区块并重新计算天数和其他值
+                    sortedBlocks.each(function (index) {
+                        const newDay = index + 1; // 计算新的天数，从1开始
+                        const newI = index; // 计算新的i值，从0开始
+
+                        // 更新天数
+                        $(this).find(".card-title").text(`第${newDay}天`);
+
+                        // 更新隐藏字段的值和name属性
+                        $(this).find("input, textarea").each(function () {
+                            const fieldName = $(this).attr("name");
+                            let fieldType = "";
+
+                            if (fieldName.includes("TripDay")) {
+                                fieldType = "TripDay";
+                            } else if (fieldName.includes("photo")) {
+                                fieldType = "photo";
+                            } else if (fieldName.includes("TripDetail")) {
+                                fieldType = "TripDetail";
+                            } else if (fieldName.includes("ImagePath")){
+                                fieldType = "ImagePath";
+                            } else if (fieldName.includes("TripDetailId")){
+                                fieldType = "TripDetailId";
+                            }
+
+                            if (fieldType !== "") {
+                                const newName = `triptest[${newI}].${fieldType}`;
+                                $(this).attr("name", newName);
+                                if (fieldType === "TripDay") {
+                                    $(this).val(newDay);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // 绑定 Close 按钮点击事件，删除所在区块并调用更新函数
+                $(document).on("click", ".btn-close", function () {
+                    $(this).closest(".draggableUnit").remove();
+                    // 调用更新函数
+                    updateValues();
+                });
+
+                // 初始化 Sortable
+                $("#sortable").sortable({
+                    update: function (event, ui) {
+                        // 调用更新函数
+                        updateValues();
+                    },
+                });
+
+                // 初始排序
+                $("#sortable").disableSelection();
             });
 
             $(document).ready(function () {

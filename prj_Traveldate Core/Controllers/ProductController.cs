@@ -244,7 +244,7 @@ namespace prj_Traveldate_Core.Controllers
                 TripDetail tripDb = db.TripDetails.FirstOrDefault(trip => trip.TripDetailId == t.TripDetailId);
                 tripDb.TripDay = t.TripDay;
                 tripDb.TripDetail1 = t.TripDetail;
-               
+
                 //照片
                 if (t.photo != null)
                 {
@@ -269,6 +269,11 @@ namespace prj_Traveldate_Core.Controllers
                     t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
                     tripDb.ImagePath = photoName;
                 }
+                else 
+                {
+                    tripDb.ImagePath = t.ImagePath;
+                }
+
             }
 
             db.SaveChanges();
