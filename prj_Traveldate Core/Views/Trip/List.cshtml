@@ -109,8 +109,8 @@
                                                 int j = 0;
                                                 foreach (ProductTypeList type in Model.types)
                                             {
-                                                    <input class="typeradio" type="radio" value="@type.ProductTypeId" name="type" id="typeradio @j" />
-                                                    <label for="typeradio @j" class="control-label">@type.ProductType</label>
+                                                            <input class="typeradio" type="radio" value="@type.ProductTypeId" name="type" id="typeradio @j" />
+                                                            <label for="typeradio @j" class="control-label">@type.ProductType</label>
                                                     j++;
                                                 }
                                             }
@@ -368,10 +368,14 @@
             }
         }
       
-     $('.btnDetail').click(function () {
-         var productID = $(this).val();
-            loadTripTable(productID);
+     // $('.btnDetail').click(function () {
+     //     var productID = $(this).val();
+     //        loadTripTable(productID);
 
+     // });
+     $(document).on('click', '.btnDetail', function () {
+            var productID = $(this).val();
+            loadTripTable(productID);
      });
 
         $('.typeradio').change(function(){

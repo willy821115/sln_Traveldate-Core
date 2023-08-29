@@ -47,7 +47,7 @@ namespace prj_Traveldate_Core.Controllers
                 _db.SaveChanges();
             }
             
-            return RedirectToAction("Edit");
+            return RedirectToAction("List", "Dashboard");
         }
 
         public IActionResult Password() 
@@ -77,8 +77,8 @@ namespace prj_Traveldate_Core.Controllers
             {
                 ViewBag.CompanyPasswordAlarm = "新密碼與確認密碼不一致";
             }
-            
-            return View();
+
+            return RedirectToAction("List", "Dashboard");
         }
     }
 }
