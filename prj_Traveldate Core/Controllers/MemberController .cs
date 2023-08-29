@@ -1433,6 +1433,100 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(datas);
         }
+
+        public IActionResult SignalR()
+        {
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+
+            Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            if (mem2 != null)
+            {
+                byte[] photo = mem2.Photo;
+                if (photo != null)
+                {
+                    string base64String = Convert.ToBase64String(photo);
+                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                }
+            };
+            ViewBag.photo = mem2;
+            //===============================我是分隔線===================================//
+            var countsForum = from m in context.Members
+                              join fl in context.ForumLists
+                              on m.MemberId equals fl.MemberId
+                              where m.MemberId == MemberId
+                              select new CForumListViewModel2
+                              {
+                                  Title = fl.Title
+                              };
+            ViewBag.ForumLists = countsForum.ToList().Count();
+
+            var countscomment = from m in context.Members
+                                join cm in context.CommentLists
+                                on m.MemberId equals cm.MemberId
+                                join pl in context.ProductLists
+                                on cm.ProductId equals pl.ProductId
+                                where m.MemberId == MemberId
+                                select new CcommentListViewModel
+                                {
+                                    Title = cm.Title,
+                                };
+            ViewBag.countscomment = countscomment.ToList().Count();
+
+            var countsorder = from o in context.OrderDetails
+                              where o.Order.Member.MemberId == MemberId
+                              select new COrdersViewModel { ProductName = o.Trip.Product.ProductName };
+
+            ViewBag.countsorder = countsorder.ToList().Count();
+
+            var countsfavorite = from pl in context.ProductLists
+                                 join f in context.Favorites
+                                 on pl.ProductId equals f.ProductId
+                                 join m in context.Members
+                                 on f.MemberId equals m.MemberId
+                                 where m.MemberId == MemberId
+                                 select new CfavoriteListViewModel
+                                 {
+                                     ProductName = pl.ProductName,
+                                 };
+            ViewBag.countsfavorite = countsfavorite.ToList().Count();
+
+            var countscoupon = from m in context.Members
+                               join c in context.Coupons
+                               on m.MemberId equals c.MemberId
+                               join cl in context.CouponLists
+                               on c.CouponListId equals cl.CouponListId
+                               where m.MemberId == MemberId
+                               select new couponListViewModel
+                               {
+                                   CouponName = cl.CouponName,
+                               };
+            ViewBag.countscoupon = countscoupon.ToList().Count();
+
+            //===============================我是分隔線===================================//
+            Member x = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var levelvm = from m in context.Members
+                          join l in context.LevelLists
+                          on m.LevelId equals l.LevelId
+                          where MemberId == m.MemberId
+                          select m.LevelId;
+            if (x.LevelId == 1)
+                ViewBag.level = "一般會員";
+            else if (x.LevelId == 2)
+                ViewBag.level = "白銀會員";
+            else if (x.LevelId == 3)
+                ViewBag.level = "白金會員";
+            else
+                ViewBag.level = "黑鑽會員";
+
+            if (x.FirstName == x.FirstName)
+                ViewBag.firstName = x.FirstName;
+
+            if (x.LastName == x.LastName)
+                ViewBag.LastName = x.LastName;
+
+
+            return View();
+        }
     }
 }
 

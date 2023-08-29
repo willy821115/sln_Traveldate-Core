@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
+using prj_Traveldate_Core.Hubs;
 using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<TraveldateContext>(
         builder.Configuration.GetConnectionString("TraveldateConnection"))
     );
 
+//加入 SignalR
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,4 +44,6 @@ app.MapControllerRoute(
 //    name: "default",
 //    pattern: "{controller=Forum}/{action=Edit}/{id?}");
 
+//加入Hub
+app.MapHub<ChatHub>("/chatHub");
 app.Run();
