@@ -10,8 +10,11 @@
     <br>
     <br>
     <div class="mb-3">
+        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <br />
+
         <label asp-for="email" class="form-label"></label>
-        <input type="email" class="form-control" asp-for="email" required/>
+        <input type="email" class="form-control Email" asp-for="email" required />
         <br>
         <input type="submit" class="btn my-btn-primary" value="寄送驗證信" />
         <br>
@@ -31,4 +34,12 @@
     <style>
 
     </style>
+ }
+
+@section Scripts{
+    <script>
+        $('#demobtn').on('click', function () {
+            $('.Email').val("traveldate3@gmail.com");
+        })
+    </script>
  }
