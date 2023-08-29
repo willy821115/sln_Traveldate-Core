@@ -150,7 +150,7 @@ namespace prj_Traveldate_Core.Controllers
             list.types = factory.loadTypes();
             list.ProductList = db.ProductLists.Where(p => p.ProductId == productID).FirstOrDefault();
             list.Tags = db.ProductTagLists.Where(t => t.ProductId == productID).Select(t => (int?)t.ProductTagDetailsId).ToList();
-            list.CtripDetail = db.TripDetails.Where(t => t.ProductId == productID).ToList();
+            list.CtripDetail = db.TripDetails.Where(t => t.ProductId == productID).OrderBy(t=>t.TripDay).ToList();
             return View(list);
         }
 
