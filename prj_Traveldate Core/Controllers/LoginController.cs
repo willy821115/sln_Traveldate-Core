@@ -314,5 +314,17 @@ namespace prj_Traveldate_Core.Controllers
 
             return View();
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_COMPANY);
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_COMPANY_NAME);
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_USER);
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_USER_NAME);
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_EMPLOYEE);
+            HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_EMPLOYEE_NAME);
+
+            return RedirectToAction("HomePage", "Homepage");
+        }
     }
 }
