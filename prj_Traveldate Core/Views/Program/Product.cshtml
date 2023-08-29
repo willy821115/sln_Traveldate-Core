@@ -3,7 +3,7 @@
     ViewData["Title"] = "Product";
 }
 
-<nav class="navbar navbar-expand-md fixed-top" style="display:none; background-color:#FCFCFC;box-shadow:none">
+<nav class="navbar navbar-expand-md fixed-top" style="display:none; background-color:#FCFCFC;box-shadow:0 2px 4px rgba(0, 0, 0, 0.8);">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -196,7 +196,10 @@
                     </p>
                         @if (Model.program.fCommentPhotoList != null)
                         {
-                          @*   <img src="~/Images/@Model.program.fCommentPhotoList[0]" alt="commentpic" class="comment-pic" id="myImg" /> *@
+                            foreach (var photoBytes in Model.program.fCommentPhotoList)
+                            {
+                                <img src="~/images/@photoBytes" alt="commentpic" class="comment-pic" id="myImg" />
+                            }
                         }
                         
                     <div id="myModal" class="modal">
@@ -429,7 +432,7 @@
     <!--更多評論區-->
     @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
             {
-        <div class="plan-container">
+        <div class="plan-container" id="section4">
             <div class="be-comment-block">
                 <div class="comments-title" id="commentdetail"><p>旅客評價區</p></div>
                 <hr />
@@ -493,7 +496,7 @@
                                 }
                                 @if (comIndex >= 0 && comIndex < Model.program.fCommentPhotoList.Count && Model.program.fCommentPhotoList[comIndex] != null)
                                 {
-                                    <img src="~/images/@Model.program.fCommentPhotoList[comIndex]" alt="Image" class="img-thumbnail w-300 h-200" />
+                                    <img src="~/images/@Model.program.fCommentPhotoList[comIndex]" alt="Image" class="comment-pic" style="border-radius:5px;"/>
                                 }
                               
                                 <div id="myModal" class="modal">
@@ -757,8 +760,11 @@
             if (ulElement) {
                 let html = '';
 
-                if (data.maxnum > 0) {
+                if (data.maxnum > 9) {
                     html += `<li>可訂購數：${data.maxnum}</li>`;
+                }
+                else if (data.maxnum < 10) {
+                    html += `<li style="color:red;">可訂購數：${data.maxnum}  （即將額滿）</li>`;
                 }
 
                 if (data.minnum > 0) {
@@ -885,9 +891,9 @@
             button.addEventListener('click', handleAddToCartClick);
         });
 
-        // var modal = document.getElementById("myModal");
+        var modal = document.getElementById("myModal");
 
-        // // Get the image and insert it inside the modal - use its "alt" text as a caption
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
         // var img = document.getElementById("myImg");
         // var modalImg = document.getElementById("img01");
         // var captionText = document.getElementById("caption");
@@ -896,13 +902,13 @@
         //     modalImg.src = this.src;
         // }
 
-        // // Get the <span> element that closes the modal
-        // var span = document.getElementsByClassName("close")[0];
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
 
-        // // When the user clicks on <span> (x), close the modal
-        // span.onclick = function () {
-        //     modal.style.display = "none";
-        // }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
 
         $(function () {
             $('#BackTop').click(function () {
@@ -983,8 +989,8 @@
                             var orderDetailId = parseInt(data);
                             console.log(orderDetailId);
                             window.orderDetailId = orderDetailId;
-                             window.location.href = `/Cart/ShoppingCart`;
-                            // window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                            window.location.href = `/Cart/ShoppingCart`;
+                            //window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                     });
             });

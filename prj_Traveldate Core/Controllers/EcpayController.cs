@@ -114,6 +114,8 @@ namespace prj_Traveldate_Core.Controllers
                 ecpayOrder.PaymentDate = Convert.ToDateTime(id["PaymentDate"]);
                 ecpayOrder.SimulatePaid = int.Parse(id["SimulatePaid"]);
                 _context.SaveChanges();
+
+                TempData["ECODID"] = temp;
             }
             //return View("EcpayView", data);
             return RedirectToAction("CompleteOrder","Cart");

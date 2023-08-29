@@ -92,7 +92,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 TempData[CDictionary.SK_BACK_TO_ACTION]= "Create";
                 TempData[CDictionary.SK_BACK_TO_CONTROLLER]= "Forum";
-               
+                Task.Delay(3000).Wait();
                 return RedirectToAction("Login", "Login");
                 
             }
@@ -106,7 +106,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 creatArticle.forum.IsPublish = false;
             }
-            if (creatArticle.isPublish == "結帳成功")
+            if (creatArticle.isPublish == "發布")
             {
                 creatArticle.forum.IsPublish=true;
             }
@@ -125,12 +125,10 @@ namespace prj_Traveldate_Core.Controllers
             }
             
             _context.SaveChanges();
+            Task.Delay(3000).Wait();
             return RedirectToAction("forumList", "Member");
         }
-       public IActionResult rr()
-        {
-            return View();
-        }
+      
         //修改文章
         public IActionResult Edit(int? forumlist)
         {
@@ -138,12 +136,14 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
+            ViewBag.memberId_edit = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
             CCreatArticleViewModel vm = new CCreatArticleViewModel();
             vm.forum = _context.ForumLists.Find(forumlist);
             vm.schedule = _context.ScheduleLists.Find(forumlist);
             vm.tripIds = _context.ScheduleLists.Where(s=>s.ForumListId == forumlist).Select(s=>(int)s.TripId).ToList();
+            
+           vm.schedules = _context.ScheduleLists.Include(s => s.Trip).Include(s=>s.Trip.Product).Where(s=>s.TripId==s.Trip.TripId && s.ForumListId== forumlist).ToList();
             //_context.ScheduleLists.Include(s=>s.ForumList).Include(s=>s.Trip).Include(s=>s.Trip.Product).Where(f=>f.ForumListId == forumlist).ToList(); 
             return View(vm);
         }
@@ -154,12 +154,12 @@ namespace prj_Traveldate_Core.Controllers
             {
                 article.forum.IsPublish = false;
             }
-            if (article.isPublish == "結帳成功")
+            if (article.isPublish == "發布")
             {
                 article.forum.IsPublish = true;
             }
             article.forum.ReleaseDatetime = DateTime.Now;
-            _context.Add(article.forum);
+            _context.Update(article.forum);
             _context.SaveChanges();
 
             foreach (int tripId in article.tripIds)
@@ -169,20 +169,14 @@ namespace prj_Traveldate_Core.Controllers
                     ForumListId = article.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Add(newSchedule);
+                _context.Update(newSchedule);
             }
 
             _context.SaveChanges();
+            Task.Delay(3000).Wait();
             return RedirectToAction("Index", "Member");
 
-            //ForumList fDb = _context.ForumLists.FirstOrDefault(p => p.ForumListId == article.forum.ForumListId);
-            //if(fDb != null)
-            //{
-            //    article.forum.ReleaseDatetime = DateTime.Now;
-            //    _context.Add(article.forum);
-            //    _context.SaveChanges();
-            //}
-            //return RedirectToAction("Index", "Member");
+            
         }
 
 

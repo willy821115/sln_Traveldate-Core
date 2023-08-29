@@ -88,7 +88,7 @@
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
-                             <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                            <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" name="btnFavoriteRemove" /> </td>
                          </form>
               
 @*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
@@ -214,6 +214,13 @@
 
 }
 @section scripts{
+
+    <script>
+        const btnFavoriteRemove = document.getElementById('btnFavoriteRemove');
+        btnFavoriteRemove.addEventListener('click', () => {
+            swal("移除成功！", "稍後將自動為您導向", "success");
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

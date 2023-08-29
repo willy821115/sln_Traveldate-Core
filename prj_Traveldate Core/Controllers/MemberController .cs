@@ -867,6 +867,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.SaveChanges();
                 //}
         }
+            Thread.Sleep(3000);
             return RedirectToAction("favoriteList");
         }
 
@@ -1154,6 +1155,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.SaveChanges();
                 }
             }
+            Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
 

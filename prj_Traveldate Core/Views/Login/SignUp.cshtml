@@ -11,14 +11,16 @@
     <div class="col-md-4">
         <form asp-action="SignUp" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+            <br />
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" required/>
+                <input asp-for="LastName" class="form-control LastName" required />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" required />
+                <input asp-for="FirstName" class="form-control FirstName" required />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,12 +43,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Idnumber" class="control-label"></label>
-                <input asp-for="Idnumber" class="form-control" required />
+                <input asp-for="Idnumber" class="form-control Idnumber" required />
                 <span asp-validation-for="Idnumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" type="date" required />
+                <input asp-for="BirthDate" class="form-control BirthDate" type="date" required />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,17 +57,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" required />
+                <input asp-for="Phone" class="form-control Phone" required />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" type="email" class="form-control" required />
+                <input asp-for="Email" type="email" class="form-control Email" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" required />
+                <input asp-for="Password" type="password" class="form-control Password" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -125,5 +127,17 @@
             }
 
         })
+
+
+        $('#demobtn').on('click', function () {
+            $('.LastName').val("張");
+            $('.FirstName').val("仁安");
+            $('.Idnumber').val("A137854126");
+            $('.BirthDate').val("1998-07-09");
+            $('.Phone').val("0935765315");
+            $('.Email').val("traveldate3@gmail.com");
+            $('.Password').val("1234");
+        })
+
     </script>
 }
