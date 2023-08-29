@@ -92,7 +92,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 TempData[CDictionary.SK_BACK_TO_ACTION]= "Create";
                 TempData[CDictionary.SK_BACK_TO_CONTROLLER]= "Forum";
-               
+                Task.Delay(3000).Wait();
                 return RedirectToAction("Login", "Login");
                 
             }
@@ -125,7 +125,7 @@ namespace prj_Traveldate_Core.Controllers
             }
             
             _context.SaveChanges();
-            Task.Delay(5000).Wait();
+            Task.Delay(3000).Wait();
             return RedirectToAction("forumList", "Member");
         }
       
@@ -136,7 +136,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
+            ViewBag.memberId_edit = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
             CCreatArticleViewModel vm = new CCreatArticleViewModel();
             vm.forum = _context.ForumLists.Find(forumlist);
@@ -159,7 +159,7 @@ namespace prj_Traveldate_Core.Controllers
                 article.forum.IsPublish = true;
             }
             article.forum.ReleaseDatetime = DateTime.Now;
-            _context.Add(article.forum);
+            _context.Update(article.forum);
             _context.SaveChanges();
 
             foreach (int tripId in article.tripIds)
@@ -169,11 +169,11 @@ namespace prj_Traveldate_Core.Controllers
                     ForumListId = article.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Add(newSchedule);
+                _context.Update(newSchedule);
             }
 
             _context.SaveChanges();
-            Task.Delay(5000).Wait();
+            Task.Delay(3000).Wait();
             return RedirectToAction("Index", "Member");
 
             

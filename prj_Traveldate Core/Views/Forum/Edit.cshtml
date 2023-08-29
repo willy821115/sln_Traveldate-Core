@@ -52,8 +52,8 @@
     <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
         <div class="col-11">
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                <input asp-for="@Model.forum.MemberId" type="text" value="會員id @ViewBag.memberId" name="MemberId" />
-                <input asp-for="@Model.forum.ForumListId" type="text" value="文章id @Model.forum.ForumListId" name="ForumListId" />
+                <input asp-for="@Model.forum.MemberId" type="text" value="@ViewBag.memberId_edit" name="MemberId" />
+                <input asp-for="@Model.forum.ForumListId" type="text" value="@Model.forum.ForumListId" name="ForumListId" />
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
