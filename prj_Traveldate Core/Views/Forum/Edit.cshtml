@@ -52,9 +52,10 @@
     <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
         <div class="col-11">
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                <input asp-for="@Model.forum.MemberId" type="text" value="@ViewBag.memberId_edit" name="MemberId" />
-                <input asp-for="@Model.forum.ForumListId" type="text" value="@Model.forum.ForumListId" name="ForumListId" />
-
+                <input asp-for="@Model.forum.MemberId" type="text" value="@ViewBag.memberId_edit" />
+                <input asp-for="@Model.forum.ForumListId" type="text" value="@Model.forum.ForumListId"/>
+                <input asp-for="@Model.forum.Watches"type="text" value="@Model.forum.Watches" />
+                <input asp-for="@Model.forum.Likes" type="text" value="@Model.forum.Likes" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
                     <p class="control-label divide-line fs-3">修改文章標題</p>
@@ -171,6 +172,14 @@
             Swal.fire({
                 icon: 'success',
                 title: '儲存草稿成功!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+        function publishArticle() {
+            Swal.fire({
+                icon: 'success',
+                title: '發布成功!',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -410,6 +419,9 @@
     <script>
         $('#btnSaveArticle').on('click', () => {
             saveArticle();
+        })
+        $('#btnPublish').on('click', () => {
+            publishArticle();
         })
     </script>
   }
