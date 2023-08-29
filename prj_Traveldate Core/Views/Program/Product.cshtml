@@ -760,8 +760,11 @@
             if (ulElement) {
                 let html = '';
 
-                if (data.maxnum > 0) {
+                if (data.maxnum > 9) {
                     html += `<li>可訂購數：${data.maxnum}</li>`;
+                }
+                else if (data.maxnum < 10) {
+                    html += `<li style="color:red;">可訂購數：${data.maxnum}  （即將額滿）</li>`;
                 }
 
                 if (data.minnum > 0) {
