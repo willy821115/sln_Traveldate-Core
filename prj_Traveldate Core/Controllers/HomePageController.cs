@@ -15,7 +15,8 @@ namespace prj_Traveldate_Core.Controllers
             TraveldateContext db = new TraveldateContext();
 
             var popular = from od in db.OrderDetails
-                          group od by od.Trip.Product into g
+                          where (bool)!od.Trip.Product.Discontinued&&od.Trip.Product.StatusId==1
+                           group od by od.Trip.Product into g
                           orderby g.Select(o => o.Quantity).Sum() descending
                           select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.Trip.UnitPrice) };
 
@@ -39,6 +40,7 @@ namespace prj_Traveldate_Core.Controllers
             list.popularList = popularList;
 
             var comment = from c in db.CommentLists
+                          where (bool)!c.Product.Discontinued&&c.Product.StatusId==1
                           group c by c.Product into g
                           orderby g.Select(c => c.CommentScore).Average()
                           select new { productId = g.Key.ProductId, productName = g.Key.ProductName, commentScore = g.Select(c => c.CommentScore).Average() };
@@ -63,6 +65,7 @@ namespace prj_Traveldate_Core.Controllers
             list.commentList = commentList;
 
             var discount = from od in db.Trips
+                           where (bool)!od.Product.Discontinued && od.Product.StatusId==1
                            group od by od.Product into g
                            orderby g.Max(o => o.Discount) descending
                            select new { productId = g.Key.ProductId, productName = g.Key.ProductName, unitPrice = g.Min(od => od.UnitPrice) };
