@@ -466,6 +466,8 @@
                             fieldType = "photo";
                         } else if (fieldName.includes("TripDetail")) {
                             fieldType = "TripDetail";
+                            const newId = `descriptionInput${newI}`;
+                            $(this).attr("id", newId);
                         }
 
                         if (fieldType !== "") {

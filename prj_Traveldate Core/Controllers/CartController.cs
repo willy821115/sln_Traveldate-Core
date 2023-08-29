@@ -61,8 +61,8 @@ namespace prj_Traveldate_Core.Controllers
             //  List加到vm裡顯示
             return View(vm);
         }
-        //name=orderDetailID[0]
-        //[HttpPost]
+
+        [HttpPost]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
