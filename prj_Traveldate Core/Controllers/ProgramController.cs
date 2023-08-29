@@ -157,11 +157,15 @@ namespace prj_Traveldate_Core.Controllers
                     };
                     db.OrderDetails.Add(newOrderDetail);
                     db.SaveChanges();
-                    int orderDetailId = newOrderDetail.OrderDetailsId;
-                    ViewBag.orderDetailId = orderDetailId;
+                    int[] orderDetailId = new int[1];
+                    orderDetailId[0] = newOrderDetail.OrderDetailsId;
 
-                    return Content(orderDetailId.ToString());
+
+                    //ViewBag.orderDetailId = orderDetailId;
+
+                    //return Content(orderDetailId.ToString());
                     //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+                    return RedirectToAction("ShoppingCart", "Cart");
                 }
                 db.SaveChanges();
             }
@@ -189,7 +193,8 @@ namespace prj_Traveldate_Core.Controllers
                 int orderDetailId = newOrderDetail.OrderDetailsId;
                 ViewBag.orderDetailId = orderDetailId;
 
-                return Content(orderDetailId.ToString());
+                //return Content(orderDetailId.ToString());
+                return RedirectToAction("ShoppingCart", "Cart");
             }
             return RedirectToAction("ShoppingCart", "Cart");
         }

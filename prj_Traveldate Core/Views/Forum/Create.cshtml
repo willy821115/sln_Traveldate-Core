@@ -108,11 +108,13 @@
                     <div class="d-flex align-items-center">
                         <button type="button" class="btn btn-outline-secondary ml-1 fs-5" onclick='deleteArticle()'>捨棄</button>
                         <input asp-for="isSave" id="btnSaveArticle" type="submit" value="儲存草稿" class="btn btn-outline-secondary ml-1 fs-5" />
-                        <input id="payment-area" type="submit" value="下一步" class="btn my-btn-primary ml-1 fs-5" />
+                        <a asp-action="ShoppingCart" asp-controller="Cart"class="btn my-btn-primary ml-1 fs-5" >下一步</a>
                     </div>
                 </div>
                 <div class="border border-black">
-                    付款區
+                   <div>
+                       <p class="fs-5">訂購人資料</p>
+                   </div>
                 </div>
             </form>
             <a asp-action="ForumList" class="fs-5 my-text-primary fw-bolder">找揪團</a>
