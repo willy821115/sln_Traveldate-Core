@@ -9,7 +9,7 @@
     {
 
         <div class="controls-display-row category-click">
-            <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span>
+            <span class="fs-5">@Html.DisplayFor(modelItem => c.category) (@c.tags.Distinct().Count())</span>
             <div class="d-flex justify-content-end">
                 <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                 <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -19,10 +19,11 @@
             <ul class="list-unstyled divFiltered_tag">
                 @foreach (var t in c.tags.Distinct())
                 {
+                    var tagsCount = c.tags.Count(c => c == t);
                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
                         <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                         <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                        <span>@Html.DisplayFor(modelItem => t)</span>
+                        <span>@Html.DisplayFor(modelItem => t) (@tagsCount)</span>
                     </li>
                 }
             </ul>
