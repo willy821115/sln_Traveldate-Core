@@ -61,8 +61,8 @@ namespace prj_Traveldate_Core.Controllers
             //  List加到vm裡顯示
             return View(vm);
         }
-
-        [HttpPost]
+        //name=orderDetailID[0]
+        //[HttpPost]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -335,7 +335,81 @@ namespace prj_Traveldate_Core.Controllers
             return result.ToString();
         }
 
-        
+
+        //[HttpPost]
+        //[ActionName("AddDirectToCart")]
+        //public IActionResult ConfirmOrder(int num, int tripId)
+        //{
+        //    TraveldateContext db = new TraveldateContext();
+
+        //    int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+        //    if (loggedInMemberId == 0)
+        //    {
+        //        return Content("請登入會員");
+        //    }
+        //    var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
+        //    if (existCart)
+        //    {
+
+        //        if (db.OrderDetails.Any(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true))
+        //        {
+        //            OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
+        //            od.Quantity += num;
+        //        }
+        //        else
+        //        {
+        //            int cartOrderID = db.Orders.FirstOrDefault(o => o.MemberId == loggedInMemberId && o.IsCart == true).OrderId;
+        //            OrderDetail newOrderDetail = new OrderDetail
+        //            {
+        //                Quantity = num,
+        //                TripId = tripId,
+        //                OrderId = cartOrderID
+        //            };
+        //            db.OrderDetails.Add(newOrderDetail);
+        //            db.SaveChanges();
+        //            int[] orderDetailId = new int[1];
+        //            orderDetailId[0] = newOrderDetail.OrderDetailsId;
+
+
+        //            //ViewBag.orderDetailId = orderDetailId;
+
+        //            //return Content(orderDetailId.ToString());
+        //            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+
+        //            return View(orderDetailId);
+        //        }
+        //        db.SaveChanges();
+        //    }
+        //    else
+        //    {
+        //        Order newCartOrder = new Order
+        //        {
+        //            MemberId = loggedInMemberId,
+        //            IsCart = true
+        //        };
+        //        db.Orders.Add(newCartOrder);
+        //        db.SaveChanges();
+
+        //        int newCartOrderID = newCartOrder.OrderId;
+
+        //        OrderDetail newOrderDetail = new OrderDetail
+        //        {
+        //            Quantity = num,
+        //            TripId = tripId,
+        //            OrderId = newCartOrderID
+        //        };
+
+        //        db.OrderDetails.Add(newOrderDetail);
+        //        db.SaveChanges();
+        //        int orderDetailId = newOrderDetail.OrderDetailsId;
+        //        ViewBag.orderDetailId = orderDetailId;
+
+        //        return Content(orderDetailId.ToString());
+        //    }
+        //    return View();
+        //}
+
+
     }
 }
 
