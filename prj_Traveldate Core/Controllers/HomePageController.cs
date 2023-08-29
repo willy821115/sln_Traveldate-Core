@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.ViewModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -33,7 +34,7 @@ namespace prj_Traveldate_Core.Controllers
 
                 item.ImagePath = imagePath;
                 item.commentScore = commentScore;
-
+                item.commentScoreString= string.Format("{0:F1}", commentScore);
                 popularList.Add(item);
             }
 
@@ -53,7 +54,7 @@ namespace prj_Traveldate_Core.Controllers
                 item.productId = p.productId;
                 item.productName = p.productName;
                 item.commentScore = (double)p.commentScore;
-
+                item.commentScoreString = string.Format("{0:F1}", p.commentScore);
                 var unitprice = db.Trips.Where(c => c.ProductId == p.productId).Min(c => c.UnitPrice);
                 var imagePath = db.ProductPhotoLists.Where(c => c.ProductId == p.productId).Select(c => c.ImagePath).FirstOrDefault();
 
@@ -83,7 +84,7 @@ namespace prj_Traveldate_Core.Controllers
 
                 item.ImagePath = imagePath;
                 item.commentScore = commentScore;
-
+                item.commentScoreString = string.Format("{0:F1}", commentScore);
                 discountList.Add(item);
             }
 

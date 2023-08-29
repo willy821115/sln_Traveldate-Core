@@ -10,5 +10,7 @@
         public decimal unitPrice { get; set; }
 
         public double? commentScore { get; set; }
+
+        public string commentScoreString { get; set; }
     }
 }
