@@ -1,4 +1,5 @@
-﻿@model List<ScheduleList>;
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CCreatArticleViewModel;
 @{
     ViewData["Title"] = "Edit";
 }
@@ -51,15 +52,18 @@
     <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
         <div class="col-11">
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                @* <input type="hidden" value="@ViewBag.memberId" name="MemberId" /> *@
-                <input type="text" value="@Model.Select(n=>n.ForumListId).First()" name="ForumListId" />
+                <input type="hidden" value="@Model.forum.MemberId" name="MemberId" />
+                <input type="text" value="@Model.forum.ForumListId" name="ForumListId" />
+                <input asp-for="forum.Title" class="form-control fs-4" value="@Model.forum.Title"/>
+               @* <input type="text" value="@Model." name="ForumListId" /> *@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
-                    <p class="control-label divide-line fs-3">文章標題</p>
-                    <span class="fs-5 bg-gray-100 rounded border p-2">@Model.Select(n=>n.ForumList.Title).First() </span>
+                    <p class="control-label divide-line fs-3">修改文章標題</p>
+                  @* <input asp-for="forum.Title" value="@Model.Select(n=>n.ForumList.Title).First()" class="form-control fs-4" /> *@
+                    <span class="fs-5 bg-gray-100 rounded border p-2"> </span>
                 </div>
-                <p class="control-label divide-line fs-3">旅行項目與日期</p>
-                @foreach(var a in Model.Select(n => n.Trip))
+                <p class="control-label divide-line fs-3">修改旅行項目與日期</p>
+                @* @foreach(var a in Model.Select(n => n.Trip))
                 {
                     <div>
                         <div class="divAddTrips bg-light mb-1 p-2 rounded border">
@@ -76,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                }
+                } *@
                 
 
                 <div class="form-group pl-0 fs-5 mt-4">
@@ -85,17 +89,18 @@
                         <i class="small text-gray-700">(請選擇最近旅行日期前三天)</i>
                         <img src="~/icons//icons8-information.gif" height="18" data-bs-toggle="tooltip" data-bs-placement="top" title="為確保行程安排順暢,本平台將截團日期限制於旅行前三日,敬請見諒" />
                     </div>
-                    <div class="mt-1 p-2 bg-gray-100 rounded border col-4"><span>@Model.Select(f=>f.ForumList.DueDate.Value.ToString("yyyy-MM-dd")).First()</span></div>
+                    @* <div class="mt-1 p-2 bg-gray-100 rounded border col-4"><span>@Model.Select(f=>f.ForumList.DueDate.Value.ToString("yyyy-MM-dd")).First()</span></div> *@
                 </div>
                 <div class="form-group fs-5">
                     <textarea id="summernote" name="Content">
-                    @Html.Raw(Model.Select(n=>n.ForumList.Content).First())
+                   @*  @Html.Raw(Model.Select(n=>n.ForumList.Content).First()) *@
                    </textarea>
                 </div>
                 <div class="form-group d-flex justify-content-end">
                     <div class="d-flex align-items-center">
                         <a asp-action="Index" asp-controller="Member" class="btn btn-outline-secondary ml-1 fs-5">取消修改</a>
-                        <input type="submit" class="btn btn-outline-secondary ml-1 fs-5" value="儲存"/>
+                        <input asp-for="isSave" id="btnSaveArticle" type="submit" value="儲存草稿" class="btn btn-outline-secondary ml-1 fs-5" />
+                        <a asp-action="ShoppingCart" asp-controller="Cart" class="btn my-btn-primary ml-1 fs-5">下一步</a>
                     </div>
                 </div>
             </form>
