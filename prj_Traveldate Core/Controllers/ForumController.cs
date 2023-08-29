@@ -24,6 +24,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         List<CForumList_prodPhoto> forum_prodPhoto()
         {
+
             var tripId = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s => s.Trip.Product.ProductId).ToList();
             List<CForumList_prodPhoto> prod_photo = _context.ProductPhotoLists.Where(p => tripId.Contains((int)p.ProductId)).Select(p => new CForumList_prodPhoto
             {
@@ -34,20 +35,15 @@ namespace prj_Traveldate_Core.Controllers
         }
       
      //////////////////////////////// /////////////////////////////////MVC/ ////////////////////////////////////////////////////////////////
-        public IActionResult ForumList(CForumListViewModel vm)
+     public List<ScheduleList> ScheduleForum()
         {
-            CFilteredProductFactory factory = new CFilteredProductFactory();
-            List<CForumList_prodPhoto> prodPhotos = new List<CForumList_prodPhoto>();
-           vm.regions = factory.qureyFilterCountry();
-            vm.categories = factory.qureyFilterCategories();
-
-            //vm.forumList = _context.ArticlePhotos.Include(photo=>photo.ForumList).ToList();
-            var firstSchedules = _context.ScheduleLists
+            List<ScheduleList> data = _context.ScheduleLists
                 .Include(s => s.ForumList)
                 .Include(s => s.Trip)
                 .Include(s => s.ForumList.Member)
                 .Include(s => s.Trip.Product)
-                .Where(s=>s.ForumList.IsPublish == true)
+                .Include(s=>s.ForumList.Member.Level)
+                .Where(s => s.ForumList.IsPublish == true)
                 .GroupBy(g => g.ForumListId)
                 .Select(g => new ScheduleList
                 {
@@ -56,30 +52,65 @@ namespace prj_Traveldate_Core.Controllers
                     ForumList = g.First().ForumList// 第一個 Trip
                 })
                 .ToList();
-            vm.schedules = firstSchedules;
+            return data;
+        }
+        public IActionResult ForumList(CForumListViewModel vm)
+        { 
+            
+            List<CForumList_prodPhoto> prodPhotos = new List<CForumList_prodPhoto>();
+           //發文內行程相對應的分類及標籤
+            var prodId = _context.ScheduleLists.Select(s => s.Trip.ProductId).Distinct().ToList();
+            vm.categories = _context.ProductTagLists
+                .Include(t => t.ProductTagDetails)
+                .Include(t => t.ProductTagDetails.ProductCategory)
+                .Where(t=>prodId.Contains((int)t.ProductId))
+                .GroupBy(t => t.ProductTagDetails.ProductCategory.ProductCategoryName)
+                .Select(g=>new CCategoryAndTags
+                {
+                    category = g.Key,
+                    tags = g.Select(t=>t.ProductTagDetails.ProductTagDetailsName).ToList()
+                })
+                .ToList();
+
+
+            //發文內行程相對應的國家及地區
+            vm.regions = _context.ScheduleLists
+                .Include(s=>s.Trip)
+                .Include(s=>s.Trip.Product.City)
+                .Include(s=>s.Trip.Product.City.Country)
+                .Where(s=>s.Trip.ProductId == s.Trip.Product.ProductId)
+                .GroupBy(s=>s.Trip.Product.City.Country.Country)
+                .Select(g=>new CCountryAndCity 
+                { 
+                    country = g.Key,
+                    citys = g.Select(t=>t.Trip.Product.City.City)
+                })
+                .ToList();
+
+            //vm.forumList = _context.ArticlePhotos.Include(photo=>photo.ForumList).ToList();
+            vm.schedules = ScheduleForum();
             vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m=>m.ForumLists).ToList();
             vm.level = _context.LevelLists.Include(l=>l.Members).ToList();
-            
+
             //vm.schedulesForProd = _context.ScheduleLists.Include(s => s.ForumList).Include(s => s.Trip).Include(s => s.Trip.Product).ToList();
-            
-            prodPhotos.AddRange(forum_prodPhoto());
-            vm.prodPhoto = prodPhotos;
-            
+
+           
+            vm.prodPhoto = forum_prodPhoto();
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
             var topTenArticle = _context.ScheduleLists
-                .Where(s=>s.ForumList.IsPublish == true)
-    .GroupBy(s => s.ForumListId)
-    .Select(group => new CForumList_topTen
-    {
-        forumlistid = group.Key,
-        totalPrice = group.Sum(s => s.Trip.UnitPrice),
-        title = group.First().ForumList.Title,
-        prodId = group.Select(t => t.Trip.ProductId).First()
-    })
-    .OrderByDescending(item => item.totalPrice)
-    .ToList();
+                .Where(s => s.ForumList.IsPublish == true)
+                .GroupBy(s => s.ForumListId)
+                 .Select(group => new CForumList_topTen
+                 {
+                        forumlistid = group.Key,
+                        totalPrice = group.Sum(s => s.Trip.UnitPrice),
+                        title = group.First().ForumList.Title,
+                        prodId = group.Select(t => t.Trip.ProductId).First()
+                    })
+                    .OrderByDescending(item => item.totalPrice)
+                    .ToList();
 
             vm.topTen = topTenArticle; 
             vm.productTags = _context.ProductTagLists.Include(t=>t.ProductTagDetails).ToList();
@@ -304,6 +335,29 @@ namespace prj_Traveldate_Core.Controllers
                 });
             return Json(articles);
         }
+        /////////////////////////////////////揪團主頁用/////////////////////////////////
+        public IActionResult KeyWordForForum(string keyword)
+        {
+            CForumListViewModel filteredForum = new CForumListViewModel();
+            filteredForum.schedules = ScheduleForum();
+            filteredForum.prodPhoto = forum_prodPhoto();
+            filteredForum.replyList = _context.ReplyLists.ToList();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                filteredForum.schedules = ScheduleForum().Where(f => f.ForumList.Title.Contains(keyword)).ToList();
+                if(filteredForum.schedules.Count()>0)
+                {
+                    return PartialView(filteredForum);
+                }
+                else
+                {
+                    return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
+                }
+                
+            }
+            return PartialView(filteredForum);
+        } 
+
             //////////////////////////// //////////PartialComponenet///// ////////////////////////////////////
             //ArticleView的回覆的框框
             public IActionResult ReplyToDiv(Member userId) 
@@ -315,7 +369,7 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult Replied(int? id)
         {
             CArticleViewModel vm = new CArticleViewModel();
-            vm.forum = _context.ForumLists.Find(id);
+            vm.forum = _context.ForumLists.FirstOrDefault(f=>f.IsPublish==true && f.ForumListId == id);
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList(); 
             return PartialView(vm);
         }

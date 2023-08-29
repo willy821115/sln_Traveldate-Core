@@ -30,18 +30,23 @@
             color:gray;
         }
 
-        .topTen{
+        .topTen {
             height:230px;
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
         }
 
-        .topTen:hover,
+       
             .my-article-item:hover {
             box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.4);
         }
 
         .my-sm-text{
             font-size:14px;
+        }
+
+        .topTen:hover {
+            transform: scale(1.01);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 }
@@ -60,7 +65,7 @@
             <div class="controls-display-row search_container">
                 <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                 <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
-                <input class="search-input" type="text" placeholder="請輸入文章標題">
+                <input id="keyword-for-forum" class="search-input" type="text" placeholder="請輸入文章標題"/>
             </div>
         </div>
         <div class="p-3 mt-2 mb-2">
@@ -74,7 +79,7 @@
     </div>
     <div class="col-8 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <p class="fs-3 divide-line fw-bold">精選文章</p>
+            <p class="fs-3 divide-line fw-bold">精選TOP10文章</p>
             <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
                 <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-inner ">
@@ -211,7 +216,7 @@
                 <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
             </div>
         </div>
-        
+        <div id="filteredBody">
         @foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
         {
             <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
@@ -231,7 +236,7 @@
                         <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
                     </div>
                 </div>
-                <div class=" col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+                    <div class="rounded bg-gray-100 col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
                 <div class="rounded bg-gray-100 col-2 m-1">
                     <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
                     @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
@@ -246,22 +251,7 @@
                        
             </a>
             }
-    
-        <div class="d-flex justify-content-center bg-transparent border-0">
-            <div class="col-7 d-flex justify-content-around">
-                @for (int i = 1; i < 7; i++)
-                {
-                    @*<input class="page-itme my-bg-secondary text-white rounded border border-secondary-subtle" type="button" value="@i " />*@
-                    <button type="button" class="btn btn-outline-secondary"> @i </button>
-                }
-            </div>
         </div>
-    </div>
-</div>
-
-
-
-@* <script src="~/js/jquery-3.4.1.js"></script> *@
 
 @section Scripts{
     <script src="~/js/forumList_jq.js"></script>
@@ -282,5 +272,18 @@
         });
 
     </script>
-}
+            <script>
+                $('#keyword-for-forum').on('input', function (event) {
+loadFilteredForum($(this).val())
+                })
+                function loadFilteredForum(keyword) {
+                    fetch('@Url.Content("~/Forum/KeyWordForForum")?keyword=' + keyword,
+                        { method: 'GET' })
+                        .then(response => response.text())
+                        .then(data => {
+                            $('#filteredBody').html(data)
+                        })
+                }
+            </script>
+        }
 

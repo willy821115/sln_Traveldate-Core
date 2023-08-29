@@ -1,0 +1,40 @@
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CForumListViewModel
+@if (Model != null && Model.schedules != null)
+{
+@foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
+{
+    <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
+        <div class="col-2 m-1">
+            @if (article.Trip?.Product != null && Model.prodPhoto.Any(p => p.prodId == article.Trip.ProductId))
+            {
+                var imgPath = Model.prodPhoto.FirstOrDefault(p => p.prodId == article.Trip.ProductId).prodPhotoPath;
+                <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.Trip.Product.ProductName" />
+            }
+        </div>
+
+        <div class="rounded bg-gray-100 col-5 m-1 d-flex row p-0">
+            <p class="pt-1 fs-5 fw-bold text-black">@article.ForumList.Title</p>
+            <div class="d-flex align-items-end">
+                <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+            </div>
+        </div>
+        <div class=" col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+        <div class="rounded bg-gray-100 col-2 m-1">
+            <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
+            @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
+            {
+                <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+            }
+            else
+            {
+                <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+            }
+
+        </div>
+
+    </a>
+}
+}
