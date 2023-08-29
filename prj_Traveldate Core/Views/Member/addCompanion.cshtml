@@ -81,18 +81,18 @@
 
                     <div class="form-group">
                     @Html.LabelFor(model=>model.LastName)
-                    @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.EditorFor(model=>model.LastName,"id=LastName",new {htmlAttributes=new{@class="form-control"}})
                         @* <span asp-validation-for="LastName" class="text-danger">姓氏為必填</span> *@
                     @* @Html.ValidationMessage("姓氏為必填","*") *@
                     </div>
 
                     <div class="form-group">
                     @Html.LabelFor(model=>model.FirstName)
-                    @Html.EditorFor(model=>model.FirstName,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.EditorFor(model=>model.FirstName,"id=FirstName",new {htmlAttributes=new{@class="form-control"}})
                     </div>
 
                     <div class="form-group">
-                        <label for="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select>
+                        <label for="Gender" id="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select>
                     </div>
 
                     <div class="form-group">
@@ -102,18 +102,21 @@
 
                     <div class="form-group">
                     @Html.LabelFor(model=>model.Phone)
-                    @Html.EditorFor(model=>model.Phone,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.EditorFor(model=>model.Phone,"id=Phone",new {htmlAttributes=new{@class="form-control"}})
                     </div>
 
                     <div class="form-group">
                         <label for="Email">聯絡信箱</label>
-                        <input type="text" id="txtEmail" class="form-control" />
+                        <input type="text" id="Email" class="form-control" />
                     </div>
 
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary" id="btnAddCompanion">增加</button>
+
                         <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>
-                    </div>                
+                    
+                    </div>
+                    <button type="submit" class="btn my-btn-primary" id="addDEMO">DEMO</button>
                 }
             </div>
         </div>
@@ -153,5 +156,27 @@
             btnAddCompanion.addEventListener('click', () => {
                 swal("新增旅伴成功！", "稍後將自動為您導向", "success");
             });
+    </script>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDEMO = document.getElementById('addDEMO');
+            addDEMO.addEventListener('click', function () {
+                // 填充表單輸入欄位
+
+                document.getElementById('FirstName').value = '名';
+                document.getElementById('LastName').value = '吳';
+                document.getElementById('Gender').value = '男';
+                document.getElementById('BirthDate').value = '1993/6/8';
+                document.getElementById('Phone').value = '0922333444';
+                document.getElementById('Email').value = 'qwe123@gmail.com';
+
+                // // 可選：顯示Demo照片
+                // const imagePreview = document.getElementById('imagePreview');
+                // imagePreview.src = '填充的圖片URL';
+            });
+        });
     </script>
 }
