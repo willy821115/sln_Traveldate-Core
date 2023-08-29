@@ -145,6 +145,7 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
                     od.Quantity += num;
+                    db.SaveChanges();
                 }
                 else
                 {
@@ -157,17 +158,18 @@ namespace prj_Traveldate_Core.Controllers
                     };
                     db.OrderDetails.Add(newOrderDetail);
                     db.SaveChanges();
-                    int[] orderDetailId = new int[1];
-                    orderDetailId[0] = newOrderDetail.OrderDetailsId;
+                    //int[] orderDetailId = new int[1];
+                    //orderDetailId[0] = newOrderDetail.OrderDetailsId;
+                    int orderDetailId = newOrderDetail.OrderDetailsId;
 
 
-                    //ViewBag.orderDetailId = orderDetailId;
+                    ViewBag.orderDetailId = orderDetailId;
 
                     //return Content(orderDetailId.ToString());
                     //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
-                    return RedirectToAction("ShoppingCart", "Cart");
+                   return RedirectToAction("ShoppingCart", "Cart");
+                    //return Json(orderDetailId);
                 }
-                db.SaveChanges();
             }
             else
             {

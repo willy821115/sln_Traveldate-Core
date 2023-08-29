@@ -289,8 +289,9 @@ namespace prj_Traveldate_Core.Controllers
             {
                 productName = p.ProductName,
                 productType = p.ProductType.ProductType,
+                cityName = p.City.City,
                 productStatus = p.Status.Status1,
-                Discontinued = (bool)p.Discontinued ? "下架" : "上架",
+                discontinued = (bool)p.Discontinued ? "下架" : "上架",
                 productID =p.ProductId
             }) ;
             return Json(q);

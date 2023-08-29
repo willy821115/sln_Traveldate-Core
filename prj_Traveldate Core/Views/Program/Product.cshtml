@@ -300,7 +300,7 @@
                         <input type="hidden" id="tripId" name="tripId" value="">
                         <input type="hidden" id="num" name="num" value="">
                         <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg addToCartButton" value="加入購物車" />
-                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" asp-route-id="@Model.product.ProductId" data-orderdetailid="tripId" class="btn my-btn-primary btn-lg">立即購買</a>
+                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="tripId"  class="btn my-btn-primary btn-lg addToCartButtonsss">立即購買</a>
                     </form>
                   </div>
             </div> 
@@ -348,7 +348,7 @@
 
                                         if (tripDates < DateTime.Now)
                                         {
-                                            <button class="btn btn-outline-dark addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                            <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
                                         }
                                         else
                                         {
@@ -358,6 +358,7 @@
                                                 <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
                                                 <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
                                             </form>
+                                           
                                         }
                                     }
                                     
@@ -979,14 +980,11 @@
                         if (data === "請登入會員") {
                             swal('請登入會員', '', 'warning');
                         } else {
-                            // 在響應中獲取 orderDetailId 的值
                             var orderDetailId = parseInt(data);
-
-                            // 將 orderDetailId 設置為全局變數，以便在 <a> 元素中使用
+                            console.log(orderDetailId);
                             window.orderDetailId = orderDetailId;
-
-                            // 重定向到购物车页面
-                            window.location.href = '/Cart/ConfirmOrder';
+                             window.location.href = `/Cart/ShoppingCart`;
+                            // window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                     });
             });

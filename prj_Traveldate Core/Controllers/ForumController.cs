@@ -47,6 +47,7 @@ namespace prj_Traveldate_Core.Controllers
                 .Include(s => s.Trip)
                 .Include(s => s.ForumList.Member)
                 .Include(s => s.Trip.Product)
+                .Where(s=>s.ForumList.IsPublish == true)
                 .GroupBy(g => g.ForumListId)
                 .Select(g => new ScheduleList
                 {
@@ -68,6 +69,7 @@ namespace prj_Traveldate_Core.Controllers
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
 
             var topTenArticle = _context.ScheduleLists
+                .Where(s=>s.ForumList.IsPublish == true)
     .GroupBy(s => s.ForumListId)
     .Select(group => new CForumList_topTen
     {
@@ -90,7 +92,9 @@ namespace prj_Traveldate_Core.Controllers
             {
                 TempData[CDictionary.SK_BACK_TO_ACTION]= "Create";
                 TempData[CDictionary.SK_BACK_TO_CONTROLLER]= "Forum";
+               
                 return RedirectToAction("Login", "Login");
+                
             }
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
             return View();
@@ -123,6 +127,10 @@ namespace prj_Traveldate_Core.Controllers
             _context.SaveChanges();
             return RedirectToAction("forumList", "Member");
         }
+       public IActionResult rr()
+        {
+            return View();
+        }
         //修改文章
         public IActionResult Edit(int? forumlist)
         {
@@ -131,20 +139,50 @@ namespace prj_Traveldate_Core.Controllers
                 return RedirectToAction("Login", "Login");
             }
             ViewBag.memberId = HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER);
-            
-            List<ScheduleList> article = _context.ScheduleLists.Include(s=>s.ForumList).Include(s=>s.Trip).Include(s=>s.Trip.Product).Where(f=>f.ForumListId == forumlist).ToList(); 
-            return View(article);
+
+            CCreatArticleViewModel vm = new CCreatArticleViewModel();
+            vm.forum = _context.ForumLists.Find(forumlist);
+            vm.schedule = _context.ScheduleLists.Find(forumlist);
+            vm.tripIds = _context.ScheduleLists.Where(s=>s.ForumListId == forumlist).Select(s=>(int)s.TripId).ToList();
+            //_context.ScheduleLists.Include(s=>s.ForumList).Include(s=>s.Trip).Include(s=>s.Trip.Product).Where(f=>f.ForumListId == forumlist).ToList(); 
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Edit(ForumList article)
+        public IActionResult Edit(CCreatArticleViewModel article)
         {
-            ForumList fDb = _context.ForumLists.FirstOrDefault(p => p.ForumListId == article.ForumListId);
-            if(fDb != null)
+            if (article.isSave == "儲存草稿")
             {
-                fDb.Content = article.Content;
-                _context.SaveChanges();
+                article.forum.IsPublish = false;
             }
+            if (article.isPublish == "結帳成功")
+            {
+                article.forum.IsPublish = true;
+            }
+            article.forum.ReleaseDatetime = DateTime.Now;
+            _context.Add(article.forum);
+            _context.SaveChanges();
+
+            foreach (int tripId in article.tripIds)
+            {
+                var newSchedule = new ScheduleList
+                {
+                    ForumListId = article.forum.ForumListId,
+                    TripId = tripId
+                };
+                _context.Add(newSchedule);
+            }
+
+            _context.SaveChanges();
             return RedirectToAction("Index", "Member");
+
+            //ForumList fDb = _context.ForumLists.FirstOrDefault(p => p.ForumListId == article.forum.ForumListId);
+            //if(fDb != null)
+            //{
+            //    article.forum.ReleaseDatetime = DateTime.Now;
+            //    _context.Add(article.forum);
+            //    _context.SaveChanges();
+            //}
+            //return RedirectToAction("Index", "Member");
         }
 
 
