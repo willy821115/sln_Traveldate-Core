@@ -163,6 +163,8 @@
                                                         </div>
                                                         <div class="Confirm-Container-Content">
                                                             <div class="traveler-info">
+                                                                        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+                                                                        <br />
                                                                 <input type="hidden" name="vm.companions[@count][@i].CompanionID" class="companionList">
                                                                 <label for="lastname">　　　姓氏　</label>
                                                                 <input type="text" name="vm.companions[@count][@i].LastName" class="lastname" size="30">
@@ -409,5 +411,14 @@
                 birthDateInput.val("");
             }
         });
+
+
+        $('#demobtn').on('click', function(){
+            $(this).siblings('.lastname').val("李");
+            $(this).siblings('.firstname').val("品姍");
+            $(this).siblings('.idnumber').val("A228765154");
+            $(this).siblings('.phone').val("0933659687");
+            $(this).siblings('.bdate').val("1990-08-04");
+        })
     </script>
 }
