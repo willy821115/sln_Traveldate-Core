@@ -15,13 +15,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                </div>
+                                                <div style="text-align:center;background-color:white;border-radius:10px">
+                                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                                                </div>
                             }
                             else
                             {
-                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -111,7 +111,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn my-btn-primary">增加</button>
+                        <button type="submit" class="btn my-btn-primary" id="btnAddCompanion">增加</button>
                         <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>
                     </div>                
                 }
@@ -147,4 +147,11 @@
     {
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
-
+@section scripts{
+    <script>
+            const btnAddCompanion = document.getElementById('btnAddCompanion');
+            btnAddCompanion.addEventListener('click', () => {
+                swal("新增旅伴成功！", "稍後將自動為您導向", "success");
+            });
+    </script>
+}

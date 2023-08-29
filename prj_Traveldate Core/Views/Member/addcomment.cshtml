@@ -145,7 +145,7 @@
 
                     <div>
                           <div class="form-group">
-                              <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送"/>
+                            <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送" id="btnAddComment" />
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                           </div>              
                     </div>
@@ -182,6 +182,14 @@
 
 }
 @section scripts{
+
+            <script>
+                const btnAddComment = document.getElementById('btnAddComment');
+                btnAddComment.addEventListener('click', () => {
+                    swal("新增評論成功！", "稍後將自動為您導向", "success");
+                });
+
+            </script>
 
     <script>
         $(document).ready(function () {
