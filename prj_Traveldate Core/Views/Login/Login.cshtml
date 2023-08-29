@@ -9,15 +9,17 @@
     <button type="submit" class="btn my-btn-primary">第三方登入</button>
     <br>
     <br>
+    <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+    <br />
     <div class="mb-3">
         <label for="mlUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control" asp-for="mlUsername" aria-describedby="phoneHelp" pattern="09[0-9]{8}" value="0945316798" required />
+        <input type="tel" class="form-control account" asp-for="mlUsername" aria-describedby="phoneHelp" pattern="09[0-9]{8}" value="0945316798" required />
         <span id="phoneHelp" class="form-text ml-1">會員帳號為註冊使用的手機號碼</span>
         <br>
 
         <div class="mb-3">
             <label for="mlPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" asp-for="mlPassword" value="11" required>
+            <input type="password" class="form-control password" asp-for="mlPassword" value="11" required>
             <span class="loginAlert ml-1">@ViewBag.Message</span>
             <span class="loginAlert ml-1">@TempData["ErrorMsg"]</span>
         </div>
@@ -45,4 +47,14 @@
  @section Styles
  {
     <link href="~/css/Login.css" rel="stylesheet" />
+ }
+
+@section Scripts{
+    <script>
+        $('#demobtn').on('click', function () {
+            $('.account').val("0935765315");
+            $('.password').val("1234");
+
+        })
+    </script>
  }
