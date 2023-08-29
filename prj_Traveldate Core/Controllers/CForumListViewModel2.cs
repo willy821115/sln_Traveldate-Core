@@ -9,6 +9,6 @@
         public int? Likes { get; set; }
         public int? Watches { get; set; }
         public string? Content { get; set; }
-        public bool? IsPublish { get; set; }
+        public bool? IsPublish { get; internal set; }
     }
 }

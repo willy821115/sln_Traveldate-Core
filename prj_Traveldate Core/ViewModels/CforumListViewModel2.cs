@@ -55,5 +55,6 @@ namespace prj_Traveldate_Core.ViewModels
         get { return forumList.Watches; }
         set { forumList.Watches = value; }
     }
+        public bool? IsPublish { get; set; }
     }
 }

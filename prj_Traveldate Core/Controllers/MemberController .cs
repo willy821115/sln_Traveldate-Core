@@ -276,6 +276,7 @@ namespace prj_Traveldate_Core.Controllers
 
                 context.SaveChanges();
             }
+            Thread.Sleep(3000);
             return RedirectToAction("Index");
             #region 先註解掉的程式碼
             //context.Members.ToList();
@@ -738,6 +739,7 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
+                    Thread.Sleep(3000);
                 }
             }
             return RedirectToAction("showCompanion");
@@ -1318,8 +1320,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.SaveChanges();
                 }
             }
-
-
+            Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
         public IActionResult forumList() //我的揪團new V
