@@ -108,7 +108,7 @@
                 @using (Html.BeginForm("commentList", "Member", FormMethod.Post))
                 {
                         <input type="hidden" name="id" value="@item.CommentId" />
-                    <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" /></td>
+                    <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnCommentRemove" name="btnCommentRemove" /> </td>
                 }
 
 @*                   <form method="post" action="@Url.Action("commentList", "Member")">
@@ -164,7 +164,12 @@
 }
 @section scripts{
 
-
+    <script>
+        const btnCommentRemove = document.getElementById('btnCommentRemove');
+        btnCommentRemove.addEventListener('click', () => {
+            swal("移除成功！", "稍後將自動為您導向", "success");
+        });
+    </script>
     
     <script>
         $(document).ready(function () {
