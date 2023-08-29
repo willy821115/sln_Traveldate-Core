@@ -266,25 +266,18 @@
 @section Scripts{
     <script src="~/js/forumList_jq.js"></script>
     <script>
-        function loginInfo() {
+         function loginInfo() {
             Swal.fire({
                 icon: 'info',
                 title: '請先登入會員!',
                 showConfirmButton: true,
                 confirmButtonText: '前往登入頁面', // 修改確認按鈕文字
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // 使用者按下確定按鈕後執行這裡的程式碼
-                    location.href = '@Url.Content("~/Login/Login")'; // 轉向至登入頁面
-                }
-            });
+            })
         }
         var isLoggedIn = $('#loginMem').text()
-        $('#confirmedLoginStatus').on('click', function (e) {
+        $('#confirmedLoginStatus').on('click', function () {
             if (!isLoggedIn) {
-               
                 loginInfo(); 
-                e.preventDefault();
             }
         });
 
