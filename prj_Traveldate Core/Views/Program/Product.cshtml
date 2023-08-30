@@ -321,12 +321,10 @@
                     <label style="font-size:22px" id="planprice">金額：</label>
                 </div>
                 <div class="m-3">
-                    <form id="addToCartForm" action="@Url.Action("AddToCart", "Program")" method="post">
-                        <input type="hidden" id="tripId" name="tripId" value="">
-                        <input type="hidden" id="num" name="num" value="">
-                        <input type="submit" id="addtocart" class="btn btn-outline-dark btn-lg addToCartButton" value="加入購物車" />
-                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="tripId"  class="btn my-btn-primary btn-lg addToCartButtonsss">立即購買</a>
-                    </form>
+                    <input type="hidden" id="tripId" name="tripId" value="">
+                    <input type="hidden" id="num" name="num" value="1">
+                    <button type="button" id="addToCartBtn" class="btn btn-outline-dark btn-lg addToCartButton" data-tripid="" data-quantity="1">加入購物車</button>
+                    <button type="button" id="addDirCartBtn" class="btn my-btn-primary btn-lg addDirCartButton" data-tripid="" data-quantity="1">立即購買</button>
                   </div>
             </div> 
         </div>
@@ -373,14 +371,14 @@
 
                                         if (tripDates < DateTime.Now)
                                         {
-                                                    <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                                        <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
                                         }
                                         else
                                         {
-                                            <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
-                                         　<input type="hidden" id="nums" name="nums" value="1">
-                                             <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
-                                             <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
+                                                <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                              <input type="hidden" id="nums" name="nums" value="1">
+                                                 <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                                 <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
                                                  
                                         }
                                     }
@@ -592,6 +590,26 @@
             }
         });
 
+        //click calendar 的 數量加減
+        const minusButton = document.getElementById('btn-minus');
+        const plusButton = document.getElementById('btn-plus');
+        const valueSpan = document.getElementById('var-value');
+        const minPeopleSpan = document.getElementById('minPeople');
+        const priceSpan = document.getElementById('price');
+
+        let value = 1;
+
+        plusButton.addEventListener('click', function () {
+            value++;
+            valueSpan.textContent = value;
+        });
+
+        minusButton.addEventListener('click', function () {
+            if (value > 1) {
+                value--;
+                valueSpan.textContent = value;
+            }
+        });
 
 
 
@@ -830,44 +848,63 @@
                 planPriceElement.innerHTML = `金額：<del>${priceElement.innerHTML}</del> ${discountedPriceElement.outerHTML}`;
             }
             trip = data.tripId;
-        } 
 
+            const quantity = document.getElementById('var-value').textContent;
 
-        //加到購物車
-        // document.getElementById('addtocart').addEventListener('click', function (event) {
-        //     event.preventDefault();
-        //     const productId = @Model.product.ProductId;
-        //     const numElement = document.getElementById('var-value');
-        //     const num = parseInt(numElement.textContent);
+            const numInput = document.getElementById('num');
+            numInput.value = quantity;
 
-        //     // Fetch MaxNum data
-        //     fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             // Set the value of the hidden field
-        //             document.getElementById('num').value = num;
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            const addDirCartBtn = document.getElementById('addDirCartBtn');
+            
 
-        //             // Construct the request data
-        //             const requestData = {
-        //                 num: num,
-        //                 tripId: data.tripId
-        //             };
+            addToCartBtn.setAttribute('data-tripid', trip);
+            addDirCartBtn.setAttribute('data-tripid', trip);
+           
 
-        //             console.log(requestData);
+            addToCartBtn.addEventListener('click', addToCart);
+            addDirCartBtn.addEventListener('click', addDirectToCart);
+        }
 
-        //             // Submit the form programmatically
-        //             return fetch(`@Url.Content("~/program/AddToCart")?num=${num}&tripId=${data.tripId}`, {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json'
-        //                 },
-        //                 body: JSON.stringify(requestData)
-        //             });
-        //         })
-               
-        // });
+        function addToCart() {
+            const tripId = this.getAttribute('data-tripid');
+            const quantity = document.getElementById('var-value').textContent;
 
+            console.log(quantity, tripId)
 
+            fetch(`/Program/AddToCart?num=${quantity}&tripId=${tripId}`, {
+                method: 'POST',
+            }).then(response => response.text())
+                .then(data => {
+                    if (data === "請登入會員") {
+                        swal('請登入會員', '', 'warning');
+                    } else {
+                        swal('已加入購物車!', '', 'success');
+                        $.get('@Url.Content("/CartApi/GetCartCount")', function (data) {
+                            $('#CartBagde').addClass(" badge rounded-pill bg-warning text-dark");
+                            $('#CartBagde').text(data);
+                        })
+                    }
+                });
+        }
+
+        function addDirectToCart() {
+            const tripId = this.getAttribute('data-tripid');
+            const quantity = document.getElementById('var-value').textContent;
+
+            console.log(quantity, tripId)
+
+            fetch(`/Program/AddToCart?num=${quantity}&tripId=${tripId}`, {
+                method: 'POST',
+            }).then(response => response.text())
+                .then(data => {
+                    if (data === "請登入會員") {
+                        swal('請登入會員', '', 'warning');
+                    } else {
+                        window.location.href = `/Cart/ShoppingCart`;
+                    }
+                });
+        }
 
 
         //商品每天行程JS
@@ -889,27 +926,7 @@
         });
 
 
-        //click calendar 的 數量加減
-        const minusButton = document.getElementById('btn-minus');
-        const plusButton = document.getElementById('btn-plus');
-        const valueSpan = document.getElementById('var-value');
-        const minPeopleSpan = document.getElementById('minPeople');
-        const priceSpan = document.getElementById('price');
-
-        let value = 1;
-
-        plusButton.addEventListener('click', function () {
-            value++;
-            valueSpan.textContent = value;
-        });
-
-        minusButton.addEventListener('click', function () {
-            if (value > 1) {
-                value--;
-                valueSpan.textContent = value;
-            }
-        });
-
+        
         //commentpic
         // var image = document.getElementById('myImg');
         // image.addEventListener('mouseover', function () {
@@ -921,30 +938,30 @@
         // });
         
         //顯示所有的加購物車
-        const addToCartButtons = document.querySelectorAll('.addToCartButton');
-        function handleAddToCartClick(event) {
-            event.preventDefault();
-            const num = parseInt(event.target.getAttribute('data-num'));
-            const tripId = parseInt(event.target.getAttribute('data-tripId'));
+        // const addToCartButtons = document.querySelectorAll('.addToCartButton');
+        // function handleAddToCartClick(event) {
+        //     event.preventDefault();
+        //     const num = parseInt(event.target.getAttribute('data-num'));
+        //     const tripId = parseInt(event.target.getAttribute('data-tripId'));
 
-            fetch(`/Program/AddToCart?num=${num}&tripId=${tripId}`, {
-                method: 'POST',
-            })
-                .then(response => response.text())
-                .then(data => {
-                    if (data === "請登入會員") {
-                        swal('請登入會員', '', 'warning');
-                    } else {
-                        swal('已加入購物車!', '', 'success');
-                    }
-                });
-        }
+        //     fetch(`/Program/AddToCart?num=${num}&tripId=${tripId}`, {
+        //         method: 'POST',
+        //     })
+        //         .then(response => response.text())
+        //         .then(data => {
+        //             if (data === "請登入會員") {
+        //                 swal('請登入會員', '', 'warning');
+        //             } else {
+        //                 swal('已加入購物車!', '', 'success');
+        //             }
+        //         });
+        // }
 
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', handleAddToCartClick);
-        });
+        // addToCartButtons.forEach(button => {
+        //     button.addEventListener('click', handleAddToCartClick);
+        // });
 
-        var modal = document.getElementById("myModal");
+       // var modal = document.getElementById("myModal");
 
         // Get the image and insert it inside the modal - use its "alt" text as a caption
         // var img = document.getElementById("myImg");
@@ -956,12 +973,12 @@
         // }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        //var span = document.getElementsByClassName("close")[0];
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
+        // span.onclick = function () {
+        //     modal.style.display = "none";
+        // }
 
         //回到最上面按鈕
         $(function () {
