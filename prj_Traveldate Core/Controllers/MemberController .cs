@@ -278,7 +278,7 @@ namespace prj_Traveldate_Core.Controllers
 
                 context.SaveChanges();
             }
-            Thread.Sleep(3000);
+            Thread.Sleep(4000);
             return RedirectToAction("Index");
             #region 先註解掉的程式碼
             //context.Members.ToList();
@@ -405,15 +405,14 @@ namespace prj_Traveldate_Core.Controllers
                     context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
 
-                  Thread.Sleep(1000);
+                    Thread.Sleep(3500);
                 }
                 else if(edit.txtNewPassword != edit.txtCheckPassword )
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(60000);
                     return RedirectToAction("passwordChange");
                 }
             }
-            Thread.Sleep(2000);
             return RedirectToAction("Index");
         }
     
@@ -723,11 +722,14 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult addCompanion(CCompanionViewModel vm) //新增旅伴資料Create V
         {
             if (
-                (string.IsNullOrEmpty(vm.LastName)) ||
-                (string.IsNullOrEmpty(vm.FirstName)) ||
-                (string.IsNullOrEmpty(vm.Phone))
+                 (string.IsNullOrEmpty(vm.LastName)) ||
+                 (string.IsNullOrEmpty(vm.FirstName)) ||
+                 (string.IsNullOrEmpty(vm.Phone))
                )
-                return RedirectToAction("showCompanion");
+                {   Thread.Sleep(60000);
+                    return RedirectToAction("addCompanion");
+                }
+
             else
             {
                 Companion cpDB = new Companion();
@@ -741,8 +743,8 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
-                    Thread.Sleep(3000);
-                }
+                    Thread.Sleep(3500);
+                }     
             }
             return RedirectToAction("showCompanion");
         }
@@ -867,8 +869,7 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     context.Favorites.Remove(ff);
                     context.SaveChanges();
-                //}
-        }
+                }
             Thread.Sleep(3000);
             return RedirectToAction("favoriteList");
         }

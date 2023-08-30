@@ -10,19 +10,18 @@
                 @{
                     if (ViewBag.photo != null)
                     {
-                                                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                                </div>
+                     <div style="text-align:center;background-color:white;border-radius:10px">
+                           <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                     </div>
                     }
                     else
                     {
-                                                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                     <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                     }
                 }
                 <ul class="list-group leftarea mt-3">
-                            <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px"></b></li> @* @ViewBag.LastName@ViewBag.firstName *@
-                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
-
+                            <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px"></b>@ViewBag.LastName@ViewBag.firstName</li>
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
                 </ul>
 
             </div>
@@ -63,7 +62,6 @@
 
 <!-- 右半邊 - 內容容器 -->
 <div class="col-md-9">
-
             <div>
                 <h3 class="mb-4">
                     <b>去聊聊</b>
@@ -108,12 +106,12 @@
 
 
 @section Styles{
-         <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-            <style>.sent-message {
-            color: blue; /* 设置发送者消息的颜色 */
-                    background-color: lightblue; /* 设置发送者
-                    }
-           </style>
+    <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+
+    <style>.sent-message {
+        color: blue; /* 设置发送者消息的颜色 */
+        background-color: lightblue;}  /* 设置发送者 */
+    </style>
 }
 
 @section scripts{
