@@ -80,6 +80,15 @@ namespace prj_Traveldate_Core.Controllers
             return Json(companion);
         }
 
+        //取得購物車內商品數量
+        [HttpGet]
+        public IActionResult GetCartCount()
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            var count = _context.OrderDetails.Where(o => o.Order.IsCart == true && o.Order.MemberId == _memberID).Count();
+            return Content(count.ToString());
+        }
+
         //揪團用結帳
         //傳入ScheduleID + CouponListID + Discount (Quantity? SellingPrice?)
 
