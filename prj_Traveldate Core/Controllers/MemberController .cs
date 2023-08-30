@@ -14,6 +14,8 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -1024,6 +1026,7 @@ namespace prj_Traveldate_Core.Controllers
         #endregion
         public IActionResult commentList() //我的評論new V
         {
+
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
                         join cm in context.CommentLists
@@ -1031,6 +1034,7 @@ namespace prj_Traveldate_Core.Controllers
                         join pl in context.ProductLists
                         on cm.ProductId equals pl.ProductId
                         where m.MemberId == MemberId
+               
                         select new CcommentListViewModel
                         {
                             Title = cm.Title,
@@ -1040,6 +1044,7 @@ namespace prj_Traveldate_Core.Controllers
                             ProductName = pl.ProductName,
                             CommentId=cm.CommentId
                         };
+
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {

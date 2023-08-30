@@ -54,6 +54,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -77,9 +81,9 @@
         <tr>
             <th ></th>
             <th class="col-md-3">商品名稱</th>
-            <th class="col-md-2">標題</th>
-            <th class="col-md-4.5">內容</th>
-            <th class="col-md-1">您的評分</th>
+            <th class="col-md-1.5">標題</th>
+            <th class="col-md-5">內容</th>
+            <th class="col-md-1.5">您的評分</th>
             <th class="col-md-1">評論日期</th>
             <th >操作</th>
         </tr>
