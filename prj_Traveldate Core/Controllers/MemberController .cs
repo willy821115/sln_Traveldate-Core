@@ -877,21 +877,37 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult orderList(int? id, string? Title, string? Content, int? CommentScore, List<IFormFile> photos) //會員訂單new V 
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            var datas = from o in context.OrderDetails//.GroupBy(i => i.Order.OrderId).Select(d => d.First()).ToList()
-                        from c in context.CommentLists
-                        where c.MemberId== MemberId  //&& o.Order.MemberId== MemberId //&& c.ProductId==o.Trip.Product.ProductId
-                        //where o.Order.Member.MemberId == MemberId
-                        group new { o, c } by o.Trip.Date into grouped
-                        select new COrdersViewModel { 
-                            Date =grouped.Key, //o.Trip.Date, 
-                            Datetime = string.Format("{0:yyyy-MM-dd}", grouped.First().o.Order.Datetime),//Datetime = string.Format("{0:yyyy-MM-dd}", o.Order.Datetime), 
-                            ProductName = grouped.First().o.Trip.Product.ProductName,//ProductName = o.Trip.Product.ProductName, 
-                            ProductId = grouped.First().o.Trip.Product.ProductId,//ProductId = o.Trip.Product. ProductId, 
-                            CommentScore = grouped.First().c.CommentScore,//CommentScore =c.CommentScore,
-                            Content = grouped.First().c.Content,//Content=c.Content,
-                            Title = grouped.First().c.Title,//Title=c.Title    
-                            //ImagePath = grouped.First().c.CommentPhotoLists.//ImagePath![0].ToString() //ImagePath
+            //var datas = from o in context.OrderDetails//.GroupBy(i => i.Order.OrderId).Select(d => d.First()).ToList()
+            //            from c in context.CommentLists
+            //            where c.MemberId== MemberId  //&& o.Order.MemberId== MemberId //&& c.ProductId==o.Trip.Product.ProductId
+            //            //where o.Order.Member.MemberId == MemberId
+            //            group new { o, c } by o.Trip.Date into grouped
+            //            select new COrdersViewModel { 
+            //                Date =grouped.Key, //o.Trip.Date, 
+            //                Datetime = string.Format("{0:yyyy-MM-dd}", grouped.First().o.Order.Datetime),//Datetime = string.Format("{0:yyyy-MM-dd}", o.Order.Datetime), 
+            //                ProductName = grouped.First().o.Trip.Product.ProductName,//ProductName = o.Trip.Product.ProductName, 
+            //                ProductId = grouped.First().o.Trip.Product.ProductId,//ProductId = o.Trip.Product. ProductId, 
+            //                CommentScore = grouped.First().c.CommentScore,//CommentScore =c.CommentScore,
+            //                Content = grouped.First().c.Content,//Content=c.Content,
+            //                Title = grouped.First().c.Title,//Title=c.Title    
+            //                //ImagePath = grouped.First().c.CommentPhotoLists.//ImagePath![0].ToString() //ImagePath
+            //             };
+            //08.31 調整
+            var data5 = from orderdetails3 in context.OrderDetails
+                        where orderdetails3.Order.Member.MemberId==MemberId
+                        select new COrdersViewModel
+                        {
+                            Datetime = string.Format("{0:yyyy-MM-dd}", orderdetails3.Order.Datetime),
+                            ProductName = orderdetails3.Trip.Product.ProductName,
+                            ProductId = orderdetails3.Trip.ProductId,
+
+                            Date= orderdetails3.Trip.Date,
+
+                            CommentScore =CommentScore,
+                            Content = Content,
+                            Title = Title,
                         };
+
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {
@@ -979,7 +995,7 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas.Distinct());
+            return View(data5);
             //return View(data2.Distinct());
             #region 先註解掉的程式碼
             //var datas = from tripde in context.TripDetails
