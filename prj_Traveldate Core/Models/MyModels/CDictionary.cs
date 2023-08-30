@@ -4,6 +4,7 @@
     {
         //public static readonly string SK_COMPANYID = "SK_COMPANYID";
         public static readonly string SK_FILETREDPRODUCTS_INFO = "SK_FILETREDPRODUCTS_INFO";
+        public static readonly string SK_FILETREDSCHEDULE_INFO = "SK_FILETREDSCHEDULE_INFO";
         public static readonly string SK_LOGGEDIN_USER = "SK_LOGGEDIN_USER";
         public static readonly string SK_LOGGEDIN_USER_NAME = "SK_LOGGEDIN_USER_NAME";
         public static readonly string SK_LOGGEDIN_COMPANY = "SK_LOGGEDIN_COMPANY";

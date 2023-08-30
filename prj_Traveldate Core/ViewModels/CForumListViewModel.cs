@@ -1,6 +1,7 @@
 ﻿using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using System.Drawing;
+using X.PagedList;
 
 namespace prj_Traveldate_Core.ViewModels
 { 
@@ -19,6 +20,10 @@ namespace prj_Traveldate_Core.ViewModels
         public List<ScheduleList>? schedulesForProd { get; set; }
         public List<CForumList_topTen>? topTen {  get; set; }
         public List<ProductTagList>? productTags { get; set; }
+        public IPagedList<ScheduleList> pages { get; set; }
+        public int currentPage { get; set; }
+        public int pageSize { get; set; }
+        public int totalCount { get; set; }
         //public List<Trip> topTenTrip { get; set; }
         //public int? ForumlistId { get; set; }   
 
@@ -35,5 +40,6 @@ namespace prj_Traveldate_Core.ViewModels
         public decimal? totalPrice { get; set; }
         public string? title { get; set; }
         public int? prodId { get; set; }
+        public string content { get; set; } 
     }
 }

@@ -365,9 +365,10 @@
                         });
                     var resultCount = $('#updateTotal').val()
                     $('#total').html(resultCount)
-                     $(".pagination > a").filter(function () {
-                         return $(this).text() === pageNumber.toString();
-                     }).addClass("active");
+                    //20230830  09:00 好像不用加 ????
+                     // $(".pagination > a").filter(function () {
+                     //     return $(this).text() === pageNumber.toString();
+                     // }).addClass("active");
                 
                 },
                 error: function (error) {
