@@ -377,13 +377,11 @@
                                         }
                                         else
                                         {
-                                                    <form id="addToCartForm" action="@Url.Action("AddToCart", "Program")" method="post">
-                                                        <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
-                                                        <input type="hidden" id="nums" name="nums" value="1">
-                                                        <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
-                                                        <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
-                                                    </form>
-                                           
+                                            <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                         　<input type="hidden" id="nums" name="nums" value="1">
+                                             <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                             <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
+                                                 
                                         }
                                     }
                                     
@@ -836,38 +834,38 @@
 
 
         //加到購物車
-        document.getElementById('addtocart').addEventListener('click', function (event) {
-            event.preventDefault();
-            const productId = @Model.product.ProductId;
-            const numElement = document.getElementById('var-value');
-            const num = parseInt(numElement.textContent);
+        // document.getElementById('addtocart').addEventListener('click', function (event) {
+        //     event.preventDefault();
+        //     const productId = @Model.product.ProductId;
+        //     const numElement = document.getElementById('var-value');
+        //     const num = parseInt(numElement.textContent);
 
-            // Fetch MaxNum data
-            fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Set the value of the hidden field
-                    document.getElementById('num').value = num;
+        //     // Fetch MaxNum data
+        //     fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             // Set the value of the hidden field
+        //             document.getElementById('num').value = num;
 
-                    // Construct the request data
-                    const requestData = {
-                        num: num,
-                        tripId: data.tripId
-                    };
+        //             // Construct the request data
+        //             const requestData = {
+        //                 num: num,
+        //                 tripId: data.tripId
+        //             };
 
-                    console.log(requestData);
+        //             console.log(requestData);
 
-                    // Submit the form programmatically
-                    return fetch(`@Url.Content("~/program/AddToCart")?num=${num}&tripId=${data.tripId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(requestData)
-                    });
-                })
+        //             // Submit the form programmatically
+        //             return fetch(`@Url.Content("~/program/AddToCart")?num=${num}&tripId=${data.tripId}`, {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json'
+        //                 },
+        //                 body: JSON.stringify(requestData)
+        //             });
+        //         })
                
-        });
+        // });
 
 
 
@@ -891,7 +889,7 @@
         });
 
 
-        //
+        //click calendar 的 數量加減
         const minusButton = document.getElementById('btn-minus');
         const plusButton = document.getElementById('btn-plus');
         const valueSpan = document.getElementById('var-value');
@@ -922,7 +920,7 @@
         //     image.style.cursor = 'auto';
         // });
         
-        //加購物車
+        //顯示所有的加購物車
         const addToCartButtons = document.querySelectorAll('.addToCartButton');
         function handleAddToCartClick(event) {
             event.preventDefault();
@@ -965,6 +963,7 @@
             modal.style.display = "none";
         }
 
+        //回到最上面按鈕
         $(function () {
             $('#BackTop').click(function () {
                 $('html,body').animate({ scrollTop: 0 }, 222);
@@ -978,6 +977,7 @@
             }).scroll();
         });
 
+        //顯示所有的數量加減
        $(document).ready(function () {
     $('.btn-minuss').click(function () {
         var valueSpan = $(this).closest('.row').find('.var-values');
@@ -997,6 +997,8 @@
         valueSpan.text(value);
     });
 });
+
+        //顯示所有的加購物車
         $(document).ready(function () {
             $('.addToCartButtonss').click(function () {
                 var tripId = $(this).data('tripid');
@@ -1016,12 +1018,17 @@
                             swal('請登入會員', '', 'warning');
                         } else {
                             swal('已加入購物車!', '', 'success');
+                            $.get('@Url.Content("/CartApi/GetCartCount")', function (data) {
+                                $('#CartBagde').addClass(" badge rounded-pill bg-warning text-dark");
+                                $('#CartBagde').text(data);
+                            })
                         }
                     });
             });
         });
 
-
+        
+        //顯示所有的立即購買
         $(document).ready(function () {
             $('.addToCartButtonsss').click(function () {
                 event.preventDefault();
@@ -1053,14 +1060,9 @@
 
 
 
-
-
-
-
-
     </script>
 
-
+    <!--產品頁面下滑的navbar-->
     <script>
         $(document).ready(function () {
             var windowHeight = $(window).height();
