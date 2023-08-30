@@ -43,6 +43,8 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fCommentPhotoList = pf.loadCommentPhotoPath((int)id);
             vm.program.fTripId = pf.loadTripId((int)id);
             vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
+            vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
             return View(vm);
         }
         
@@ -62,18 +64,22 @@ namespace prj_Traveldate_Core.Controllers
             List<int?> max = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
             List<int?> min = db.Trips.Where(p => p.ProductId == id).Select(t => t.MinNum).ToList();
             List<decimal?> price = db.Trips.Where(p => p.ProductId == id).Select(t => t.UnitPrice).ToList();
+            List<decimal?> discount = db.Trips.Where(p => p.ProductId == id).Select(t => t.Discount).ToList();
             List<int> tripid = db.Trips.Where(p => p.ProductId == id).Select(t => t.TripId).ToList();
 
             int? maxnum = max[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             int? minnum = min[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             decimal? pricenum = price[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            decimal? discountnum = discount[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             int tripId = tripid[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             DateTime? date = tripdate.FirstOrDefault(d => d?.ToString("yyyy-MM-dd") == selectedDate);
+
             return Json(new
             {
                 Maxnum = maxnum,
                 Minnum = minnum,
                 Price = pricenum,
+                Discount = discountnum,
                 Date = date?.ToString("yyyy-MM-dd"),
                 TripId = tripId
             });

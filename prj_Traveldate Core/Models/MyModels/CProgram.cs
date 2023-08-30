@@ -23,5 +23,9 @@
         public List<string> fProdTags { get; set; }
         public List<int> fTripId { get; set; }
         public int floggedInMemberId { get; set; }
+
+        public List<decimal?> fDiscountPlanPrice { get; set; }
+        public List<string> fDiscountPriceDate { get; set; }
+
     }
 }

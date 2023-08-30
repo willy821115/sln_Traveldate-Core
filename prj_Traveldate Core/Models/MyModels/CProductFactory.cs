@@ -203,12 +203,26 @@ namespace prj_Traveldate_Core.Models.MyModels
             return comphoto;
         }
 
-        //loadTripPrice
+        //loadTripPrice原價
         public List<decimal?> loadPlanprice(int id)
         {
             List<decimal?> price = db.Trips.Where(p => p.ProductId == id).OrderBy(t=>t.Date).Select(t => t.UnitPrice).ToList();
             return price;
         }
+        //load優惠金額
+        public List<decimal?> loadDiscountPrice(int id)
+        {
+            List<decimal?> disprice = db.Trips.Where(p => p.ProductId == id).OrderBy(t => t.Date).Select(t =>t.Discount).ToList();
+            return disprice;
+        }
+        //優惠價截止日期
+        public List<string> loadDiscountPriceDate(int id)
+        {
+            List<DateTime?> pricedisDates = db.Trips.Where(p => p.ProductId == id).OrderBy(t => t.Date).Select(t => t.DiscountExpirationDate).ToList();
+            List<string> formatPriceDates = pricedisDates.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
+            return formatPriceDates;
+        }
+
 
         //多少錢起的價格
         public decimal? loadPlanpriceStart(int id)
