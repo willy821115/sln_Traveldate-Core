@@ -6,7 +6,7 @@
 @foreach (var city in Model)
 {
     <div class="controls-display-row category-click">
-        <span class="fs-5">@Html.DisplayFor(modelItem => city.country) (@city.citys.Distinct().Count())</span>
+        <span class="fs-5">@Html.DisplayFor(modelItem => city.country) </span><label class="mb-0">(@city.citys.Distinct().Count())</label>
         <div>
             <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
             <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -20,7 +20,7 @@
                 <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
                     <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                     <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                    <span>@Html.DisplayFor(modelItem => t) (@cityCount)</span>
+                    <span>@t</span><label class="mb-0">(@cityCount)</label>
                 </li>
             }
         </ul>

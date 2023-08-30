@@ -288,14 +288,15 @@
                 </div>
             </div>
         </div>
-        <div class="p-2 mt-2 mb-2">
+        
+        <div class="p-2 mt-2 mb-2" id="targetDiv">
             <div class="divide-line pl-3">
                 <span id="total" class="fs-3 fw-bolder me-2">@Model.schedules.Count()</span><span class="fs-5 my-text-primary">
                     <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
                     項體驗行程
                 </span>
                 <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
-
+                
             </div>
             <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                 <span class=" fw-bolder ">排序 :  </span>
@@ -372,29 +373,30 @@
         </div>
 
 @section Scripts{
+            <script src="~/js/wait_icon_function.js"></script>
             <script>
+                var selectedTags = [];
+                var selectedCities = [];
                 var pageNumber = 1;
-                function test() {
+                function filteredByConditions() {
+                    showLoadingIcon()
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("filteredSchedules", "Forum")",
                         data: {
-                            // tags: selectedTags, cities: selectedCities, types: selectedTypes,
-                            // startTime: startTime, endTime: endTime,
-                            // minPrice: minPrice, maxPrice: maxPrice,
+                            tags: selectedTags, 
+                            cities: selectedCities,
                             page: pageNumber
                         },
                         success: function (response) {
-                            // hideLoadingIcon()
+                            var target_top = $("#targetDiv").offset().top - 100;
+                             hideLoadingIcon()
                             $('#filterBody').html(response)
                             $('#total').html($('#updateTotal').val());
                             window.scrollTo({
-                                top: 0,
+                                top: target_top,
                                 behavior: 'smooth'
                             });
-                            
-                           
-
                         },
                         error: function (error) {
                             console.log("發生錯誤：", error);
@@ -404,7 +406,7 @@
             </script>
     <script>
         $('#test').on('click', function () {
-                    test()
+                    filteredByConditions()
         })
     </script>
     <script src="~/js/forumList_jq.js"></script>

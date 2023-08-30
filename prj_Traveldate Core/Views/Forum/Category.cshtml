@@ -9,7 +9,7 @@
     {
 
         <div class="controls-display-row category-click">
-            <span class="fs-5">@Html.DisplayFor(modelItem => c.category) (@c.tags.Distinct().Count())</span>
+            <span class="fs-5">@Html.DisplayFor(modelItem => c.category)</span><label class="mb-0"> (@c.tags.Distinct().Count())</label>
             <div class="d-flex justify-content-end">
                 <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                 <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -23,7 +23,7 @@
                     <li class=" d-flex align-items-center divide-line my-w-80-percent">
                         <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                         <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                        <span>@Html.DisplayFor(modelItem => t) (@tagsCount)</span>
+                        <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0">  (@tagsCount)</label>
                     </li>
                 }
             </ul>
