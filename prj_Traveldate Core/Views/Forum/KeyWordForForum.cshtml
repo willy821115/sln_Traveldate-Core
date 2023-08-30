@@ -21,7 +21,7 @@
                 <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
             </div>
         </div>
-        <div class=" col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
+            <div class=" col-2 m-1 pt-1 rounded bg-gray-100 ">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
         <div class="rounded bg-gray-100 col-2 m-1">
             <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
             @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
