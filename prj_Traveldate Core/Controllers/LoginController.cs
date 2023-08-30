@@ -39,7 +39,7 @@ namespace prj_Traveldate_Core.Controllers
         public ActionResult Login(CLoginMemberViewModel vm)
         {
             Member mem = (new TraveldateContext()).Members.FirstOrDefault(
-                t => t.Phone.Equals(vm.mlUsername) && t.Password.Equals(vm.mlPassword));
+                t => t.Email.Equals(vm.mlUsername) && t.Password.Equals(vm.mlPassword));
             if (mem != null && mem.Password.Equals(vm.mlPassword))
             {
                 if (!(bool)mem.Enable)
