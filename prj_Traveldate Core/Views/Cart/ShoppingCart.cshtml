@@ -68,13 +68,15 @@
                         <h3 class="subtitle">@item.date</h3>
                 </div>
                 <div class="counter">
-                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus">－</span>
-                    <div class="count">@item.quantity</div>
-                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus">＋</span>
+                     <input type="hidden" class="odid" value="@item.orderDetailID">
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartMinus" id="btnminus">－</span>
+                    <div class="count" id="itemCount">@item.quantity</div>
+                    <span class="btn btn-outline-dark btn-sm CartIconbtn cartPlus" id="btnplus">＋</span>
                 </div>
                 <div class="prices d-flex flex-column justify-content-between">
                     <div>
                         <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal">
+                        <input type="hidden" class="tripidfornodal" value="@item.tripID">
                             @{
                                 if (!item.favo)
                                 {
@@ -117,9 +119,10 @@
                                         <h5>
                                                 @item.planName
                                         </h5>
-                                        <p>
+                                        <h6>
                                             目前可訂購時間：
-                                        </p>
+                                        </h6>
+                                            <div id="trip_@item.tripID"></div>
                                     </div>
                                 </div>
                             </div>
@@ -251,9 +254,34 @@
     <script src="~/js/jsCart.js"></script>
     <script src="~/js/jquery-3.4.1.js"></script>
     <script>
-        $('#GoConfirm').on('click', function(){
-            
+        $('.cartPlus').click(function () {
+            const id = $(this).siblings('.odid').val();
+            $.get(`@Url.Content("/CartApi/ItemPlus")?id=${id}`, function (data) {
+                $(this).siblings('.count').text(data);
+            })
         })
+
+        $('.cartMinus').click(function () {
+            const id = $(this).siblings('.odid').val();
+            $.get(`@Url.Content("/CartApi/ItemMinus")?id=${id}`, function (data) {
+                $(this).siblings('.count').text(data);
+            })
+        })
+
+        async function loadTripJson(id) {
+            const x = '#trip_' + id;
+            const response = await fetch(`@Url.Content("/CartApi/LoadTrips")?id=${id}`);
+            const data = await response.json();
+            console.log(data);
+            const list = data.map(d => `<span>${d.date.substring(0,10)}</span>/<span>${d.unitPrice - d.discount}</span>/<span>${d.maxNum}</span><br>`)
+            document.querySelector(x).innerHTML = list.join("")
+        }
+
+        $('.cartEdit').on('click',function(){
+            const tripid = $(this).next('.tripidfornodal').val();
+            loadTripJson(tripid);
+        })
+
     </script>
 }
 

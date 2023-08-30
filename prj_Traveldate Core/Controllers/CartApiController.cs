@@ -67,8 +67,50 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("ShoppingCart", "Cart");
         }
 
-        //TODO  修改數量
+        // +-按鈕 修改數量
+        public IActionResult ItemPlus(int id) //odid
+        {
+            OrderDetail od = _context.OrderDetails.Find(id);
+            if (od != null)
+            {
+                od.Quantity += 1;
+                _context.SaveChanges();
+                return Content(od.Quantity.ToString());
+            }
+            return NoContent();
+        }
+
+        public IActionResult ItemMinus(int id) //odid
+        {
+            OrderDetail od = _context.OrderDetails.Find(id);
+            if (od != null)
+            {
+                if (od.Quantity > 1)
+                {
+                    od.Quantity -= 1;
+                    _context.SaveChanges();
+                    return Content(od.Quantity.ToString());
+                }
+            }
+            return NoContent();
+        }
+
         //TODO  編輯訂購內容(修改OD)
+        public IActionResult LoadTrips(int id) //tripid
+        {
+            var pid = _context.Trips.Find(id).ProductId;
+            var trips = _context.Trips.Where(t => t.ProductId == pid && t.Date>DateTime.Now).OrderBy(t=>t.Date);
+            foreach (var trip in trips)
+            {
+                if (trip.Discount == null)
+                {
+                    trip.Discount = 0;
+                }
+            }
+            return Json(trips);
+        }
+
+
         //TODO  抓推薦
         //TODO  抓瀏覽紀錄
 
