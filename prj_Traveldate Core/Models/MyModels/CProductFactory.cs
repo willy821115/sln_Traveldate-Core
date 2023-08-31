@@ -319,8 +319,6 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-        //審核行程所需
-      
 
 
     }

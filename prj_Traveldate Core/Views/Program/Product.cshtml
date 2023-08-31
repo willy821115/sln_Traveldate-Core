@@ -121,15 +121,20 @@
         </div>
         <div class="card m-auto" style="width: 35%; /*box-shadow:8px 8px 3px rgba(0, 0, 0, 0.5);*/">
             <div class="card-body" style="width:80%; margin:5px auto;">
-                <div class="price-container">
+                <div class="price-container" style="display: flex; align-items: center;">
                     <span>TWD</span>
                     <span>@Model.program.fTripPrice</span>
                     <span>起</span>
+                    <a asp-controller="Program" asp-action="AddToFavo" name="pdid" asp-route-id="@Model.product.ProductId">
+                        <img src="/icons/icons8-like-48 (1).png" class="CartIconbtn cartUnlike" style="width:32px; margin-bottom:2px;">
+                    </a>
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 @if(Model.program.fStatus == "熱賣中")
                 {
-                    <p class="card-text" style="margin-top:5px;color:green"><img src="/icons/icons8-fire-16.png" style="margin-bottom:5px"/>@Model.program.fStatus</p>
+                    <div class="flame-icon"></div>
+
+                    <p class="card-text" style="margin-top:5px;color:green">@Model.program.fStatus</p>
                 }
                 else if (Model.program.fStatus == "已截止")
                 {

@@ -225,18 +225,18 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        public IActionResult CartItemCount()
+        public IActionResult AddToFav(int id)
         {
             TraveldateContext db = new TraveldateContext();
-            int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            int cartItemCount = (from o in db.Orders
-                                join od in db.OrderDetails on o.OrderId equals od.OrderId
-                                where o.MemberId == loggedInMemberId && o.IsCart == true
-                                select od.OrderId).Count();
-
-            ViewBag.CartItemCount = cartItemCount;
-
-            return View("_Layout");
+            int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            Favorite favo = new Favorite()
+            {
+                MemberId = memberID,
+                ProductId = id
+            };
+            db.Favorites.Add(favo);
+            db.SaveChanges();
+            return RedirectToAction("Product");
         }
 
     }
