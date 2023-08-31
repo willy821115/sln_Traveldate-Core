@@ -901,7 +901,15 @@
                     if (data === "請登入會員") {
                         swal('請登入會員', '', 'warning');
                     } else {
-                        window.location.href = `/Cart/ShoppingCart`;
+                        var orderDetailId = parseInt(data);
+                        console.log(orderDetailId);
+                        console.log(data);
+
+                        //window.orderDetailId = orderDetailId;
+                        //window.location.href = `/Cart/ShoppingCart`;
+                        window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+
+                        //window.location.href = `/Cart/ShoppingCart`;
                     }
                 });
         }
@@ -1067,9 +1075,11 @@
                         } else {
                             var orderDetailId = parseInt(data);
                             console.log(orderDetailId);
-                            window.orderDetailId = orderDetailId;
-                            window.location.href = `/Cart/ShoppingCart`;
-                            //window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                            console.log(data);
+
+                            //window.orderDetailId = orderDetailId;
+                            //window.location.href = `/Cart/ShoppingCart`;
+                            window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                     });
             });

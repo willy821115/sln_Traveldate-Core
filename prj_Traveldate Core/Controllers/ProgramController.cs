@@ -137,6 +137,7 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult AddDirectToCart(int num, int tripId)
         {
             TraveldateContext db = new TraveldateContext();
+            int orderDetailId = 0;
 
             int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             if (loggedInMemberId == 0)
@@ -165,15 +166,15 @@ namespace prj_Traveldate_Core.Controllers
                     db.OrderDetails.Add(newOrderDetail);
                     db.SaveChanges();
                     //int[] orderDetailId = new int[1];
-                    //orderDetailId[0] = newOrderDetail.OrderDetailsId;
-                    int orderDetailId = newOrderDetail.OrderDetailsId;
+                    orderDetailId = newOrderDetail.OrderDetailsId;
+                    //intorderDetailId = newOrderDetail.OrderDetailsId;
 
 
                     ViewBag.orderDetailId = orderDetailId;
 
-                    //return Content(orderDetailId.ToString());
+                    return Content(orderDetailId.ToString());
                     //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
-                   return RedirectToAction("ShoppingCart", "Cart");
+                    //return RedirectToAction("ShoppingCart", "Cart");
                     //return Json(orderDetailId);
                 }
             }
@@ -198,13 +199,24 @@ namespace prj_Traveldate_Core.Controllers
 
                 db.OrderDetails.Add(newOrderDetail);
                 db.SaveChanges();
-                int orderDetailId = newOrderDetail.OrderDetailsId;
+                //int orderDetailId = newOrderDetail.OrderDetailsId;
+                orderDetailId = newOrderDetail.OrderDetailsId;
+
                 ViewBag.orderDetailId = orderDetailId;
 
-                //return Content(orderDetailId.ToString());
-                return RedirectToAction("ShoppingCart", "Cart");
+                return Content(orderDetailId.ToString());
+
+                //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+
+                //return RedirectToAction("ShoppingCart", "Cart");
             }
-            return RedirectToAction("ShoppingCart", "Cart");
+
+            return Content(orderDetailId.ToString());
+
+
+            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+
+            //return RedirectToAction("ShoppingCart", "Cart");
         }
 
 

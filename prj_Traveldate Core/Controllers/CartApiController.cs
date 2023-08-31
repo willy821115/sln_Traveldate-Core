@@ -110,6 +110,14 @@ namespace prj_Traveldate_Core.Controllers
             return Json(trips);
         }
 
+        public IActionResult EditOrder(int odid, int num, int tripid)
+        {
+
+
+
+            return RedirectToAction("ShoppingCart");
+        }
+
 
         //TODO  抓推薦
         //TODO  抓瀏覽紀錄
