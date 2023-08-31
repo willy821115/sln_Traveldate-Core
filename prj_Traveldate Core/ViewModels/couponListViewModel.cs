@@ -61,5 +61,25 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _couponlist.ImagePath; }
             set { _couponlist.ImagePath = value; }
         }
+        public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
+
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+            public virtual CouponList CouponList { get; set; } = null!;
+
+        public virtual Member Member { get; set; } = null!;
+        public virtual ICollection<CommentList> CommentLists { get; set; } = new List<CommentList>();
+
+        public virtual ICollection<Companion> Companions { get; set; } = new List<Companion>();
+
+        public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
+        public virtual ICollection<ForumList> ForumLists { get; set; } = new List<ForumList>();
+
+        public virtual LevelList? Level { get; set; }
+
+        public virtual ICollection<LikeList> LikeLists { get; set; } = new List<LikeList>();
+
+        public virtual ICollection<ReplyList> ReplyLists { get; set; } = new List<ReplyList>();
     }
 }
