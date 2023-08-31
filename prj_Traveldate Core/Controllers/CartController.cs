@@ -62,7 +62,7 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
-        //[HttpPost]
+        [HttpPost]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -97,6 +97,40 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(vm);
         }
+
+        public ActionResult ConfirmOrder(int id)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+
+            CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
+            vm.member = _context.Members.Find(_memberID);
+            vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
+
+            vm.orders = new List<CCartItem>();
+                CCartItem item = new CCartItem();
+                item = _context.OrderDetails.Where(o => o.OrderDetailsId == id).Select(c =>
+                    new CCartItem
+                    {
+                        orderDetailID = c.OrderDetailsId,
+                        productID = c.Trip.ProductId,
+                        tripID = c.TripId,
+                        planName = c.Trip.Product.ProductName,
+                        date = $"{c.Trip.Date:d}",
+                        quantity = c.Quantity,
+                        photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
+                        ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
+                        unitPrice = c.Trip.UnitPrice,
+                        discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                        ProductTypeID = c.Trip.Product.ProductTypeId,
+                    }).First();
+                vm.orders.Add(item);
+            
+
+            return View(vm);
+        }
+
 
         [HttpPost]
         public ActionResult Payment(CCreateOrderViewModel vm)
