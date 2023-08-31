@@ -111,7 +111,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             {
                 CCategoryAndTags x = new CCategoryAndTags();
                 x.category = i.category;
-                x.tags = i.tag;
+                x.tags = i.tag.ToList();
                 list.Add(x);
             }
             return list;

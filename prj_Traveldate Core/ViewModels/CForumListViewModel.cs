@@ -16,11 +16,11 @@ namespace prj_Traveldate_Core.ViewModels
         public List<LevelList>? level { get; set; }
         public List<CForumList_prodPhoto>? prodPhoto { get; set; } =new List<CForumList_prodPhoto>();
         public List<CCategoryAndTags> categories { get; set; } = new List<CCategoryAndTags>();
-        public List<ScheduleList>? schedules { get; set; }
+        public List<ScheduleList1>? schedules { get; set; }
         public List<ScheduleList>? schedulesForProd { get; set; }
         public List<CForumList_topTen>? topTen {  get; set; }
         public List<ProductTagList>? productTags { get; set; }
-        public IPagedList<ScheduleList> pages { get; set; }
+        public IPagedList<ScheduleList1> pages { get; set; }
         public int currentPage { get; set; }
         public int pageSize { get; set; }
         public int totalCount { get; set; }

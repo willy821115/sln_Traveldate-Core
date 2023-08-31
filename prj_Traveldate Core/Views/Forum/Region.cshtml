@@ -1,12 +1,12 @@
-﻿@using prj_Traveldate_Core.Models.MyModels;
-@model List<CCountryAndCity>
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CForumListViewModel
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@foreach (var city in Model)
+@foreach (var city in Model.regions)
 {
     <div class="controls-display-row category-click">
-        <span class="fs-5">@Html.DisplayFor(modelItem => city.country) </span><label class="mb-0">(@city.citys.Distinct().Count())</label>
+        <div class="my-w-80-percent"><span class="fs-4 w-auto">@Html.DisplayFor(modelItem => city.country) </span><label class="fs-4 mb-0">(@city.citys.Distinct().Count())</label></div>
         <div>
             <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
             <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -16,8 +16,11 @@
         <ul class="list-unstyled divFiltered_region">
             @foreach (var t in city.citys.Distinct())
             {
-                var cityCount = city.citys.Count(c => c == t);
-                <li id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
+                var cityCount = Model.schedules
+                .Where(s => s.trips
+                .Any(s => s.Product.City.City == t))
+                .Count();
+                <li  id="@t " class=" d-flex align-items-center divide-line my-w-80-percent">
                     <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                     <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
                     <span>@t</span><label class="mb-0">(@cityCount)</label>
