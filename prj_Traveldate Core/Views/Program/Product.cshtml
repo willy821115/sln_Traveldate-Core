@@ -347,7 +347,14 @@
                                 <label>@Model.product.PlanName</label>
                             </div>
                             <div class="col-auto">
-                                <label>金額：@Model.program.fPlanPrice[i]</label>
+                                @if (Model.program.fDiscountPlanPrice[i] != null)
+                                {
+                                    <label>金額：<del>@Model.program.fPlanPrice[i]</del> <span style="color:red">@(@Model.program.fPlanPrice[i] - @Model.program.fDiscountPlanPrice[i])</span></label>
+                                }
+                                else
+                                {
+                                    <label>金額：@Model.program.fPlanPrice[i]</label>
+                                }
                             </div>
                             <div class="col-auto">
                                 <ul class="list-inline">
@@ -599,10 +606,10 @@
 
         let value = 1;
 
-        plusButton.addEventListener('click', function () {
-            value++;
-            valueSpan.textContent = value;
-        });
+        // plusButton.addEventListener('click', function () {
+        //     value++;
+        //     valueSpan.textContent = value;
+        // });
 
         minusButton.addEventListener('click', function () {
             if (value > 1) {
@@ -697,7 +704,10 @@
 
         // Function to show the next month in the calendar
         function showNextMonth() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
+            console.log('Before:', currentDate);
+            currentDate.setDate(1);
+            currentDate.setMonth(currentDate.getMonth() + 1); 
+            console.log('After:', currentDate);
             showCalendar(currentDate);
         }
 
@@ -808,7 +818,8 @@
                 }
             }
         });
-        console.log('buy-content element:', document.getElementById('buy-content'));
+        
+        let maxnum;
 
         async function loadmaxmin(formattedClickedDate, productId) {
             const response = await fetch(`@Url.Content("~/program/MaxNum")?id=${productId}&selectedDate=${formattedClickedDate}`)
@@ -816,6 +827,14 @@
             console.log('Received data:', data);
             const ulElement = document.getElementById('ul1');
             const planPriceElement = document.getElementById('planprice');
+            maxnum = data.maxnum;
+
+            plusButton.addEventListener('click', function () {
+                if (value < data.maxnum) { // 檢查 value 是否小於可訂購數
+                    value++;
+                    valueSpan.textContent = value;
+                }
+            });
 
             if (ulElement) {
                 let html = '';
