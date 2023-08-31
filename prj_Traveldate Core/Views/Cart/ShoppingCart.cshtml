@@ -20,6 +20,10 @@
             </ol>
         </div>
         <div class="Cart-Container ">
+            <input id="editparaodid" type="hidden">
+            <input id="editparanum" type="hidden">
+            <input id="editparatripid" type="hidden">
+
             <div>
  @*           <div class="Cart-Items">
                 <div class="checkboxes">
@@ -55,6 +59,7 @@
             {
                 count++;
                 <div class="Cart-Items cartChecked">
+                    <input type="hidden" class="pid" value="@item.productID">
                 <div class="checkboxes">
                         <img class="checkbox CartIconbtn" src="~/icons/icons8-unchecked-32.png" />
                         <img class="uncheckbox CartIconbtn" src="~/icons/icons8-checkbox-32.png" />
@@ -75,8 +80,8 @@
                 </div>
                 <div class="prices d-flex flex-column justify-content-between">
                     <div>
-                        <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal">
-                        <input type="hidden" class="tripidfornodal" value="@item.tripID">
+                        <img src="~/icons/icons8-edit-48.png" class="CartIconbtn cartEdit" data-bs-toggle="modal" data-bs-target="#EditCartModal_@count">
+                        <input type="hidden" class="tripidformodal" value="@item.tripID">
                             @{
                                 if (!item.favo)
                                 {
@@ -106,28 +111,37 @@
                             <span class="amount itemprice">@string.Format("{0:0}",((item.unitPrice-item.discount) * item.quantity))</span>
                     </div>
                 </div>
-                <div class="modal fade" id="EditCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal fade" id="EditCartModal_@count" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
                         <div class="modal-content">
-                            <div class="modal-header">
+                                <div class="modal-header" >
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">修改訂購內容</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                                <div class="modal-body">
+                                    <h5 class="ml-1 title">
+                                        @item.planName
+                                    </h5>
                                 <div class="confirm-coupon-content">
-                                    <div style="width:80%;">
-                                        <h5>
-                                                @item.planName
-                                        </h5>
-                                        <h6>
-                                            目前可訂購時間：
-                                        </h6>
-                                            <div id="trip_@item.tripID"></div>
+                                    <div style="width:100%">
+                                            <div class="Subtotal mt-0">
+                                                目前可訂購時間：
+                                            </div>
+                                            <div class="row text-center headerbox">
+                                                <div class="col-3">日期</div>
+                                                <div class="col-3">價格</div>
+                                                <div class="col-3">剩餘名額</div>
+                                                <div class="col-3">訂購數量</div>
+                                            </div>
+                                            <input type="hidden" class="odid" value="@item.orderDetailID">
+                                            <div class="text-center ctn" id="trip_@item.tripID">
+                                                
+                                            </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn my-btn-primary col-2" data-dismiss="modal">確定修改</button>
+                                <div class="modal-footer" >
+                                    <button type="button" class="btn my-btn-primary col-2 GoEdit" data-dismiss="modal">確定修改</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                             </div>
                         </div>
@@ -248,6 +262,15 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/Cart.css" asp-append-version="true" />
+    <style>
+        .image-box:hover{
+            cursor: pointer;
+        }
+
+        .about:hover{
+            cursor: pointer;
+        }
+    </style>
 }
 
 @section Scripts{
@@ -273,14 +296,61 @@
             const response = await fetch(`@Url.Content("/CartApi/LoadTrips")?id=${id}`);
             const data = await response.json();
             console.log(data);
-            const list = data.map(d => `<span>${d.date.substring(0,10)}</span>/<span>${d.unitPrice - d.discount}</span>/<span>${d.maxNum}</span><br>`)
+            const list = data.map(d => `<div class="row editbox">
+            <div class="col-3">${d.date.substring(0, 10)}</div>
+            <div class="col-3">${d.unitPrice - d.discount}</div>
+            <div class="col-3">${d.maxNum}</div>
+            <div class="col-3"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
+            <input type="hidden" class="edittripid" value="${d.tripId}">
+            </div>`)
             document.querySelector(x).innerHTML = list.join("")
         }
 
         $('.cartEdit').on('click',function(){
-            const tripid = $(this).next('.tripidfornodal').val();
+            const tripid = $(this).next('.tripidformodal').val();
+            console.log(tripid);
             loadTripJson(tripid);
         })
+
+        $('.image-box').on('click', function(){
+            const pid = $(this).siblings('.pid').val();
+            window.location.href = `@Url.Content("/Program/Product/")${pid}`;
+        })
+
+        $('.about').on('click', function () {
+            const pid = $(this).siblings('.pid').val();
+            window.location.href = `@Url.Content("/Program/Product/")${pid}`;
+        })
+
+        $('.ctn').on('click', '.editbox', function () {
+            var odid = $(this).parent().siblings('.odid').val()
+            $('#editparanum').val($(this).find('.editqty').val())
+            $('#editparatripid').val($(this).find('.edittripid').val())
+            $('#editparaodid').val(odid)
+            $('.editbox').removeClass('editboxSelected')
+            $(this).addClass('editboxSelected')
+
+        })
+
+        $('.GoEdit').click(function () {
+            var odid = $('#editparaodid').val();
+            var num = $('#editparanum').val();
+            var tripid = $('#editparatripid').val();
+
+            $.post(`@Url.Content("/CartApi/EditCart")?odid=${odid}&num=${num}&tripid=${tripid}`, function (data) {
+                if (data === "exist") {
+                    swal('購物車內已存在相同旅程', '', 'warning');
+                } else {
+                    swal({
+                        title: "修改成功",
+                        icon: "success",
+                        buttons: false
+                    });
+                    setTimeout("window.location.href = `@Url.Content("/Cart/ShoppingCart")`", 2000);
+                }
+            })
+        })
+        
 
     </script>
 }

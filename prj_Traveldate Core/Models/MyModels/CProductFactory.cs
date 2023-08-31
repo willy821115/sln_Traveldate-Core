@@ -206,19 +206,19 @@ namespace prj_Traveldate_Core.Models.MyModels
         //loadTripPrice原價
         public List<decimal?> loadPlanprice(int id)
         {
-            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).OrderBy(t=>t.Date).Select(t => t.UnitPrice).ToList();
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t=>t.Date).Select(t => t.UnitPrice).ToList();
             return price;
         }
         //load優惠金額
         public List<decimal?> loadDiscountPrice(int id)
         {
-            List<decimal?> disprice = db.Trips.Where(p => p.ProductId == id).OrderBy(t => t.Date).Select(t =>t.Discount).ToList();
+            List<decimal?> disprice = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t =>t.Discount).ToList();
             return disprice;
         }
         //優惠價截止日期
         public List<string> loadDiscountPriceDate(int id)
         {
-            List<DateTime?> pricedisDates = db.Trips.Where(p => p.ProductId == id).OrderBy(t => t.Date).Select(t => t.DiscountExpirationDate).ToList();
+            List<DateTime?> pricedisDates = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t => t.DiscountExpirationDate).ToList();
             List<string> formatPriceDates = pricedisDates.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
             return formatPriceDates;
         }
@@ -319,8 +319,6 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-        //審核行程所需
-      
 
 
     }

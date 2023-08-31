@@ -431,7 +431,8 @@ namespace prj_Traveldate_Core.Controllers
                             CouponName = cl.CouponName,
                             Discount =(cl.Discount),
                             Description = cl.Description,
-                            DueDate = cl.DueDate
+                            DueDate = cl.DueDate,
+                            ImagePath= cl.ImagePath,
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
@@ -1045,7 +1046,11 @@ namespace prj_Traveldate_Core.Controllers
         {
 
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+
+           
+
             var datas = from m in context.Members
+                        from cmp in context.CommentPhotoLists
                         join cm in context.CommentLists
                         on m.MemberId equals cm.MemberId
                         join pl in context.ProductLists
@@ -1059,7 +1064,8 @@ namespace prj_Traveldate_Core.Controllers
                             CommentScore = cm.CommentScore,
                             Date = cm.Date,
                             ProductName = pl.ProductName,
-                            CommentId=cm.CommentId
+                            CommentId=cm.CommentId,
+                            ImagePath= cmp.ImagePath
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();

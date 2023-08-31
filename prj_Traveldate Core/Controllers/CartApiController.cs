@@ -110,6 +110,26 @@ namespace prj_Traveldate_Core.Controllers
             return Json(trips);
         }
 
+        //修改資料庫
+        public IActionResult EditCart(int odid, int num, int tripid)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            var exixt = _context.OrderDetails.Where(o=>o.Order.MemberId==_memberID && o.Order.IsCart==true && o.TripId==tripid).FirstOrDefault();
+            if (exixt != null)
+            {
+                return Content("exist");
+            }
+            else
+            {
+                OrderDetail thisod = _context.OrderDetails.Find(odid);
+                thisod.TripId = tripid;
+                thisod.Quantity = num;
+                _context.SaveChanges();
+                return Content("OK");
+            }
+
+        }
+
 
         //TODO  抓推薦
         //TODO  抓瀏覽紀錄
