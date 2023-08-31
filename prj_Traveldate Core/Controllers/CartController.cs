@@ -39,7 +39,7 @@ namespace prj_Traveldate_Core.Controllers
 
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
             vm.cartitems = new List<CCartItem>();
-            vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID)).Select(c =>
+            vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID) && (c.Trip.Date>DateTime.Now)).Select(c =>
             new CCartItem
             {
                 orderDetailID = c.OrderDetailsId,
