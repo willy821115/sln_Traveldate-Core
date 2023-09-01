@@ -25,11 +25,13 @@ namespace prj_Traveldate_Core.Controllers
     {
         private IWebHostEnvironment _enviro;
         private readonly IConfiguration _configuration;
+        TraveldateContext _context;
 
         public LoginController(IWebHostEnvironment p, IConfiguration configuration)
         {
             _enviro = p;
             _configuration = configuration;
+            _context = new TraveldateContext();
         }
         public ActionResult Login()
         {
@@ -38,7 +40,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public ActionResult Login(CLoginMemberViewModel vm)
         {
-            Member mem = (new TraveldateContext()).Members.FirstOrDefault(
+            Member mem = _context.Members.FirstOrDefault(
                 t => t.Email.Equals(vm.mlUsername) && t.Password.Equals(vm.mlPassword));
             if (mem != null && mem.Password.Equals(vm.mlPassword))
             {
@@ -79,7 +81,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public ActionResult CompanyLogin(CLoginCompanyViewModel vm)
         {
-            Company com = (new TraveldateContext()).Companies.FirstOrDefault(
+            Company com = _context.Companies.FirstOrDefault(
                 t => t.TaxIdNumber.Equals(vm.clUsername) && t.Password.Equals(vm.clPassword));
             if (com != null && com.Password.Equals(vm.clPassword))
             {
@@ -99,7 +101,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public ActionResult PlatformLogin(CLoginCompanyViewModel vm)
         {
-            Employee emp = (new TraveldateContext()).Employees.FirstOrDefault(
+            Employee emp = _context.Employees.FirstOrDefault(
                 t => t.EmployeeAccount.Equals(vm.clUsername) && t.EmployeePassword.Equals(vm.clPassword));
             if (emp != null && emp.EmployeePassword.Equals(vm.clPassword))
             {
@@ -114,9 +116,8 @@ namespace prj_Traveldate_Core.Controllers
 
         public ActionResult CompanySignUp()
         {
-            TraveldateContext db = new TraveldateContext();
             List<SelectListItem> country = new List<SelectListItem>();
-            foreach (var c in db.CountryLists)
+            foreach (var c in _context.CountryLists)
             {
                 SelectListItem cnty = new SelectListItem()
                 {
@@ -126,7 +127,7 @@ namespace prj_Traveldate_Core.Controllers
                 country.Add(cnty);
             }
             List<SelectListItem> cities = new List<SelectListItem>();
-            foreach (var c in db.CityLists)
+            foreach (var c in _context.CityLists)
             {
                 SelectListItem city = new SelectListItem()
                 {
@@ -142,18 +143,16 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public ActionResult CompanySignUp(Company c)
         {
-            TraveldateContext db = new TraveldateContext();
             c.Enable = true;
-            db.Companies.Add(c);
-            db.SaveChanges();
+            _context.Companies.Add(c);
+            _context.SaveChanges();
             return RedirectToAction("CompanyLogin", "Login");
         }
 
         public ActionResult SignUp()
         {
             List<SelectListItem> cts = new List<SelectListItem>();
-            TraveldateContext db = new TraveldateContext();
-            foreach (var c in db.CityLists)
+            foreach (var c in _context.CityLists)
             {
                 SelectListItem city = new SelectListItem()
                 {
@@ -168,8 +167,6 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public ActionResult SignUp(CMemberWrap m)
         {
-            TraveldateContext db = new TraveldateContext();
-
             if (m.photo != null)
             {
                 //取得使用者上傳檔案的原始檔名
@@ -186,8 +183,8 @@ namespace prj_Traveldate_Core.Controllers
             m.Discount = 0;
             m.Enable = true;
             m.Verified = false;
-            db.Members.Add(m.member);
-            db.SaveChanges();
+            _context.Members.Add(m.member);
+            _context.SaveChanges();
 
             CEmailVerify data = new CEmailVerify()
             {
@@ -247,7 +244,6 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult ResetPwd(CpasswordChangeViewModel vm)
         {
-            TraveldateContext _context = new TraveldateContext();
             if(vm.txtNewPassword == vm.txtCheckPassword && HttpContext.Session.Keys.Contains(CDictionary.SK_RESET_PWD_EMAIL))
             {
                 Member mem = _context.Members.Where(m => m.Email.Equals(HttpContext.Session.GetString(CDictionary.SK_RESET_PWD_EMAIL))).FirstOrDefault();
@@ -304,7 +300,6 @@ namespace prj_Traveldate_Core.Controllers
             {
                 RedirectToAction("Login");
             }
-            TraveldateContext _context = new TraveldateContext();
             Member mem = _context.Members.Where(m => m.Email.Equals(HttpContext.Session.GetString(CDictionary.SK_RESET_PWD_EMAIL))).FirstOrDefault();
             if (mem != null)
             {
@@ -325,6 +320,16 @@ namespace prj_Traveldate_Core.Controllers
             HttpContext.Session.Remove(CDictionary.SK_LOGGEDIN_EMPLOYEE_NAME);
 
             return RedirectToAction("HomePage", "Homepage");
+        }
+
+        public bool CheckEmail(string Email)
+        {
+            return _context.Members.Any(m => m.Email == Email);
+        }
+
+        public bool CheckPhone(string Phone)
+        {
+            return _context.Members.Any(m => m.Email == Phone);
         }
     }
 }

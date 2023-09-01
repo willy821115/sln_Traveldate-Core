@@ -296,13 +296,24 @@
             const response = await fetch(`@Url.Content("/CartApi/LoadTrips")?id=${id}`);
             const data = await response.json();
             console.log(data);
-            const list = data.map(d => `<div class="row editbox">
-            <div class="col-3">${d.date.substring(0, 10)}</div>
-            <div class="col-3">${d.unitPrice - d.discount}</div>
-            <div class="col-3">${d.maxNum}</div>
-            <div class="col-3"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
+            const list = data.map(d =>{
+                     if (d.discount==0){
+                return `<div class="row editbox">
+                            <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
+                            <div class="col-3 align-middle">${d.unitPrice}</div>
+                            <div class="col-3 align-middle">${d.maxNum}</div>
+                            <div class="col-3 align-middle"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
+                    <input type="hidden" class="edittripid" value="${d.tripId}">
+                    </div>`}
+                     else{
+                         return  `<div class="row editbox">
+                            <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
+                                    <div class="col-3 align-middle"><del>${d.unitPrice}</del><br><span class="text-danger"><b>${d.unitPrice - d.discount}</b></span></div>
+                            <div class="col-3 align-middle">${d.maxNum}</div>
+                            <div class="col-3 align-middle"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
             <input type="hidden" class="edittripid" value="${d.tripId}">
-            </div>`)
+            </div>`}
+               })
             document.querySelector(x).innerHTML = list.join("")
         }
 
