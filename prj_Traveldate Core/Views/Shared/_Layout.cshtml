@@ -49,7 +49,7 @@
     
     <link rel="stylesheet" href="~/css/MyCSS.css" />
     <link href="~/css/multiRange.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="~/css/chatboxstyle.css">
     <!-- MemberArea styles -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
@@ -174,6 +174,119 @@
         </div>
     </div>
 
+        @* <div class="dialog-box">
+            <div class="d-flex justify-content-between align-items-center bg-gray-300 category-click">
+               <span class="fw-bold text-black ">與123聊聊中</span>
+            </div>
+        
+        <div class="chat_box filter-block-toggle">
+            <div id="chatRoom" class="chat_message">
+                <div class="message_row you-message">
+                    <div class="message-content">
+                        <div class="message-text">Ok then</div>
+                        <div class="message-time">09/23 10:16</div>
+                    </div>
+                </div>
+                <div class="message_row other-message">
+                    <div class="message-content">
+                        <img class="head" src="img/friends/David.png" alt="">
+                        <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                        <div class="message-time">09/23 10:16</div>
+                    </div>
+                </div>
+                <div class="message_row other-message">
+                    <div class="message-content">
+                        <img class="head" src="img/friends/David.png" alt="">
+                        <!-- <div class="message-text"></div> -->
+                        <img class="ejIcon" src="img/emoji/like.png" alt="">
+                        <div class="message-time">09/23 10:16</div>
+                    </div>
+                </div>
+                <div class="message_row other-message">
+                    <div class="message-content">
+                        <img class="head" src="img/friends/David.png" alt="">
+                        <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                        <div class="message-time">09/23 10:16</div>
+                    </div>
+                </div>
+                <div class="message_row other-message">
+                    <div class="message-content">
+                        <img class="head" src="img/friends/David.png" alt="">
+                        <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                        <div class="message-time">09/23 10:16</div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="chat_input">
+                <input class="sendMsg" type="text" placeholder="請輸入訊息">
+                <div class="myIcon2">
+                    <i class="fa fa-share send_icon"></i>
+                </div>
+            </div>
+        </div>
+        </div> *@
+        <input id="LayoutMemberID" type="hidden" value="@Context.Session.GetString(CDictionary.SK_LOGGEDIN_USER)" />
+       
+        <div id="dialogBox" class="dialog-box ">
+            <div class="dialog-content">
+                <div class="d-flex justify-content-between align-items-center bg-gray-300">
+                    <span class="fw-bold text-black toggle-button">與123聊聊中</span>
+                 </div>
+                <div class="chat_box">
+                    <div id="chatRoom" class="chat_message">
+                        <div class="message_row you-message">
+                            <div class="message-content">
+                                <div class="message-text">Ok then</div>
+                                <div class="message-time">09/23 10:16</div>
+                            </div>
+                        </div>
+                        <div class="message_row other-message">
+                            <div class="message-content">
+                                @* <img class="head" src="img/friends/David.png" alt=""> *@
+                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                                <div class="message-time">09/23 10:16</div>
+                            </div>
+                        </div>
+                        <div class="message_row other-message">
+                            <div class="message-content">
+                                @* <img class="head" src="img/friends/David.png" alt=""> *@
+                                <!-- <div class="message-text"></div> -->
+                                @* <img class="ejIcon" src="img/emoji/like.png" alt=""> *@
+                                <div class="message-time">09/23 10:16</div>
+                            </div>
+                        </div>
+                        <div class="message_row other-message">
+                            <div class="message-content">
+                                @* <img class="head" src="img/friends/David.png" alt=""> *@
+                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                                <div class="message-time">09/23 10:16</div>
+                            </div>
+                        </div>
+                        <div class="message_row other-message">
+                            <div class="message-content">
+                                @* <img class="head" src="img/friends/David.png" alt=""> *@
+                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
+                                <div class="message-time">09/23 10:16</div>
+                            </div>
+                        </div>
+                        
+                        
+
+                    </div>
+                    <div class="chat_input">
+                        <input type="hidden" id="sendToID" />
+                        <input class="sendMsg" type="text" placeholder="請輸入訊息">
+                        <div class="myIcon2">
+                            <i class="fa fa-share send_icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <footer id="contact-us">
         <div>
             <p class="m-0">TravelDate</p>
@@ -189,35 +302,87 @@
             <a href="#" target="_blank" title="關注我們的Instagram"><img src="~/icons/icons8-instagram-48.png" alt="Instagram" width="50" height="50" style="border-radius: 10px;"></a>
         </div>
         </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
-    
+    </div>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+       <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="~/Template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Template/js/sb-admin-2.min.js"></script>
+    <script src="~/Template/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/js/Myjs.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+  
+        <script>
+            var memberID = $("#LayoutMemberID").val();
+            if (memberID != ""){
+              var connection = new signalR.HubConnectionBuilder().withUrl("/layoutChatHub").build();
+        console.log(connection);
+            connection.start().then(function () {
+               console.log("Hub 連線完成");
+                connection.invoke('UpdateUserInfo', memberID);
+            }).catch(function (err) {
+                alert('連線錯誤: ' + err.toString());
+            });
+
+            }
+
+        connection.on("UpdContent", function (msg) {
+            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+        });
+
+        //傳送訊息
+        $('#sendButton').on('click', function () {
+            let selfID = $('#SelfID').html();
+            let message = $('#message').val();
+            let sendToID = $('#sendToID').val();
+            connection.invoke("SendMessage", selfID, message, sendToID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+
+        connection.on("UpdateSupplierID", function (msg, SupplierID) {
+            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+            $('#sendToID').val(SupplierID)
+        });
+
+        connection.on("UpdateCustomerID", function (msg, CustomerID) {
+            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+            $('#sendToID').val(CustomerID)
+        });
+          
+
+        </script>
+    
+    
     @await RenderSectionAsync("Scripts", required: false)
     @*Scripts.Render("~/bundles/jquery")*@
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @*@RenderSection("scripts", required: false)*@
     <!-- Bootstrap core JavaScript-->
     @*<script src="~/Template/vendor/jquery/jquery.min.js"></script>*@
-    <script src="~/Template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- Core plugin JavaScript-->
     @*<script src="~/Template/vendor/jquery-easing/jquery.easing.min.js"></script>*@
 
     <!-- Custom scripts for all pages-->
-    <script src="~/Template/js/sb-admin-2.min.js"></script>
+    
 
     <!-- Page level plugins -->
-    <script src="~/Template/vendor/chart.js/Chart.min.js"></script>
+    
 
-    <script src="~/js/Myjs.js"></script>
+    
 
     <!-- MemberController - passwordChange -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    
+
+        
 
 
         <script>

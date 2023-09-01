@@ -200,11 +200,16 @@ namespace prj_Traveldate_Core.Controllers
                         Note = vm.ods[i].Note
                     };
 
-                    //減掉商品數量
-                    Trip? trip = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).FirstOrDefault();
-                    if (trip != null && trip.MaxNum >= vm.ods[i].Quantity)
+                    //確認商品庫存量
+                    CProductFactory prodFactory = new CProductFactory();
+                    string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
+                    int ordered = Convert.ToInt32(strStock.Split('/')[0]);
+                    int max = Convert.ToInt32(strStock.Split('/')[1]);
+                    if (max - ordered < vm.ods[i].Quantity)
                     {
-                        trip.MaxNum -= vm.ods[i].Quantity;
+                        string prodName = _context.Trips.Where(t=>t.TripId == vm.ods[i].OrderId).Select(t=>t.Product.ProductName).FirstOrDefault();
+                        string e = $"「{prodName}」數量不足，請重新選購。";
+                        return RedirectToAction("OrderError", new { e });
                     }
 
                     //刪除購物車裡的項目
