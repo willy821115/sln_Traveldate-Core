@@ -9,11 +9,12 @@
     public class ScheduleList1
     {
         public int? forumListId { get; set; }
-        public List<Trip?> trips { get; set; }
+        public List<Trip> trips { get; set; }
         public ForumList? ForumList { get; set; }
         public List<ProductTagList> productTags { get; set; }
  public int ProductTagDetailsId { get; set; }
-     
+        public string strStock { get; set; }
+        public double numStock { get; set; }
     }
     
 }

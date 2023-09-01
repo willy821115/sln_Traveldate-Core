@@ -24,9 +24,10 @@ namespace prj_Traveldate_Core.ViewModels
         public int currentPage { get; set; }
         public int pageSize { get; set; }
         public int totalCount { get; set; }
+        public List<CTripStock>? stocks { get; set; }=new List<CTripStock>();
         //public List<Trip> topTenTrip { get; set; }
         //public int? ForumlistId { get; set; }   
-
+        
     }
    public class CForumList_prodPhoto
     {
@@ -42,4 +43,10 @@ namespace prj_Traveldate_Core.ViewModels
         public int? prodId { get; set; }
         public string content { get; set; } 
     }
+    public class CTripStock
+    {
+        public int id { get; set; }
+        public double stock { get; set; }
+        public string strStock { get; set; }
+    } 
 }
