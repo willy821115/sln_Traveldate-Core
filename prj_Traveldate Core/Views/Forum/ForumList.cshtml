@@ -324,11 +324,13 @@
             <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                 <span class=" fw-bolder ">排序 :  </span>
                 <span>　</span>
-                <a href="#" class=" fw-bolder">發文時間</a>
+                <a id="sortByRelTime" href="#" class=" fw-bolder" name="sortType">發文時間</a>
                 <span>　|　</span>
-                <a href="#" class=" fw-bolder">回覆數</a>
+                <a id="sortByReply" href="#" class=" fw-bolder">回覆數</a>
                 <span>　|　</span>
-                <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
+                <a id="sortByDueDate" href="#" class=" fw-bolder">截團日期(近到遠)</a>
+                <span>　|　</span>
+                <a id="sortByStock" href="#" class=" fw-bolder">剩餘名額</a>
             </div>
         </div>
         <div id="filteredBody" class="bg-transparent">
@@ -489,20 +491,73 @@
 
     </script>
             <script>
-                $('#keyword-for-forum').on('keydown', function (event) {
-            if (event.key === 'Enter') {
+                $('#keyword-for-forum').on('input', function (event) {
+         
 loadFilteredForum($(this).val())
                 function loadFilteredForum(keyword) {
                     fetch('@Url.Content("~/Forum/KeyWordForForum")?keyword=' + keyword,
                         { method: 'GET' })
                         .then(response => response.text())
                         .then(data => {
+                            var target_top = $("#targetDiv").offset().top - 100;
                             $('#filteredBody').html(data)
+                            window.scrollTo({
+                                top: target_top,
+                                behavior: 'smooth'
+                            });
                         })
                     }
-                    }
-                 
+                    
                 })
+            </script>
+            <script>
+        //////////////////////////////////////4種排序///////////////////////////////////////////
+        //排序/篩選載入資料
+        function loadData(sortType) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("filteredBySort", "Forum")",
+                data: {
+                    sortType: sortType,
+                    page: pageNumber
+                },
+                success: function (response) {
+                    var target_top = $("#targetDiv").offset().top - 100;
+                    hideLoadingIcon()
+                    $('#filteredBody').html(response)
+                    $('#total').html($('#updateTotal').val());
+                    window.scrollTo({
+                        top: target_top,
+                        behavior: 'smooth'
+                    });
+                },
+                error: function (error) {
+                    console.log("發生錯誤：", error);
+                }
+            });
+        }
+        //依發文時間排序        
+        $('#sortByRelTime').on('click', function () {
+                    var status = $(this).attr('id');
+            loadData(status)
+                })
+        //依回覆數排序    
+        $('#sortByReply').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+                })
+        //依截團日期
+        $('#sortByDueDate').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+        })
+                //依剩餘名額  sortByStock
+        $('#sortByStock').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+        })
+
+
             </script>
         }
 
