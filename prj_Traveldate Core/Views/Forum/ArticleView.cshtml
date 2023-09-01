@@ -112,7 +112,7 @@
             </div>
             <div class="col-2 d-block">
                     <div class="mb-2 d-inline-flex">
-                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2">聊聊</button>
+                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2" value="@Model.forum.Member.MemberId">聊聊</button>
                         <a class="btn my-btn-primary col-6 pr-2 pl-2" href="#">追蹤</a>
                     </div>
                     <button id="otherArticles" class="btn btn-secondary col">其他揪團文</button>
@@ -228,7 +228,7 @@
         </div>
 </div>
 
-<div id ="dialogBox" class="dialog-box">
+@* <div id ="dialogBox" class="dialog-box">
     <div class="dialog-content">
         <div class="d-flex justify-content-between align-items-center bg-gray-300">
             <span>與 <span class="fw-bold text-black">@Model.forum.Member.FirstName</span> 聊聊中</span>
@@ -237,7 +237,7 @@
         <h3>這是對話視窗的內容</h3>
         <p>你可以在這裡放置任何內容。</p>
     </div>
-</div>
+</div> *@
 </div>
 <input id="isLogin" type="hidden" value="@Model.member"/>
 @section Scripts{
@@ -367,7 +367,11 @@
             document.getElementById('dialogBox').style.display = 'block';
         });
 
-      
+
+        $(document).on('click', '#showDialogBtn', function () {
+            var id = $(this).val();
+            connection.invoke("SelectSupplier", id)
+        });
 
 
 

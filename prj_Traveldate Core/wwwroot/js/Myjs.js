@@ -48,7 +48,38 @@
 //        $("#descriptionInput").val("");
 //    });
 //});
+$(document).ready(function () {
+    // 選擇用戶名稱的 <span> 元素
+    var toggleButton = $(".toggle-button");
 
+    // 選擇聊天框的 <div> 元素
+    var chatBox = $(".chat_box");
+
+    // 選擇 dialogBox 的 <div> 元素
+    var dialogBox = $("#dialogBox");
+
+    // 初始高度
+    var originalHeight = dialogBox.height();
+
+    // 添加點擊事件處理程序
+    toggleButton.click(function () {
+        // 切換聊天框的顯示狀態
+        chatBox.slideToggle({
+            direction: "up", // 设置方向为向上展开
+            duration: 10
+        });
+
+        // 檢查 dialogBox 的當前高度
+        var currentHeight = dialogBox.height();
+
+        // 如果當前高度不等於原始高度，將高度設置為400px；否則恢復原始高度
+        if (currentHeight == originalHeight) {
+            dialogBox.height(400);
+        } else {
+            dialogBox.height(originalHeight);
+        }
+    });
+});
 
 
 
