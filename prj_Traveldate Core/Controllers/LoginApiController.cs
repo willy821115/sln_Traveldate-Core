@@ -14,7 +14,7 @@ namespace prj_Traveldate_Core.Controllers
     {
         TraveldateContext _context;
         private readonly IConfiguration _configuration;
-        HttpContext  _httpContext;
+        HttpContext _httpContext;
 
 
         public LoginApiController(IConfiguration configuration, HttpContext httpContext)
@@ -30,13 +30,13 @@ namespace prj_Traveldate_Core.Controllers
         {
             // 檢查資料庫是否有這個帳號
             var mailCheck = _context.Members.Where(m => m.Email.Equals(data.Email)).FirstOrDefault();
-            if (mailCheck == null)
+            if (mailCheck == null && mailCheck.Email == null)
             {
                 return;
             }
 
-            string UserEmail = mailCheck.Email;
-
+            List<string> UserEmail = new List<string>();
+            UserEmail.Add(mailCheck.Email);
 
             // 取得系統自定密鑰，在 Web.config 設定
             string SecretKey = _configuration["SendMailSettings:SecretKey"];
@@ -68,10 +68,19 @@ namespace prj_Traveldate_Core.Controllers
 
             // 信件內容範本
             string mailContent = data.mailContent;
-            mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>" + linkText +"</a>";
+            mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>" + linkText + "</a>";
 
             // 信件主題
             string mailSubject = data.mailSubject;
+
+            SimplySendMail(mailSubject, mailContent, UserEmail);
+        }
+
+        public void SimplySendMail(string mailSubject, string mailContent, List<string> UserEmail)
+        {
+            // mailSubject : 信件主旨
+            // mailContent : 信件內文
+            // UserEmail : 收件者的email(可多個)
 
             // Google 發信帳號密碼
             string GoogleMailUserID = _configuration["SendMailSettings:GoogleMailUserID"];
@@ -86,7 +95,11 @@ namespace prj_Traveldate_Core.Controllers
             mms.Body = mailContent;
             mms.IsBodyHtml = true;
             mms.SubjectEncoding = Encoding.UTF8;
-            mms.To.Add(new MailAddress(UserEmail));
+
+            foreach (string email in UserEmail)
+            {
+                mms.To.Add(new MailAddress(email));
+            }
             using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
             {
                 client.EnableSsl = true;
