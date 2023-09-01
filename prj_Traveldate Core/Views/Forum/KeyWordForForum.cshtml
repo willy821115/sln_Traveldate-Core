@@ -36,16 +36,16 @@ keyword
                 {
                     if (!displayedCities.Contains(c.Product.City.City))
                     {
-                        <span class="bg-info mr-2 rounded text-light p-1">@c.Product.City.City</span>
+                        <span class="bg-gradient-warning fw-bolder mr-1 rounded text-light p-1">@c.Product.City.City</span>
                         displayedCities.Add(c.Product.City.City);
                     }
                 }
             </div>
-            <div>
+            <div class="mt-2">
                 <img src="~/icons/icons8-tag-16.png" />
                 @foreach (var tags in schedule_tag)
                 {
-                    <span id="@tags.ProductTagDetailsId">#@tags.ProductTagDetails.ProductTagDetailsName</span>
+                    <span id="@tags.ProductTagDetailsId" class="bg-gradient-info fw-bolder mr-1 rounded text-light p-1">#@tags.ProductTagDetails.ProductTagDetailsName</span>
                 }
 
             </div>
@@ -58,19 +58,19 @@ keyword
                     case "黑鑽會員":
                         <img src="~/icons/level_dimond48.png" height="24">
 
-                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        <span class="my-sm-text text-black fw-bolder">@article.ForumList.Member.Level.Level</span>
                         break;
                     case "白銀會員":
                         <img src="~/icons/level-slover-50.png" height="24">
-                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        <span class="my-sm-text  fw-bolder">@article.ForumList.Member.Level.Level</span>
                         break;
                     case "黃金會員":
                         <img src="~/icons/level-gold-50.png" height="24">
-                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        <span class="my-sm-text text-warning fw-bolder">@article.ForumList.Member.Level.Level</span>
                         break;
                     default:
                         <img src="~/icons/level-gold-50.png" height="24" />
-                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        <span class="my-sm-text fw-bolder">@article.ForumList.Member.Level.Level</span>
                         break;
                 }
 

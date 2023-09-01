@@ -154,11 +154,11 @@
             <a id="confirmedLoginStatus" asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary fw-bold">
                 <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
                 <img class="write-icon-gif me-3" src="~/icons/icons8-pencil.gif" width="32" height="32">
-                我要發文
+                我要揪團
             </a>
         </div>
         <div class="p-3 mt-2 mb-2">
-            <span class="fs-4 fw-bold">搜尋文章</span>
+            <span class="fs-4 fw-bold">搜尋揪團</span>
             <div class="controls-display-row search_container">
                 <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                 <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
@@ -176,7 +176,7 @@
     </div>
     <div class="col-8 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <p class="fs-3 divide-line fw-bold"><img src="~/images/top.png" width="36" />精選TOP10文章</p>
+            <p class="fs-3 divide-line fw-bold"><img src="~/images/top.png" width="36" />精選TOP10揪團</p>
             <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
                 <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-inner d-flex align-items-center" style="height:340px">
@@ -316,7 +316,7 @@
             <div class="divide-line pl-3">
                 <span id="total" class="fs-3 fw-bolder me-2">@Model.schedules.Count()</span><span class="fs-5 my-text-primary">
                     <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
-                    篇揪團文章
+                    個揪團行程
                 </span>
                 <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
 
@@ -324,7 +324,7 @@
             <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                 <span class=" fw-bolder ">排序 :  </span>
                 <span>　</span>
-                <a id="sortByRelTime" href="#" class=" fw-bolder" name="sortType">發文時間</a>
+                <a id="sortByRelTime" href="#" class=" fw-bolder" name="sortType">發起時間</a>
                 <span>　|　</span>
                 <a id="sortByReply" href="#" class=" fw-bolder">回覆數</a>
                 <span>　|　</span>
@@ -364,13 +364,13 @@
                             {
                                 if (!displayedCities.Contains(c.Product.City.City))
                                 {
-                                    <span class="bg-info mr-2 rounded text-light p-1">@c.Product.City.City</span>
+                                    <span class="bg-gradient-warning fw-bolder mr-1 rounded text-light p-1">@c.Product.City.City</span>
                                     displayedCities.Add(c.Product.City.City);
                                 }
                             }
 
                         </div>
-                        <div>
+                        <div class="mt-2">
                             @{
                                 HashSet<string> displayedTags = new HashSet<string>();
                             }
@@ -379,7 +379,7 @@
                             {
                                 if (!displayedTags.Contains(tags.ProductTagDetails.ProductTagDetailsName))
                                 {
-                                    <span id="@tags.ProductTagDetailsId"> #@tags.ProductTagDetails.ProductTagDetailsName</span>
+                                    <span id="@tags.ProductTagDetailsId" class="bg-gradient-info fw-bolder mr-1 rounded text-light p-1">#@tags.ProductTagDetails.ProductTagDetailsName</span>
                                     displayedTags.Add(tags.ProductTagDetails.ProductTagDetailsName);
                                 }
                             }
@@ -394,19 +394,19 @@
                                 case "黑鑽會員":
                                     <img src="~/icons/level_dimond48.png" height="24">
 
-                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    <span class="my-sm-text text-black fw-bolder">@article.ForumList.Member.Level.Level</span>
                                     break;
                                 case "白銀會員":
                                     <img src="~/icons/level-slover-50.png" height="24">
-                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    <span class="my-sm-text fw-bolder">@article.ForumList.Member.Level.Level</span>
                                     break;
                                 case "黃金會員":
                                     <img src="~/icons/level-gold-50.png" height="24">
-                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    <span class="my-sm-text text-warning fw-bolder">@article.ForumList.Member.Level.Level</span>
                                     break;
                                 default:
                                     <img src="~/icons/level-gold-50.png" height="24" />
-                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    <span class="my-sm-text fw-bolder">@article.ForumList.Member.Level.Level</span>
                                     break;
                             }
 
