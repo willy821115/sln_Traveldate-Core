@@ -11,7 +11,7 @@
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
                         @{
-                            if(ViewBag.photo!=null)
+                            if (ViewBag.photo != null)
                             {
                                 <div style="text-align:center;background-color:white;border-radius:10px">
                                     <img src="@ViewBag.PhotoBase64" width="150" height="150" />
@@ -19,16 +19,16 @@
                             }
                             else
                             {
-                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
                             }
                         }
+                    </div>
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
-                            
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>                   
                         </ul>
 
-                    </div>
+                    
                     <div class="cell" id="div2">
                         <ul class="list-group leftarea lgmenu mt-3 ">
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
@@ -55,8 +55,8 @@
                                 <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                             </li>
                             <li class="list-group-item menuItem">
-                                @Html.ActionLink("聊聊", "SignalR","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                             </li>
                         </ul>
                     </div>
@@ -166,17 +166,18 @@
 </div>*@
 
 
-    @section Styles
-    {
+@section Styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+}
 
-    }
-   @section scripts{
-            <script>
-                const btnEditbasicInfo = document.getElementById('btnEditbasicInfo');             
-                    btnEditbasicInfo.addEventListener('click', () => {
-                        swal("基本資料修改成功！", "稍後將自動為您導向", "success");
-                    });
-
-            </script>
-        }
+@section scripts{          
+    <script>              
+        const btnEditbasicInfo = document.getElementById('btnEditbasicInfo');     
+        
+        btnEditbasicInfo.addEventListener('click', () => {                       
+            swal("基本資料修改成功！", "稍後將自動為您導向", "success", { button: false });                       
+            setTimeout(() => {                       
+            }, 2000);                                 
+        });           
+    </script>
+}

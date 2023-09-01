@@ -12,13 +12,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                </div>
+                                                        <div style="text-align:center;background-color:white;border-radius:10px">
+                                                            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                                                        </div>
                             }
                             else
                             {
-                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                                                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -52,6 +52,10 @@
                             <li class="list-group-item menuItem">
                                 @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                                 <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                            </li>
+                            <li class="list-group-item menuItem">
+                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                             </li>
                         </ul>
                     </div>
@@ -116,9 +120,14 @@
                         @Html.DropDownListFor(model => model.CommentScore, new SelectList(new List<int> { 1, 2, 3, 4, 5 }), "請選擇", new { @class = "form-control" })*@
                     </div>
 
-                    <div>
+@*                     <div>
                         <label>照片</label>
                         <input asp-for="photos" type="file" class="form-control" id="photoInput"  multiple />
+                    </div> *@
+                    <div>
+                        <label for="formfiles">照片</label>
+                        <input asp-for="photos" type="file" class="form-control" id=" formFile" multiple />
+                        <img id="imagePreview" class="w-100 mt-5" />
                     </div>
                     <br />
 
@@ -145,7 +154,8 @@
 
                     <div>
                           <div class="form-group">
-                            <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送" id="btnAddComment" />
+@*                             <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送" id="btnAddComment" /> *@
+                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" id="btnAddComment">傳送</button>
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                           </div>              
                     </div>
@@ -154,7 +164,7 @@
                 </div>
 </div>
 
-@*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+@* <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
             <img src="https://picsum.photos/id/454/1500/300" class="d-block w-100" alt="...">
@@ -175,21 +185,45 @@
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
     </div>
-</div>*@
+</div> *@
+
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-
 }
+
 @section scripts{
+   <script>                
+       const btnAddComment = document.getElementById('btnAddComment');
+                
+       btnAddComment.addEventListener('click', () => {
+           swal("新增評論成功！", "稍後將自動為您導向", "success", { button: false });                    
+           setTimeout(() => {                    
+           }, 1500);                
+       });
+   </script>
 
-            <script>
-                const btnAddComment = document.getElementById('btnAddComment');
-                btnAddComment.addEventListener('click', () => {
-                    swal("新增評論成功！", "稍後將自動為您導向", "success");
+   @*test*@
+ <script>
+                const formFileInput = document.getElementById('formfile');
+                const previewImg = document.getElementById('imagePreview');
+
+                formFileInput.addEventListener('change', function () {
+                    const file = formFileInput.files[0];
+                    if (file) {
+                        const eader = new FileReader();
+
+                        reader.addEventListener('load', () => {
+                            previewImg.setAttribute('src', event.target.result)
+                        })
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewImg.innerHTML = '';
+                    }
                 });
-
-            </script>
+</script>
+            @*test*@
 
     <script>
         $(document).ready(function () {

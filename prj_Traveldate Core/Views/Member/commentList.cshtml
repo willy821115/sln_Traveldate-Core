@@ -54,6 +54,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -77,9 +81,10 @@
         <tr>
             <th ></th>
             <th class="col-md-3">商品名稱</th>
-            <th class="col-md-2">標題</th>
-            <th class="col-md-4.5">內容</th>
-            <th class="col-md-1">您的評分</th>
+            <th class="col-md-1.5">標題</th>
+            <th class="col-md-5">內容</th>
+@*             <th class="col-md-5">照片</th> *@
+            <th class="col-md-1.5">您的評分</th>
             <th class="col-md-1">評論日期</th>
             <th >操作</th>
         </tr>
@@ -93,22 +98,33 @@
                     <td >@item.ProductName</td>
                     <td >@item.Title</td>
                     <td >@item.Content</td>
+                
+@*                             @{
+                                    if (item.CommentId != null)
+                                        {
+                                           
+                        <td id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel"><div class="carousel-item active" data-bs-interval="0"><img class="couponImg img-thumbnail img-fluid" style="width:max-content;radious:10px" src="~/images/@item.ImagePath" /></div></td>
 
-                        <td style='text-align: center; vertical-align: middle;'>
+                                       }
+
+                                } *@
+                
+                   <td style='text-align: center; vertical-align: middle;'>
                         @{
-                           for (int i = 1; i <= item.CommentScore; i++)
-                           {
-                              <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
-                           }
+                                   for (int i = 1; i <= item.CommentScore; i++)
+                                   {
+                                      <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
+                                   }
                         }
-                        </td>
+                   </td>
 
-                <td>@item.Date@*.ToString("yyyy-MM-dd")*@</td>
+                   <td>@item.Date@*.ToString("yyyy-MM-dd")*@</td>
+
 
                 @using (Html.BeginForm("commentList", "Member", FormMethod.Post))
                 {
                         <input type="hidden" name="id" value="@item.CommentId" />
-                    <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnCommentRemove" name="btnCommentRemove" /> </td>
+                        <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnCommentRemove">移除</button></td>
                 }
 
 @*                   <form method="post" action="@Url.Action("commentList", "Member")">
@@ -145,29 +161,32 @@
     </div>
 </div>*@
 
+
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 
-.star:last-child {
-    margin-right: 0;
-}
-.star:before {
-    content:'\2605';
-}
-.star.on {
-    color: gold;
-    font-size: x-large;
-    width: 50px;
-    display: inline-block;
+    .star:last-child {
+        margin-right: 0;
+    }
+    .star:before {
+        content:'\2605';
+    }
+    .star.on {
+        color: gold;
+        font-size: x-large;
+        width: 50px;
+        display: inline-block;
+    }
 }
 
-}
 @section scripts{
-
     <script>
         const btnCommentRemove = document.getElementById('btnCommentRemove');
+
         btnCommentRemove.addEventListener('click', () => {
-            swal("移除成功！", "稍後將自動為您導向", "success");
+            swal("移除成功！", "稍後將自動為您導向", "success", { button: false });
+            setTimeout(() => {
+            }, 1500);
         });
     </script>
     

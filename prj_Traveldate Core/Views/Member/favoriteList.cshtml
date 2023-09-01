@@ -3,7 +3,6 @@
     ViewData["Title"] = "favoriteList";
 }
 
-
 <div class="left col-md-2">
 
     <div class="cell" id="div3">
@@ -52,6 +51,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -88,7 +91,7 @@
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
-                            <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" name="btnFavoriteRemove" /> </td>
+                            <td><button type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove"> 移除</button></td>
                          </form>
               
 @*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
@@ -98,93 +101,6 @@
                 }
     </tbody>
 </table>
-
-
-
-
-
-
-
-@*    <script>
-            $(document).ready(function () {
-            // 點擊左側選單按鈕時觸發事件
-            $(".menuItem").click(function () {
-                var contentToShow = $(this).data("content");
-                // 在這裡可以根據 contentToShow 的值來加載相應的內容，可以使用 Ajax 請求或直接填充 HTML 內容
-                if (contentToShow === "basicInfo") {
-                    showBasicInfoContent();
-                } else if (contentToShow === "passwordChange") {
-                    showPasswordChangeContent();
-                } else if (contentToShow === "couponList") {
-                    showCouponListContent();
-                } else if (contentToShow === "addCompanion") {
-                    showAddCompanionContent();
-                } else if (contentToShow === "favoriteList") {
-                    showFavoriteListContent();
-                }   else if (contentToShow === "orderList") {
-                    showOrderListContent();
-                } else if (contentToShow === "commentList") {
-                    showCommentListListContent();
-                } else if (contentToShow === "subItem1") {
-                    showSubItem1Content();
-                } else if (contentToShow === "subItem2") {
-                    showSubItem2Content();
-                } else if (contentToShow === "subItem3") {
-                    showSubItem3Content();
-                }
-                // 在這裡可以處理其他按鈕對應的內容
-            });
-        });
-</script>*@
-
-
-@*<table border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td scope="row">
-            <table border="1">
-                <tr>
-                    <td id="showbfq" height="20" align="top" onclick="if(bfq.style.display=='none'){bfq.style.display='';showbfq.innerText='优质';}
- else{bfq.style.display='none';showbfq.innerText='点击更多';}">
-                        点击更多
-                    </td>
-                </tr>
-                <tr>
-                    <td height="80" align="center" name="bfq" id="bfq" style="display:none;">aaa</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table border="1">
-                <tr>
-                    <td id="showbfq1" height="20" align="top" onclick="if(bfq1.style.display=='none'){bfq1.style.display='';showbfq1.innerText='优质';}
- else{bfq1.style.display='none';showbfq1.innerText='点击更多';}">
-                        点击更多
-                    </td>
-                </tr>
-                <tr>
-                    <td height="80" align="center" name="bfq1" id="bfq1" style="display:none;">bbb</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table border="1">
-                <tr>
-                    <td id="showbfq2" height="20" align="top" onclick="if(bfq2.style.display=='none'){bfq2.style.display='';showbfq2.innerText='优质';}
- else{bfq2.style.display='none';showbfq2.innerText='点击更多';}">
-                        点击更多
-                    </td>
-                </tr>
-                <tr>
-                    <td height="80" align="center" name="bfq2" id="bfq2" style="display:none;">ccc</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>*@
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -209,16 +125,20 @@
     </div>
 </div>*@
 
+
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-
 }
-@section scripts{
 
+@section scripts{
     <script>
+
         const btnFavoriteRemove = document.getElementById('btnFavoriteRemove');
+
         btnFavoriteRemove.addEventListener('click', () => {
-            swal("移除成功！", "稍後將自動為您導向", "success");
+            swal("移除成功！", "稍後將自動為您導向", "success", { button: false });
+            setTimeout(() => {
+            }, 1500);
         });
     </script>
 

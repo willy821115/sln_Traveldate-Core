@@ -1,9 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "首頁";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - prj_Traveldate_Core</title>
+    <title>@ViewData["Title"] - Traveldate旅遊平台 </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @*<link rel="stylesheet" href="~/prj_Traveldate_Core.styles.css" asp-append-version="true" />*@
@@ -57,7 +60,6 @@
     <link href="~/css/search.css" rel="stylesheet" />
 
 
-  
 
 
    
@@ -107,15 +109,19 @@
                         </li>
                         @if (!string.IsNullOrEmpty(memName))
                         {
-                            <li class="nav-item mr-2">
+                            <li class="nav-item mr-3">
                                 <a asp-area="" asp-controller="Member" asp-action="Index">
                                     <img src="~/icons/icons8-login-member-layout.png" height="36" />
                                     <span id="loginMem">歡迎 ! @memName</span>
                                 </a>
                             </li>
-                            <li class="nav-item mr-2">
+                            <li class="nav-item mr-3">
                                 <a asp-area="" asp-controller="Cart" asp-action="ShoppingCart">
-                                    <img src="~/icons/icons8-cart-96.png" height="36" />購物車
+                                    <div class="m-0 p-0 position-relative">
+                                        <img src="~/icons/icons8-cart-96.png" height="36" />
+                                        <span id="CartBagde" class="position-absolute top-0 start-25 translate-middle">
+                                        </span><span class="ml-2">購物車</span>
+                                    </div>
                                 </a>
                             </li>
                             <li class="nav-item mr-2">
@@ -124,15 +130,7 @@
                                 </a>
                             </li>
                         }
-                        else
-                        {
-                            <li class="nav-item mr-2">
-                                <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
-                            </li>
-                        }
-
-
-                        @if (!string.IsNullOrEmpty(comName))
+                        else if (!string.IsNullOrEmpty(comName))
                         {
                             <li class="nav-item mr-2">
                                 <a asp-area="" asp-controller="Dashboard" asp-action="List">
@@ -149,14 +147,21 @@
                         else
                         {
                             <li class="nav-item mr-2">
+                                <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
+                            </li>
+                            <li class="nav-item mr-2">
                                 <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">供應商登入</a>
                             </li>
                         }
 
+
                        
                     </ul>
-              
-            </div>
+              @if (!string.IsNullOrEmpty(memName))
+                    {
+                        <input type="hidden" id="memlogin" value="true">
+                    }
+                </div>
         </nav>
     </header>
     
@@ -379,6 +384,20 @@
 
         
 
-    
+
+        <script>
+            $(document).ready(function() {
+                if ($('#memlogin').val()=='true'){
+                    $.get('@Url.Content("/CartApi/GetCartCount")',  function (data) {
+                        $('#CartBagde').addClass(" badge rounded-pill bg-warning text-dark");
+                        $('#CartBagde').text(data);
+                    })
+                }
+            })
+
+        </script>
+
+
+    </div>
 </body>
 </html>

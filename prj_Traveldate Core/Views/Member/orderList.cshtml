@@ -52,6 +52,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -68,19 +72,15 @@
     </ol>
 </nav>
 
-
 <table id="table_id" class="display cell-border compact hover col-md-12">
-<thead>
+    <thead>
         <tr>
             <th class="col-md-1"></th>
             <th>商品名稱</th>
             <th>訂購日期</th>
             <th>行程日期</th>
              @* <th>pic</th>  *@
-            <th>操作</th>
-            
-
-
+            <th>操作</th>           
         </tr>
     </thead>
     <tbody>
@@ -94,7 +94,6 @@
                     <td>@item.ProductName</td>
                     <td>@item.Datetime.ToString()</td>
                     <td>@item.Date.ToString()</td>
-
                     @*<td>
                         @{
                             foreach (var imagePath in item.ImagePath)
@@ -104,15 +103,12 @@
                         }
                     </td>
                     *@
-                    <td>@Html.ActionLink("評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
+                    <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
                 </tr>
             }
         }
     </tbody>
-
-
 </table>
-
 
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -140,8 +136,8 @@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-
 }
+
 @section scripts{
 @*     <script>
         $(document).ready(function () {
@@ -160,6 +156,7 @@
             });
         });
     </script> *@
+
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({

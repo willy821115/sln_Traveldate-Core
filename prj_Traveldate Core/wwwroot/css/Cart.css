@@ -255,6 +255,29 @@
 ..card-img-top {
     height: 172px;
 }
+
+.headerbox {
+    padding: 0.6em;
+    margin: 0.3em 0;
+}
+
+.editbox {
+    border: 1px solid #3888BD;
+    border-radius: 10px;
+    padding: 0.6em;
+    margin: 0.3em 0;
+}
+.editbox:hover{
+    background-color:whitesmoke;
+    cursor: pointer;
+}
+
+.editboxSelected {
+    background-color: whitesmoke;
+    border: 3px solid #3888BD;
+}
+
+
 /***填資料*************************************************************/
 .Confirm-All {
     width: 100%;

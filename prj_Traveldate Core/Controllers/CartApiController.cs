@@ -67,8 +67,70 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("ShoppingCart", "Cart");
         }
 
-        //TODO  修改數量
+        // +-按鈕 修改數量
+        public IActionResult ItemPlus(int id) //odid
+        {
+            OrderDetail od = _context.OrderDetails.Find(id);
+            if (od != null)
+            {
+                od.Quantity += 1;
+                _context.SaveChanges();
+                return Content(od.Quantity.ToString());
+            }
+            return NoContent();
+        }
+
+        public IActionResult ItemMinus(int id) //odid
+        {
+            OrderDetail od = _context.OrderDetails.Find(id);
+            if (od != null)
+            {
+                if (od.Quantity > 1)
+                {
+                    od.Quantity -= 1;
+                    _context.SaveChanges();
+                    return Content(od.Quantity.ToString());
+                }
+            }
+            return NoContent();
+        }
+
         //TODO  編輯訂購內容(修改OD)
+        public IActionResult LoadTrips(int id) //tripid
+        {
+            var pid = _context.Trips.Find(id).ProductId;
+            var trips = _context.Trips.Where(t => t.ProductId == pid && t.Date>DateTime.Now).OrderBy(t=>t.Date);
+            foreach (var trip in trips)
+            {
+                if (trip.Discount == null)
+                {
+                    trip.Discount = 0;
+                }
+            }
+            return Json(trips);
+        }
+
+        //修改資料庫
+        public IActionResult EditCart(int odid, int num, int tripid)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            var exixt = _context.OrderDetails.Where(o=>o.Order.MemberId==_memberID && o.Order.IsCart==true && o.TripId==tripid).FirstOrDefault();
+            if (exixt != null)
+            {
+                return Content("exist");
+            }
+            else
+            {
+                OrderDetail thisod = _context.OrderDetails.Find(odid);
+                thisod.TripId = tripid;
+                thisod.Quantity = num;
+                _context.SaveChanges();
+                return Content("OK");
+            }
+
+        }
+
+
         //TODO  抓推薦
         //TODO  抓瀏覽紀錄
 
@@ -78,6 +140,15 @@ namespace prj_Traveldate_Core.Controllers
         {
             var companion = _context.Companions.Where(c=>c.CompanionId==id).Select(c=>c).FirstOrDefault();
             return Json(companion);
+        }
+
+        //取得購物車內商品數量
+        [HttpGet]
+        public IActionResult GetCartCount()
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            var count = _context.OrderDetails.Where(o => o.Order.IsCart == true && o.Order.MemberId == _memberID).Count();
+            return Content(count.ToString());
         }
 
         //揪團用結帳

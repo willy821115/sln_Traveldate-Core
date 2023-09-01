@@ -1,0 +1,145 @@
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CForumListViewModel
+filtered
+@foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
+{
+    var schedule_tag = Model.productTags.Where(tag => article.trips.Any(trip => tag.ProductId == trip.ProductId)).ToList();
+    <a asp-action="ArticleView" asp-route-id="@article.forumListId" class="my-article-item text-secondary">
+        <div class="col-2 m-1">
+            
+               @{
+                var imgPath = article.trips
+                .Select(trip => Model.prodPhoto
+                .FirstOrDefault(p => p.prodId == trip.ProductId)?.prodPhotoPath)
+                .FirstOrDefault(); // 只取第一個有效的路徑
+            }
+
+            @if (!string.IsNullOrEmpty(imgPath))
+            {
+                <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.trips.Select(t=>t.Product.ProductName).First()" />
+            }
+            else
+            {
+                <img class="img-fluid img-thumbnail " src="~/icons/logos/Logo_traveldate.png" />
+            }
+            
+        </div>
+
+        <div class="rounded bg-gray-100 col-5 m-1 d-flex row p-0">
+            <p class="pt-1 fs-5 fw-bold text-black">@article.ForumList.Title</p>
+            @{
+                HashSet<string> displayedCities = new HashSet<string>();
+            }
+            <div>
+                <img src="~/icons/icons8-position-16.png" />
+            @foreach (var c in article.trips)
+            {
+                if (!displayedCities.Contains(c.Product.City.City))
+                {  
+                      <span class="bg-info mr-2 rounded text-light p-1">@c.Product.City.City</span>
+                    displayedCities.Add(c.Product.City.City);
+                }
+            }
+            </div>
+            <div>
+                <img src="~/icons/icons8-tag-16.png" />
+            @foreach (var tags in schedule_tag)
+            {
+                    <span id="@tags.ProductTagDetailsId">#@tags.ProductTagDetails.ProductTagDetailsName</span>
+                }
+                
+            </div>
+            <div class="d-flex align-items-end">
+                @{
+                    var memLevel = article.ForumList.Member.Level.Level;
+                }
+                @switch (memLevel)
+                {
+                    case "黑鑽會員":
+                        <img src="~/icons/level_dimond48.png" height="24">
+
+                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        break;
+                    case "白銀會員":
+                        <img src="~/icons/level-slover-50.png" height="24">
+                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        break;
+                    case "黃金會員":
+                        <img src="~/icons/level-gold-50.png" height="24">
+                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        break;
+                    default:
+                        <img src="~/icons/level-gold-50.png" height="24" />
+                        <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                        break;
+                }
+
+
+                <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+            </div>
+        </div>
+        <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
+            <p>回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId).Count()</p>
+        <p>剩餘名額 : @article.strStock</p>
+        </div>
+        <div class="rounded bg-gray-100 col-2 m-1">
+            <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
+            @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
+            {
+                <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+            }
+            else
+            {
+                <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+            }
+
+        </div>
+
+    </a>
+}
+<div class="d-flex justify-content-center bg-transparent border-0">
+    <div class="col-7 d-flex justify-content-around">
+        <div class="pagination-container">
+            <div class="pagination">
+                @{
+                    int pageCount = (int)Math.Ceiling((double)Model.totalCount / Model.pageSize); // 計算總頁數
+                    int currentPage = Model.currentPage; /* 取得當前頁碼 */
+
+                    if (pageCount > 1)
+                    {
+                        if (currentPage > 1)
+                        {
+                                <a href="#" class="page-link-cust" data-page="1">@Html.Raw("&lt;")</a>
+                        }
+                        for (int i = 1; i <= pageCount; i++)
+                        {
+                            if (i != currentPage)
+                            {
+                                    <a href="#" class="page-link-cust" data-page="@i">@i</a>
+                            }
+                            else
+                            {
+                                    <span class="page-link-cust active">@i</span>
+                            }
+                        }
+
+                    }
+                    if (pageCount >= 2 && currentPage != @pageCount)
+                    {
+                            <a href="#" class="page-link-cust" data-page="@pageCount">@Html.Raw("&gt;")</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<input id="updateTotal" type="hidden" value="@Model.totalCount" />
+<script>
+    
+    $(".pagination>a").on("click", function (e) {
+        e.preventDefault();
+        pageNumber = $(this).data("page");
+        filteredByConditions()
+    });
+</script>

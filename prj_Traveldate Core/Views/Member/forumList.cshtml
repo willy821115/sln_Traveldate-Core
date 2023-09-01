@@ -11,7 +11,6 @@
             max-height: 200px;
             overflow-y: auto;
         }
-
     </style>
 }
 @*<h1>forumList3</h1>*@
@@ -64,6 +63,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
              </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -88,7 +91,7 @@
             <th class="col-md-2">行程名稱</th>
             <th >發布日期</th>
             <th c>截止日期</th>
-            <th >熱度</th>
+            <th>讚數</th>
             <th >觀看數</th>
             <th class="col-md-4">行程敘述</th>
             <th>操作</th>
@@ -100,13 +103,12 @@
             foreach (var item in Model)
             {
                 <tr>
-
                      @*<td><i class="material-icons" style="font-size:24px;margin-left:24px">exposure_plus_1</i></td>*@
                     <td><img style="marging-left:-20px" src="~/icons/icon-forum-1.png" /></td>
                     <td>@item.Title</td>
                     <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
                     <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
-                    <td><img style="margin-top:-7px" src="~/icons/icon-fire-1.png"/> @item.Likes</td>
+                    <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item.Likes</td>
                     <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
                     <td><div class="content-cell">@Html.Raw(item.Content)</div></td>
                     @*<td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "orderList","Member","",new {@class="black-link"})</td>*@
@@ -118,7 +120,6 @@
                     {
                         <td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("檢視", "ArticleView","Forum",new { id = item.ForumListId },new {@class="black-link"})</td>
                     }
-
                 </tr>
             }
         }
@@ -151,7 +152,6 @@
 
 }
 @section scripts{
-
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({

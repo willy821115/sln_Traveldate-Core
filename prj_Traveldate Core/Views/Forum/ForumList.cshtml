@@ -1,4 +1,4 @@
-﻿
+﻿@using X.PagedList.Mvc.Core;
 @using prj_Traveldate_Core.ViewModels;
 
 @model CForumListViewModel
@@ -11,6 +11,41 @@
 @section Styles{
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+       
+        .pagination > li > a {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #4F4F4F;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+
+       
+        .pagination > .active {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #155074;
+            border: 1px solid #dee2e6;
+        }
+
+
+        .page-link-cust {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #4F4F4F;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
         .my-article-item{
             display:flex;
             flex-direction:row;
@@ -31,11 +66,11 @@
         }
 
         .topTen {
-            height:230px;
-            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            height:330px;
+            border-radius:7px;
+            background: #D1E9E9;
         }
 
-       
             .my-article-item:hover {
             box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.4);
         }
@@ -45,14 +80,76 @@
         }
 
         .topTen:hover {
-            transform: scale(1.01);
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .topTenContent{
+            margin: 5px 0 0 0;
+            max-height:78px;
+            background:#fff;
+            padding:2px;
+            border-radius:5px 5px 0 0 ;
+            overflow:hidden
+        }
+
+        .topTenDiv{
+            width:95%;
+        }
+
+        .topTenContentDot{
+            
+            padding:0 0 0 5px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #fff;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #155074;
+            border-radius: 5px;
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #74abcc;
+            }
+
+        .DivRule{
+            background:#fff;
+            max-height: 474px;
+            overflow-y: auto;
+            border-radius:5px;
         }
     </style>
 }
 
-<div class="row g-0 column-gap-5 justify-content-center main">
+<div class="row g-0 column-gap-5 justify-content-center">
     <div class="col-3 forum-block">
+        <div class="bg-white mt-2 p-4 DivRule">
+            <p>歡迎來到TravelDate尋找旅行夥伴論壇！我們很高興您加入我們的討論社區，一起尋找理想的旅行夥伴。為了確保這個論壇能夠保持友善和有益的環境，請您遵守以下版規：</p>
+            <ul>
+                <li>尊重他人：請尊重每位論壇成員的意見和觀點，不論他們的背景和經驗。禁止人身攻擊、冒犯性言語和不當行為。</li>
+                <li>主題相關：請確保您的帖子和回覆與尋找旅行夥伴相關。任何與主題無關的內容可能會被刪除。</li>
+                <li>安全第一：在考慮與陌生人一同旅行前，請確保您已經建立足夠的信任。我們建議您公開分享旅行計劃前謹慎檢查對方的背景和意圖。</li>
+                <li>廣告宣傳：禁止未經許可的廣告、自我宣傳或推銷。如您有商業合作意向，請聯繫管理員獲取相關合作信息。</li>
+                <li> 尊重隱私：請不要在論壇上公開分享個人敏感信息，包括聯繫方式和身份證明等。</li>
+                <li>  禁止盜用他人資料：不得盜用、冒用他人資料，包括照片和個人資料。</li>
+                <li> 維護秩序：請遵守版主和管理員的指示，不要散播不實信息或煽動不良行為。</li>
+                <li>
+                    合法合規：請確保您的討論內容合法，不涉及侵犯版權、違法內容或其他違規行為。
+                </li>
+            </ul>
+            <p>我們希望論壇能成為一個有益的交流平台，幫助您找到理想的旅行夥伴。感謝您遵守以上版規！</p>
+            
+        </div>
         <div class="p-3 mt-2 mb-2">
             <a id="confirmedLoginStatus" asp-action="Create" class="fs-4 my-text-primary write-conatiner  d-flex align-items-center  text-secondary fw-bold">
                 <img class="write-icon-static me-3" src="~/icons/icons8-pencil-32.png">
@@ -65,135 +162,144 @@
             <div class="controls-display-row search_container">
                 <img class="search-icon-static me-3" src="~/icons/icons8-search-static-32.png">
                 <img class="search-icon-gif me-3" src="~/icons/icons8-search.gif" width="32" height="32">
-                <input id="keyword-for-forum" class="search-input" type="text" placeholder="請輸入文章標題"/>
+                <input id="keyword-for-forum" class="search-input" type="text" placeholder="請輸入文章關鍵字" />
             </div>
         </div>
         <div class="p-3 mt-2 mb-2">
             <label class="fs-4 pl-2 pt-2 fw-bold">依旅遊地區</label>
-                @* <partial name="@Url.Content("~/Forum/Region")"></partial> *@
-            @Html.Partial("Region",Model.regions)
+            @* <partial name="@Url.Content("~/Forum/Region")"></partial> *@
+            @Html.Partial("Region",Model)
         </div>
         <div class="p-3 mt-2 mb-2">
-            @Html.Partial("Category",Model.categories)
+            @Html.Partial("Category",Model)
         </div>
     </div>
     <div class="col-8 forum-block">
         <div class="p-3 mt-2 mb-2">
-            <p class="fs-3 divide-line fw-bold">精選TOP10文章</p>
+            <p class="fs-3 divide-line fw-bold"><img src="~/images/top.png" width="36" />精選TOP10文章</p>
             <div class="row g-0 column-gap-5 justify-content-center pt-3 pb-3">
                 <div id="carouselExampleIndicators" class="carousel slide">
-                    <div class="carousel-inner ">
-                        @{
-                            // var topTenArticle = Model.schedules.OrderByDescending(s => s.ForumList.Content.Length).Take(10).ToList();
-                            //var topTenArticle = Model.schedules.GroupBy(s=>s.ForumListId).OrderByDescending(g => g.Sum(t=>t.Trip.UnitPrice)).Take(10).ToList();
-                        }
-                        @for (int i = 0; i <Model.topTen.Take(10).Count(); i ++)
+                    <div class="carousel-inner d-flex align-items-center" style="height:340px">
+                        @for (int i = 0; i < Model.topTen.Take(10).Count(); i++)
                         {
                             bool isFirstItem = i == 0; // 判斷是否是第一次迴圈
                             var currenSchedule = Model.topTen[i];
                             i++;
                             var nextSchedule = Model.topTen[i];
-                            <div class="carousel-item @(isFirstItem ? "active" : "")">
+                            <div class="carousel-item @(isFirstItem ? " active" : "")">
                                 <div class="d-flex row g-0 justify-content-center">
-                                    <div class="topTen border rounded p-3 me-4 col-5">
-                                            <a asp-action="ArticleView" class="text-secondary">
-                                            <p class="fs-4 text-black">@currenSchedule.title</p>
-                                            <p>totalPrice : @currenSchedule.totalPrice</p>
-                                            <div class="d-flex align-items-end">
-                                                @{
-                                                    var f_memName = Model.schedules.Where(s => s.ForumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
-                                                    var f_memPhoto = Model.schedules.Where(s => s.ForumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
-                                                    var f_memGneder = Model.schedules.Where(s => s.ForumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
-                                                    var f_time = Model.schedules.Where(s => s.ForumListId == currenSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
-                                                    var f_reply = Model.replyList.Where(r => r.ForumListId == currenSchedule.forumlistid).Count();
-                                                    var f_tags = Model.productTags.Where(t => t.ProductId == currenSchedule.prodId).ToList();
-                                                }
-                                                @if (f_memPhoto != null)
-                                                {
-                                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(f_memPhoto)" width="64" height="64" />
-                                                }
-                                                else
-                                                {
-                                                    if (f_memGneder == "男")
-                                                    {
-<img src="~/icons/icons8-person-100.png" width="64" height="64" />
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="~/icons/icons8-person-female-100.png" width="64" height="64" />
-                                                    }
+                                    <div class="topTen p-3 me-4 col-5">
+                                        @{
+                                            var f_memName = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
+                                            var f_memPhoto = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
+                                            var f_memGneder = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
+                                            var f_time = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
+                                            var f_reply = Model.replyList.Where(r => r.ForumListId == currenSchedule.forumlistid).Count();
+                                            var f_tags = Model.productTags.Where(t => t.ProductId == currenSchedule.prodId).ToList();
+                                        }
+                                        <a asp-action="ArticleView" asp-route-id="@currenSchedule.forumlistid" class="text-secondary">
+                                            <div class="d-flex align-items-end justify-content-center">
+                                                <div class="topTenDiv">
+                                                    <p class="fs-4 text-black fw-bold">@currenSchedule.title</p>
+                                                    <div class="text-body-secondary d-flex">
+                                                        <div class="mr-2 d-flex align-items-center">
+                                                            @if (f_memPhoto != null)
+                                                            {
+                                                                <img src="data:image/jpg;base64,@Convert.ToBase64String(f_memPhoto)" width="64" height="64" />
+                                                            }
+                                                            else
+                                                            {
+                                                                if (f_memGneder == "男")
+                                                                {
+                                                                    <img src="~/icons/icons8-person-100.png" width="64" height="64" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="~/icons/icons8-person-female-100.png" width="64" height="64" />
+                                                                }
 
-                                                }
-                                                
-                                                
-                                                <div>
-                                                <small class="text-body-secondary d-block">
-                                                        
-                                                        <span>@f_memName</span><span> | 發文時間 : @f_time</span><span> | 回覆數 : @f_reply</span>
-                                                </small>
-                                                     <small class="text-body-secondary d-block">
-                                                         <img src="~/icons/icons8-tag-16.png"/>
-                                                        @foreach(var tag in f_tags)
-                                                        {
-                                                            <span>#@tag.ProductTagDetails.ProductTagDetailsName</span>
-                                                        }
-                                                        
-                                                </small>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @f_memName</p>
+                                                            <span>發文時間 : @f_time</span>
+                                                            <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @f_reply 人</span>
+                                                            <div class="text-body-secondary d-block">
+                                                                <img src="~/icons/icons8-tag-16.png" />
+                                                                @foreach (var tag in f_tags)
+                                                                {
+                                                                    <span>#@tag.ProductTagDetails.ProductTagDetailsName</span>
+                                                                }
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="topTenContent">@Html.Raw(currenSchedule.content)</div><div class="bg-white topTenContentDot">…</div>
                                                 </div>
                                             </div>
+
                                         </a>
                                     </div>
-                                    <div class="topTen border rounded p-3 col-5">
-                                
-                                        <a asp-action="ArticleView" class="text-secondary">
-                                            <p class="fs-4 text-black">@nextSchedule.title</p>
-                                            <p>totalPrice : @nextSchedule.totalPrice</p>
-                                            <div class="d-flex align-items-end">
-                                                @{
-                                                    var s_memName = Model.schedules.Where(s => s.ForumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
-                                                    var s_memPhoto = Model.schedules.Where(s => s.ForumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
-                                                    var s_memGneder = Model.schedules.Where(s => s.ForumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
-                                                    var s_time = Model.schedules.Where(s => s.ForumListId == nextSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
-                                                    var s_reply = Model.replyList.Where(r => r.ForumListId == nextSchedule.forumlistid).Count();
-                                                    var s_tags = Model.productTags.Where(t => t.ProductId == nextSchedule.prodId).ToList();
-                                                }
-                                                @if (s_memPhoto != null)
-                                                {
-                                                    <img src="data:image/jpg;base64,@Convert.ToBase64String(s_memPhoto)" width="64" height="64" />
-                                                }
-                                                else
-                                                {
-                                                    if (s_memGneder == "男")
-                                                    {
-                                                        <img src="~/icons/icons8-person-100.png" width="64" height="64" />
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="~/icons/icons8-person-female-100.png" width="64" height="64" />
-                                                    }
+                                    <div class="topTen p-3 col-5">
+                                        @{
+                                            var s_memName = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
+                                            var s_memPhoto = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
+                                            var s_memGneder = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
+                                            var s_time = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
+                                            var s_reply = Model.replyList.Where(r => r.ForumListId == nextSchedule.forumlistid).Count();
+                                            var s_tags = Model.productTags.Where(t => t.ProductId == nextSchedule.prodId).ToList();
+                                        }
+                                        <a asp-action="ArticleView" asp-route-id="@nextSchedule.forumlistid" class="text-secondary">
+                                            <div class="d-flex align-items-end justify-content-center">
+                                                <div class="topTenDiv">
+                                                    <p class="fs-4 text-black  fw-bold">@nextSchedule.title</p>
+                                                    <div class="text-body-secondary d-flex">
+                                                        <div class="mr-2 d-flex align-items-center">
+                                                            @if (s_memPhoto != null)
+                                                            {
+                                                                <img src="data:image/jpg;base64,@Convert.ToBase64String(s_memPhoto)" width="64" height="64" />
+                                                            }
+                                                            else
+                                                            {
+                                                                if (s_memGneder == "男")
+                                                                {
+                                                                    <img src="~/icons/icons8-person-100.png" width="64" height="64" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="~/icons/icons8-person-female-100.png" width="64" height="64" />
+                                                                }
 
-                                                }
-                                                    <div>
-                                                    <small class="text-body-secondary d-block">
-                                                        
-                                                        <span>@s_memName</span><span> | 發文時間 : @s_time</span><span> | 回覆數 : @s_reply</span>
-                                                    </small>
-                                                         <small class="text-body-secondary d-block">
-                                                        <img src="~/icons/icons8-tag-16.png" />
-                                                        @foreach (var tag in s_tags)
-                                                        {
-                                                            <span>#@tag.ProductTagDetails.ProductTagDetailsName</span>
-                                                        }
-                                                    </small>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @s_memName</p>
+                                                            <span>發文時間 : @s_time</span>
+                                                            <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @s_reply 人</span>
+                                                            <div class="text-body-secondary d-block">
+                                                                <img src="~/icons/icons8-tag-16.png" />
+                                                                @foreach (var tag in s_tags)
+                                                                {
+                                                                    <span>#@tag.ProductTagDetails.ProductTagDetailsName</span>
+                                                                }
+
+                                                            </div>
+                                                        </div>
                                                     </div>
+
+                                                    <div class="topTenContent">@Html.Raw(nextSchedule.content)</div><div class="bg-white topTenContentDot">…</div>
                                                 </div>
+                                            </div>
+
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         }
                     </div>
-                    
+
                     <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="align-items-center row my-bg-primary my-img-circle  my-w50-h50"><span class="carousel-control-prev-icon col" aria-hidden="true"></span></span>
                         <span class="visually-hidden">Previous</span>
@@ -205,55 +311,170 @@
                 </div>
             </div>
         </div>
-        <div class="p-2 mt-2 mb-2">
+
+        <div class="p-2 mt-2 mb-2" id="targetDiv">
+            <div class="divide-line pl-3">
+                <span id="total" class="fs-3 fw-bolder me-2">@Model.schedules.Count()</span><span class="fs-5 my-text-primary">
+                    <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
+                    篇揪團文章
+                </span>
+                <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
+
+            </div>
             <div class="sort d-flex align-items-center fs-6 my-text-primary pl-3">
                 <span class=" fw-bolder ">排序 :  </span>
                 <span>　</span>
-                <a href="#" class=" fw-bolder">發文時間</a>
+                <a id="sortByRelTime" href="#" class=" fw-bolder" name="sortType">發文時間</a>
                 <span>　|　</span>
-                <a href="#" class=" fw-bolder">回覆數</a>
+                <a id="sortByReply" href="#" class=" fw-bolder">回覆數</a>
                 <span>　|　</span>
-                <a href="#" class=" fw-bolder">截團日期(近到遠)</a>
+                <a id="sortByDueDate" href="#" class=" fw-bolder">截團日期(近到遠)</a>
+                <span>　|　</span>
+                <a id="sortByStock" href="#" class=" fw-bolder">剩餘名額</a>
             </div>
         </div>
-        <div id="filteredBody">
-        @foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
-        {
-            <a asp-action="ArticleView" asp-route-id="@article.ForumListId" class="my-article-item text-secondary">
-                <div class="col-2 m-1">
-                    @if (article.Trip?.Product != null && Model.prodPhoto.Any(p => p.prodId == article.Trip.ProductId))
-                    {
-                        var imgPath = Model.prodPhoto.FirstOrDefault(p => p.prodId==article.Trip.ProductId).prodPhotoPath;
-                        <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.Trip.Product.ProductName" />
-                    }
-                </div>
+        <div id="filteredBody" class="bg-transparent">
+            @foreach (var article in Model.pages.OrderBy(f => f.ForumList.DueDate))
+            {
+                var schedule_tag = Model.productTags.Where(tag => article.trips.Any(trip => tag.ProductId == trip.ProductId)).ToList();
 
-                <div class="rounded bg-gray-100 col-5 m-1 d-flex row p-0">
-                        <p class="pt-1 fs-5 fw-bold text-black">@article.ForumList.Title</p>
-                    <div class="d-flex align-items-end">
-                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
-                        <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
-                        <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
-                    </div>
-                </div>
-                    <div class="rounded bg-gray-100 col-2 m-1 pt-1">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.ForumListId).Count()</div>
-                <div class="rounded bg-gray-100 col-2 m-1">
-                    <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
-                    @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
-                    {
-                        <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
-                    }
-                    else{
-                        <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                <a asp-action="ArticleView" asp-route-id="@article.forumListId" class="my-article-item text-secondary">
+                    <div class="col-2 m-1">
+                        @{
+                            var imgPath = article.trips
+                            .Select(trip => Model.prodPhoto
+                            .FirstOrDefault(p => p.prodId == trip.ProductId)?.prodPhotoPath)
+                            .FirstOrDefault(); // 只取第一個有效的路徑
                         }
 
-                </div>
-                       
-            </a>
-            }
-        </div>
+                        @if (!string.IsNullOrEmpty(imgPath))
+                        {
+                            <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.trips.Select(t=>t.Product.ProductName).First()" />
+                        }
+                    </div>
 
+                    <div class="rounded bg-gray-100 col-5 m-1 d-flex row p-0">
+                        <p class="pt-1 fs-5 fw-bold text-black">@article.ForumList.Title</p>
+                        @{
+                            HashSet<string> displayedCities = new HashSet<string>();
+                        }
+                        <div>
+                            <img src="~/icons/icons8-position-16.png" />
+                            @foreach (var c in article.trips)
+                            {
+                                if (!displayedCities.Contains(c.Product.City.City))
+                                {
+                                    <span class="bg-info mr-2 rounded text-light p-1">@c.Product.City.City</span>
+                                    displayedCities.Add(c.Product.City.City);
+                                }
+                            }
+
+                        </div>
+                        <div>
+                            @{
+                                HashSet<string> displayedTags = new HashSet<string>();
+                            }
+                            <img src="~/icons/icons8-tag-16.png" />
+                            @foreach (var tags in schedule_tag.Distinct())
+                            {
+                                if (!displayedTags.Contains(tags.ProductTagDetails.ProductTagDetailsName))
+                                {
+                                    <span id="@tags.ProductTagDetailsId"> #@tags.ProductTagDetails.ProductTagDetailsName</span>
+                                    displayedTags.Add(tags.ProductTagDetails.ProductTagDetailsName);
+                                }
+                            }
+
+                        </div>
+                        <div class="d-flex align-items-end">
+                            @{
+                                var memLevel = article.ForumList.Member.Level.Level;
+                            }
+                            @switch (memLevel)
+                            {
+                                case "黑鑽會員":
+                                    <img src="~/icons/level_dimond48.png" height="24">
+
+                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    break;
+                                case "白銀會員":
+                                    <img src="~/icons/level-slover-50.png" height="24">
+                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    break;
+                                case "黃金會員":
+                                    <img src="~/icons/level-gold-50.png" height="24">
+                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    break;
+                                default:
+                                    <img src="~/icons/level-gold-50.png" height="24" />
+                                    <span class="my-sm-text">@article.ForumList.Member.Level.Level</span>
+                                    break;
+                            }
+
+
+                            <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                            <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                        </div>
+                    </div>
+                    <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
+                        <p>回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
+                        <p>剩餘名額 : @article.strStock</p>
+                        </div>
+                    <div class="rounded bg-gray-100 col-2 m-1">
+                        <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
+                        @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
+                        {
+                            <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                        }
+                        else
+                        {
+                            <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                        }
+
+                    </div>
+
+                </a>
+            }
+            <div class="d-flex justify-content-center bg-transparent border-0">
+                <div class="col-7 d-flex justify-content-around">
+                    @Html.PagedListPager(Model.pages, page => Url.Action("ForumList", new {page}))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
+            <script src="~/js/wait_icon_function.js"></script>
+            <script>
+                var selectedTags = [];
+                var selectedCities = [];
+                var pageNumber = 1;
+                function filteredByConditions() {
+                    showLoadingIcon()
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("filteredSchedules", "Forum")",
+                        data: {
+                            tags: selectedTags, 
+                            cities: selectedCities,
+                            page: pageNumber
+                        },
+                        success: function (response) {
+                            var target_top = $("#targetDiv").offset().top - 100;
+                             hideLoadingIcon()
+                            $('#filteredBody').html(response)
+                            $('#total').html($('#updateTotal').val());
+                            window.scrollTo({
+                                top: target_top,
+                                behavior: 'smooth'
+                            });
+                        },
+                        error: function (error) {
+                            console.log("發生錯誤：", error);
+                        }
+                    });
+                }
+            </script>
+
     <script src="~/js/forumList_jq.js"></script>
     <script>
          function loginInfo() {
@@ -274,16 +495,72 @@
     </script>
             <script>
                 $('#keyword-for-forum').on('input', function (event) {
+         
 loadFilteredForum($(this).val())
-                })
                 function loadFilteredForum(keyword) {
                     fetch('@Url.Content("~/Forum/KeyWordForForum")?keyword=' + keyword,
                         { method: 'GET' })
                         .then(response => response.text())
                         .then(data => {
+                            var target_top = $("#targetDiv").offset().top - 100;
                             $('#filteredBody').html(data)
+                            window.scrollTo({
+                                top: target_top,
+                                behavior: 'smooth'
+                            });
                         })
+                    }
+                    
+                })
+            </script>
+            <script>
+        //////////////////////////////////////4種排序///////////////////////////////////////////
+        //排序/篩選載入資料
+        function loadData(sortType) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("filteredBySort", "Forum")",
+                data: {
+                    sortType: sortType,
+                    page: pageNumber
+                },
+                success: function (response) {
+                    var target_top = $("#targetDiv").offset().top - 100;
+                    hideLoadingIcon()
+                    $('#filteredBody').html(response)
+                    $('#total').html($('#updateTotal').val());
+                    window.scrollTo({
+                        top: target_top,
+                        behavior: 'smooth'
+                    });
+                },
+                error: function (error) {
+                    console.log("發生錯誤：", error);
                 }
+            });
+        }
+        //依發文時間排序        
+        $('#sortByRelTime').on('click', function () {
+                    var status = $(this).attr('id');
+            loadData(status)
+                })
+        //依回覆數排序    
+        $('#sortByReply').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+                })
+        //依截團日期
+        $('#sortByDueDate').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+        })
+                //依剩餘名額  sortByStock
+        $('#sortByStock').on('click', function () {
+            var status = $(this).attr('id');
+            loadData(status)
+        })
+
+
             </script>
         }
 

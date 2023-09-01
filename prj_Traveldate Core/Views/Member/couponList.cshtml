@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable< prj_Traveldate_Core.ViewModels.couponListViewModel>;
+@{
     ViewData["Title"] = "couponList3";
 }
 
@@ -52,6 +53,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -70,6 +75,7 @@
         <table id="table_id" class="display cell-border compact hover col-md-12">
             <thead>
                 <tr>
+                        @*<th class="col-md-1"></th>*@
                         <th class="col-md-1"></th>
                         <th>優惠券名稱</th>
                         <th>折扣</th>
@@ -79,14 +85,24 @@
             </thead>
 
             <tbody>
-                    @foreach (var item in Model)
+        @foreach (var item in Model)
                     {
                         <tr>
-                <td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>
+                            @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
+                                    @{
+                                            if (item.ImagePath != null)
+                                            {
+                                                 <td><img class="couponImg img-thumbnail img-fluid" style="width:67px;height:47px;margin-left:5px;radious:10px" src="~/images/@item.ImagePath" /></td>
+                                            }
+                                            else
+                                            {
+                                                <td><img class="couponImg img-thumbnail" src="~/Images/icons/icon-noimage(couponList)-1.png" /></td>
+                                            }
+                                    }
                             <td>@item.CouponName</td>
                             <td>@item.Discount</td>
                             <td>@item.Description</td>
-                            <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
+                            <td>@item.DueDate@*.ToString("yyyy-MM-dd")*@</td>
                         </tr>
                     }
             </tbody>
@@ -115,12 +131,12 @@
     </div>
 </div>*@
 
+
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-
 }
-@section scripts{
 
+@section scripts{
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({

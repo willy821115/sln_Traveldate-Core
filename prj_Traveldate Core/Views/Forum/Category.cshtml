@@ -1,15 +1,16 @@
-﻿@using prj_Traveldate_Core.Models.MyModels;
-@model List<CCategoryAndTags>
+﻿@using prj_Traveldate_Core.ViewModels;
+
+@model CForumListViewModel;
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 <div class="filter_block">
     <label class="fs-4 pl-2 pt-2 fw-bold">依文章類別</label>
-    @foreach (var c in Model)
+    @foreach (var c in Model.categories)
     {
 
         <div class="controls-display-row category-click">
-            <span class="fs-5">@Html.DisplayFor(modelItem => c.category) (@c.tags.Distinct().Count())</span>
+            <span class="fs-5">@Html.DisplayFor(modelItem => c.category)  (@c.tags.Distinct().Count())</span>
             <div class="d-flex justify-content-end">
                 <img id="arrow_bottom_down" src="~/icons/arrow_bottom_down_icon.png">
                 <img id="arrow_top_up" src="~/icons/arrow_top_up_icon.png">
@@ -18,15 +19,30 @@
         <div class="ms-lg-4 filter-block-toggle">
             <ul class="list-unstyled divFiltered_tag">
                 @foreach (var t in c.tags.Distinct())
-                {
-                    var tagsCount = c.tags.Count(c => c == t);
-                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                {                   
+                    //var tagsCount = c.tags.Count(c => c == t);
+                    var tagsCount = Model.schedules
+                    .Where(schedule => schedule.trips
+                    .Any(trip => trip.Product.ProductTagLists
+                    .Any(tag => tag.ProductTagDetails.ProductTagDetailsName == t)))
+                    .Count();
+            <li class=" d-flex align-items-center divide-line my-w-80-percent">
                         <img class="uncheckbox" src="~/icons/icons8-unchecked-32.png" />
                         <img class="checkbox" src="~/icons/icons8-checkbox-32.png" />
-                        <span>@Html.DisplayFor(modelItem => t) (@tagsCount)</span>
+                        <span>@Html.DisplayFor(modelItem => t)</span><label class="mb-0">  (@tagsCount)</label>
                     </li>
                 }
             </ul>
         </div>
     }
 </div>
+
+
+
+
+
+
+
+
+
+

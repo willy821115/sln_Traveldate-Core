@@ -203,12 +203,26 @@ namespace prj_Traveldate_Core.Models.MyModels
             return comphoto;
         }
 
-        //loadTripPrice
+        //loadTripPrice原價
         public List<decimal?> loadPlanprice(int id)
         {
-            List<decimal?> price = db.Trips.Where(p => p.ProductId == id).OrderBy(t=>t.Date).Select(t => t.UnitPrice).ToList();
+            List<decimal?> price = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t=>t.Date).Select(t => t.UnitPrice).ToList();
             return price;
         }
+        //load優惠金額
+        public List<decimal?> loadDiscountPrice(int id)
+        {
+            List<decimal?> disprice = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t =>t.Discount).ToList();
+            return disprice;
+        }
+        //優惠價截止日期
+        public List<string> loadDiscountPriceDate(int id)
+        {
+            List<DateTime?> pricedisDates = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t => t.DiscountExpirationDate).ToList();
+            List<string> formatPriceDates = pricedisDates.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
+            return formatPriceDates;
+        }
+
 
         //多少錢起的價格
         public decimal? loadPlanpriceStart(int id)
@@ -286,7 +300,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public string TripStock(int tripID)
         {
             TraveldateContext _db = new TraveldateContext();
-             var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Count, max = s.MaxNum }).FirstOrDefault();
+             var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Sum(o=>o.Quantity), max = s.MaxNum }).FirstOrDefault();
             string result = $"{q.orders}/{q.max}";
             return result;
         }
@@ -305,8 +319,6 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-        //審核行程所需
-      
 
 
     }
