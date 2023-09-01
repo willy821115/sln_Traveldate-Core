@@ -68,6 +68,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
         <li class="breadcrumb-item active" aria-current="page">會員訂單</li>
     </ol>
 </nav>
@@ -94,14 +95,14 @@
                     <td>@item.ProductName</td>
                     <td>@item.Datetime.ToString()</td>
                     <td>@item.Date.ToString()</td>
-                    @*<td>
-                        @{
-                            foreach (var imagePath in item.ImagePath)
-                            {
-                                <img src="@Url.Content("~/images/" + imagePath)" width="100" height="100" />
-                            }
-                        }
-                    </td>
+                   @*<tr>
+                    // //     @{
+                    //         foreach (var photos in item.photos)
+                    //         {
+                    //         <img src="@Url.Content("~/images/" +photos.ima )" alt="照片" />
+                    //         }
+                    //     }
+                    // </tr>
                     *@
                     <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
                 </tr>

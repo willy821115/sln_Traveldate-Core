@@ -1065,7 +1065,7 @@ namespace prj_Traveldate_Core.Controllers
                             Date = cm.Date,
                             ProductName = pl.ProductName,
                             CommentId=cm.CommentId,
-                            ImagePath= cmp.ImagePath
+                            //ImagePath= cmp.ImagePath
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
