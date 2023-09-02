@@ -297,10 +297,11 @@ input:focus{
 .other-message{
     justify-items: start;
 }
-.other-message .message-content{
-    grid-template-columns: 48px 1fr;
-    grid-column-gap: 15px;
-}
+    .other-message .message-content {
+        /*grid-template-columns: 48px 1fr;
+    grid-column-gap: 15px;*/
+        justify-items: start;
+    }
 .other-message .message-text{
     color: #111;
     background-color: #eee;
