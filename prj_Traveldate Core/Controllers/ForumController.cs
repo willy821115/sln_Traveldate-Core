@@ -591,7 +591,7 @@ namespace prj_Traveldate_Core.Controllers
                 forumInfos();
                 //var available = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime.Value).Where(s => s.ForumList.DueDate >= DateTime.Now);
                 //var expired = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime.Value).Where(s => s.ForumList.DueDate < DateTime.Now);
-                vm.schedules = ScheduleStock();
+                //vm.schedules = vm.schedules;
                 vm.pageSize = pageSize; // 每頁顯示的項目數
                 vm.currentPage = page < 1 ? 1 : page;
                 itemsToSkip = (page - 1) * pageSize;
