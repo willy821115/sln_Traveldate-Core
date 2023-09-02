@@ -58,6 +58,8 @@ namespace prj_Traveldate_Core.Controllers
                     ForumList = g.First().ForumList,// 第一個 Trip
                 })
                 .ToList();
+
+           // var dtats = _context.ProductTagLists.Include(t => t.ProductTagDetails).ToList();
             return data;
         }
         //要顯示文章的其他資料
@@ -69,6 +71,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.prodPhoto = forum_prodPhoto();
             vm.productTags = _context.ProductTagLists.Include(t => t.ProductTagDetails).ToList();
         }
+       
         //顯示每篇文章的trip中剩餘數最少的
         private List<ScheduleList1> ScheduleStock()
         {
@@ -92,9 +95,20 @@ namespace prj_Traveldate_Core.Controllers
                         id = d.TripId;
                     }
                 }
-                item.strStock = prodFactory.TripStock(id);
+                item.strStock = prodFactory.TripStock(id); 
+                double leave = Convert.ToDouble(item.strStock.Split('/')[0]);
+                double max = Convert.ToDouble(item.strStock.Split('/')[1]);
+                if(leave>max )
+                {
+                    item.strStock = $"{max}/{max}";
+                }
+
                 item.numStock = stockRate;
             }
+            var available = schedule.OrderBy(s=>s.ForumList.DueDate).Where(s => s.ForumList.DueDate >= DateTime.Now);
+            var expired = schedule.OrderBy(s => s.ForumList.DueDate).Where(s => s.ForumList.DueDate < DateTime.Now);
+            schedule = available.Concat(expired).ToList();
+
             return schedule;
         }
 
@@ -116,7 +130,11 @@ namespace prj_Traveldate_Core.Controllers
                 .Select(g => new CCategoryAndTags
                 {
                     category = g.Key,
-                    tags = g.Select(t => t.ProductTagDetails.ProductTagDetailsName).ToList()
+                    productTags = g.Select(t => new ProductTagDetail
+                    {
+                        ProductTagDetailsId = (int)t.ProductTagDetailsId,
+                        ProductTagDetailsName = t.ProductTagDetails.ProductTagDetailsName,
+                    }).ToList()
                 })
                 .ToList();
 
@@ -157,6 +175,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.topTen = _context.ScheduleLists
                 .Include(s => s.ForumList)
                 .Where(s => s.ForumList.IsPublish == true)
+                .Where(s=>s.ForumList.DueDate>DateTime.Now)
                 .GroupBy(s => s.ForumListId)
                  .Select(group => new CForumList_topTen
                  {
@@ -431,7 +450,7 @@ namespace prj_Traveldate_Core.Controllers
         /////////////////////////////////////揪團主頁用/////////////////////////////////
         string json = null;
         //關鍵字
-        public IActionResult KeyWordForForum(string keyword)
+        public IActionResult KeyWordForForum(string keyword, int page = 1, int pageSize = 8)
         {
             CForumListViewModel filteredForum = new CForumListViewModel();
             filteredForum.schedules = ScheduleStock();
@@ -451,30 +470,37 @@ namespace prj_Traveldate_Core.Controllers
                     ).ToList();
                 if (filteredForum.schedules.Count() > 0)
                 {
+                    filteredForum.totalCount = filteredForum.schedules.Count();
+                    filteredForum.pageSize = pageSize; // 每頁顯示的項目數
+                    filteredForum.currentPage = page < 1 ? 1 : page;
+                    itemsToSkip = (page - 1) * pageSize;
+                    filteredForum.schedules = filteredForum.schedules.Skip(itemsToSkip).Take(pageSize).ToList();
                     return PartialView(filteredForum);
                 }
                 else
                 {
+                    filteredForum.totalCount = filteredForum.schedules.Count();
                     return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
 
             }
+            filteredForum.totalCount = filteredForum.schedules.Count();
             return PartialView(filteredForum);
         }
 
         //checkbox
-        public IActionResult filteredSchedules(List<string> tags, List<string> cities, int page = 1, int pageSize = 8)
+        public IActionResult filteredSchedules(List<int> tagsId, List<string> cities, int page = 1, int pageSize = 8)
         { 
             vm.schedules = ScheduleStock();
-
+            
             //有篩選條件做篩選
-            if (tags.Count > 0)
+            if (tagsId.Count > 0)
             {
                 vm.schedules = vm.schedules
                     .Where(schedule => schedule.trips
                     .Any(trip => trip.Product.ProductTagLists
-                    .Any(tag => tags
-                    .Contains(tag.ProductTagDetails.ProductTagDetailsName))))
+                    .Any(tag => tagsId
+                    .Contains((int)tag.ProductTagDetailsId))))
                     .ToList();
                 var options = new JsonSerializerOptions
                 {
@@ -494,7 +520,7 @@ namespace prj_Traveldate_Core.Controllers
                 json = JsonSerializer.Serialize(vm.schedules, options);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDSCHEDULE_INFO, json);
             }
-            if (tags.Count == 0 && cities.Count == 0)
+            if (tagsId.Count == 0 && cities.Count == 0)
             {
                 vm.schedules = vm.schedules;
                 var options = new JsonSerializerOptions
@@ -536,10 +562,10 @@ namespace prj_Traveldate_Core.Controllers
             json = HttpContext.Session.GetString(CDictionary.SK_FILETREDSCHEDULE_INFO);
             vm.schedules = JsonSerializer.Deserialize<List<ScheduleList1>>(json,options);
             //依發文時間(近到遠)
-            if(sortType == "sortByRelTime")
+            if(sortType == "發起時間")
             {
                 forumInfos();
-                vm.schedules = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime.Value).ToList();
+                vm.schedules = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime).ToList();
                 vm.pageSize = pageSize; // 每頁顯示的項目數
                 vm.currentPage = page < 1 ? 1 : page;
                 itemsToSkip = (page - 1) * pageSize;
@@ -548,9 +574,10 @@ namespace prj_Traveldate_Core.Controllers
                 return PartialView(vm);
             }
             //依回覆數
-            if (sortType == "sortByReply")
+            if (sortType == "回覆數")
             {
                 forumInfos();
+                vm.schedules = vm.schedules.OrderByDescending(s => s.ForumList.ReplyLists.Count).ToList();
                vm.pageSize = pageSize; // 每頁顯示的項目數
                 vm.currentPage = page < 1 ? 1 : page;
                 itemsToSkip = (page - 1) * pageSize;
@@ -559,10 +586,12 @@ namespace prj_Traveldate_Core.Controllers
                 return PartialView(vm);
             }
             //依截團日期
-            if (sortType == "sortByDueDate")
+            if (sortType == "截團日期(近到遠)")
             {
                 forumInfos();
-                vm.schedules = vm.schedules.OrderBy(s => s.ForumList.DueDate.Value).ToList();
+                //var available = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime.Value).Where(s => s.ForumList.DueDate >= DateTime.Now);
+                //var expired = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime.Value).Where(s => s.ForumList.DueDate < DateTime.Now);
+                vm.schedules = ScheduleStock();
                 vm.pageSize = pageSize; // 每頁顯示的項目數
                 vm.currentPage = page < 1 ? 1 : page;
                 itemsToSkip = (page - 1) * pageSize;
@@ -571,7 +600,7 @@ namespace prj_Traveldate_Core.Controllers
                 return PartialView(vm);
             }
             //依剩餘名額
-            if (sortType == "sortByStock")
+            if (sortType == "剩餘名額")
             {
                 forumInfos();
                 vm.schedules = vm.schedules.OrderByDescending(s =>s.numStock).ToList();
@@ -586,6 +615,8 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         
+
+
 
 
         //ForumList的篩選欄(地區)
@@ -618,12 +649,15 @@ namespace prj_Traveldate_Core.Controllers
                 .Include(t => t.ProductTagDetails.ProductCategory)
                 .Where(t => prodId.Contains((int)t.ProductId))
                 .GroupBy(t => t.ProductTagDetails.ProductCategory.ProductCategoryName)
-                .Select(g => new CCategoryAndTags
-                {
-                    category = g.Key,
-                    tags = g.Select(t => t.ProductTagDetails.ProductTagDetailsName).ToList(),
-
-                })
+                 .Select(g => new CCategoryAndTags
+                 {
+                     category = g.Key,
+                     productTags = g.Select(t => new ProductTagDetail
+                     {
+                         ProductTagDetailsId = (int)t.ProductTagDetailsId,
+                         ProductTagDetailsName = t.ProductTagDetails.ProductTagDetailsName,
+                     }).ToList()
+                 })
                 .ToList();
             vm.schedules = ScheduleStock();
 

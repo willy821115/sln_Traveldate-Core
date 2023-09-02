@@ -44,12 +44,12 @@
                             <h5 class="card-title fw-bold">@Html.DisplayFor(modelItem => item.productName)</h5>
                             <p class="card-text  mb-2 my-fs-md">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
                             <p class="card-text">
-                                <span class="text-body-secondary">@Html.DisplayFor(modelItem => item.date) 後</span>
-                                <span class="text-body-secondary"> | <img src="~/icons/icons8-position-16.png">@Html.DisplayFor(modelItem => item.city) </span>
+                                <span class="text-body-secondary bg-gradient-secondary text-white fw-bolder rounded p-1">@Html.DisplayFor(modelItem => item.date) 後</span>
+                                | <img src="~/icons/icons8-position-16.png"><span class="text-body-secondary bg-gradient-warning text-white fw-bolder rounded p-1">@Html.DisplayFor(modelItem => item.city) </span>
                                 <span class="text-body-secondary">
                                     | <img src="~/icons/icons8-tag-16.png"> @foreach (var t in item.productTags)
                                     {
-                                        <span>#@t&thinsp;</span>
+                                        <span class="bg-gradient-info rounded p-1 text-white fw-bolder">#@t&thinsp;</span>
                                     }
                                 </span>
                             </p>
@@ -71,6 +71,7 @@
                                 {
                                     <span class="text-body-secondary"> |  @item.strProdStock</span>
                                 }
+
                             </div>
                             <div class="col">
                                 <p class="card-text fs-5 fw-bolder text-end"><span>TWD </span>@Html.DisplayFor(modelItem => item.price)<span class="fs-6 fw-normal">起</span></p>

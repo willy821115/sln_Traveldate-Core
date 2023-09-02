@@ -246,7 +246,7 @@
             <div class="alert alert-light d-none">
                 <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
             </div>
-            <div id="filterBody">
+            <div id="filteredBody">
             @foreach (var item in Model.pages)
             {
                 string salesCount = "";
@@ -357,7 +357,7 @@
                 },
                 success: function (response) {
                     hideLoadingIcon()
-                    $('#filterBody').html(response)
+                    $('#filteredBody').html(response)
                     roadRating()
                         window.scrollTo({
                             top: 0,
@@ -396,7 +396,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    $('#filterBody').html(data); 
+                    $('#filteredBody').html(data); 
                     roadRating()
                         window.scrollTo({
                             top: 0,
