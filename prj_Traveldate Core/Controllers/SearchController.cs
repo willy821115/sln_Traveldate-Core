@@ -113,7 +113,7 @@ namespace prj_Traveldate_Core.Controllers
             return Json(filterCitiess);
         }
 
-        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, string minPrice, string maxPrice, int page=1)
+        public IActionResult FilterByConditions(List<string> tags, List<string> cities, List<string> types, string startTime, string endTime, int minPrice, int maxPrice, int page=1)
         {
             _vm.filterProducts = _products.qureyFilterProductsInfo();
             //有篩選條件做篩選
@@ -157,27 +157,18 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
-                itemsPerPage = 5; // 每頁顯示的項目數
-                itemsToSkip = (page - 1) * itemsPerPage;
-                _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
-                _vm.currentPage = page;
-                return PartialView(_vm);
+
             }
             //有價格篩選做上面篩選後的篩選
-            if (!string.IsNullOrEmpty(minPrice) && !string.IsNullOrEmpty(maxPrice))
+            if (minPrice > 0  && maxPrice>0)
             {
-                _vm.filterProducts = _vm.filterProducts.Where(p => p.price >= Convert.ToInt32(minPrice) && p.price <= Convert.ToInt32(maxPrice)).ToList();
+                _vm.filterProducts = _vm.filterProducts.Where(p => p.price >= minPrice && p.price <= maxPrice).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
                 if (_vm.filterProducts.Count == 0)
                 {
                     return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
-                itemsPerPage = 5; // 每頁顯示的項目數
-                itemsToSkip = (page - 1) * itemsPerPage;
-                _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
-                _vm.currentPage = page;
-                return PartialView(_vm);
             }
 
             if (_vm.filterProducts.Count == 0)
@@ -188,8 +179,6 @@ namespace prj_Traveldate_Core.Controllers
             itemsToSkip = (page - 1) * itemsPerPage;
             _vm.pageFilterProducts = _vm.filterProducts.Skip(itemsToSkip).Take(itemsPerPage).ToList();
             _vm.currentPage = page;
-
-
 
             return PartialView(_vm);
         }

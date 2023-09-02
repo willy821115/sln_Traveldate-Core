@@ -11,13 +11,15 @@ namespace prj_Traveldate_Core.Models.MyModels
         public CFilteredProductFactory() 
         {
             db = new TraveldateContext();
-            confirmedId = db.Trips
-               .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false)
+            confirmedId = db.Trips.Include(t=>t.OrderDetails)
+               .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false 
+               )
                .Select(n => n.ProductId).ToList();
         }
         
         public List<CFilteredProductItem> qureyFilterProductsInfo()
         {
+            //var ff = db.Trips.Include(t=>t.OrderDetails).Where(t=>t.OrderDetails.Sum(o => o.Quantity) < t.MaxNum).Select(n=>n.TripId).ToList();
             var datas = db.Trips.Where(t => confirmedId.Contains(t.ProductId)).Include(t=>t.Product).Include(t=>t.Product.City).Include(t=>t.Product.ProductType).GroupBy(t => t.ProductId)
                 .Select(g =>
                 new
@@ -26,11 +28,16 @@ namespace prj_Traveldate_Core.Models.MyModels
                     name = g.Select(n => n.Product.ProductName),
                     outlineForSearch = g.Select(n => n.Product.OutlineForSearch),
                     city = g.Select(n => n.Product.City.City).Distinct(),
-                    date = g.Select(n => n.Date).Where(d=>d.Value>DateTime.Now).Min(),
-                    tripId = g.Where(d=>d.Date.Value > DateTime.Now).Min(i=>i.TripId),
+                    date = g.Select(n => n.Date).Where(d => d.Value > DateTime.Now).Min(),
+                    //TODO 要加上註解的地方,但目前資料庫資料不齊全會導致沒有資料可以參考而EXCEPTION
+                    tripId = g.Where(d => d.Date.Value > DateTime.Now && (d.OrderDetails.Sum(o => o.Quantity) < d.MaxNum)) // 篩選日期大於今天的行程
+                                      .OrderBy(d => d.Date) // 按日期升序排序
+                                      .Select(i => (int?)i.TripId) // 選取TripId
+                                     .FirstOrDefault()??g.OrderBy(i=>i.Date).Last().TripId, // 取第一個符合條件的TripId),
                     price = g.Select(n => n.UnitPrice).Min(),
                     type = g.Select(n => n.Product.ProductType.ProductType).Distinct()
-                }).ToList();
+                })
+                .ToList();
 
             List<CFilteredProductItem> list = new List<CFilteredProductItem>();
             foreach (var p in datas)
@@ -78,14 +85,23 @@ namespace prj_Traveldate_Core.Models.MyModels
                 var strStock = prodFactory.TripStock(p.tripId);
                 double r = Convert.ToDouble(strStock.Split('/')[0]);
                 double m = Convert.ToDouble(strStock.Split('/')[1]);
-               item.prodStock = r/ m;
-                if (item.prodStock > 0.01) 
+                if (r > m)
                 {
-                    item.strProdStock = $"即將額滿   名額:{strStock}";
+                    r = m;
+                }
+                    
+               item.prodStock = r/ m;
+                if (item.prodStock ==1) 
+                {
+                    item.strProdStock = $"已額滿   名額:{r}/{m}";
+                }
+                else if(item.prodStock > 0.03)
+                {
+                    item.strProdStock = $"即將額滿   名額:{r}/{m}";
                 }
                 else
                 {
-                    item.strProdStock = $"名額:{strStock}";
+                    item.strProdStock = $"名額:{r}/{m}";
                 }
                 list.Add(item);
             }

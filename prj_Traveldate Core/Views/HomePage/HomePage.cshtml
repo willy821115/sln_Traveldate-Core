@@ -191,33 +191,33 @@
 
     <div class="hot-place-container">
 
-        <div class="hot-place-item">
+        <div class="hot-place-item" id="台北">
             <img src="~/images/城市1.jpg" alt="城市1">
             <div class="caption">台北</div>
         </div>
 
-        <div class="hot-place-item">
-            <img src="~/images/城市2.jpg" alt="城市2">
+        <div class="hot-place-item" id="台中">
+            <img src="~/images/城市2.jpg" alt="城市2" >
             <div class="caption">台中</div>
         </div>
 
-        <div class="hot-place-item">
-            <img src="~/images/城市3.jpg" alt="城市3">
+        <div class="hot-place-item" id="基隆">
+            <img src="~/images/城市3.jpg" alt="城市3" >
             <div class="caption">基隆</div>
         </div>
 
-        <div class="hot-place-item">
-            <img src="~/images/城市4.jpg" alt="城市4">
+        <div class="hot-place-item" id="宜蘭">
+            <img src="~/images/城市4.jpg" alt="城市4" >
             <div class="caption">宜蘭</div>
         </div>
 
-        <div class="hot-place-item">
-            <img src="~/images/城市5.jpg" alt="城市5">
+        <div class="hot-place-item" id="花蓮">
+            <img src="~/images/城市5.jpg" alt="城市5" >
             <div class="caption">花蓮</div>
         </div>
 
-        <div class="hot-place-item">
-            <img src="~/images/城市6.jpg" alt="城市6">
+        <div class="hot-place-item" id="台南">
+            <img src="~/images/城市6.jpg" alt="城市6" >
             <div class="caption">台南</div>
         </div>
 
@@ -609,6 +609,13 @@
     });
 
    
+        </script>
+        <script>
+       //按下下方的地點可以直接導到搜尋頁並搜尋
+        $('.hot-place-container').on('click','.hot-place-item', function (e) {
+                e.preventDefault();
+                location.href = '@Url.Content("~/Search/SearchList")?triggerItem=' + $(this).attr('id');
+            })
         </script>
          }
  

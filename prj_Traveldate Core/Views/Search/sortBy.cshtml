@@ -65,12 +65,17 @@
                                 <span class="text-body-secondary"> | <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
                                 @if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("即將額滿"))
                                 {
-                                    <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                    <span class="text-body-secondary fw-bolder text-black"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                }
+                                else if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("已額滿"))
+                                {
+                                    <span class="text-body-secondary fw-bolder text-black"> | <img src="~/icons/icons8-sold-out-32.png" height="16" />  @item.strProdStock</span>
                                 }
                                 else
                                 {
-                                    <span class="text-body-secondary"> |  @item.strProdStock</span>
+                                    <span class="text-body-secondary fw-bolder text-black"> |  @item.strProdStock</span>
                                 }
+
 
                             </div>
                             <div class="col">
