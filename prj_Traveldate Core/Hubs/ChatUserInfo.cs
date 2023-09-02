@@ -5,5 +5,7 @@
         public string MemberID { get; set; }
 
         public string ConnectID { get; set; }
+
+        public string FirstName { get; set; }
     }
 }
