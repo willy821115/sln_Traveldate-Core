@@ -66,6 +66,7 @@
     </style>
 }
 
+<h4 id="from-home-page-tags" class="fw-bolder"></h4>
 <div class="row justify-content-center">
     <div class="col-3 g-0 ps-2 pe-2 me-4">
         <div class="filter_block ">
@@ -246,7 +247,7 @@
             <div class="alert alert-light d-none">
                 <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
             </div>
-            <div id="filterBody">
+            <div id="filteredBody">
             @foreach (var item in Model.pages)
             {
                 string salesCount = "";
@@ -306,9 +307,14 @@
                                         <span class="text-body-secondary"> | <img src="~/icons/icons8-ticket-16.png">  @salesCount</span>
                                                 @if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("即將額滿"))
                                                         {
-                                                        <span class="text-body-secondary"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
-                                                        }else{
-                                                    <span class="text-body-secondary"> |  @item.strProdStock</span>
+                                                    <span class="text-body-secondary fw-bolder text-black"> | <img src="~/icons/icons8-fire-16.png" />  @item.strProdStock</span>
+                                                }
+                                                else if (!string.IsNullOrEmpty(item.strProdStock) && item.strProdStock.Contains("已額滿"))
+                                                {
+                                                    <span class="text-body-secondary fw-bolder text-black"> | <img src="~/icons/icons8-sold-out-32.png" height="16"/>  @item.strProdStock</span>
+                                                }
+                                                else{
+                                                    <span class="text-body-secondary fw-bolder text-black"> |  @item.strProdStock</span>
                                                         }
                                                    
                                                 </div>
@@ -331,7 +337,7 @@
             </div>    
         </div>
     </div>
-
+</div>
 
 @section Scripts{
         <script src="~/js/wait_icon_function.js"></script>
@@ -341,8 +347,8 @@
         var selectedTypes = [];
         var startTime=""
         var endTime = ""
-        var minPrice = ""
-        var maxPrice = ""
+        let minPrice = ""
+        let maxPrice = ""
         var pageNumber = 1;
         function filteredByConditions() {
            showLoadingIcon()
@@ -356,8 +362,9 @@
                    page: pageNumber
                 },
                 success: function (response) {
+                    
                     hideLoadingIcon()
-                    $('#filterBody').html(response)
+                    $('#filteredBody').html(response)
                     roadRating()
                         window.scrollTo({
                             top: 0,
@@ -396,7 +403,8 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    $('#filterBody').html(data); 
+                    $('#filteredBody').html(data);
+                    $('#from-home-page-tags').text("")
                     roadRating()
                         window.scrollTo({
                             top: 0,
@@ -443,6 +451,7 @@
         const inputKeyword = document.querySelector('#inputKeyword');
         const divCityList = document.querySelector('#divCityList');
         inputKeyword.addEventListener('input',()=>{
+            $('#from-home-page-tags').text("")
             $('.country.filter-block-toggle').show();
             $('#arrow_bottom_down').hide()
             $('#arrow_top_up').show()
@@ -476,6 +485,29 @@
         }
     </script>
    
+   <script>
+        // 解析 URL 中的 query 字串，找到 triggerItem 參數的值
+        const urlParams = new URLSearchParams(window.location.search);
+        const triggerItem = urlParams.get('triggerItem');
+
+        // 根據 triggerImage 的值找到對應的 li 標籤
+        const liElement = $(`#${triggerItem}`);
+async function clickUncheckbox() {
+    await liElement.find('.uncheckbox').click();
+    await $('.country.filter-block-toggle').show();
+    await $('#arrow_bottom_down').hide()
+    await $('#arrow_top_up').show()
+    
+}
+       if (liElement.length > 0) {
+           // 如果找到了 li 標籤，則觸發它的 click 事件
+           clickUncheckbox();
+           $('#from-home-page-tags').text('搜尋"' + triggerItem + '"相關旅程')
+
+        } else if (liElement.length === 0 && triggerItem !== null) {
+            $('#from-home-page-tags').text('無"' + triggerItem + '"相關旅程，看看其他旅程吧!')
+       }
+   </script>
 }
 
 

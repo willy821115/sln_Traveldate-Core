@@ -1,7 +1,6 @@
 ﻿@using prj_Traveldate_Core.ViewModels;
 @model CForumListViewModel
-keyword
-@foreach (var article in Model.schedules.OrderBy(f => f.ForumList.DueDate))
+@foreach (var article in Model.schedules)
 {
     var schedule_tag = Model.productTags.Where(tag => article.trips.Any(trip => tag.ProductId == trip.ProductId)).ToList();
     <a asp-action="ArticleView" asp-route-id="@article.forumListId" class="my-article-item text-secondary">
@@ -75,23 +74,51 @@ keyword
                 }
 
 
-                <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
-                <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                <span class="my-sm-text fw-bolder"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                <span class="my-sm-text fw-bolder"> | 發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
             </div>
         </div>
         <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
-            <p>回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId).Count()</p>
-            <p>剩餘名額 : @article.strStock</p>
-        </div>
-        <div class="rounded bg-gray-100 col-2 m-1">
-            <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
-            @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 30)
+            <p class="pt-1 fs-5 fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
+            @if (article.numStock == 1)
             {
-                <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
+            }
+            else if (article.numStock > 0.05 && article.numStock < 1)
+            {
+                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
             }
             else
             {
-                <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+            }
+        </div>
+        <div class="rounded bg-gray-100 col-2 m-1">
+            <p class="pt-1 fs-5 fw-bolder text-black">截團日期 : </p>
+            @if (article.ForumList.DueDate.HasValue && article.ForumList.DueDate.Value < DateTime.Now)
+            {
+                <div class="d-flex">
+                    <del class="fs-5 text-gray-900 fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</del>
+                </div>
+                <div>
+                    <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
+                </div>
+            }
+            else if (article.ForumList.DueDate > DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
+            {
+                <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                <div>
+                    <span class=" fw-bolder bg-gradient-danger text-white rounded-pill p-1">即將截止</span>
+                </div>
+            }
+            else
+            {
+                <p class="fs-5 my-text-secondary fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                <div>
+                    <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1">報名中</span>
+                </div>
             }
 
         </div>
@@ -140,6 +167,6 @@ keyword
     $(".pagination>a").on("click", function (e) {
         e.preventDefault();
         pageNumber = $(this).data("page");
-        filteredByConditions()
+        loadFilteredForum($(this).val(), pageNumber)
     });
 </script>

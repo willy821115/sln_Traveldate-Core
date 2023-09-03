@@ -61,7 +61,7 @@
             margin:0 0 3px 0;
            
         }
-        .fs-4,.fs-3,.fs-5,span{
+        .fs-4,.fs-3,.fs-5{
             color:gray;
         }
 
@@ -222,7 +222,7 @@
                                                         </div>
                                                         <div>
                                                             <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @f_memName</p>
-                                                            <span>發文時間 : @f_time</span>
+                                                            <span class="fw-bolder">發起時間 : @f_time</span>
                                                             <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @f_reply 人</span>
                                                             <div class="text-body-secondary d-block">
                                                                 <img src="~/icons/icons8-tag-16.png" />
@@ -276,7 +276,7 @@
                                                         </div>
                                                         <div>
                                                             <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @s_memName</p>
-                                                            <span>發文時間 : @s_time</span>
+                                                            <span class="fw-bolder">發起時間 : @s_time</span>
                                                             <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @s_reply 人</span>
                                                             <div class="text-body-secondary d-block">
                                                                 <img src="~/icons/icons8-tag-16.png" />
@@ -332,9 +332,14 @@
                 <span>　|　</span>
                 <a id="sortByStock" href="#" class=" fw-bolder">剩餘名額</a>
             </div>
+        </div> 
+        <h5 id="status"></h5>
+        <div class="alert alert-light d-none">
+            <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
         </div>
         <div id="filteredBody" class="bg-transparent">
-            @foreach (var article in Model.pages.OrderBy(f => f.ForumList.DueDate))
+           
+            @foreach (var article in Model.pages)
             {
                 var schedule_tag = Model.productTags.Where(tag => article.trips.Any(trip => tag.ProductId == trip.ProductId)).ToList();
 
@@ -411,23 +416,50 @@
                             }
 
 
-                            <span class="my-sm-text"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
-                            <span class="my-sm-text"> | 發文時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                            <span class="my-sm-text fw-bolder"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
+                            <span class="my-sm-text fw-bolder"> | 發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
                         </div>
                     </div>
                     <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
-                        <p>回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
-                        <p>剩餘名額 : @article.strStock</p>
-                        </div>
-                    <div class="rounded bg-gray-100 col-2 m-1">
-                        <p class="pt-1 fs-5 fw-blod">截團日期 : </p>
-                        @if (article.ForumList.DueDate.HasValue && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
+                        <p class="pt-1 fs-5 fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
+                        @if(article.numStock == 1)
                         {
-                            <div class="d-flex justify-content-center"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                            <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
+                        }
+                        else if (article.numStock > 0.05 && article.numStock<1)
+                        {
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                            <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
+                        }
+                        else{
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                         }
+                     </div>
+                    <div class="rounded bg-gray-100 col-2 m-1">
+                        <p class="pt-1 fs-5 fw-bolder text-black">截團日期 : </p>
+                        @if (article.ForumList.DueDate.HasValue && article.ForumList.DueDate.Value < DateTime.Now)
+                        {
+                            <div class="d-flex">
+                                <del class="fs-5 text-gray-900 fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</del>
+                            </div>
+                            <div>
+                                <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
+                            </div>
+                        }
+                        else if (article.ForumList.DueDate > DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
+                        {
+                            <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                            <div>
+                                <span class=" fw-bolder bg-gradient-danger text-white rounded-pill p-1">即將截止</span>
+                            </div>
                         }
                         else
                         {
-                            <p class="fs-5 my-text-secondary">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                            <p class="fs-5 my-text-secondary fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                            <div>
+                                <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1">報名中</span>
+                            </div>
                         }
 
                     </div>
@@ -448,17 +480,19 @@
                 var selectedTags = [];
                 var selectedCities = [];
                 var pageNumber = 1;
+                 var selectedTagsId = [];
                 function filteredByConditions() {
                     showLoadingIcon()
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("filteredSchedules", "Forum")",
                         data: {
-                            tags: selectedTags, 
-                            cities: selectedCities,
+                    tagsId: selectedTagsId,
+                    cities: selectedCities,
                             page: pageNumber
                         },
                         success: function (response) {
+                    $('#status').text("");
                             var target_top = $("#targetDiv").offset().top - 100;
                              hideLoadingIcon()
                             $('#filteredBody').html(response)
@@ -494,29 +528,44 @@
 
     </script>
             <script>
-                $('#keyword-for-forum').on('input', function (event) {
-         
-loadFilteredForum($(this).val())
-                function loadFilteredForum(keyword) {
-                    fetch('@Url.Content("~/Forum/KeyWordForForum")?keyword=' + keyword,
-                        { method: 'GET' })
-                        .then(response => response.text())
-                        .then(data => {
-                            var target_top = $("#targetDiv").offset().top - 100;
-                            $('#filteredBody').html(data)
-                            window.scrollTo({
-                                top: target_top,
-                                behavior: 'smooth'
-                            });
-                        })
-                    }
-                    
+        let timeoutId;
+        $('#keyword-for-forum').on('input', function () {
+            clearTimeout(timeoutId); // 清除先前的計時器
+            const keyword = $(this).val();
+           
+            // 設定一個新的計時器，延遲 1000 毫秒 (1 秒) 執行 loadFilteredForum
+            timeoutId = setTimeout(function () {
+                loadFilteredForum(keyword, pageNumber);
+            }, 1000);
+        });
+        function loadFilteredForum(keyword, pageNumber) {
+            showLoadingIcon()
+            fetch('@Url.Content("~/Forum/KeyWordForForum")?keyword=' + keyword + '&page=' + pageNumber,
+                { method: 'GET' })
+                .then(response => 
+                    response.text()
+                )
+                .then(data => {
+                    hideLoadingIcon()
+                    $('#status').text("");
+                    $('#filteredBody').html(data)
+                    var target_top = $("#targetDiv").offset().top - 100;
+                    $('#total').html($('#updateTotal').val());
+                    window.scrollTo({
+                        top: target_top,
+                        behavior: 'smooth'
+                    });
                 })
+        }
+
+               
+                
             </script>
             <script>
         //////////////////////////////////////4種排序///////////////////////////////////////////
         //排序/篩選載入資料
-        function loadData(sortType) {
+        function loadData(sortType, pageNumber) {
+            showLoadingIcon()
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("filteredBySort", "Forum")",
@@ -529,6 +578,7 @@ loadFilteredForum($(this).val())
                     hideLoadingIcon()
                     $('#filteredBody').html(response)
                     $('#total').html($('#updateTotal').val());
+                    $('#status').text('依"' + sortType + '"排序')
                     window.scrollTo({
                         top: target_top,
                         behavior: 'smooth'
@@ -541,23 +591,25 @@ loadFilteredForum($(this).val())
         }
         //依發文時間排序        
         $('#sortByRelTime').on('click', function () {
-                    var status = $(this).attr('id');
-            loadData(status)
+            var statusName = $(this).text();
+            loadData(statusName,1)
                 })
         //依回覆數排序    
         $('#sortByReply').on('click', function () {
-            var status = $(this).attr('id');
-            loadData(status)
+            var statusName = $(this).text();
+             loadData(statusName,1)
                 })
         //依截團日期
         $('#sortByDueDate').on('click', function () {
-            var status = $(this).attr('id');
-            loadData(status)
+
+            var statusName = $(this).text();
+             loadData(statusName,1)
         })
                 //依剩餘名額  sortByStock
         $('#sortByStock').on('click', function () {
-            var status = $(this).attr('id');
-            loadData(status)
+            
+            var statusName = $(this).text();
+            loadData(statusName, 1)
         })
 
 

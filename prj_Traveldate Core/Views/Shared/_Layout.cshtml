@@ -234,54 +234,21 @@
        
         <div id="dialogBox" class="dialog-box ">
             <div class="dialog-content">
-                <div class="d-flex justify-content-between align-items-center bg-gray-300">
-                    <span class="fw-bold text-black toggle-button">與123聊聊中</span>
+                <div class="d-flex justify-content-between align-items-center bg-gray-300 toggle-button">
+                    <span class="fw-bold text-black ">即時訊息</span>
+                    <img src="~/icons/mail.png" style="height:24px;width:24px;display:none" id="mail" />
                  </div>
                 <div class="chat_box">
                     <div id="chatRoom" class="chat_message">
-                        <div class="message_row you-message">
-                            <div class="message-content">
-                                <div class="message-text">Ok then</div>
-                                <div class="message-time">09/23 10:16</div>
-                            </div>
-                        </div>
-                        <div class="message_row other-message">
-                            <div class="message-content">
-                                @* <img class="head" src="img/friends/David.png" alt=""> *@
-                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
-                                <div class="message-time">09/23 10:16</div>
-                            </div>
-                        </div>
-                        <div class="message_row other-message">
-                            <div class="message-content">
-                                @* <img class="head" src="img/friends/David.png" alt=""> *@
-                                <!-- <div class="message-text"></div> -->
-                                @* <img class="ejIcon" src="img/emoji/like.png" alt=""> *@
-                                <div class="message-time">09/23 10:16</div>
-                            </div>
-                        </div>
-                        <div class="message_row other-message">
-                            <div class="message-content">
-                                @* <img class="head" src="img/friends/David.png" alt=""> *@
-                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
-                                <div class="message-time">09/23 10:16</div>
-                            </div>
-                        </div>
-                        <div class="message_row other-message">
-                            <div class="message-content">
-                                @* <img class="head" src="img/friends/David.png" alt=""> *@
-                                <div class="message-text">推薦給你一張漂亮的底圖...</div>
-                                <div class="message-time">09/23 10:16</div>
-                            </div>
-                        </div>
-                        
-                        
+   
+                        <input type="hidden" id="sendToID" />
+                        <input type="hidden" id="myID"/>
 
                     </div>
                     <div class="chat_input">
-                        <input type="hidden" id="sendToID" />
-                        <input class="sendMsg" type="text" placeholder="請輸入訊息">
-                        <div class="myIcon2">
+                        
+                        <input id="message" class="sendMsg" type="text" placeholder="請輸入訊息">
+                        <div class="myIcon2" id="sendButton">
                             <i class="fa fa-share send_icon"></i>
                         </div>
                     </div>
@@ -336,28 +303,136 @@
 
             }
 
-        connection.on("UpdContent", function (msg) {
-            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+        connection.on("UpdReceiveContent", function (msg) {
+            // 創建一個新的 <div class="message_row you-message"> 元素
+            var messageRow = $('<div class="message_row other-message"></div>');
+
+            // 創建消息內容 <div class="message-content">
+            var messageContent = $('<div class="message-content"></div>');
+
+            // 創建消息文本 <div class="message-text">，並將 msg 放入
+            var messageText = $('<div class="message-text"></div>').text(msg);
+
+            // 創建時間 <div class="message-time">，並將當前時間放入
+            var currentTime = new Date();
+            var formattedTime = currentTime.toLocaleString();
+            var messageTime = $('<div class="message-time"></div>').text(formattedTime);
+
+            // 將消息文本和消息時間添加到消息內容中
+            messageContent.append(messageText);
+            messageContent.append(messageTime);
+
+            // 將消息內容添加到消息行中
+            messageRow.append(messageContent);
+
+            // 將整個消息行添加到 ID 為 "chatRoom" 的元素中
+            $("#chatRoom").append(messageRow);
+           
+
+        });
+        connection.on("UpdSendContent", function (msg) {
+            //$("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+
+            // 創建一個新的 <div class="message_row you-message"> 元素
+            var messageRow = $('<div class="message_row you-message"></div>');
+
+            // 創建消息內容 <div class="message-content">
+            var messageContent = $('<div class="message-content"></div>');
+
+            // 創建消息文本 <div class="message-text">，並將 msg 放入
+            var messageText = $('<div class="message-text"></div>').text(msg);
+
+            // 創建時間 <div class="message-time">，並將當前時間放入
+            var currentTime = new Date();
+            var formattedTime = currentTime.toLocaleString();
+            var messageTime = $('<div class="message-time"></div>').text(formattedTime);
+
+            // 將消息文本和消息時間添加到消息內容中
+            messageContent.append(messageText);
+            messageContent.append(messageTime);
+
+            // 將消息內容添加到消息行中
+            messageRow.append(messageContent);
+
+            // 將整個消息行添加到 ID 為 "chatRoom" 的元素中
+            $("#chatRoom").append(messageRow);
+           
         });
 
         //傳送訊息
         $('#sendButton').on('click', function () {
-            let selfID = $('#SelfID').html();
+            let myID = $('#myID').html();
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
-            connection.invoke("SendMessage", selfID, message, sendToID).catch(function (err) {
+            
+            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
                 alert('傳送錯誤: ' + err.toString());
             });
         });
 
-        connection.on("UpdateSupplierID", function (msg, SupplierID) {
-            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
-            $('#sendToID').val(SupplierID)
+        connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
+            //$("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+
+            // 創建一個新的 <div class="message_row you-message"> 元素
+            var messageRow = $('<div class="message_row you-message"></div>');
+
+            // 創建消息內容 <div class="message-content">
+            var messageContent = $('<div class="message-content"></div>');
+
+            // 創建消息文本 <div class="message-text">，並將 msg 放入
+            var messageText = $('<div class="message-text"></div>').text(msg);
+
+            // 創建時間 <div class="message-time">，並將當前時間放入
+            var currentTime = new Date();
+            var formattedTime = currentTime.toLocaleString();
+            var messageTime = $('<div class="message-time"></div>').text(formattedTime);
+
+            // 將消息文本和消息時間添加到消息內容中
+            messageContent.append(messageText);
+            messageContent.append(messageTime);
+
+            // 將消息內容添加到消息行中
+            messageRow.append(messageContent);
+
+            // 將整個消息行添加到 ID 為 "chatRoom" 的元素中
+            $("#chatRoom").append(messageRow);
+
+
+            $('#sendToID').val(SupplierID);
+            $('#myID').val(myID);
+            $("#mail").css("display", "inline");
         });
 
-        connection.on("UpdateCustomerID", function (msg, CustomerID) {
-            $("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
-            $('#sendToID').val(CustomerID)
+        connection.on("UpdateCustomerID", function (msg, CustomerID,myID) {
+            //$("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
+
+            // 創建一個新的 <div class="message_row you-message"> 元素
+            var messageRow = $('<div class="message_row other-message"></div>');
+
+            // 創建消息內容 <div class="message-content">
+            var messageContent = $('<div class="message-content"></div>');
+
+            // 創建消息文本 <div class="message-text">，並將 msg 放入
+            var messageText = $('<div class="message-text"></div>').text(msg);
+
+            // 創建時間 <div class="message-time">，並將當前時間放入
+            var currentTime = new Date();
+            var formattedTime = currentTime.toLocaleString();
+            var messageTime = $('<div class="message-time"></div>').text(formattedTime);
+
+            // 將消息文本和消息時間添加到消息內容中
+            messageContent.append(messageText);
+            messageContent.append(messageTime);
+
+            // 將消息內容添加到消息行中
+            messageRow.append(messageContent);
+
+            // 將整個消息行添加到 ID 為 "chatRoom" 的元素中
+            $("#chatRoom").append(messageRow);
+
+            $('#sendToID').val(CustomerID);
+            $('#myID').val(myID);
+            $("#mail").css("display", "inline");
         });
           
 

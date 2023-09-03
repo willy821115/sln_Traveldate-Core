@@ -231,7 +231,22 @@
                                         <div>@Html.DisplayFor(modelItem => item.productName)</div>
                                     </td>
                                     <td>
-                                        <div> @Html.DisplayFor(modelItem => item.stock)</div>
+                                                        @{
+                                                            string[] stockcount = item.stock.Split("/");
+                                                            if (Convert.ToInt32(stockcount[0]) / Convert.ToInt32(stockcount[1]) < 0.5)
+                                                            {
+                                                                <div class="btn btn-outline-success"> @Html.DisplayFor(modelItem => item.stock)</div>
+                                                            }
+                                                            else if (Convert.ToInt32(stockcount[0]) / Convert.ToInt32(stockcount[1]) < 1)
+                                                            {
+                                                                <div class="btn btn-outline-warning"> @Html.DisplayFor(modelItem => item.stock)</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="btn btn-outline-danger"> @Html.DisplayFor(modelItem => item.stock)</div>
+                                                            }
+                                                        }
+                                        
                                     </td>
                                      
                                 </tr>
@@ -292,15 +307,40 @@
             {
                 const rows = datas.map(row => {
                     const { productName, productDate, email, stock, productType } = row
-                    return(
-                        ` <tr>
-                                                      <td>${productDate}</td>
-                                                       <td>${productType}</td>
-                                                <td>${email}</td>
-                                                        <td>${productName}</td>
-                                                        <td>${stock}</td>
-                         </tr>`
-                    )
+                    if (eval(stock) < 0.5) {
+                        return (
+                            ` <tr>
+                                                                      <td>${productDate}</td>
+                                                                       <td>${productType}</td>
+                                                                <td>${email}</td>
+                                                                        <td>${productName}</td>
+                                                                  <td> <div class="btn btn-outline-success"> ${stock} </div></td>
+                                         </tr>`
+                        )
+                    }
+                    else if (eval(stock) < 1) {
+                        return (
+                            ` <tr>
+                                                                              <td>${productDate}</td>
+                                                                               <td>${productType}</td>
+                                                                        <td>${email}</td>
+                                                                                <td>${productName}</td>
+                                                                          <td><div class="btn btn-outline-warning"> ${stock}</div></td>
+                                                 </tr>`
+                        )
+
+                    }
+                    else {
+                        return (
+                            ` <tr>
+                                                                                      <td>${productDate}</td>
+                                                                                       <td>${productType}</td>
+                                                                                <td>${email}</td>
+                                                                                        <td>${productName}</td>
+                                                                                 <td><div class="btn btn-outline-danger"> ${stock}</td>
+                                                         </tr>`
+                        )
+                    }
 
                 })
                 dashboard.innerHTML = rows.join("");
@@ -314,15 +354,40 @@
             if (datas != null) {
                 const rows = datas.map(row => {
                     const { productName, productDate, email, stock, productType } = row
-                    return (
+                    if (eval(stock)<0.5){
+                     return (
                         ` <tr>
                                                               <td>${productDate}</td>
                                                                <td>${productType}</td>
                                                         <td>${email}</td>
                                                                 <td>${productName}</td>
-                                                                <td>${stock}</td>
+                                                          <td> <div class="btn btn-outline-success"> ${stock} </div></td>
                                  </tr>`
                     )
+                    }
+                   else if (eval(stock) < 1){
+                        return (
+                            ` <tr>
+                                                                      <td>${productDate}</td>
+                                                                       <td>${productType}</td>
+                                                                <td>${email}</td>
+                                                                        <td>${productName}</td>
+                                                                  <td><div class="btn btn-outline-warning"> ${stock}</div></td>
+                                         </tr>`
+                        )
+
+                   }
+                   else{
+                        return (
+                            ` <tr>
+                                                                              <td>${productDate}</td>
+                                                                               <td>${productType}</td>
+                                                                        <td>${email}</td>
+                                                                                <td>${productName}</td>
+                                                                         <td><div class="btn btn-outline-danger"> ${stock}</td>
+                                                 </tr>`
+                        )
+                   }
 
                 })
                 dashboard.innerHTML = rows.join("");

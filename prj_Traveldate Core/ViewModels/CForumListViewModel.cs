@@ -25,15 +25,16 @@ namespace prj_Traveldate_Core.ViewModels
         public int pageSize { get; set; }
         public int totalCount { get; set; }
         public List<CTripStock>? stocks { get; set; }=new List<CTripStock>();
+
+
         //public List<Trip> topTenTrip { get; set; }
         //public int? ForumlistId { get; set; }   
-        
+
     }
    public class CForumList_prodPhoto
     {
         public string prodPhotoPath { get; set; }
         public int prodId { get; set; }
-        
     }
     public class CForumList_topTen
     {

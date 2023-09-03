@@ -58,6 +58,8 @@ $(document).ready(function () {
     // 選擇 dialogBox 的 <div> 元素
     var dialogBox = $("#dialogBox");
 
+    var mailIcon = $("#mail");
+
     // 初始高度
     var originalHeight = dialogBox.height();
 
@@ -68,6 +70,7 @@ $(document).ready(function () {
             direction: "up", // 设置方向为向上展开
             duration: 10
         });
+        mailIcon.css("display", "none");
 
         // 檢查 dialogBox 的當前高度
         var currentHeight = dialogBox.height();
