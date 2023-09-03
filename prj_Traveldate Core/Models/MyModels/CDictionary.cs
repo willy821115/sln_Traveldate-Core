@@ -14,6 +14,6 @@
         public static readonly string SK_BACK_TO_CONTROLLER = "SK_BACK_TO_CONTROLLER";
         public static readonly string SK_BACK_TO_ACTION = "SK_BACK_TO_ACTION";
         public static readonly string SK_RESET_PWD_EMAIL = "SK_RESET_PWD_EMAIL";
-
+        public static readonly string SK_BACK_TO_PARAM = "SK_BACK_TO_PARAM";
     }
 }

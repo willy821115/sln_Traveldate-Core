@@ -56,7 +56,7 @@ namespace prj_Traveldate_Core.Controllers
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER, mem.MemberId.ToString());
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER_NAME, mem.FirstName);
-                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER))
+                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER) && !TempData.ContainsKey(CDictionary.SK_BACK_TO_PARAM))
                 {
                     string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
                     string goaction = TempData[CDictionary.SK_BACK_TO_ACTION].ToString();
@@ -66,7 +66,25 @@ namespace prj_Traveldate_Core.Controllers
 
                     return RedirectToAction(goaction, gocontroller);
                 }
-
+                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_PARAM))
+                {
+                    //可以帶入參數+值,下面是一組key+value的情況
+                    string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
+                    string goaction = TempData[CDictionary.SK_BACK_TO_ACTION].ToString();
+                    //這邊帶回來的假設是id=8
+                    string param = TempData[CDictionary.SK_BACK_TO_PARAM].ToString();
+                    TempData.Remove(CDictionary.SK_BACK_TO_CONTROLLER);
+                    TempData.Remove(CDictionary.SK_BACK_TO_ACTION);
+                    TempData.Remove(CDictionary.SK_BACK_TO_PARAM);
+                    //把param切開
+                    var keyValuePairs = param.Split('=');
+                    var routeValues = new RouteValueDictionary
+                        {
+                            { keyValuePairs[0], keyValuePairs[1]}
+                        };
+                    return RedirectToAction(goaction, gocontroller, routeValues);
+                }
+               
                 return RedirectToAction("HomePage", "HomePage");
             }
             ViewBag.Message = "帳號或密碼錯誤";

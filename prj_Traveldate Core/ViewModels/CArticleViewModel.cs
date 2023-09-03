@@ -14,6 +14,7 @@ namespace prj_Traveldate_Core.ViewModels
        public List<Trip> articleTrips { get; set; }
         public List<CArticle_imgs> img_Paths { get; set; }
       public List<CCommentScore> avgCommentScores { get; set; }
+        public List<LikeList> likes { get; set; }
     }
     public class CArticle_imgs
     {

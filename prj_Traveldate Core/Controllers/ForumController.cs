@@ -300,9 +300,8 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("ForumList");
             }
-           
             CArticleViewModel vm = new CArticleViewModel();
-            
+            vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
             ScheduleList1 article = ScheduleStock().FirstOrDefault(s => s.forumListId == id);
@@ -343,6 +342,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 int memId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
                 vm.member = _context.Members.Find(memId);
+                
             }
 
             if (vm.forum != null)
@@ -366,14 +366,16 @@ namespace prj_Traveldate_Core.Controllers
                 var filteredTrips = _context.Trips
                     .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId
                     && t.Product.ProductName.Contains(keyword)
-                    && t.Date.Value > DateTime.Now.AddDays(3))
+                    && t.Date.Value > DateTime.Now.AddDays(3)
+                    && t.OrderDetails.Sum(o=>o.Quantity) < t.MaxNum)
                     .Select(t => new { t.Product.ProductName, t.Product.ProductId })
                     .Distinct().ToList();
                 return Json(filteredTrips);
             }
             var trips = _context.Trips
                 .Where(t => t.Product.StatusId == 1 && t.Product.Discontinued == false && t.ProductId == t.Product.ProductId
-                && t.Date.Value > DateTime.Now.AddDays(3))
+                && t.Date.Value > DateTime.Now.AddDays(3)
+                && t.OrderDetails.Sum(o => o.Quantity) < t.MaxNum)
                 .Select(t => new { t.Product.ProductName, t.Product.ProductId }).Distinct().ToList();
             return Json(trips);
         }
@@ -387,6 +389,14 @@ namespace prj_Traveldate_Core.Controllers
         //文章按讚
         public IActionResult Likes(int id, int status)
         {
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
+            {
+                TempData[CDictionary.SK_BACK_TO_ACTION] = "ArticleView";
+                TempData[CDictionary.SK_BACK_TO_CONTROLLER] = "Forum";
+                TempData[CDictionary.SK_BACK_TO_PARAM] = "id="+id;
+                Task.Delay(3000).Wait();
+                return RedirectToAction("Login", "Login");
+            }
             ForumList? forum = _context.ForumLists.Find(id);
             if (status == 0)
             {
