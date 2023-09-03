@@ -422,8 +422,20 @@
                     </div>
                     <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
                         <p class="pt-1 fs-5 fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
-                        <p class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</p>
-                        </div>
+                        @if(article.numStock == 1)
+                        {
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                            <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
+                        }
+                        else if (article.numStock > 0.05 && article.numStock<1)
+                        {
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                            <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
+                        }
+                        else{
+                            <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                         }
+                     </div>
                     <div class="rounded bg-gray-100 col-2 m-1">
                         <p class="pt-1 fs-5 fw-bolder text-black">截團日期 : </p>
                         @if (article.ForumList.DueDate.HasValue && article.ForumList.DueDate.Value < DateTime.Now)
@@ -432,21 +444,21 @@
                                 <del class="fs-5 text-gray-900 fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</del>
                             </div>
                             <div>
-                                <span class="fs-5 fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
+                                <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
                             </div>
                         }
                         else if (article.ForumList.DueDate > DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
                         {
                             <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
                             <div>
-                                <span class="fs-5 fw-bolder bg-gradient-danger text-white rounded-pill p-1">即將截止</span>
+                                <span class=" fw-bolder bg-gradient-danger text-white rounded-pill p-1">即將截止</span>
                             </div>
                         }
                         else
                         {
                             <p class="fs-5 my-text-secondary fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
                             <div>
-                                <span class="fs-5 fw-bolder bg-gradient-info text-white rounded-pill p-1">報名中</span>
+                                <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1">報名中</span>
                             </div>
                         }
 

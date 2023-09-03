@@ -30,7 +30,7 @@ namespace prj_Traveldate_Core.Controllers
         List<CForumList_prodPhoto> forum_prodPhoto()
         {
             var tripId = _context.ScheduleLists.Where(s => s.TripId == s.Trip.TripId).Select(s => s.Trip.Product.ProductId).ToList();
-            List<CForumList_prodPhoto> prod_photo = _context.ProductPhotoLists.Where(p => tripId.Contains((int)p.ProductId)).Select(p => new CForumList_prodPhoto
+            List<CForumList_prodPhoto> prod_photo = _context.ProductPhotoLists.Include(p=>p.Product).Where(p => tripId.Contains((int)p.ProductId)).Select(p => new CForumList_prodPhoto
             {
                 prodId = (int)p.ProductId,
                 prodPhotoPath = p.ImagePath
@@ -56,6 +56,7 @@ namespace prj_Traveldate_Core.Controllers
                     forumListId = g.Key,
                     trips = g.Select(s => s.Trip).ToList(),
                     ForumList = g.First().ForumList,// 第一個 Trip
+                    productTags = g.SelectMany(t=>t.Trip.Product.ProductTagLists).ToList()
                 })
                 .ToList();
 
@@ -88,7 +89,7 @@ namespace prj_Traveldate_Core.Controllers
                     var strStock = prodFactory.TripStock(d.TripId);
                     double r = Convert.ToDouble(strStock.Split('/')[0]);
                     double m = Convert.ToDouble(strStock.Split('/')[1]);
-                    stockRate = r / m;
+                    
                     if (m - r < compare)
                     {
                         compare = m - r;
@@ -100,9 +101,10 @@ namespace prj_Traveldate_Core.Controllers
                 double max = Convert.ToDouble(item.strStock.Split('/')[1]);
                 if(leave>max )
                 {
+                    leave = max;
                     item.strStock = $"{max}/{max}";
                 }
-
+                stockRate = leave / max;
                 item.numStock = stockRate;
             }
             var available = schedule.OrderBy(s=>s.ForumList.DueDate).Where(s => s.ForumList.DueDate >= DateTime.Now);
@@ -298,12 +300,42 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("ForumList");
             }
-
-
+           
             CArticleViewModel vm = new CArticleViewModel();
-            vm.forum = _context.ForumLists.Include(f => f.Member).FirstOrDefault(f => f.ForumListId == id);
+            
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
             vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+            ScheduleList1 article = ScheduleStock().FirstOrDefault(s => s.forumListId == id);
+            vm.forum = article.ForumList;
+           vm.articleTrips = article.trips;
+            var tagDetailsId = article.productTags.Select(t => t.ProductTagDetailsId).ToList();
+            vm.trip_Tags = _context.ProductTagDetails
+                .Where(t => tagDetailsId.Contains(t.ProductTagDetailsId))
+                .Select(t=>t.ProductTagDetailsName)
+                .ToList();
+            var prodInfo = article.trips.Select(t => t.Product).ToList();
+            var prodId = prodInfo.Select(t => t.ProductId).ToList();
+
+            vm.img_Paths = forum_prodPhoto().
+                Where(p=>prodId.Contains((int)p.prodId))
+                .GroupBy(p=>p.prodId)
+                .Select(g=> new CArticle_imgs
+                {
+                    imgId = g.Key,
+                    imgPaths = g.Select(path=>path.prodPhotoPath).ToList(),
+                   
+                })
+             .ToList();
+            vm.avgCommentScores = _context.CommentLists
+    .Where(c => prodId.Contains((int)c.ProductId)) // 選擇包含在 prodId 中的評論
+    .GroupBy(c => c.ProductId) // 按照 ProductId 分組
+    .Select(group => new CCommentScore
+    {
+        commentProdId = group.Key, // 分組的 ProductId
+        commentScore = group.Average(c => c.CommentScore) // 計算平均分數
+    })
+    .ToList();
+
             //沒登入的情況
             vm.member = null;
             //有登入的情況
