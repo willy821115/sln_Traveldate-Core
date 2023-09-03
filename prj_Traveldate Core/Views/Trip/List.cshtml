@@ -278,18 +278,50 @@
              console.log(datas)
              const rows = datas.map(row => {
                  const { tripID, tripName, tripType, stock, tripDay, tripDate } = row
-                 return (
+                    if (eval(stock) < 0.5) {
+                    return (
                      ` <tr>
                               <td>${tripName}</td>
                                <td>${tripType}</td>
                                 <td>${tripDate}</td>
                                 <td>${tripDay}</td>
-                                <td>${stock}</td>
+                                  <td> <div class="btn btn-outline-success"> ${stock} </div></td>
                                   <td>
                                          <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
                                   </td>
                           </tr>`
                  )
+                    }
+                    else if (eval(stock) < 1) {
+                        return (
+                            ` <tr>
+                                      <td>${tripName}</td>
+                                       <td>${tripType}</td>
+                                        <td>${tripDate}</td>
+                                        <td>${tripDay}</td>
+                                                  <td><div class="btn btn-outline-warning"> ${stock}</div></td>
+                                          <td>
+                                                 <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                          </td>
+                                  </tr>`
+                        )
+                    
+                    }
+                    else{
+                        return (
+                            ` <tr>
+                                              <td>${tripName}</td>
+                                               <td>${tripType}</td>
+                                                <td>${tripDate}</td>
+                                                <td>${tripDay}</td>
+                                                    <td><div class="btn btn-outline-danger"> ${stock}</td>
+                                                  <td>
+                                                         <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                                  </td>
+                                          </tr>`
+                        )
+                    }
+                 
              })
              triptable.innerHTML = rows.join("");
          }
@@ -350,18 +382,49 @@
             if (datas != null) {
                 const rows = datas.map(row => {
                     const { tripID, tripName, tripType, stock, tripDay, tripDate } = row
-                    return (
-                        ` <tr>
+                    if (eval(stock) < 0.5) {
+                        return (
+                            ` <tr>
                                       <td>${tripName}</td>
                                        <td>${tripType}</td>
                                         <td>${tripDate}</td>
                                         <td>${tripDay}</td>
-                                        <td>${stock}</td>
+                                          <td> <div class="btn btn-outline-success"> ${stock} </div></td>
                                           <td>
                                                  <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
                                           </td>
                                   </tr>`
-                    )
+                        )
+                    }
+                    else if (eval(stock) < 1) {
+                        return (
+                            ` <tr>
+                                              <td>${tripName}</td>
+                                               <td>${tripType}</td>
+                                                <td>${tripDate}</td>
+                                                <td>${tripDay}</td>
+                                                          <td><div class="btn btn-outline-warning"> ${stock}</div></td>
+                                                  <td>
+                                                         <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                                  </td>
+                                          </tr>`
+                        )
+
+                    }
+                    else {
+                        return (
+                            ` <tr>
+                                                      <td>${tripName}</td>
+                                                       <td>${tripType}</td>
+                                                        <td>${tripDate}</td>
+                                                        <td>${tripDay}</td>
+                                                            <td><div class="btn btn-outline-danger"> ${stock}</td>
+                                                          <td>
+                                                                 <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
+                                                          </td>
+                                                  </tr>`
+                        )
+                    }
 
                 })
                 triptable.innerHTML = rows.join("");

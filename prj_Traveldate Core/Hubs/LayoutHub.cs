@@ -85,6 +85,14 @@ namespace prj_Traveldate_Core.Hubs
                 await Clients.Client(Context.ConnectionId).SendAsync("UpdSendContent", "你向 " + SendName + " 私訊說: " + message);
             }
         }
+        public override async Task OnDisconnectedAsync(Exception ex)
+        {
+            var memberinfo = MemberConnection.Where(p => p.ConnectID == Context.ConnectionId).FirstOrDefault();
+            if (memberinfo != null)
+            {
+                MemberConnection.Remove(memberinfo);
+            }
+        }
 
 
     }
