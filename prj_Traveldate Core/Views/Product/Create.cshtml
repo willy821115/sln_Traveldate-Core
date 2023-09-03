@@ -88,7 +88,7 @@
             
             <div class="container-fluid">
                 <h2>新增產品</h2>
-                <form asp-action="Create" enctype="multipart/form-data">
+                <form asp-action="Create" enctype="multipart/form-data " id="CreateForm">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -319,8 +319,9 @@
                             </div>
                             <button type="button" class="btn btn-primary prev-tab" style="float:left">上一頁</button>
                             <div class="form-group text-right" >
+                                <input type="button" value="預覽" class="btn btn-success" id="preview" />
                                 <input type="submit" value="新增" class="btn btn-primary" />
-                                <a asp-action="List" class="btn btn-primary text-right">取消</a>
+                                 <a asp-action="List" class="btn btn-primary text-right">取消</a>
 
 
                             </div>
@@ -523,6 +524,23 @@
                 }
             });
         });
+        //預覽鈕
+        $('#preview').click(function(){
+            const formData = new FormData(document.querySelector('#CreateForm'));
+            fetch('@Url.Action("ProductPreview", "Product")', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // 在新的分页中打开新的View
+                    var newWindow = window.open("", "_blank");
+                    newWindow.document.write(data); // 在新的分页中写入从Controller返回的HTML数据
+                });
+        });
+
+
+
         $('#demo').click(function () {
             
             $('#ProductName').val('台南住宿｜台灣兩天一夜｜台南雙春濱海遊憩區｜愛莊園 Vanaheim星空露營帳＆秘境遊船');
@@ -533,17 +551,15 @@
         漫步 1200 公尺紅樹林步道 ＆ 小忘憂森林，再享夜間潮汐生態導覽`);
             $('#Description').html(`－ 景點介紹－
 
-        雙春濱海遊憩區
-        位於台南北門的生態遊憩場所，園區內規劃紅樹林觀察區，網羅台灣珍貴的 4 種原生紅樹林：海茄苳、水筆仔、欖李、紅海欖（亦稱五梨跤），適合帶著孩子一同前往，認識台灣特有生態。在成為遊憩區前，這裡多以漁塭養殖為主，地域稱為永春，後來面積擴大，延伸出了內外永春兩處，才成為今日的「雙春」。雙春濱海遊憩區設置有南北兩條木棧道，架設在紅樹林與防風林之間，讓遊客能夠近距離觀察溼地生態，除了紅樹林外，招潮蟹、彈塗魚還有水鳥，都是雙春最迷人的景緻。
+雙春濱海遊憩區
+位於台南北門的生態遊憩場所，園區內規劃紅樹林觀察區，網羅台灣珍貴的 4 種原生紅樹林：海茄苳、水筆仔、欖李、紅海欖（亦稱五梨跤），適合帶著孩子一同前往，認識台灣特有生態。在成為遊憩區前，這裡多以漁塭養殖為主，地域稱為永春，後來面積擴大，延伸出了內外永春兩處，才成為今日的「雙春」。雙春濱海遊憩區設置有南北兩條木棧道，架設在紅樹林與防風林之間，讓遊客能夠近距離觀察溼地生態，除了紅樹林外，招潮蟹、彈塗魚還有水鳥，都是雙春最迷人的景緻。
 
-        紅樹林生態木棧道
-        雙春綠色隧道提供旅人悠閒地漫步，體會被翠綠簇擁的浪漫氛圍。除了紅樹林生態步道，雙春濱海遊憩區還擁有美麗的黃金沙灘，許多旅人會在落日時分，欣賞夕陽落下海平面壯觀美景。另有一處水上星空露營區，純白色的帳篷座落在海濱，所見景緻如畫。`);
+紅樹林生態木棧道
+雙春綠色隧道提供旅人悠閒地漫步，體會被翠綠簇擁的浪漫氛圍。除了紅樹林生態步道，雙春濱海遊憩區還擁有美麗的黃金沙灘，許多旅人會在落日時分，欣賞夕陽落下海平面壯觀美景。另有一處水上星空露營區，純白色的帳篷座落在海濱，所見景緻如畫。`);
             $('#PlanName').val('愛莊園 Vanaheim｜星光帳篷 ｜一般帳');
             $('#PlanDescription').html( `此帳型可住 2 - 6 人，但僅提供 2 人門票，第 3 人以上皆以市民門票收費。
-
-        此帳型皆「不含」：早餐、遊船、協力車一小時與夜間導覽，如有需要請另外加購。
-
-        請注意，此帳型內無傢俱、提供公共衛浴，需另自備睡墊、睡袋。`);
+此帳型皆「不含」：早餐、遊船、協力車一小時與夜間導覽，如有需要請另外加購。
+請注意，此帳型內無傢俱、提供公共衛浴，需另自備睡墊、睡袋。`);
             $('#descriptionInput0').html(`恣意坐臥在涼爽的河堤邊，帶著尚未完成的書本享受個人時刻->與最熟悉的好朋友、家人，一同在台南北門雙春濱海遊憩區戲水、坐賞太陽的日出日落->長達 1200 公尺紅樹林生態木棧道，親近自然的最佳方案`);
             $('#descriptionInput1').html(`乘坐膠筏悠遊紅樹林水道，靜看樹林、湖水、陽光的交錯相映->訂購享協力車免費 1HR 服務，盡情感受微風輕撫雙頰的沁涼->每年 5 月 ～ 10月開放戲水池（週五、週六限定），提供給孩童一個放電的地方`);
 
