@@ -89,7 +89,7 @@ namespace prj_Traveldate_Core.Controllers
                     var strStock = prodFactory.TripStock(d.TripId);
                     double r = Convert.ToDouble(strStock.Split('/')[0]);
                     double m = Convert.ToDouble(strStock.Split('/')[1]);
-                    stockRate = r / m;
+                    
                     if (m - r < compare)
                     {
                         compare = m - r;
@@ -101,9 +101,10 @@ namespace prj_Traveldate_Core.Controllers
                 double max = Convert.ToDouble(item.strStock.Split('/')[1]);
                 if(leave>max )
                 {
+                    leave = max;
                     item.strStock = $"{max}/{max}";
                 }
-
+                stockRate = leave / max;
                 item.numStock = stockRate;
             }
             var available = schedule.OrderBy(s=>s.ForumList.DueDate).Where(s => s.ForumList.DueDate >= DateTime.Now);
