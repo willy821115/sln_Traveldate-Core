@@ -30,7 +30,7 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Index() // 左側欄 先維持原版V
         {
-            int MemberId =Convert.ToInt32( HttpContext.Session.GetString( CDictionary.SK_LOGGEDIN_USER));
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             if (mem2 != null)
             {
@@ -120,10 +120,20 @@ namespace prj_Traveldate_Core.Controllers
 
             return View();
         }
+        private string email; // 私有字段
+
+        //public string Email
+        //{
+        //    get
+        //    {
+        //        return email; // 只提供 get 方法，不提供 set 方法
+        //    }
+        //}
         public IActionResult basicInfo() //基本資料設定 V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            
             //var memm = from m in context.Members
             //          where m.MemberId == MemberId
             //          select new CMemberModel
@@ -273,13 +283,14 @@ namespace prj_Traveldate_Core.Controllers
                 mDB.BirthDate = edit.BirthDate;
                 mDB.Phone = edit.Phone;
                 mDB.Email = edit.Email;
+                
                 mDB.MemberId = edit.MemberId;
                 mDB.Password = edit.Password;
 
                 context.SaveChanges();
             }
-            Thread.Sleep(4000);
-            return RedirectToAction("Index");
+            Thread.Sleep(3000);
+            return RedirectToAction("index");
             #region 先註解掉的程式碼
             //context.Members.ToList();
 
@@ -405,7 +416,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    Thread.Sleep(3500);
+                    Thread.Sleep(3000);
                 }
                 else if(edit.txtNewPassword != edit.txtCheckPassword )
                 {
@@ -431,7 +442,7 @@ namespace prj_Traveldate_Core.Controllers
                             CouponName = cl.CouponName,
                             Discount =(cl.Discount),
                             Description = cl.Description,
-                            DueDate = cl.DueDate,
+                            DueDate = cl.DueDate,  
                             ImagePath= cl.ImagePath,
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -727,10 +738,9 @@ namespace prj_Traveldate_Core.Controllers
                  (string.IsNullOrEmpty(vm.FirstName)) ||
                  (string.IsNullOrEmpty(vm.Phone))
                )
-                {   Thread.Sleep(60000);
-                    return RedirectToAction("addCompanion");
+                {   
+                    Thread.Sleep(60000);
                 }
-
             else
             {
                 Companion cpDB = new Companion();
@@ -744,8 +754,8 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
-                    Thread.Sleep(3500);
-                }     
+                    Thread.Sleep(3000);
+                }                        
             }
             return RedirectToAction("showCompanion");
         }
@@ -902,8 +912,8 @@ namespace prj_Traveldate_Core.Controllers
                             ProductName = orderdetails3.Trip.Product.ProductName,
                             ProductId = orderdetails3.Trip.ProductId,
 
-                            Date= orderdetails3.Trip.Date,
-
+                            //Date= orderdetails3.Trip.Date,
+                            Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
                             CommentScore =CommentScore,
                             Content = Content,
                             Title = Title,
@@ -998,28 +1008,6 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(data5);
             //return View(data2.Distinct());
-            #region 先註解掉的程式碼
-            //var datas = from tripde in context.TripDetails
-            //            join trip in context.Trips
-            //            on tripde.ProductId equals trip.ProductId
-            //            join orderde in context.OrderDetails
-            //            on trip.TripId equals orderde.TripId
-
-            //            join order in context.Orders
-            //            on orderde.OrderId equals order.OrderId
-
-            //            join m in context.Members
-            //            on order.MemberId equals m.MemberId
-
-            //            where m.MemberId == id
-            //            select new COrdersViewModel
-            //            {
-            //                OrderId = orderde.OrderId,
-            //                Date = trip.Date,
-            //                Datetime = order.Datetime,
-            //                //TripDetaill = tripde.TripDetaill,
-            //            };
-            #endregion
         }
 
         #region 我的評論 0817(四)版 暫時用不到
@@ -1044,11 +1032,8 @@ namespace prj_Traveldate_Core.Controllers
         #endregion
         public IActionResult commentList() //我的評論new V
         {
-
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-
-           
-
+                            
             var datas = from m in context.Members
                         from cmp in context.CommentPhotoLists
                         join cm in context.CommentLists
@@ -1062,10 +1047,10 @@ namespace prj_Traveldate_Core.Controllers
                             Title = cm.Title,
                             Content = cm.Content,
                             CommentScore = cm.CommentScore,
-                            Date = cm.Date,
+                            Date =cm.Date,
                             ProductName = pl.ProductName,
                             CommentId=cm.CommentId,
-                            //ImagePath= cmp.ImagePath
+                            //ImagePath= cmp.ImagePath,
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -1154,7 +1139,7 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas);
+            return View(datas.Distinct());
         }
 
         [HttpPost]
@@ -1164,12 +1149,12 @@ namespace prj_Traveldate_Core.Controllers
             //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
             if (id != null)
             {
-                // 使用 .Where() 来选择所有匹配特定 CommentId 的记录
+                // 使用 .Where() 來選擇所有匹配特定 CommentId 的紀錄
                 var recordsToDelete = context.CommentPhotoLists.Where(p => p.CommentId == id).ToList();
 
                 if (recordsToDelete.Count > 0)
                 {
-                    // 使用 RemoveRange() 删除所有匹配的记录
+                    // 使用 RemoveRange() 刪除所有匹配的紀錄
                     context.CommentPhotoLists.RemoveRange(recordsToDelete);
                     context.SaveChanges();
                 }
@@ -1183,6 +1168,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.SaveChanges();
                 }
             }
+
             Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
@@ -1190,7 +1176,6 @@ namespace prj_Traveldate_Core.Controllers
         #region 添加評論view 暫時用不到2023.08.20
         public IActionResult addcomment(int? id) //添加評論 先維持舊版V
         {
-
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             //var datas = from m in context.Members
             //            join cm in context.CommentLists
@@ -1555,6 +1540,8 @@ namespace prj_Traveldate_Core.Controllers
 
             return View();
         }
+
+
     }
 }
 

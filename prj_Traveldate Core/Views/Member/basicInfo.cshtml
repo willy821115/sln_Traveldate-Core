@@ -106,13 +106,8 @@
                        </select>
                     </div>
                     <div class="form-group">
-@*                         @{
-                            DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
-                            string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
-                            } *@
-@*                         @Html.LabelFor(model=>model.BirthDate) *@
                         出生日期
-                        @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
+                        <input asp-for="BirthDate" type="date" class="form-control" />
                     </div>
                     <div class="form-group">
 @*                          @Html.LabelFor(model=>model.Phone) *@
@@ -121,9 +116,13 @@
                     </div>
                     <div class="form-group">
 @*                         @Html.LabelFor(model=>model.Email) *@
-                        聯絡信箱
-                        @Html.EditorFor(model=>model.Email,"",new {htmlAttributes=new{@class="form-control"}})
+                        聯絡信箱                       
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: whitesmoke; color: #7B7B7B;", @title = "此欄位不得修改", data_bs_toggle = "tooltip", data_bs_placement = "right" } })
                     </div>
+@*                     <div class="form-group">
+                        <label for="formfiles">照片</label>
+                        <input asp-for="photos" type="file" class="form-control" id=" formFile" />
+                    </div> *@
 
                     <div class="form-group">
 @*                         @Html.LabelFor(model=>model.Password)
@@ -171,14 +170,15 @@
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 }
 
-@section scripts{          
+@section scripts{
+    <script src="path/to/sweetalert.js"></script>
     <script>              
         const btnEditbasicInfo = document.getElementById('btnEditbasicInfo');     
         
         btnEditbasicInfo.addEventListener('click', () => {                       
             swal("基本資料修改成功！", "稍後將自動為您導向", "success", { button: false });                       
             setTimeout(() => {                       
-            }, 2000);                                 
+            }, 1500);                                 
         });           
     </script>
 }

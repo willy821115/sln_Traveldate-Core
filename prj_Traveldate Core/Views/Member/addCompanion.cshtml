@@ -15,13 +15,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                                                                                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                                                                                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                                                                                </div>
+                               <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                               </div>
                             }
                             else
                             {
-                                                                                                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                               <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -154,6 +154,7 @@
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 @section scripts{
+    <script src="path/to/sweetalert.js"></script>
     <script>
         const btnAddCompanion = document.getElementById('btnAddCompanion');
 
@@ -166,23 +167,20 @@
         const errorDiv3 = document.getElementById('errorDiv3');
 
         btnAddCompanion.addEventListener('click', () => {
-            if (LastName.value === "") {
-                errorDiv1.textContent = "此欄位為必填";
-                errorDiv2.textContent = "此欄位為必填";
-                errorDiv3.textContent = "此欄位為必填";
+            if (LastName.value === "" || FirstName.value === "" || Phone.value === "") {
 
                 setTimeout(() => {
-                    swal("請確認必填欄位是否皆已填寫！", "", "warning");
+                    swal("請確認必填欄位皆已填寫！", "", "warning");
                     errorDiv1.textContent = "此欄位為必填";
                     errorDiv2.textContent = "此欄位為必填";
                     errorDiv3.textContent = "此欄位為必填";
                     //errorDiv1.textContent = ""
-                }, 1200);
+                }, 1000);
             };
             if (LastName.value.trim() !== "" && FirstName.value.trim() !== "" && Phone.value.trim() !== "") {
-                swal("新增旅伴成功！", "稍後將自動為您導向", "success", { button: false });
+                swal("新增旅伴成功！", "稍後將自動為您導向", "success", { button: false })
                 setTimeout(() => {
-                    
+
                 }, 1500);
             }
         });

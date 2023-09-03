@@ -89,7 +89,7 @@
         @foreach (var item in Model)
                     {
                         <tr>
-                            @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
+                                    @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
                                     @{
                                             if (item.ImagePath != null)
                                             {
@@ -101,9 +101,16 @@
                                             }
                                     }
                             <td>@item.CouponName</td>
-                            <td>@item.Discount</td>
+                            <td>
+                            @{
+                                var discountvalue = item.Discount * 100;
+                                var discountshow = discountvalue % 10 == 0 ? $"{discountvalue / 10:F0}折" : $"{discountvalue:F0}折"; //檢查數值是否可被10整除
+                             }
+                                @discountshow
+                           </td>
+
                             <td>@item.Description</td>
-                            <td>@item.DueDate@*.ToString("yyyy-MM-dd")*@</td>
+                            <td>@item.DueDate?.ToString("yyyy-MM-dd")</td>
                         </tr>
                     }
             </tbody>

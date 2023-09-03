@@ -11,13 +11,13 @@
             @{
                 if (ViewBag.photo != null)
                 {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                    </div>
+                        <div style="text-align:center;background-color:white;border-radius:10px">
+                            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                        </div>
                 }
                 else
                 {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                 }
             }
 
@@ -90,22 +90,14 @@
             foreach (var item in Model)
             {
                 //count++;
-                <tr>
-                    <td><i class='fas fa-tag' style='font-size:24px;margin-left:28px'></i></td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Datetime.ToString()</td>
-                    <td>@item.Date.ToString()</td>
-                   @*<tr>
-                    // //     @{
-                    //         foreach (var photos in item.photos)
-                    //         {
-                    //         <img src="@Url.Content("~/images/" +photos.ima )" alt="照片" />
-                    //         }
-                    //     }
-                    // </tr>
-                    *@
-                    <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
-                </tr>
+                    <tr>
+                        <td><i class='fas fa-tag' style='font-size:24px;margin-left:28px'></i></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Datetime.ToString()</td>
+                        <td >@item.Date.ToString()</td>
+
+                        <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
+                    </tr>
             }
         }
     </tbody>
@@ -140,6 +132,8 @@
 }
 
 @section scripts{
+
+
 @*     <script>
         $(document).ready(function () {
             // 處理「評論」按鈕的點擊事件

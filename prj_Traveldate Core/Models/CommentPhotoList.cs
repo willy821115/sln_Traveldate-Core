@@ -12,4 +12,5 @@ public partial class CommentPhotoList
     public string? ImagePath { get; set; }
 
     public virtual CommentList? Comment { get; set; }
+
 }

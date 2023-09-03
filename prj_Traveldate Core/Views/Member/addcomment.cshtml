@@ -12,13 +12,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                                        <div style="text-align:center;background-color:white;border-radius:10px">
-                                                            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                        </div>
+                             <div style="text-align:center;background-color:white;border-radius:10px">
+                                 <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                             </div>
                             }
                             else
                             {
-                                                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -107,19 +107,33 @@
                     </div>
 
                     <div class="form-group">
-                        <label  >您的評分</label>
-                        <select id="CommentScore" class="form-control" name="CommentScore" >
+                        @* <label  >您的評分</label> *@
+@*                         <select id="CommentScore" class="form-control" name="CommentScore" >
                             <option value="">請選擇</option>
                             <option value="5">5</option>
                             <option value="4">4</option>
                             <option value="3">3</option>
                             <option value="2">2</option>
                             <option value="1">1</option>
-                        </select>
+                        </select> *@
+                        
+            <div class="form-group">
+
+
+    <div class="form-group">
+                                <label for="SelectRating">您的評分</label>
+                                <select id="CommentScore" class="form-control" name="CommentScore" style="color:#ffd306;font-size:20px">
+                                    <option value="5">&#9733; &#9733; &#9733; &#9733; &#9733;</option>
+                                    <option value="4">&#9733; &#9733; &#9733; &#9733;</option>
+                                    <option value="3">&#9733; &#9733; &#9733;</option>
+                                    <option value="2">&#9733; &#9733;</option>
+                                    <option value="1">&#9733; </option>
+                                </select>
+                                <input type="hidden" id="CommentScore" name="CommentScore" />
 @*                         @Html.LabelFor(model=>model.CommentScore)
                         @Html.EditorFor(model=>model.CommentScore,"",new {htmlAttributes=new{@class="form-control"}}) 
                         @Html.DropDownListFor(model => model.CommentScore, new SelectList(new List<int> { 1, 2, 3, 4, 5 }), "請選擇", new { @class = "form-control" })*@
-                    </div>
+     </div>
 
 @*                     <div>
                         <label>照片</label>
@@ -127,9 +141,12 @@
                     </div> *@
                     <div>
                         <label for="formfiles">照片</label>
-                        <input asp-for="photos" type="file" class="form-control" id=" formFile" multiple />
-                        <img id="imagePreview" class="w-100 mt-5" />
+                        <input asp-for="photos" type="file" class="form-control" id="formFile" multiple />
                     </div>
+
+                    <div id="imagePreview" class="w-100 mt-5">
+                    </div>
+
                     <br />
 
                     <div>
@@ -194,6 +211,7 @@
 }
 
 @section scripts{
+   <script src="path/to/sweetalert.js"></script>
    <script>                
        const btnAddComment = document.getElementById('btnAddComment');
                 
@@ -204,27 +222,42 @@
        });
    </script>
 
-   @*test*@
- <script>
-                const formFileInput = document.getElementById('formfile');
-                const previewImg = document.getElementById('imagePreview');
+@*    <script>
+                const selectRating = document.getElementById('SelectRating');
+                const CommentScore = document.getElementById('CommentScore');
 
-                formFileInput.addEventListener('change', function () {
-                    const file = formFileInput.files[0];
-                    if (file) {
-                        const eader = new FileReader();
+                // 监听下拉式选单变化事件
+                selectRating.addEventListener('change', () => {
+                    const selectedStars = selectRating.value; // 获取下拉式选单选择的星星数量
+                    CommentScore.value = selectedStars; // 将选择的星星数量赋值给 CommentScore
+                });
+  </script> *@
 
-                        reader.addEventListener('load', () => {
-                            previewImg.setAttribute('src', event.target.result)
-                        })
+            <script>
+                const input = document.getElementById('formFile');
+                const imagePreview = document.getElementById('imagePreview');
 
-                        reader.readAsDataURL(file);
-                    } else {
-                        previewImg.innerHTML = '';
+                input.addEventListener('change', function () {
+                    // 清空预览区域
+                    imagePreview.innerHTML = '';
+
+                    const files = input.files;
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.addEventListener('load', () => {
+                                const img = document.createElement('img');
+                                img.src = reader.result;
+                                img.style.height = '100px'; // 设置图像高度
+                                img.style.marginRight = '10px'; // 可选的间距
+                                imagePreview.appendChild(img);
+                            });
+                            reader.readAsDataURL(file);
+                        }
                     }
                 });
-</script>
-            @*test*@
+            </script>
 
     <script>
         $(document).ready(function () {

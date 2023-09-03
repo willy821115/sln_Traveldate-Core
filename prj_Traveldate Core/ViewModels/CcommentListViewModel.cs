@@ -1,5 +1,6 @@
 ﻿using prj_Traveldate_Core.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -54,7 +55,7 @@ namespace prj_Traveldate_Core.ViewModels
         }
 
         [DataType(DataType.Date)]
-        public DateTime? Date
+        public DateTime? Date 
         {
             get { return _commentList.Date; }
             set { _commentList.Date = value; }
@@ -76,5 +77,6 @@ namespace prj_Traveldate_Core.ViewModels
         public int? CommentId { get; set; }
 
         public string? ImagePath { get; set; }
+
     }
 }
