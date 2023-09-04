@@ -45,6 +45,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
+            vm.program.fMemPic = pf.loadMemPic((int)id);
 
                 TraveldateContext db = new TraveldateContext();
                 int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -274,7 +275,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 db.Favorites.Remove(existingFavorite);
                 db.SaveChanges();
-                return Json(new { success = true, message = "產品已成功从最愛中移除。" });
+                return Json(new { success = true, message = "產品已成功移除。" });
             }
         }
 

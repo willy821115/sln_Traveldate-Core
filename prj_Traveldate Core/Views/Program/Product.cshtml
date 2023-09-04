@@ -98,14 +98,14 @@
     </div>
     
 
-    <!--Outline、立即預定-->
+    <!--Outline、立即預定、加入最愛-->
     <div class="plancal-container mb-3">
         <div class="product-description">
             <ul>
                 <li style="list-style-image: url('/icons/icons8-tag-16.png');">
                     <div style="display:flex;align-items:center;">
                         @foreach( var tags in Model.program.fProdTags){
-                            <p class="mb-0" style="color:#6C6C6C; margin-right:5px;">#@tags </p>
+                            <p class="bg-gradient-info rounded p-1 text-white fw-bolder" style="color:#6C6C6C; margin-right:5px; margin-bottom:0px !important;">#@tags </p>
                         }
                     </div>
                 </li>
@@ -159,7 +159,20 @@
             <div class="comments-title"><p>旅客評價<a href="#commentdetail" class="more-comment">更多評價<i class="fa fa-angle-right"></i></a></p></div>
                 <div class="be-comment">
                 <div class="be-img-comment">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                        @if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "男")
+                        {
+                            <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                        }
+                        @if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "女")
+                        {
+                            <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                        }
+                        @if (Model.program.fMemPic != null && Model.program.fMemPic.Count > 0 && Model.program.fMemPic[0] != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.program.fMemPic[0])" alt="commentpic" class="comment-pic" id="myImg" />
+                        }
+
+                        
                 </div>
                 <div class="comment-header">
                     @if (Model.program.fComMem[0] != null)
@@ -480,7 +493,18 @@
                     {
                         <div class="be-comment" style="margin-bottom:40px">
                             <div class="be-img-comment">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "男")
+                                {
+                                    <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                                }
+                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "女")
+                                {
+                                    <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                                }
+                                @if (Model.program.fMemPic[comIndex] != null)
+                                {
+                                    <img src="~/images/@Model.program.fMemPic[comIndex]" alt="commentpic" class="comment-pic" id="myImg" />
+                                }
                             </div>
                             <div class="comment-header">
                                 @if (Model.program.fComMem[comIndex] != null)
@@ -1140,7 +1164,7 @@
 
                             $("#favButton").data("is-favorite", data.message === "產品已成功加入最愛。");
                         } else {
-                            if (data.message === "請登入會員") {
+                            if (data === "請登入會員") {
                                 swal('請登入會員', '', 'warning');
                             }
                         }
