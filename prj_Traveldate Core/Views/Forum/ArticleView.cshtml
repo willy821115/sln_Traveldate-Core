@@ -91,13 +91,13 @@
            }
 
         .parent-container {
-            overflow-x: auto; /* 添加横向滚动条 */
-            white-space: nowrap; /* 防止文本换行 */
+            overflow-x: auto; 
+            white-space: nowrap; 
             max-width: 924px;
         }
 
         .child-div {
-            display: inline-block; /* 将子元素变成内联块元素，使其在同一行显示 */
+            display: inline-block; 
         }
 
         .rating-container {
@@ -135,6 +135,7 @@
         }
        
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
 
 <div class="row justify-content-center pb-4">
@@ -145,7 +146,7 @@
         </div>
             <div class="mb-4 pl-4">
                 <img src="~/icons/icons8-eye-24.png" />　<span>@Model.forum.Watches　|</span>
-                <img src="~/icons/icons8-like-24.png" />　<span id="likes">@Model.likes.Count()　|</span>
+                <img src="~/icons/icons8-like-24.png" />　<span id="likes">@Model.likes.Where(l=>l.IsLike==true).Count()　|</span>
                 <img src="~/icons/icons8-talk-24.png" />　<span>@Model.replys.Count()</span>
         </div>
             <div class="d-flex divide-line pl-4 pr-4 pb-4">
@@ -205,24 +206,25 @@
             <div class="parent-container p-3 justify-content-around ">
                     @foreach (var imgs in Model.img_Paths)
                     {
-                    <div class="child-div slideshow mx-3 card border-0 col-6" id="@imgs.imgId">
+                    <a asp-action="Product" asp-controller="Program" asp-route-id="@imgs.img_prodId">
+                    <div class="child-div slideshow mx-3 card border-0 col-6" id="@imgs.img_prodId">
                         @foreach (var path in imgs.imgPaths)
                         {
                             <img class="img-fluid h-100 tripPhoto" src="~/images/@path" alt="" />
                         }
                         <div class="card-img-overlay p-0">
                             <div class="align-corner align-text-bottom p-4 h-100">
-                                <span class="card-title fw-bolder text-light fs-5 text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).Product.ProductName</span>
-                            <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).UnitPrice</span><span class="card-text">起</span></p>
-                                <p class="card-title text-light text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).Product.OutlineForSearch</p>
+                                <span class="card-title fw-bolder text-light fs-5 text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.img_prodId).Product.ProductName</span>
+                            <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>@Model.articleTrips.First(t=>t.ProductId==imgs.img_prodId).UnitPrice</span><span class="card-text">起</span></p>
+                                <p class="card-title text-light text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.img_prodId).Product.OutlineForSearch</p>
                                 <div class="rating-container">
-                                    <span class="rating-text text-light">評價：@Model.avgCommentScores.First(t=>t.commentProdId==imgs.imgId).commentScore.Value.ToString("0.0")</span>
+                                    <span class="rating-text text-light">評價：@Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value.ToString("0.0")</span>
                                     <div class="rating">
                                         <div class="stars">
                                             <div class="star-container">
                                                 @for (int i = 1; i <= 5; i++)
                                                 {
-                                                    <div class="star @GetStarClass(@Model.avgCommentScores.First(t=>t.commentProdId==imgs.imgId).commentScore.Value, i)"></div>
+                                                    <div class="star @GetStarClass(Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value, i)"></div>
                                                 }
                                             </div>
                                         </div>
@@ -231,6 +233,7 @@
                         </div>
                         </div>
                     </div>
+                    </a>
                     }
                 
 
@@ -254,15 +257,17 @@
                         if (like != null && (bool)like.IsLike)
                         {
                             <input id="btnCancelLike" class="btn btn-secondary" type="button" value="取消讚" />
+                            <input id="btnLike" class="btn btn-light d-none" type="button" value="讚" />
                         }
                         else
                         {
+                            <input id="btnCancelLike" class="btn btn-secondary d-none" type="button" value="取消讚" />
                             <input id="btnLike" class="btn btn-light" type="button" value="讚" />
                         }
                     }
                     else
                     {
-                        <a id="confirmedLoginStatus" asp-action="Likes" asp-route-id="@Model.forum.ForumListId" class="btn btn-light">讚</a>
+                        <a id="confirmedLoginStatus" asp-action="Likes" asp-route-forumId="@Model.forum.ForumListId" class="btn btn-light">讚</a>
                     }
              </div>
             <div><img src="~/icons/icons8-talk-64.png" /><a href="#my-reply" id="btnReply">回覆</a></div>
@@ -316,6 +321,7 @@
                         <input type="hidden" name="MemberId" value="@Model.member.MemberId" />
                         <input type="hidden" name="ReplyTime" value="@DateTime.Now"/>
                         @Html.Partial("ReplyToDiv",Model.member)
+                        
                     }else{
                         <div class="p-4 d-flex justify-content-center">
                             <span class="fs-5">登入後即可回覆文章!</span>
@@ -331,8 +337,19 @@
             }
         </div>
 </div>
-
-@* <div id ="dialogBox" class="dialog-box">
+    @if (Model.member != null)
+    {
+        <input id="isLogin" type="hidden" value="@Model.member.MemberId" />
+    }
+    else
+    {
+        <input id="isLogin" type="hidden" />
+    }
+   
+   
+    
+    
+    @* <div id ="dialogBox" class="dialog-box">
     <div class="dialog-content">
         <div class="d-flex justify-content-between align-items-center bg-gray-300">
             <span>與 <span class="fw-bold text-black">@Model.forum.Member.FirstName</span> 聊聊中</span>
@@ -343,7 +360,7 @@
     </div>
 </div> *@
 </div>
-<input id="isLogin" type="hidden" value="@Model.member"/>
+
 @section Scripts{
     
     <script>
@@ -363,7 +380,7 @@
             if (datas != null) {
                 console.log(datas)
                 const forums = datas.map(forum => {
-                        const { title, likes, watches, releaseDatetime, forumListId, prodPhotoPath } = forum
+                        const { title, likeCount, watches, releaseDatetime, forumListId, prodPhotoPath } = forum
                     return (
                             `<a href="@Url.Content("~/Forum/ArticleView")?id=${forumListId}" class="list-group-item list-group-item-action">
                             <div class="d-flex">        
@@ -372,7 +389,7 @@
                                     </div> 
                                     <div class="col-8 pt-2">
                                  <h5>${title}</h5>
-                                <img src = "/icons/icons8-like-24.png" height="16"/> <span>${likes} | </span>
+                                        <img src = "/icons/icons8-like-24.png" height="16"/> <span>${likeCount} | </span>
                                 <img src= "/icons/icons8-eye-24.png" height="16"/> <span>${watches} | </span>
                                 <span>發文時間 : ${releaseDatetime}</span>
                                 </div>
@@ -407,22 +424,25 @@
         });
 
        /*****按讚/取消讚*****/
-        $('#btnLike').click(function (b) {
+        
+         $('#btnLike').click(function (b) {
             b.preventDefault();
-            $.post('@Url.Content("~/Forum/Likes")', { "id": @Model.forum.ForumListId, "status": 0}, function (e) {
+            $.post('@Url.Content("~/Forum/Likes")', { "forumId": @Model.forum.ForumListId, "memId": $('#isLogin').val(), "status": 0 }, function (e) {
                 $('#likes').text(e+'　|')
-                $('#btnLike').hide();
+                $('#btnLike').addClass("d-none")
                 $('#btnCancelLike').removeClass("d-none")
             })
         })
         $('#btnCancelLike').click(function (b) {
             b.preventDefault();
-            $.post('@Url.Content("~/Forum/Likes")', { "id": @Model.forum.ForumListId, "status": 1 }, function (e) {
+            $.post('@Url.Content("~/Forum/Likes")', { "forumId": @Model.forum.ForumListId, "memId": $('#isLogin').val(), "status": 1 }, function (e) {
                 $('#likes').text(e + '　|')
                 $('#btnCancelLike').addClass("d-none")
-                $('#btnLike').show();
+                $('#btnLike').removeClass("d-none");
             })
         })
+        
+      
       /******留言區即時更新**** */
         var isLogin = $('#isLogin').val()
               if (isLogin){
@@ -498,6 +518,7 @@
 
     </script>
     <script>
+        //方案圖片輪播動畫
         $('.slideshow').each(function () {
 
             let slideImgs = $(this).find('.tripPhoto'),
@@ -510,7 +531,7 @@
 
             function showNextSlide() {
                 let nextIndex = (currentIndex + 1) % slideImgsCount;
-                console.log(nextIndex)
+                //console.log(nextIndex)
                 slideImgs.eq(currentIndex).fadeOut();
                 slideImgs.eq(nextIndex).fadeIn();
                 currentIndex = nextIndex;

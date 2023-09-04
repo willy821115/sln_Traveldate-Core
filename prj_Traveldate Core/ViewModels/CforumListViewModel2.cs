@@ -45,12 +45,12 @@ namespace prj_Traveldate_Core.ViewModels
         get { return forumList.ReleaseDatetime; }
         set { forumList.ReleaseDatetime = value; }
     }
-    public int? Likes
-    {
-        get { return forumList.Likes; }
-        set { forumList.Likes = value; }
-    }
-    public int? Watches
+        public int? Likes
+        {
+            get { return forumList.Likes; }
+            set { forumList.Likes = value; }
+        }
+        public int? Watches
     {
         get { return forumList.Watches; }
         set { forumList.Watches = value; }
