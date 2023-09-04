@@ -45,6 +45,13 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
+
+                TraveldateContext db = new TraveldateContext();
+                int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+                var favorite = db.Favorites
+                    .FirstOrDefault(f => f.MemberId == memberID && f.ProductId == id);
+            vm.program.fIsFav = favorite!=null;
+
             return View(vm);
         }
         
@@ -236,11 +243,15 @@ namespace prj_Traveldate_Core.Controllers
             return Json(tripID);
         }
 
-
+        [HttpPost]
         public IActionResult AddToFav(int id)
         {
             TraveldateContext db = new TraveldateContext();
             int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            if (memberID == 0)
+            {
+                return Content("請登入會員");
+            }
             Favorite favo = new Favorite()
             {
                 MemberId = memberID,
@@ -248,7 +259,25 @@ namespace prj_Traveldate_Core.Controllers
             };
             db.Favorites.Add(favo);
             db.SaveChanges();
-            return RedirectToAction("Product");
+            return Json(new { success = true, message = "產品已成功加入最愛。" });
+        }
+
+        [HttpPost]
+        public IActionResult DeleFromFav(int id)
+        {
+            TraveldateContext db = new TraveldateContext();
+            int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            if (memberID == 0)
+            {
+                return Content("請登入會員");
+            }
+            var favo = db.Favorites.Where(o => o.MemberId == memberID && o.ProductId == id).FirstOrDefault();
+            if (favo != null)
+            {
+                db.Favorites.Remove(favo);
+            }
+            db.SaveChanges();
+            return Json(new { success = true, message = "產品已成功從最愛中移除。" });
         }
 
     }

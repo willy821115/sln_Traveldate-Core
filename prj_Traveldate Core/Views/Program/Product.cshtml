@@ -125,9 +125,11 @@
                     <span>TWD</span>
                     <span>@Model.program.fTripPrice</span>
                     <span>起</span>
-                    <a asp-controller="Program" asp-action="AddToFavo" name="pdid" asp-route-id="@Model.product.ProductId">
-                        <img src="/icons/icons8-like-48 (1).png" class="CartIconbtn cartUnlike" style="width:32px; margin-bottom:2px;">
-                    </a>
+                    @{
+                        bool isFavorite = Model.program.fIsFav;
+                        string iconSrc = isFavorite ? "/icons/icons8-like-48.png" : "/icons/icons8-like-48 (1).png";
+                    }
+                    <img id="favButton" src="@iconSrc" class="CartIconbtn" style="width:32px; margin-bottom:2px;" data-product-id="@Model.product.ProductId" data-is-favorite="@isFavorite">
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 @if(Model.program.fStatus == "熱賣中")
@@ -1108,6 +1110,33 @@
                     });
             });
         });
+
+
+        $(document).ready(function () {
+            $("#favButton").click(function () {
+                var productId = $(this).data("product-id");
+                var isFavorite = $(this).data("is-favorite");
+
+                $.ajax({
+                    type: "POST",
+                    url: isFavorite ? "/Program/DeleFromFav" : "/Program/AddToFav",
+                    data: { id: productId },
+                    success: function (data) {
+                        if (data === "請登入會員") {
+                            swal('請登入會員', '', 'warning');
+                        } else {
+                            // 切換圖像
+                            $("#favButton").attr("src", isFavorite ? "/icons/icons8-like-48 (1).png" : "/icons/icons8-like-48.png");
+                            isFavorite = !isFavorite; // 切換最愛狀態
+                        }
+                    },
+                    error: function () {
+                        alert("操作失敗");
+                    }
+                });
+            });
+        });
+
 
 
 

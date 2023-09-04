@@ -26,6 +26,7 @@
 
         public List<decimal?> fDiscountPlanPrice { get; set; }
         public List<string> fDiscountPriceDate { get; set; }
+        public bool fIsFav { get; set; }
 
     }
 }
