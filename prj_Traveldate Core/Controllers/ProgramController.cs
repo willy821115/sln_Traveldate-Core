@@ -151,6 +151,8 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return Content("請登入會員");
             }
+
+
             var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
             if (existCart)
             {
@@ -160,6 +162,7 @@ namespace prj_Traveldate_Core.Controllers
                     OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
                     od.Quantity += num;
                     db.SaveChanges();
+                    orderDetailId = od.OrderDetailsId;
                 }
                 else
                 {
@@ -179,8 +182,8 @@ namespace prj_Traveldate_Core.Controllers
 
                     ViewBag.orderDetailId = orderDetailId;
 
-                    return Content(orderDetailId.ToString());
-                 //  return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
+                    //return Content(orderDetailId.ToString());
+                    //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
                     //return RedirectToAction("ShoppingCart", "Cart");
                     //return Json(orderDetailId);
                 }
@@ -211,7 +214,7 @@ namespace prj_Traveldate_Core.Controllers
 
                 ViewBag.orderDetailId = orderDetailId;
 
-               return Content(orderDetailId.ToString());
+                //return Content(orderDetailId.ToString());
 
                 //return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
 

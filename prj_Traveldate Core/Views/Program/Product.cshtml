@@ -937,7 +937,7 @@
                         console.log(orderDetailId);
                         console.log(data);
 
-                        if (!isNaN(orderDetailId)) {
+                        if (!isNaN(orderDetailId) && orderDetailId != 0) {
                             window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                         //window.orderDetailId = orderDetailId;
