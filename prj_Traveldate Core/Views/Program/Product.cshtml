@@ -874,6 +874,12 @@
                     html += `<li>可訂購數：${data.maxnum}</li>`;
                 }
                 else if (data.maxnum < 10) {
+                    var availableDateElements = document.getElementsByClassName("available-date");
+                    for (var i = 0; i < availableDateElements.length; i++) {
+                        availableDateElements[i].style.color = "red";
+                        availableDateElements[i].style.boxShadow = "0 2px 5px rgba(255, 0, 0, 0.5)";
+                    }
+
                     html += `<li style="color:red;">可訂購數：${data.maxnum}  （即將額滿）</li>`;
                 }
 
