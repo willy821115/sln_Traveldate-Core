@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace prj_Traveldate_Core.Models.MyModels
 {
@@ -21,6 +22,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             set { _member.MemberId = value; }
         }
         [DisplayName("姓氏")]
+        [Required(ErrorMessage = "{0}為必填")]
         public string? LastName
         {
             get { return _member.LastName; }
@@ -28,6 +30,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("名字")]
+        [Required(ErrorMessage = "{0}為必填")]
         public string? FirstName
         {
             get { return _member.FirstName; }
@@ -42,6 +45,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("身分證字號")]
+        [Required(ErrorMessage = "{0}為必填")]
         public string? Idnumber
         {
             get { return _member.Idnumber; }
@@ -49,6 +53,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("出生日期")]
+        [Required(ErrorMessage = "{0}為必填")]
         public DateTime? BirthDate
         {
             get { return _member.BirthDate; }
@@ -63,6 +68,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("聯絡電話")]
+        [Required(ErrorMessage = "{0}為必填")]
         public string? Phone
         {
             get { return _member.Phone; }
@@ -70,6 +76,8 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("E-mail")]
+        [Required(ErrorMessage = "{0}為必填")]
+        [EmailAddress(ErrorMessage = "請填寫正確E-mail")]
         public string? Email
         {
             get { return _member.Email; }
@@ -77,6 +85,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
         [DisplayName("密碼")]
+        [Required(ErrorMessage = "{0}為必填")]
         public string? Password
         {
             get { return _member.Password; }
