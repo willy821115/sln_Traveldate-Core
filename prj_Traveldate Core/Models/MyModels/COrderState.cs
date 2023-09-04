@@ -6,7 +6,7 @@ namespace prj_Traveldate_Core.Models.MyModels
     {
         public List<CProductDetailViewModel>? ProductDetail { get; set; }
         public int? orderQuantity { get; set;}
-        public decimal? turnover { get; set; }
+        public string? turnover { get; set; }
         public List<string>? top3product { get; set; }
 
         public List<ProductTypeList> types { get; set; }
