@@ -132,85 +132,100 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         //揪團結帳
-        //[ActionName("ForumCheckout")]
-        public ActionResult ConfirmOrder(CForumCheckout vm_in)
+        [Route("Cart/ForumCheckout")]
+        public IActionResult ConfirmOrder(int ForumListID, int type)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             List<int> orderDetailIdList = new List<int>();
+            List<int?> tripId = new List<int?>();
 
-            var existCart = _context.Orders.Any(o => o.MemberId == _memberID && o.IsCart == true);
-            if (existCart)
+            if (type == 0)
             {
-                int cartOrderID = _context.Orders.FirstOrDefault(o => o.MemberId == _memberID && o.IsCart == true).OrderId;
-
-                foreach (var i in vm_in.tripId)
+                var list = _context.ScheduleLists.Where(l => l.ForumListId == ForumListID).Select(l => l.TripId).ToList();
+                if (list != null)
                 {
-                    OrderDetail newOrderDetail = new OrderDetail
-                    {
-                        Quantity = 1,
-                        TripId = i,
-                        OrderId = cartOrderID
-                    };
-                    _context.OrderDetails.Add(newOrderDetail);
-                    _context.SaveChanges();
-                    orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                    tripId = list;
                 }
-            }
-            else
-            {
-                Order newCartOrder = new Order
-                {
-                    MemberId = _memberID,
-                    IsCart = true
-                };
-                _context.Orders.Add(newCartOrder);
-                _context.SaveChanges();
+                else return Content("");
 
-                int newCartOrderID = newCartOrder.OrderId;
-
-                foreach (var i in vm_in.tripId)
+                var existCart = _context.Orders.Any(o => o.MemberId == _memberID && o.IsCart == true);
+                if (existCart)
                 {
-                    OrderDetail newOrderDetail = new OrderDetail
+                    int cartOrderID = _context.Orders.FirstOrDefault(o => o.MemberId == _memberID && o.IsCart == true).OrderId;
+
+                    foreach (var i in tripId)
                     {
-                        Quantity = 1,
-                        TripId = i,
-                        OrderId = newCartOrderID
-                    };
-                    _context.OrderDetails.Add(newOrderDetail);
-                    _context.SaveChanges();
-                    orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                        OrderDetail newOrderDetail = new OrderDetail
+                        {
+                            Quantity = 1,
+                            TripId = i,
+                            OrderId = cartOrderID
+                        };
+                        _context.OrderDetails.Add(newOrderDetail);
+                        _context.SaveChanges();
+                        orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                    }
                 }
-            }
-
-            CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
-            vm.member = _context.Members.Find(_memberID);
-            vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
-
-            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
-
-            vm.orders = new List<CCartItem>();
-            for (int i = 0; i < orderDetailIdList.Count; i++)
-            {
-                CCartItem item = new CCartItem();
-                item = _context.OrderDetails.Where(o => o.OrderDetailsId == orderDetailIdList[i]).Select(c =>
-                    new CCartItem
+                else
+                {
+                    Order newCartOrder = new Order
                     {
-                        orderDetailID = c.OrderDetailsId,
-                        productID = c.Trip.ProductId,
-                        tripID = c.TripId,
-                        planName = c.Trip.Product.ProductName,
-                        date = $"{c.Trip.Date:d}",
-                        quantity = c.Quantity,
-                        photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
-                        ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
-                        unitPrice = c.Trip.UnitPrice,
-                        discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
-                        ProductTypeID = c.Trip.Product.ProductTypeId,
-                    }).First();
-                vm.orders.Add(item);
-            }
+                        MemberId = _memberID,
+                        IsCart = true
+                    };
+                    _context.Orders.Add(newCartOrder);
+                    _context.SaveChanges();
 
-            return View(vm);
+                    int newCartOrderID = newCartOrder.OrderId;
+
+                    foreach (var i in tripId)
+                    {
+                        OrderDetail newOrderDetail = new OrderDetail
+                        {
+                            Quantity = 1,
+                            TripId = i,
+                            OrderId = newCartOrderID
+                        };
+                        _context.OrderDetails.Add(newOrderDetail);
+                        _context.SaveChanges();
+                        orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                    }
+                }
+
+                CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
+                vm.member = _context.Members.Find(_memberID);
+                vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+                vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
+
+                vm.orders = new List<CCartItem>();
+                for (int i = 0; i < orderDetailIdList.Count; i++)
+                {
+                    CCartItem item = new CCartItem();
+                    item = _context.OrderDetails.Where(o => o.OrderDetailsId == orderDetailIdList[i]).Select(c =>
+                        new CCartItem
+                        {
+                            orderDetailID = c.OrderDetailsId,
+                            productID = c.Trip.ProductId,
+                            tripID = c.TripId,
+                            planName = c.Trip.Product.ProductName,
+                            date = $"{c.Trip.Date:d}",
+                            quantity = c.Quantity,
+                            photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
+                            ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
+                            unitPrice = c.Trip.UnitPrice,
+                            discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                            ProductTypeID = c.Trip.Product.ProductTypeId,
+                        }).First();
+                    vm.orders.Add(item);
+                }
+             
+                //把forumlistId帶到結帳成功那邊再把文章的isPublish改成true
+               HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY, ForumListID);
+               
+                return View(vm);
+            }
+            return Content("");
         }
 
         
@@ -419,6 +434,16 @@ namespace prj_Traveldate_Core.Controllers
             ViewData["email"] = _context.Members.Find(_memberID).Email;
             //TODO 寄確認信
 
+
+            //如果是從揪團過來的走這裡
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
+            {
+                int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
+                 _context.ForumLists.Find(ForumListID).IsPublish = true;
+                  _context.SaveChanges();
+            }
+ 
+           
             return View();
         }
 

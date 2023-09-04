@@ -13,7 +13,16 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     @* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> *@
+    
     <style>
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            align-items: center;
+        }
+
+
+
         .my-Heading-color {
             color: #155074;
         }
@@ -62,7 +71,7 @@
                 <div>
                     <p class="fs-5 divide-line fs-3">選擇旅行項目與日期</p>
                     <div class="divAddTrips">
-                        <div class="d-flex mb-2 d-1" >
+                        <div class="d-flex mb-2 d-1" id="tripCount">
                             <div class="form-group col-6 pl-0 mb-0">
                                 <input name="keyword" class="form-control form-select form-select-md inputTrip fs-5" id="inputTrip-1"
                                        placeholder="請選擇旅行項目" />
@@ -108,8 +117,29 @@
                     <div class="d-flex align-items-center">
                         <button type="button" class="btn btn-outline-secondary ml-1 fs-5" onclick='deleteArticle()'>捨棄</button>
                         <input asp-for="isSave" id="btnSaveArticle" type="submit" value="儲存草稿" class="btn btn-outline-secondary ml-1 fs-5" />
-                        <button type="button" class="btn my-btn-primary ml-1 fs-5" onclick="confirmArticle()">下一步</button>
-                        <input asp-for="isPublish" id="btnPublish" type="submit" value="發布" class="btn my-btn-primary ml-1 fs-5" />
+                        @* <button type="button" class="btn my-btn-primary ml-1 fs-5" onclick="confirmArticle()">下一步</button> *@
+                        <!-- Button trigger modal -->
+                        <button id="putInfoOnModal" type="button" class="btn my-btn-primary ml-1 fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            下一步
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div id="infoBody" class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
+                                        <input asp-for="isPublish" id="btnPublish" type="submit" value="結帳去" class="btn my-btn-primary ml-1 fs-5" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -122,11 +152,24 @@
 
 
 
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $('#putInfoOnModal').on('click', function () {
+            var values=""
+            var tripCount = $('#tripCount .inputTripDate').length;
+            for (let i = 0; i < tripCount;i++){
+                values += $('.inputTrip').val()[i]
+            }
+            console.log(values)
+        })
+       
+    </script>
+ 
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script>
         //刪除文章的sweetAlert
         function deleteArticle() {
@@ -162,41 +205,15 @@
             })
         }
         //發布
-        function publishArticle() {
-            Swal.fire({
-                icon: 'success',
-                title: '發布成功!',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }
-        //下一步(去結帳)
-        function confirmArticle() {
-            Swal.fire({
-                title: '儲存草稿成功!',
-                showCancelButton: true,
-                confirmButtonText: '下一步',
-                cancelButtonText: '我想再確認一下'
-            })
-        }
-
+        // function publishArticle() {
         //     Swal.fire({
-        //     title: 'Do you want to save the changes?',
-        //     showCancelButton: true,
-        //     confirmButtonText: '下一步',
-        //      cancelButtonText: '我想再確認一下',
-        // }).then((result) => {
-        //     /* Read more about isConfirmed, isDenied below */
-        //     if (result.isConfirmed) {
-        //         Swal.fire('Saved!', '', 'success')
-        //     } else if (result.isDenied) {
-        //         Swal.fire('Changes are not saved', '', 'info')
-        //     }
-        // })
+        //         icon: 'success',
+        //         title: '發布成功!',
+        //         showConfirmButton: false,
+        //         timer: 1500
+        //     })
+        // }
         
-        
-
-
     </script>
     
 
@@ -418,8 +435,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Summernote JS -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    
     <script>
         $(document).ready(function () {
             $('#summernote').summernote({
