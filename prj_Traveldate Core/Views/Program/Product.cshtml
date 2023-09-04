@@ -920,8 +920,14 @@
 
             console.log(quantity, tripId)
 
-            fetch(`/Program/AddToCart?num=${quantity}&tripId=${tripId}`, {
+            var formData = new FormData();
+            formData.append('num', quantity);
+            formData.append('tripId', tripId);
+
+
+            fetch('/Program/AddDirectToCart', {
                 method: 'POST',
+                body: formData
             }).then(response => response.text())
                 .then(data => {
                     if (data === "請登入會員") {
@@ -931,9 +937,11 @@
                         console.log(orderDetailId);
                         console.log(data);
 
+                        if (!isNaN(orderDetailId)) {
+                            window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                        }
                         //window.orderDetailId = orderDetailId;
                         //window.location.href = `/Cart/ShoppingCart`;
-                        window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
 
                         //window.location.href = `/Cart/ShoppingCart`;
                     }
@@ -1103,9 +1111,11 @@
                             console.log(orderDetailId);
                             console.log(data);
 
+                            if (!isNaN(orderDetailId)) {
+                                window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                            }
                             //window.orderDetailId = orderDetailId;
                             //window.location.href = `/Cart/ShoppingCart`;
-                            window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                     });
             });
