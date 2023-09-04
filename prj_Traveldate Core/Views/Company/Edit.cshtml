@@ -242,7 +242,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                <input type="submit" value="確認並儲存" class="btn btn-success " />
+                                    <input type="submit" value="確認並儲存" class="btn btn-success" id="EditProduct" />
                                 </div>
                             </div>
 
@@ -276,5 +276,12 @@
     }
     
 </style>
+}
+@section Scripts{
+    <script>
+        $('#EditProduct').click(fuction(){
+            swal("供應商資料編輯成功！", "稍後將自動為您導向", "success");
+        });
+    </script>
 }
  
