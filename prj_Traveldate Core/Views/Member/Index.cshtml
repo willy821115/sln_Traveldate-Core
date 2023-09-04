@@ -15,13 +15,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                </div>
+                              <div style="text-align:center;background-color:white;border-radius:10px">
+                                 <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                              </div>
                             }
                             else
                             {
-                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                             <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -32,35 +32,34 @@
 
                     </div>
                     <div class="cell" id="div2">
-
                             <ul class="list-group leftarea lgmenu mt-3 ">
-                            <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
-                            </li>
-                            <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
-                            </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
-                            </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
-                            </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
-                            </li>
-                            <li class="list-group-item menuItem">
-                                @Html.ActionLink("聊聊", "SignalR","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
-                            </li>
+                                <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                                <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
+                                </li>
+                                <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
+                                </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
+                                </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
+                                </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                                </li>
+                                <li class="list-group-item menuItem">
+                                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                                </li>
                             </ul>
                         </a>
                     </div>
@@ -75,17 +74,79 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
                     <li class="breadcrumb-item active" aria-current="page">會員專區</li>
                 </ol>
             </nav>
             <div id="rightPanel">
                 <!-- 這裡會顯示根據左邊所選擇的按鈕而改變的內容 -->
-                <div class="form-group">
+@*                 <div class="form-group">
                     <h2 style="margin:150px 150px 310px 230px;line-height:80px; color:#9D9D9D; text-align:justify"><span>～TravelDate 與您一起～<br></span></h2>
                     <h3 style="margin:-250px 260px 300px 260px; color:#9D9D9D; text-align:center">Enjoy Your Date </h3>
-                    <img src="~/images/Member-index-1.gif" style="width:825px;height:510px;border-radius:10px;margin-top:-750px;margin-left:0px;margin-right:-270x;margin-bottom:-90px; opacity:8%" />
-                   
+                    <img src="~/images/Member-index-1.gif" style="width:825px;height:510px;border-radius:10px;margin-top:-750px;margin-left:0px;margin-right:-270x;margin-bottom:-90px; opacity:8%" />               
+                </div> *@
+                @*Weather*@
+                <div class="base">
+                    <div style="text-align:center">
+                        <img src="~/icons/icon-weather-1 原圖.png" style="margin-top:-20px" />
+                        <span id="h1weather">即時天氣預報</span>
+                    </div>
+                        <select name="" id="choceLocation">                  
+                        <option value="Taipei "selected="selected">台北市</option>
+                        <option value="New Taipei">新北市</option>
+                        <option value="Taoyuan">桃園市</option>
+                        <option value="Taichung">台中市</option>
+                        <option value="Tainan">台南市</option>
+
+                        <option value="Kaohsiung">高雄市</option>
+                        <option value="Hsinchu">新竹縣</option>
+                        <option value="Miaoli">苗栗縣</option>
+                        <option value="Changhua" >彰化縣</option>
+                        <option value="Nantou">南投縣</option>
+
+                        <option value="Yunlin">雲林縣</option>
+                        <option value="Chiayi">嘉義縣</option>
+                        <option value="Pingtung">屏東縣</option>
+                        <option value="Yilan">宜蘭縣</option>
+                        <option value="Hualien">花蓮縣</option>
+
+                        <option value="Taitung">台東縣</option>
+                        <option value="Penghu">澎湖縣</option>
+                        <option value="Kinmen">金門縣</option>
+                        <option value="Lienchiang">連江縣</option>
+                        <option value="Keelung">基隆市</option>
+
+                        <option value="Hsinchu">新竹市</option>
+                        <option value="Chiayi">嘉義市</option>
+                    </select>
+                    <li style="list-style:none;width:300;font-size:15px;color: #7B7B7B;margin-left:10px;margin-top:10px;">數據時間 <span id="dt"></span></li>
+                    <div id="name">
+                        台北
+                    </div>
+                    <div>
+                        <img src="" id="img" alt="" />
+                        <li style="list-style:none;text-align:center;width:500;font-size:50px;color:#3C3C3C;margin:0;padding:0"> <span id="temp"></span><span>°C</span></li>
+                        <div style="color:	#7B7B7B">
+                            <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-bottom:0px;margin-top: -5px;"><span id="description"></span></li>
+                            <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-top:0px;margin-bottom: 10px;">體感 <span id="feels_like"></span><span>°C</span></li>
+                        </div>
+                    </div>
+                    <ul id="grid">
+
+                        <li>最高溫度 <span id="temp_max"></span><span>°C</span></li>
+                        <li>最低溫度 <span id="temp_min"></span><span>°C</span></li>
+
+                        <li>能見度 <span id="visibility"></span><span>公里</span></li>
+                        <li>相對濕度 <span id="humidity"></span><span>%</span></li>
+
+                        <li>日出時間 <span id="sunrise"></span></li>
+                        <li>日落時間 <span id="sunset"></span></li>
+
+                    </ul>
+
                 </div>
+                @*weather*@
+
             </div>
         </div>
         </div>
@@ -115,8 +176,172 @@
     </div>
 </div>*@
 
-@section Styles
-{
+
+@section Styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+<style>
+        /*Weather*/
+        @@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&display=swap");
+
+        .base {
+            /* background-color: #C4E1E1; */ /* #e9ecef; */
+            border-radius:10px;
+            padding:10px;
+
+            width: 825px;
+            height:595px;
+            box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;
+            font: "Noto Sans TC"
+        }
+        #h1weather {
+            color: darkcyan;
+            font: 1000 40px/1.9 "Noto Sans TC";
+            text-align: center;
+            letter-spacing: 5px;
+            margin:0;
+            padding:0;
+        }
+        #choceLocation{
+            background-color: whitesmoke;
+            border-radius: 10px;
+            padding: 10px;
+
+            width: 100%;
+            display:block;
+
+            text-align:center;
+            color: #7B7B7B;
+            font:900;
+            border:none;
+        }
+        #name{
+            color:darkcyan;
+            font: 900 40px/1 "Noto Sans TC"; /*width ,font-size ,line-height ,font-family */
+            text-align: center;
+            letter-spacing: 5px;
+            font-size:xx-large;
+            padding:0px
+        }
+        #img {
+            width: 150px;
+            display:block;
+            border-radius: 10px;
+            margin:0 auto; /*讓圖像水平置中*/
+            padding:0px
+        }
+        #grid {
+            background-color: whitesmoke;
+            border-radius: 10px;
+            padding:5px;
+            marging-bottom:-10px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            gap: 5px;
+            font:500;
+            height:115px;
+            justify-content: center; 
+            align-items: center;
+
+            color: #7B7B7B;
+            list-style: none;
+        }
+        #grid li{
+            text-align:center;
+        }
+</style>
 }
 
+
+@section scripts{
+    <script>
+        /*Weather*/
+        const tempApp = {
+            temp:          document.querySelector("#temp"),
+            feels_like:    document.querySelector("#feels_like"),
+            temp_max:      document.querySelector("#temp_max"),
+            temp_min:      document.querySelector("#temp_min"),
+
+            description:   document.querySelector("#description"), //描述
+
+            visibility:    document.querySelector("#visibility"),
+            humidity:      document.querySelector("#humidity"),
+
+            sunrise:       document.querySelector("#sunrise"),
+            sunset:        document.querySelector("#sunset"),
+
+            dt:            document.querySelector("#dt"),
+
+            choceLocation: document.querySelector("#choceLocation"),
+            name:          document.querySelector("#name"),
+            img:           document.querySelector("#img"),
+            icon: "https://openweathermap.org/img/wn/", /* https://openweathermap.org/img/wn/10d@2x.png */
+
+            render(json) {
+                this.temp.textContent = Math.floor(json.main.temp);
+                this.feels_like.textContent = Math.floor(json.main.feels_like) ;
+                this.temp_max.textContent = Math.floor(json.main.temp_max) ;
+                this.temp_min.textContent = Math.floor(json.main.temp_min);
+
+                this.description.textContent = json.weather[0].description; //描述
+
+                this.visibility.textContent = json.visibility/1000;
+                this.humidity.textContent = json.main.humidity;
+
+                const sunriseTimestamp = json.sys.sunrise;
+                const sunriseDate = new Date(sunriseTimestamp * 1000);
+                const sunriseHours = sunriseDate.getHours();
+                const sunriseMinutes = sunriseDate.getMinutes();
+                const showSunriseHours = sunriseHours < 10 ? `0${sunriseHours}` : sunriseHours;
+                const showSunriseMinutes = sunriseMinutes < 10 ? `0${sunriseMinutes}` : sunriseMinutes;
+                const showSunriseTime = `${showSunriseHours} : ${showSunriseMinutes}`;
+                this.sunrise.textContent = showSunriseTime;
+
+                const sunsetTimestamp = json.sys.sunset;
+                const sunsetDate = new Date(sunsetTimestamp * 1000);
+                const sunsetHours = sunsetDate.getHours();
+                const sunsetMinutes = sunsetDate.getMinutes();
+                const showSunsetHours = sunsetHours < 10 ? `0${sunsetHours}` : sunsetHours;
+                const showSunsetMinutes = sunsetMinutes < 10 ? `0${sunsetMinutes}` : sunsetMinutes;
+                const showSunsetTime = `${showSunsetHours} : ${showSunsetMinutes}`;
+                this.sunset.textContent = showSunsetTime;
+
+                const dtTimestamp = json.dt;
+                const dtDate = new Date(dtTimestamp * 1000);
+                const dtYear = dtDate.getFullYear();
+                const dtMonth = dtDate.getMonth() + 1;
+                const dtDay = dtDate.getDate();
+                const dtHours = dtDate.getHours();
+                const dtMinutes = dtDate.getMinutes();
+                const showdtHours = dtHours < 10 ? `0${dtHours}` : dtHours;
+                const showdtMinutes = dtMinutes < 10 ? `0${dtMinutes}` : dtMinutes;
+                const showdtTime = `${dtYear}年 ${dtMonth}月 ${dtDay}日 ${showdtHours} : ${showdtMinutes}`;
+                this.dt.textContent = showdtTime;
+
+                this.name.textContent = this.choceLocation.options[this.choceLocation.selectedIndex].text;
+                const iconUrl = this.icon + json.weather[0].icon + "@@2x.png";
+                this.img.setAttribute("src", iconUrl);
+            },
+
+            startGet() {
+                let link = `https://api.openweathermap.org/data/2.5/weather?q=${this.choceLocation.value},TW&units=metric&lang=zh_tw&appid=b39a6572199c2ed62bf8a2893d74eb5e`;
+
+                fetch(link)
+                    .then(res => res.json())
+                    .then(json => {
+                        console.log(json)
+                        this.render(json);
+                    })
+            },
+            init() {
+                this.startGet();
+
+                this.choceLocation.addEventListener('change', () => {
+                    this.startGet();
+                });
+            }
+        };
+        tempApp.init();
+    </script>
+}

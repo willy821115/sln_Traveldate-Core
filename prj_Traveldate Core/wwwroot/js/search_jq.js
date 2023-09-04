@@ -31,11 +31,13 @@ function clearAllFiltered() {
     minPrice = ""
     maxPrice = ""
     pageNumber = 1;
+    $('#from-home-page-tags').text("")
     filteredByConditions()
     isFirstButton = true; // 重設為第一次新增狀態
 }
 
 $('.divFiltered_city').on('click', '.uncheckbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -64,6 +66,7 @@ $('.divFiltered_city').on('click', '.uncheckbox', function () {
     checkCleanAllButtonExistence()
 })
 $('.divFiltered_tag').on('click', '.uncheckbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -92,6 +95,7 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
     checkCleanAllButtonExistence()
 })
 $('.divFiltered_type').on('click', '.uncheckbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -122,7 +126,8 @@ $('.divFiltered_type').on('click', '.uncheckbox', function () {
 })
 
 
-$('.divFiltered_city').on('click', '.checkbox', function(){
+$('.divFiltered_city').on('click', '.checkbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -137,6 +142,7 @@ $('.divFiltered_city').on('click', '.checkbox', function(){
     checkCleanAllButtonExistence();
 });
 $('.divFiltered_tag').on('click', '.checkbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -151,6 +157,7 @@ $('.divFiltered_tag').on('click', '.checkbox', function () {
     checkCleanAllButtonExistence();
 });
 $('.divFiltered_type').on('click', '.checkbox', function () {
+    $('#from-home-page-tags').text("")
     if (isFirstButton) {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
@@ -169,6 +176,7 @@ $('.divFiltered_type').on('click', '.checkbox', function () {
 
 function removeTagsFormArr(index) {
     if (index > -1) {
+        $('#from-home-page-tags').text("")
         selectedTags.splice(index, 1); // 從陣列中刪除該文字
         pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
@@ -177,6 +185,7 @@ function removeTagsFormArr(index) {
 }
 function removeCitiesFormArr(index) {
     if (index > -1) {
+        $('#from-home-page-tags').text("")
         selectedCities.splice(index, 1); // 從陣列中刪除該文字
         pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
@@ -184,6 +193,7 @@ function removeCitiesFormArr(index) {
 }
 function removeTypesFormArr(index) {
     if (index > -1) {
+        $('#from-home-page-tags').text("")
         selectedTypes.splice(index, 1); // 從陣列中刪除該文字
         pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
@@ -200,7 +210,9 @@ function removeTypesFormArr(index) {
 
 
 ///////////////////////////////////////////搜尋價格////////////////////////////////////////////////////////////
+
 $('#btn_filter_price').on('click', function () {
+    $('#from-home-page-tags').text("")
     if ($('#selected-checkboxes').find('.price_button').length > 0) {
         $('.price_button').remove();
     }
@@ -208,6 +220,7 @@ $('#btn_filter_price').on('click', function () {
     var format_second_price = $('.outputTwo').text();
     minPrice = format_first_price.replace(/[^0-9.-]+/g,"")
     maxPrice = format_second_price.replace(/[^0-9.-]+/g, "")
+
     filteredByConditions();
     var button = $('<button>', {
         text: '$  ' + format_first_price + '~' + '$  ' + format_second_price +'  X',// 設定按鈕文字為 div 的文字內容
@@ -215,6 +228,7 @@ $('#btn_filter_price').on('click', function () {
         click: function () {
             $(this).remove(); // 點擊按鈕時刪除該按鈕
             checkCleanAllButtonExistence()
+
             minPrice = ""
             maxPrice=""
             filteredByConditions()

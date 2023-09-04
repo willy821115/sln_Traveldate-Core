@@ -39,7 +39,7 @@ namespace prj_Traveldate_Core.Controllers
 
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
             vm.cartitems = new List<CCartItem>();
-            vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID)).Select(c =>
+            vm.cartitems = _context.OrderDetails.Where(c => (c.Order.IsCart == true) && (c.Order.MemberId == _memberID) && (c.Trip.Date>DateTime.Now)).Select(c =>
             new CCartItem
             {
                 orderDetailID = c.OrderDetailsId,
@@ -62,7 +62,7 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
-        //[HttpPost]
+        [HttpPost]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -97,6 +97,40 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(vm);
         }
+
+        public ActionResult ConfirmOrder(int id)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+
+            CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
+            vm.member = _context.Members.Find(_memberID);
+            vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
+
+            vm.orders = new List<CCartItem>();
+                CCartItem item = new CCartItem();
+                item = _context.OrderDetails.Where(o => o.OrderDetailsId == id).Select(c =>
+                    new CCartItem
+                    {
+                        orderDetailID = c.OrderDetailsId,
+                        productID = c.Trip.ProductId,
+                        tripID = c.TripId,
+                        planName = c.Trip.Product.ProductName,
+                        date = $"{c.Trip.Date:d}",
+                        quantity = c.Quantity,
+                        photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
+                        ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
+                        unitPrice = c.Trip.UnitPrice,
+                        discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                        ProductTypeID = c.Trip.Product.ProductTypeId,
+                    }).First();
+                vm.orders.Add(item);
+            
+
+            return View(vm);
+        }
+
 
         [HttpPost]
         public ActionResult Payment(CCreateOrderViewModel vm)
@@ -166,11 +200,16 @@ namespace prj_Traveldate_Core.Controllers
                         Note = vm.ods[i].Note
                     };
 
-                    //減掉商品數量
-                    Trip? trip = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).FirstOrDefault();
-                    if (trip != null && trip.MaxNum >= vm.ods[i].Quantity)
+                    //確認商品庫存量
+                    CProductFactory prodFactory = new CProductFactory();
+                    string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
+                    int ordered = Convert.ToInt32(strStock.Split('/')[0]);
+                    int max = Convert.ToInt32(strStock.Split('/')[1]);
+                    if (max - ordered < vm.ods[i].Quantity)
                     {
-                        trip.MaxNum -= vm.ods[i].Quantity;
+                        string prodName = _context.Trips.Where(t=>t.TripId == vm.ods[i].OrderId).Select(t=>t.Product.ProductName).FirstOrDefault();
+                        string e = $"「{prodName}」數量不足，請重新選購。";
+                        return RedirectToAction("OrderError", new { e });
                     }
 
                     //刪除購物車裡的項目

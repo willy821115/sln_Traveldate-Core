@@ -4,7 +4,7 @@
 }
 <h1>會員登入</h1>
 
-<form asp-action="Login">
+<form asp-action="Login" method="POST">
 
     <button type="submit" class="btn my-btn-primary">第三方登入</button>
     <br>
@@ -13,8 +13,8 @@
     <br />
     <div class="mb-3">
         <label for="mlUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control account" asp-for="mlUsername" aria-describedby="phoneHelp" pattern="09[0-9]{8}" value="0945316798" required />
-        <span id="phoneHelp" class="form-text ml-1">會員帳號為註冊使用的手機號碼</span>
+        <input type="email" class="form-control account" asp-for="mlUsername" value="P987654321@gamil.com" required />
+        <span id="phoneHelp" class="form-text ml-1">會員帳號為註冊時填寫的Email</span>
         <br>
 
         <div class="mb-3">
@@ -28,7 +28,7 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">記住密碼</label>
         </div>
-        <input type="submit" class="btn my-btn-primary" value="登入" />
+        <input type="submit" class="btn my-btn-primary" asp-action="Login" value="登入" />
         <br>
      </div>
 </form>
@@ -52,9 +52,11 @@
 @section Scripts{
     <script>
         $('#demobtn').on('click', function () {
-            $('.account').val("0935765315");
+            $('.account').val("traveldate3@gmail.com");
             $('.password').val("1234");
-
         })
+
+
+
     </script>
  }

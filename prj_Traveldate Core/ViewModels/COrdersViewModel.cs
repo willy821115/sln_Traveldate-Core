@@ -59,7 +59,7 @@ namespace prj_Traveldate_Core.ViewModels
         public int OrderId { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? Date { get; set; }
+        public string? Date { get; set; }
 
         [DataType(DataType.Date)]
         public string? Datetime { get; set; }

@@ -5,6 +5,7 @@
     ViewData["Title"] = "ArticleView";
 }
 @section Styles{
+    
     <style>
         .reply-input {
             height: 100px !important;
@@ -21,7 +22,7 @@
                 background: #d3d4d5;
         }
 
-        .dialog-box {
+       /*  .dialog-box {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -31,7 +32,7 @@
             border: 1px solid #ccc;
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
             display: none;
-        }
+        } */
         .showTop{
             position: absolute;
             right:0;
@@ -48,7 +49,8 @@
         }
 
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 7px;
+            height:7px;
         }
 
         /* Track */
@@ -66,6 +68,72 @@
             ::-webkit-scrollbar-thumb:hover {
                 background: #74abcc;
             }
+
+        .slideshow {
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+            height: 350px;
+            width: 900px;
+        }
+
+            .slideshow .tripPhoto {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                display: none;
+            }
+
+        .scroll-x {
+            max-width: 900px;
+            overflow-x: auto;
+           }
+
+        .parent-container {
+            overflow-x: auto; /* 添加横向滚动条 */
+            white-space: nowrap; /* 防止文本换行 */
+            max-width: 924px;
+        }
+
+        .child-div {
+            display: inline-block; /* 将子元素变成内联块元素，使其在同一行显示 */
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-text {
+            text-align: left;
+            margin-right: 5px;
+        }
+
+        .star {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            background-color: gray;
+            margin-right: 2px;
+            clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .star.active {
+                background-color: #00F0F0;
+                clip-path: polygon(50% 0%, 61% 38%, 100% 38%, 68% 61%, 79% 100%, 50% 76%, 21% 100%, 32% 61%, 0% 38%, 39% 38%);
+            }
+
+        .half-filled {
+            background: linear-gradient(to right, #00F0F0 50%, gray 50%);
+        }
+
+        .card-img-overlay:hover .align-corner {
+            display: block;
+            opacity: 1;
+        }
+       
     </style>
 }
 
@@ -77,7 +145,7 @@
         </div>
             <div class="mb-4 pl-4">
                 <img src="~/icons/icons8-eye-24.png" />　<span>@Model.forum.Watches　|</span>
-                <img src="~/icons/icons8-like-24.png" />　<span id="likes">@Model.forum.Likes　|</span>
+                <img src="~/icons/icons8-like-24.png" />　<span id="likes">@Model.likes.Count()　|</span>
                 <img src="~/icons/icons8-talk-24.png" />　<span>@Model.replys.Count()</span>
         </div>
             <div class="d-flex divide-line pl-4 pr-4 pb-4">
@@ -103,16 +171,25 @@
             <div class="col-8">
                 <h4>@Model.forum.Member.FirstName</h4>
                 <div>
-                    <span>發文日期 : 2023/07/15　|　</span>
-                    <span><img src="~/icons/icons8-position-16.png" />台東</span>
+                    <span>@Model.forum.ReleaseDatetime.Value.ToShortDateString()　|　</span>
+                        <img src="~/icons/icons8-position-16.png" />
+                        @foreach(var a in Model.fforumAddress)
+                        {
+                             <span class="bg-info p-1 rounded text-white fw-bolder">@a</span>
+                        }
                 </div>
                 <div>
-                    <span><img src="~/icons/icons8-tag-16.png" />　#水上活動　|　#一日遊</span>
+                        <img src="~/icons/icons8-tag-16.png" />
+                        @foreach(var t in Model.trip_Tags)
+                        {
+                            <span> #@t</span>
+                        }
+                        
                 </div>
             </div>
             <div class="col-2 d-block">
                     <div class="mb-2 d-inline-flex">
-                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2">聊聊</button>
+                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2" value="@Model.forum.Member.MemberId">聊聊</button>
                         <a class="btn my-btn-primary col-6 pr-2 pl-2" href="#">追蹤</a>
                     </div>
                     <button id="otherArticles" class="btn btn-secondary col">其他揪團文</button>
@@ -124,26 +201,39 @@
                     <p>揪團詳情</p>
                 </div>
             </div>
-        <div class="d-flex p-3 justify-content-around">
+            <img src="~/icons/icon-forum-1.png" /><span class="fw-bolder fs-5">包含行程</span>
+            <div class="parent-container p-3 justify-content-around ">
+                    @foreach (var imgs in Model.img_Paths)
+                    {
+                    <div class="child-div slideshow mx-3 card border-0 col-6" id="@imgs.imgId">
+                        @foreach (var path in imgs.imgPaths)
+                        {
+                            <img class="img-fluid h-100 tripPhoto" src="~/images/@path" alt="" />
+                        }
+                        <div class="card-img-overlay p-0">
+                            <div class="align-corner align-text-bottom p-4 h-100">
+                                <span class="card-title fw-bolder text-light fs-5 text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).Product.ProductName</span>
+                            <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).UnitPrice</span><span class="card-text">起</span></p>
+                                <p class="card-title text-light text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.imgId).Product.OutlineForSearch</p>
+                                <div class="rating-container">
+                                    <span class="rating-text text-light">評價：@Model.avgCommentScores.First(t=>t.commentProdId==imgs.imgId).commentScore.Value.ToString("0.0")</span>
+                                    <div class="rating">
+                                        <div class="stars">
+                                            <div class="star-container">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <div class="star @GetStarClass(@Model.avgCommentScores.First(t=>t.commentProdId==imgs.imgId).commentScore.Value, i)"></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                    }
                 
-            <div class="card text-bg-dark col-5 p-0 ">
-                <img src="~/images/蘭嶼.jpg" class="card-img h-100" alt="蘭嶼" />
-                <div class="card-img-overlay">
-                    <div class="align-corner align-text-bottom">
-                        <h5 class="card-title fw-bolder text-light">蘭嶼 野銀白沙冷泉</h5>
-                        <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>2999</span><span class="card-text">起</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="card text-bg-dark col-5 p-0">
-                <img src="~/images/東清秘境-蘭嶼.png" class="card-img h-100" alt="東清秘境" />
-                <div class="card-img-overlay">
-                    <div class="align-corner align-text-bottom">
-                        <h5 class="card-title fw-bolder text-light">蘭嶼 東清秘境</h5>
-                        <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>399</span><span class="card-text">起</span></p>
-                    </div>
-                </div>
-            </div>
+
         </div>
                 <div class="d-flex justify-content-center p-3 pl-4 fs-5">
                     <div class="col-10">@Html.Raw(Model.forum.Content)</div>
@@ -158,8 +248,21 @@
             
             <div>
                 <img src="~/icons/icons8-like-64.png" />
-                <input id="btnLike" class="btn btn-light" type="button" value="讚" />
-                <input id="btnCancelLike" class="btn btn-secondary d-none" type="button" value="取消讚" />
+                    @if (Model.member != null)
+                    {
+                        if (Model.likes.First(l => l.MemberId == Model.member.MemberId).IsLike==true)
+                        {
+                            <input id="btnCancelLike" class="btn btn-secondary" type="button" value="取消讚" />
+                        }
+                        else
+                        {
+                            <input id="btnLike" class="btn btn-light" type="button" value="讚" />
+                        }
+                    }
+                    else
+                    {
+                        <a id="confirmedLoginStatus" asp-action="Likes" asp-route-id="@Model.forum.ForumListId" class="btn btn-light">讚</a>
+                    }
              </div>
             <div><img src="~/icons/icons8-talk-64.png" /><a href="#my-reply" id="btnReply">回覆</a></div>
             <div><img src="~/icons/icons8-group-64.png" /><input id="btnJoin" class="btn btn-light" type="button" value="我要跟團" /></div>
@@ -228,7 +331,7 @@
         </div>
 </div>
 
-<div id ="dialogBox" class="dialog-box">
+@* <div id ="dialogBox" class="dialog-box">
     <div class="dialog-content">
         <div class="d-flex justify-content-between align-items-center bg-gray-300">
             <span>與 <span class="fw-bold text-black">@Model.forum.Member.FirstName</span> 聊聊中</span>
@@ -237,10 +340,11 @@
         <h3>這是對話視窗的內容</h3>
         <p>你可以在這裡放置任何內容。</p>
     </div>
-</div>
+</div> *@
 </div>
 <input id="isLogin" type="hidden" value="@Model.member"/>
 @section Scripts{
+    
     <script>
         $('#btnCloseTalk').on('click', () => {
             $('#dialogBox').hide()
@@ -285,6 +389,22 @@
 
     </script>
     <script>
+        /********還沒登入按讚********/
+        function loginInfo() {
+            Swal.fire({
+                icon: 'info',
+                title: '請先登入會員!',
+                showConfirmButton: true,
+                confirmButtonText: '前往登入頁面', // 修改確認按鈕文字
+            })
+        }
+        var isLoggedIn = $('#loginMem').text()
+        $('#confirmedLoginStatus').on('click', function () {
+            if (!isLoggedIn) {
+                loginInfo();
+            }
+        });
+
        /*****按讚/取消讚*****/
         $('#btnLike').click(function (b) {
             b.preventDefault();
@@ -367,9 +487,53 @@
             document.getElementById('dialogBox').style.display = 'block';
         });
 
-      
+
+        $(document).on('click', '#showDialogBtn', function () {
+            var id = $(this).val();
+            connection.invoke("SelectSupplier", id)
+        });
 
 
 
     </script>
+    <script>
+        $('.slideshow').each(function () {
+
+            let slideImgs = $(this).find('.tripPhoto'),
+                slideImgsCount = slideImgs.length,
+                currentIndex = 0;
+
+            slideImgs.eq(currentIndex).fadeIn();
+
+            setInterval(showNextSlide, 5000);
+
+            function showNextSlide() {
+                let nextIndex = (currentIndex + 1) % slideImgsCount;
+                console.log(nextIndex)
+                slideImgs.eq(currentIndex).fadeOut();
+                slideImgs.eq(nextIndex).fadeIn();
+                currentIndex = nextIndex;
+            }
+        })
+    </script>
+}
+
+@functions {
+    public string GetStarClass(double? rating, int index)
+    {
+        if (rating.HasValue)
+        {
+            int filledStars = (int)Math.Floor(rating.Value);
+            double remainder = rating.Value - filledStars;
+            if (index <= filledStars)
+            {
+                return "active";
+            }
+            else if (index == filledStars + 1 && remainder >= 0.5)
+            {
+                return "half-filled";
+            }
+        }
+        return "";
+    }
 }

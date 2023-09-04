@@ -7,6 +7,7 @@ using prj_Traveldate_Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -333,6 +334,102 @@ namespace prj_Traveldate_Core.Controllers
             });
             return Json(q2.ToList());
 
+        }
+
+        public IActionResult ProductPreview(CProductWrap pro) 
+        {
+            TraveldateContext db = new TraveldateContext();
+            ProgramViewModel data = new ProgramViewModel();
+             List <string> previewPhoto = new List<string>();
+            List<string> previewTripPhoto = new List<string>();
+            List<string>TripDescription = new List<string>();
+            List<string> PlanDescriptionSplit = new List<string>();
+            List<string> OutlineSplit = new List<string>();
+            //將倫播圖轉換成Base64编码
+            if (pro.photos != null && pro.photos.Count > 0) 
+            {
+            
+                foreach (var photo in pro.photos) 
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        photo.CopyTo(memoryStream);
+                         // 将文件内容转换为Base64编码
+                        var base64String = Convert.ToBase64String(memoryStream.ToArray());
+                        previewPhoto.Add(base64String);
+                    }
+                }
+            }
+            
+            if (pro.triptest != null && pro.triptest.Count > 0)
+            {
+                //將TripDetail圖轉換成Base64编码
+                foreach (var photo in pro.triptest)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        photo.photo.CopyTo(memoryStream);
+                        // 将文件内容转换为Base64编码
+                        var base64String = Convert.ToBase64String(memoryStream.ToArray());
+                        previewTripPhoto.Add(base64String);
+                    }
+                }
+                foreach (var description in pro.triptest) 
+                {
+                    TripDescription.Add(description.TripDetail);
+                }
+            }
+            
+            //PlanDescription依照換行切割
+            if (pro.PlanDescription != null)
+            {
+                string[] planDetails = pro.PlanDescription.Split('\n');
+                PlanDescriptionSplit= planDetails.ToList();
+            }
+            //Outline依照換行切割
+            if (pro.PlanDescription != null)
+            {
+                string[] outlines = pro.Outline.Split('\n');
+                OutlineSplit = outlines.ToList();
+            }
+            //將CityID轉成CityName
+            string CityName = db.CityLists.Where(c => c.CityId == pro.CityId).Select(c => c.City).FirstOrDefault();
+            //將TagID轉換成TagName
+            List<string> TagNames= new List<string>();
+            foreach (var tagID in pro.Tags) 
+            {
+                string name = db.ProductTagDetails.Where(t => t.ProductTagDetailsId == tagID).Select(t => t.ProductTagDetailsName).FirstOrDefault();
+                TagNames.Add(name);
+            }
+            data.program.fPhotoPath = previewPhoto;
+            data.product.ProductName = pro.ProductName;
+            data.product.Description = pro.Description;
+            //data.program.fTripDate = ;
+            data.product.PlanName = pro.PlanName;
+            data.program.fPlanDescription = PlanDescriptionSplit;
+            data.product.Address = pro.Address;
+            data.program.fOutline = OutlineSplit;
+            data.city.City = CityName;
+            //data.program.fComMem = pf.loadCommentMem((int)id);
+            //data.program.fPlanPrice = pf.loadPlanprice((int)id);
+            data.program.fTripDetails = TripDescription;
+            data.program.fTTripPhotoList = previewTripPhoto;
+            //data.program.fTripPrice = pf.loadPlanpriceStart((int)id);
+            //data.program.fComMemGender = pf.memgender((int)id);
+            //data.program.fCommentDate = pf.loadCommentDate((int)id);
+            //data.program.fComScore = pf.loadcommentScore((int)id);
+            //data.program.fComTitle = pf.loadCommentTitle((int)id);
+            //data.program.fComContent = pf.loadCommentContent((int)id);
+            //data.program.fStatus = pf.loadStatus((int)id);
+            //data.product.ProductId = (int)id;
+            data.program.fProdTags = TagNames;
+            //data.program.fCommentPhotoList = pf.loadCommentPhotoPath((int)id);
+            //data.program.fTripId = pf.loadTripId((int)id);
+            //data.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            //data.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
+            //data.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int)id);
+
+            return View("ProductPreview", data);
         }
     }
     

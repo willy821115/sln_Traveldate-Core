@@ -13,13 +13,13 @@
             @{
                 if (ViewBag.photo != null)
                 {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                    </div>
+                                <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                                </div>
                 }
                 else
                 {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                 }
             }
 
@@ -54,6 +54,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -66,6 +70,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
         <li class="breadcrumb-item active" aria-current="page">我的評論</li>
     </ol>
 </nav>
@@ -77,38 +82,45 @@
         <tr>
             <th ></th>
             <th class="col-md-3">商品名稱</th>
-            <th class="col-md-2">標題</th>
-            <th class="col-md-4.5">內容</th>
-            <th class="col-md-1">您的評分</th>
+            <th class="col-md-1.5">標題</th>
+            <th class="col-md-5">內容</th>
+            <th class="col-md-1.5">您的評分</th>
             <th class="col-md-1">評論日期</th>
+            @* <th class="col-md-1">pic</th> *@
             <th >操作</th>
         </tr>
     </thead>
     <tbody>
-           @foreach (var item in Model) 
-           {
-              //count++;
-               <tr>
-                    <td><i class='far fa-comment-dots' style='font-size:24px;margin-left:8px'></i></td>
-                    <td >@item.ProductName</td>
-                    <td >@item.Title</td>
-                    <td >@item.Content</td>
+        @foreach (var item in Model)
+        {
+            //count++;
+            <tr>
+                <td><i class='far fa-comment-dots' style='font-size:24px;margin-left:8px'></i></td>
+                <td >@item.ProductName</td>
+                <td >@item.Title</td>
+                <td >@item.Content</td>
 
-                        <td style='text-align: center; vertical-align: middle;'>
-                        @{
-                           for (int i = 1; i <= item.CommentScore; i++)
-                           {
-                              <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
-                           }
+                <td style='text-align: center; vertical-align: middle;'>
+                    @{
+                        for (int i = 1; i <= item.CommentScore; i++)
+                        {
+                                        <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
                         }
-                        </td>
+                    }
+                </td>
 
                 <td>@item.Date@*.ToString("yyyy-MM-dd")*@</td>
+@*                 <td>
+                    @foreach(var p in @item.ImagePath.Distinct().ToList())
+                    {
+                        <img src="/images/@p" alt="noimages" style="width:10px;height:10px" />
+                     }
+                </td> *@
 
                 @using (Html.BeginForm("commentList", "Member", FormMethod.Post))
                 {
                         <input type="hidden" name="id" value="@item.CommentId" />
-                    <td><input type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnCommentRemove" name="btnCommentRemove" /> </td>
+                    <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnCommentRemoveitem">移除</button></td>
                 }
 
 @*                   <form method="post" action="@Url.Action("commentList", "Member")">
@@ -145,29 +157,37 @@
     </div>
 </div>*@
 
+
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 
-.star:last-child {
-    margin-right: 0;
-}
-.star:before {
-    content:'\2605';
-}
-.star.on {
-    color: gold;
-    font-size: x-large;
-    width: 50px;
-    display: inline-block;
-}
+    .star:last-child {
+        margin-right: 0;
+    }
+    .star:before {
+        content:'\2605';
+    }
+    .star.on {
+        color: gold;
+        font-size: x-large;
+        width: 50px;
+        display: inline-block;
+    }
 
 }
+
 @section scripts{
-
+    <script src="path/to/sweetalert.js"></script>
+@*  <script src="https://unpkg.com/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> *@
     <script>
-        const btnCommentRemove = document.getElementById('btnCommentRemove');
-        btnCommentRemove.addEventListener('click', () => {
-            swal("移除成功！", "稍後將自動為您導向", "success");
+        document.addEventListener("DOMContentLoaded", ()=>{
+            const btnCommentRemoveitem = document.getElementById('btnCommentRemoveitem');
+
+            btnCommentRemoveitem.addEventListener('click', () => {
+                swal("移除成功！", "稍後將自動為您導向", "success", { button:false })
+
+            });
         });
     </script>
     

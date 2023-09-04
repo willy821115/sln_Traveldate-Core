@@ -37,6 +37,9 @@ namespace prj_Traveldate_Core.ViewModels
         [DisplayName("手機號碼")]
         public string? Phone { get; set; }
 
+        [DisplayName("聯絡信箱")]
+        public string? Email { get; set; }
+
         public int? MemberId { get; set; }
 
         [DisplayName("出生日期")]

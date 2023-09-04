@@ -45,5 +45,7 @@ app.MapControllerRoute(
 //    pattern: "{controller=Forum}/{action=Edit}/{id?}");
 
 //¥[¤JHub
+
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<LayoutHub>("/layoutChatHub");
 app.Run();

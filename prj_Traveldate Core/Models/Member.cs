@@ -5,6 +5,7 @@ namespace prj_Traveldate_Core.Models;
 
 public partial class Member
 {
+
     public int MemberId { get; set; }
 
     public string? LastName { get; set; }

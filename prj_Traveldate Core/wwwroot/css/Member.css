@@ -18,12 +18,10 @@ h3 {
         text-decoration: none;
     }
 
-
 .black-link2 {
     color: white;
     text-decoration: none;
 }
-
 
 .leftarea > li {
     text-align: center;
@@ -43,13 +41,10 @@ h3 {
     border-radius: 0 0 10px 10px;
 }
 
-
 #rightPanel {
     /*margin-left: 2em;*/ /* Adjust the left margin to create space between rightPanel and the cells */
     border-radius: 10px;
 }
-
-
 
 .table {
     width: 100%;
@@ -100,8 +95,6 @@ height {
     border-radius:10px;
 }
 .carousel-inner {
-
-
     border-radius: 10px;
     top: -100px;
 }
@@ -118,15 +111,13 @@ height {
 }
 
 #table_id_wrapper.dataTables_wrapper {
-
-    
-    
-    left: 250PX;
-    top:-520px;
-    bottom:50px;
-    position:relative;
-    width:85%;
-    height:80%
+    /*右半邊 - DataTable*/
+    left: 220PX;
+    top: -615px;
+    bottom: 50px;
+    position: relative;
+    width: 85%;
+    height: 80%
 }
 }
 /*==============================================我是分隔線=================================================*/

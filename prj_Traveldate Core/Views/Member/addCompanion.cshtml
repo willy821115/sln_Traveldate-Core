@@ -15,13 +15,13 @@
                         @{
                             if (ViewBag.photo != null)
                             {
-                                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                </div>
+                               <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                               </div>
                             }
                             else
                             {
-                                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                               <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                             }
                         }
 
@@ -53,8 +53,8 @@
                                 <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
                             </li>
                             <li class="list-group-item menuItem">
-                                @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                             </li>
                         </ul>
                     </div>
@@ -68,6 +68,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
                     <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/showCompanion"> 常用旅伴</a></li>
                     <li class="breadcrumb-item active" aria-current="page">新增旅伴</li>
                 </ol>
@@ -82,27 +83,29 @@
                     <div class="form-group">
                     @Html.LabelFor(model=>model.LastName)
                         @Html.EditorFor(model=>model.LastName,"id=LastName",new {htmlAttributes=new{@class="form-control"}})
-                        @* <span asp-validation-for="LastName" class="text-danger">姓氏為必填</span> *@
-                    @* @Html.ValidationMessage("姓氏為必填","*") *@
+                        <span id="errorDiv1" style="color: red;margin-top:px"></span>
                     </div>
+
 
                     <div class="form-group">
-                    @Html.LabelFor(model=>model.FirstName)
+                        @Html.LabelFor(model=>model.FirstName)
                         @Html.EditorFor(model=>model.FirstName,"id=FirstName",new {htmlAttributes=new{@class="form-control"}})
+                        <span id="errorDiv2" style="color: red;"></span>
                     </div>
-
+                      
                     <div class="form-group">
                         <label for="Gender" id="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select>
                     </div>
 
                     <div class="form-group">
-                    @Html.LabelFor(model=>model.BirthDate)
-                    @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
+                        @Html.LabelFor(model=>model.BirthDate)
+                        @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
                     </div>
 
                     <div class="form-group">
-                    @Html.LabelFor(model=>model.Phone)
+                        @Html.LabelFor(model=>model.Phone)
                         @Html.EditorFor(model=>model.Phone,"id=Phone",new {htmlAttributes=new{@class="form-control"}})
+                        <div id="errorDiv3" style="color: red;"></div>
                     </div>
 
                     <div class="form-group">
@@ -151,16 +154,40 @@
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 @section scripts{
+    <script src="path/to/sweetalert.js"></script>
     <script>
-            const btnAddCompanion = document.getElementById('btnAddCompanion');
-            btnAddCompanion.addEventListener('click', () => {
-                swal("新增旅伴成功！", "稍後將自動為您導向", "success");
-            });
+        const btnAddCompanion = document.getElementById('btnAddCompanion');
+
+        const LastName = document.getElementById('LastName');
+        const FirstName = document.getElementById('FirstName');
+        const Phone = document.getElementById('Phone');
+
+        const errorDiv1 = document.getElementById('errorDiv1');
+        const errorDiv2 = document.getElementById('errorDiv2');
+        const errorDiv3 = document.getElementById('errorDiv3');
+
+        btnAddCompanion.addEventListener('click', () => {
+            if (LastName.value === "" || FirstName.value === "" || Phone.value === "") {
+
+                setTimeout(() => {
+                    swal("請確認必填欄位皆已填寫！", "", "warning");
+                    errorDiv1.textContent = "此欄位為必填";
+                    errorDiv2.textContent = "此欄位為必填";
+                    errorDiv3.textContent = "此欄位為必填";
+                    //errorDiv1.textContent = ""
+                }, 1000);
+            };
+            if (LastName.value.trim() !== "" && FirstName.value.trim() !== "" && Phone.value.trim() !== "") {
+                swal("新增旅伴成功！", "稍後將自動為您導向", "success", { button: false })
+                setTimeout(() => {
+
+                }, 1500);
+            }
+        });
     </script>
 
-
-    <script>
-
+    <script> 
+        //Demo用
         document.addEventListener('DOMContentLoaded', function () {
             const addDEMO = document.getElementById('addDEMO');
             addDEMO.addEventListener('click', function () {

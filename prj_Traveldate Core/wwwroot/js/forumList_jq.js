@@ -25,11 +25,14 @@ function clearAllFiltered() {
     $('.calendar-container').find('.selected').removeClass('selected');
     selectedCities = [];
     selectedTags = [];
-    selectedTypes = [];
-    startTime = ""
-    endTime = ""
-    minPrice = ""
-    maxPrice = ""
+    selectedTagsId = [];
+    pageNumber = 1;
+    $('#status').text("");
+    //selectedTypes = [];
+    //startTime = ""
+    //endTime = ""
+    //minPrice = ""
+    //maxPrice = ""
     filteredByConditions()
     isFirstButton = true; // 重設為第一次新增狀態
 }
@@ -39,6 +42,7 @@ $('.divFiltered_region').on('click', '.uncheckbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
@@ -66,14 +70,17 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     var originalCheckbox = $(this).hide();
     var originalUncheckbox = $(this).next(".checkbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     selectedTags.push(text); // 將文字添加到陣列中
-
+    var tagId = $(this).siblings("span").attr('id');
+    selectedTagsId.push(tagId);
     filteredByConditions();
     var button = $('<button>', {
         text: text + ' X',
+        id: tagId,
         value: text,
         class: "btn btn-outline-secondary mr-1",
         click: function () {
@@ -82,7 +89,8 @@ $('.divFiltered_tag').on('click', '.uncheckbox', function () {
             originalUncheckbox.hide(); // 顯示對應的 .uncheckbox
             checkCleanAllButtonExistence();
             var index = selectedTags.indexOf(text); // 找到文字在陣列中的索引
-            removeTagsFormArr(index)
+            var indexId = selectedTagsId.indexOf(tagId);
+            removeTagsFormArr(index, indexId);
         }
     });
     $('#selected-checkboxes').append(button); // 將按鈕追加到id為displayText的元素中
@@ -96,10 +104,12 @@ $('.divFiltered_region').on('click', '.checkbox', function () {
         $('.cleanAll').removeClass('d-none')
         isFirstButton = false;
     }
+    pageNumber = 1;
     $(this).hide();
     $(this).prev(".uncheckbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
     var index = selectedCities.indexOf(text); // 找到文字在陣列中的索引
+    
     removeCitiesFormArr(index)
     var buttonsToRemove = $('#selected-checkboxes').find('button[value="' + text + '"]'); // 尋找需要刪除的按鈕
     buttonsToRemove.remove(); // 將按鈕從 #selected-checkboxes 刪除
@@ -113,8 +123,10 @@ $('.divFiltered_tag').on('click', '.checkbox', function () {
     $(this).hide();
     $(this).prev(".uncheckbox").show();
     var text = $(this).siblings("span").text(); // 獲取span中的文字
+    var tagId = $(this).siblings("span").attr('id');// 獲取span中的id
     var index = selectedTags.indexOf(text); // 找到文字在陣列中的索引
-    removeTagsFormArr(index)
+    var indexId = selectedTagsId.indexOf(tagId);
+    removeTagsFormArr(index, indexId)
     var buttonsToRemove = $('#selected-checkboxes').find('button[value="' + text + '"]'); // 尋找需要刪除的按鈕
     buttonsToRemove.remove(); // 將按鈕從 #selected-checkboxes 刪除
     checkCleanAllButtonExistence();
@@ -123,9 +135,10 @@ $('.divFiltered_tag').on('click', '.checkbox', function () {
 
 
 
-function removeTagsFormArr(index) {
+function removeTagsFormArr(index, indexId) {
     if (index > -1) {
         selectedTags.splice(index, 1); // 從陣列中刪除該文字
+        selectedTagsId.splice(indexId, 1);
         pageNumber = 1;
         filteredByConditions(); // 更新顯示選中標籤的元素
     }
@@ -150,35 +163,35 @@ function checkCleanAllButtonExistence() {
 
 
 ///////////////////////////////////////////搜尋價格////////////////////////////////////////////////////////////
-$('#btn_filter_price').on('click', function () {
-    if ($('#selected-checkboxes').find('.price_button').length > 0) {
-        $('.price_button').remove();
-    }
-    var format_first_price = $('.outputOne').text();
-    var format_second_price = $('.outputTwo').text();
-    minPrice = format_first_price.replace(/[^0-9.-]+/g, "")
-    maxPrice = format_second_price.replace(/[^0-9.-]+/g, "")
-    filteredByConditions();
-    var button = $('<button>', {
-        text: '$  ' + format_first_price + '~' + '$  ' + format_second_price + '  X',// 設定按鈕文字為 div 的文字內容
-        class: "btn btn-outline-secondary mr-1 price_button",
-        click: function () {
-            $(this).remove(); // 點擊按鈕時刪除該按鈕
-            checkCleanAllButtonExistence()
-            minPrice = ""
-            maxPrice = ""
-            filteredByConditions()
-        }
-    });
-    $('#selected-checkboxes').append(button);
-    $('.cleanAll').removeClass('d-none');
-})
+//$('#btn_filter_price').on('click', function () {
+//    if ($('#selected-checkboxes').find('.price_button').length > 0) {
+//        $('.price_button').remove();
+//    }
+//    var format_first_price = $('.outputOne').text();
+//    var format_second_price = $('.outputTwo').text();
+//    minPrice = format_first_price.replace(/[^0-9.-]+/g, "")
+//    maxPrice = format_second_price.replace(/[^0-9.-]+/g, "")
+//    filteredByConditions();
+//    var button = $('<button>', {
+//        text: '$  ' + format_first_price + '~' + '$  ' + format_second_price + '  X',// 設定按鈕文字為 div 的文字內容
+//        class: "btn btn-outline-secondary mr-1 price_button",
+//        click: function () {
+//            $(this).remove(); // 點擊按鈕時刪除該按鈕
+//            checkCleanAllButtonExistence()
+//            minPrice = ""
+//            maxPrice = ""
+//            filteredByConditions()
+//        }
+//    });
+//    $('#selected-checkboxes').append(button);
+//    $('.cleanAll').removeClass('d-none');
+//})
 
 //////////////////////////////////////////////清除keyword裡的字/////////////////////////////////////////////////////////////     
-$('.clearKeyword').on('click', () => {
-    $('#inputKeyword').val("")
-    loadCities();
-});
+//$('.clearKeyword').on('click', () => {
+//    $('#inputKeyword').val("")
+//    loadCities();
+//});
 
 
 

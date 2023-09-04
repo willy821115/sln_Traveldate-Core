@@ -113,11 +113,18 @@ input,
     cursor: pointer;
 }
 
-.align-corner{
-    position:absolute;
-    bottom:5px;
-    width:100%;
-  
+.align-corner {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+    color: white; /* 白色字体颜色 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease; /* 添加淡入效果 */
 }
 
 .rounded-10{

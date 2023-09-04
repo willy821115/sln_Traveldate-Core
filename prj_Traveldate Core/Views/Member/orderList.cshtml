@@ -11,13 +11,13 @@
             @{
                 if (ViewBag.photo != null)
                 {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                    </div>
+                        <div style="text-align:center;background-color:white;border-radius:10px">
+                            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                        </div>
                 }
                 else
                 {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
                 }
             }
 
@@ -52,6 +52,10 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
+                <li class="list-group-item menuItem">
+                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -64,23 +68,20 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
         <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
         <li class="breadcrumb-item active" aria-current="page">會員訂單</li>
     </ol>
 </nav>
 
-
 <table id="table_id" class="display cell-border compact hover col-md-12">
-<thead>
+    <thead>
         <tr>
             <th class="col-md-1"></th>
             <th>商品名稱</th>
             <th>訂購日期</th>
             <th>行程日期</th>
              @* <th>pic</th>  *@
-            <th>操作</th>
-            
-
-
+            <th>操作</th>           
         </tr>
     </thead>
     <tbody>
@@ -89,30 +90,18 @@
             foreach (var item in Model)
             {
                 //count++;
-                <tr>
-                    <td><i class='fas fa-tag' style='font-size:24px;margin-left:28px'></i></td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Datetime.ToString()</td>
-                    <td>@item.Date.ToString()</td>
+                    <tr>
+                        <td><i class='fas fa-tag' style='font-size:24px;margin-left:28px'></i></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Datetime.ToString()</td>
+                        <td >@item.Date.ToString()</td>
 
-                    @*<td>
-                        @{
-                            foreach (var imagePath in item.ImagePath)
-                            {
-                                <img src="@Url.Content("~/images/" + imagePath)" width="100" height="100" />
-                            }
-                        }
-                    </td>
-                    *@
-                    <td>@Html.ActionLink("評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
-                </tr>
+                        <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId/* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
+                    </tr>
             }
         }
     </tbody>
-
-
 </table>
-
 
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -140,9 +129,11 @@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
-
 }
+
 @section scripts{
+
+
 @*     <script>
         $(document).ready(function () {
             // 處理「評論」按鈕的點擊事件
@@ -160,6 +151,7 @@
             });
         });
     </script> *@
+
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({
