@@ -74,11 +74,12 @@
                 <label class="control-label">上傳大頭照</label>
                 <input asp-for="photo" class="form-control" type="file" name="photo" id="photo" />
                 <div id="preview-box">
+                    <label class="control-label">大頭照預覽</label>
                     <img src="" id="preview" />
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="送出資料" class="btn my-btn-primary" />
+                <input type="submit" value="送出資料" class="btn my-btn-primary" id="btnSignup" />
             </div>
         </form>
     </div>
@@ -109,7 +110,7 @@
 }
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
     <script>
         const upload = document.querySelector('#photo')
         const pbox = document.querySelector('#preview-box')
@@ -139,9 +140,43 @@
             $('.Password').val("1234");
         })
 
+        const btn = document.querySelector('#btnSignup')
+        const email = document.querySelector('')
+
         //資料驗證
         //  https://blog.csdn.net/weixin_45147894/article/details/106391212
+        fetch(`@Url.Content("/LoginApi/CheckEmail")?Email=${}``)
+            .then(response => response.text())   //這裡 response.text() 等於 { return response.text() } //會回傳promise物件
+            .then(data => {                                       //再then一次 取出text結果
+                if (data == 'true') {
+                    btn.setAttribute('disabled', 'disabled');
+                    divAlert.innerHTML = `<h6 class="text-danger">帳號已經存在</h6>`;
+                }
+                else if (data == 'false') {
+                    btn.removeAttribute('disabled');
+                    divAlert.innerHTML = `<h6 class="text-success">帳號可使用</h6>`;
+                }
+            })
 
+
+        txtName.addEventListener('blur', () => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `@Url.Content("/Api/CheckAccount")?txtName=${txtName.value}`);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send();
+
+            xhr.addEventListener('load', () => {
+                if (xhr.responseText == 'true') {
+                    btn.setAttribute('disabled', 'disabled');
+                    divAlert.innerHTML = `<h6 class="text-danger">帳號已經存在</h6>`;
+                }
+                else if (xhr.responseText == 'false') {
+                    btn.removeAttribute('disabled');
+                    divAlert.innerHTML = `<h6 class="text-success">帳號可使用</h6>`;
+
+                }
+            })
+        })
 
     </script>
 }

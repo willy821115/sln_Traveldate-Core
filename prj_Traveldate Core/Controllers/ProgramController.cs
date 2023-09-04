@@ -45,6 +45,13 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
+
+                TraveldateContext db = new TraveldateContext();
+                int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+                var favorite = db.Favorites
+                    .FirstOrDefault(f => f.MemberId == memberID && f.ProductId == id);
+            vm.program.fIsFav = favorite!=null;
+
             return View(vm);
         }
         
@@ -144,6 +151,8 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return Content("請登入會員");
             }
+
+
             var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
             if (existCart)
             {
@@ -153,6 +162,7 @@ namespace prj_Traveldate_Core.Controllers
                     OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
                     od.Quantity += num;
                     db.SaveChanges();
+                    orderDetailId = od.OrderDetailsId;
                 }
                 else
                 {
@@ -172,7 +182,7 @@ namespace prj_Traveldate_Core.Controllers
 
                     ViewBag.orderDetailId = orderDetailId;
 
-                    return Content(orderDetailId.ToString());
+                    //return Content(orderDetailId.ToString());
                     //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
                     //return RedirectToAction("ShoppingCart", "Cart");
                     //return Json(orderDetailId);
@@ -204,9 +214,9 @@ namespace prj_Traveldate_Core.Controllers
 
                 ViewBag.orderDetailId = orderDetailId;
 
-                return Content(orderDetailId.ToString());
+                //return Content(orderDetailId.ToString());
 
-                //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+                //return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
 
                 //return RedirectToAction("ShoppingCart", "Cart");
             }
@@ -214,7 +224,7 @@ namespace prj_Traveldate_Core.Controllers
             return Content(orderDetailId.ToString());
 
 
-            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+           // return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
 
             //return RedirectToAction("ShoppingCart", "Cart");
         }
@@ -236,20 +246,38 @@ namespace prj_Traveldate_Core.Controllers
             return Json(tripID);
         }
 
-
-        public IActionResult AddToFav(int id)
+        [HttpPost]
+        public IActionResult FavOrNot(int id)
         {
             TraveldateContext db = new TraveldateContext();
             int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            Favorite favo = new Favorite()
+            if (memberID == 0)
             {
-                MemberId = memberID,
-                ProductId = id
-            };
-            db.Favorites.Add(favo);
-            db.SaveChanges();
-            return RedirectToAction("Product");
+                return Content("請登入會員");
+            }
+
+            var existingFavorite = db.Favorites
+                .FirstOrDefault(o => o.MemberId == memberID && o.ProductId == id);
+
+            if (existingFavorite == null)
+            {
+                Favorite favo = new Favorite()
+                {
+                    MemberId = memberID,
+                    ProductId = id
+                };
+                db.Favorites.Add(favo);
+                db.SaveChanges();
+                return Json(new { success = true, message = "產品已成功加入最愛。" });
+            }
+            else
+            {
+                db.Favorites.Remove(existingFavorite);
+                db.SaveChanges();
+                return Json(new { success = true, message = "產品已成功从最愛中移除。" });
+            }
         }
+
 
     }
 }
