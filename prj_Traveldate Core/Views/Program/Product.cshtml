@@ -129,7 +129,7 @@
                         bool isFavorite = Model.program.fIsFav;
                         string iconSrc = isFavorite ? "/icons/icons8-like-48.png" : "/icons/icons8-like-48 (1).png";
                     }
-                    <img id="favButton" src="@iconSrc" class="CartIconbtn" style="width:32px; margin-bottom:2px;" data-product-id="@Model.product.ProductId" data-is-favorite="@isFavorite">
+                    <img id="favButton" src="@iconSrc" class="CartIconbtn" style="width:32px; margin-bottom:2px;" data-product-id="@Model.product.ProductId" data-is-favorite="@Model.program.fIsFav">
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 @if(Model.program.fStatus == "熱賣中")
@@ -385,14 +385,14 @@
 
                                         if (tripDates < DateTime.Now)
                                         {
-                                                        <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                                                <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
                                         }
                                         else
                                         {
-                                                <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
-                                              <input type="hidden" id="nums" name="nums" value="1">
-                                                 <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
-                                                 <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
+                                                        <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                                      <input type="hidden" id="nums" name="nums" value="1">
+                                                         <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                                         <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
                                                  
                                         }
                                     }
@@ -1129,19 +1129,21 @@
 
                 $.ajax({
                     type: "POST",
-                    url: isFavorite ? "/Program/DeleFromFav" : "/Program/AddToFav",
+                    url: "/Program/FavOrNot", 
                     data: { id: productId },
                     success: function (data) {
-                        if (data === "請登入會員") {
-                            swal('請登入會員', '', 'warning');
+                        if (data.success) {
+                            var newIconSrc = data.message === "產品已成功加入最愛。"
+                                ? "/icons/icons8-like-48.png"
+                                : "/icons/icons8-like-48 (1).png";
+                            $("#favButton").attr("src", newIconSrc);
+
+                            $("#favButton").data("is-favorite", data.message === "產品已成功加入最愛。");
                         } else {
-                            // 切換圖像
-                            $("#favButton").attr("src", isFavorite ? "/icons/icons8-like-48 (1).png" : "/icons/icons8-like-48.png");
-                            isFavorite = !isFavorite; // 切換最愛狀態
+                            if (data.message === "請登入會員") {
+                                swal('請登入會員', '', 'warning');
+                            }
                         }
-                    },
-                    error: function () {
-                        alert("操作失敗");
                     }
                 });
             });
