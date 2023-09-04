@@ -914,7 +914,7 @@ namespace prj_Traveldate_Core.Controllers
                             ProductId = orderdetails3.Trip.ProductId,
 
                             //Date= orderdetails3.Trip.Date,
-                            Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
+                            //Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
                             CommentScore =CommentScore,
                             Content = Content,
                             Title = Title,

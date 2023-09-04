@@ -18,7 +18,7 @@ namespace prj_Traveldate_Core.ViewModels
     }
     public class CArticle_imgs
     {
-        public int imgId { get; set; }
+        public int img_prodId { get; set; }
         public List<string> imgPaths { get; set; }
     }
     public class CCommentScore
