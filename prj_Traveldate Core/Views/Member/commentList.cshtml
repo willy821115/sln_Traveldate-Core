@@ -1,4 +1,4 @@
-﻿@model IEnumerable<prj_Traveldate_Core.ViewModels.CcommentListViewModel>;
+﻿@model IEnumerable< prj_Traveldate_Core.ViewModels.CcommentListViewModel>;
 @using prj_Traveldate_Core.ViewModels;
 @{
     ViewData["Title"] = "commentList";
@@ -8,18 +8,28 @@
 
     <div class="cell" id="div3">
         <div class="cell d-flex flex-column">
+            @*                      原本load二進位的頭像圖片用
             @{
-                if (ViewBag.photo != null)
+            if (ViewBag.photo != null)
+            {
+            <div style="text-align:center;background-color:white;border-radius:10px">
+            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+            </div>
+            }
+            else
+            {
+            <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+            }
+            } *@
+            @{
+                if (ViewBag.image != null)
                 {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                </div>
-                }
-                else
-                {
-                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                    <div style="text-align:center;background-color:white;border-radius:10px">
+                        <img src="~/images/@ViewBag.image" width="150" height="150" />
+                    </div>
                 }
             }
+        </div>
 
             <ul class="list-group leftarea mt-3">
                 <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
@@ -112,20 +122,20 @@
             //count++;
             <tr>
                 <td><i class='far fa-comment-dots' style='font-size:24px;margin-left:8px'></i></td>
-                <td >@item.ProductName</td>
-                <td >@item.Title</td>
-                <td >@item.Content</td>
+                <td>@item.ProductName </td>
+                <td>@item.Title</td>
+                <td>@item.Content</td>
 
                 <td style='text-align: center; vertical-align: middle;'>
                     @{
-                        for (int i = 1; i <= item.CommentScore; i++)
+                        for (int i = 1; i <=@item.CommentScore; i++)
                         {
                                         <i class='fas fa-star' style='font-size:5px;color:#ffd306'></i>
                         }
                     }
                 </td>
 
-                <td>@item.Date@*.ToString("yyyy-MM-dd")*@</td>
+            <td>@@item.Date @*.ToString("yyyy-MM-dd")*@</td>
 @*                 <td>
                     @foreach(var p in @item.ImagePath.Distinct().ToList())
                     {
@@ -135,7 +145,7 @@
 
                 @using (Html.BeginForm("commentList", "Member", FormMethod.Post))
                 {
-                        <input type="hidden" name="id" value="@item.CommentId" />
+                    <input type="hidden" name="id" value="@item.CommentId" />
                     <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnCommentRemoveitem">移除</button></td>
                 }
 

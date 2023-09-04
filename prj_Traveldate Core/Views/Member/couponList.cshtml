@@ -9,18 +9,28 @@
 
     <div class="cell" id="div3">
         <div class="cell d-flex flex-column">
+            @*                      原本load二進位的頭像圖片用
             @{
-                if (ViewBag.photo != null)
+            if (ViewBag.photo != null)
+            {
+            <div style="text-align:center;background-color:white;border-radius:10px">
+            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+            </div>
+            }
+            else
+            {
+            <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+            }
+            } *@
+            @{
+                if (ViewBag.image != null)
                 {
                     <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                        <img src="~/images/@ViewBag.image" width="150" height="150" />
                     </div>
                 }
-                else
-                {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
-                }
             }
+        </div>
 
             <ul class="list-group leftarea mt-3">
                 <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
@@ -109,7 +119,7 @@
                         <tr>
                                     @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
                                     @{
-                                            if (item.ImagePath != null)
+                                            if (item.ImagePath!= null)
                                             {
                                                  <td><img class="couponImg img-thumbnail img-fluid" style="width:67px;height:47px;margin-left:5px;radious:10px" src="~/images/@item.ImagePath" /></td>
                                             }
@@ -118,10 +128,10 @@
                                                 <td><img class="couponImg img-thumbnail" src="~/Images/icons/icon-noimage(couponList)-1.png" /></td>
                                             }
                                     }
-                            <td>@item.CouponName</td>
+                            <td> @item.CouponName </td>
                             <td>
                             @{
-                                var discountvalue = item.Discount * 100;
+                                var discountvalue =@item.Discount* 100;
                                 var discountshow = discountvalue % 10 == 0 ? $"{discountvalue / 10:F0}折" : $"{discountvalue:F0}折"; //檢查數值是否可被10整除
                              }
                                 @discountshow

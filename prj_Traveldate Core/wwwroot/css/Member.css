@@ -112,12 +112,13 @@ height {
 
 #table_id_wrapper.dataTables_wrapper {
     /*右半邊 - DataTable*/
-    left: 220PX;
+    left: 500PX;
     top: -615px;
     bottom: 50px;
-    position: relative;
-    width: 85%;
-    height: 80%
+    //position: center;
+    width: 75%;
+    height: 80% ;
+    float:right;
 }
 }
 /*==============================================我是分隔線=================================================*/

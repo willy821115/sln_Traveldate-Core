@@ -1,4 +1,6 @@
-﻿@model IEnumerable<prj_Traveldate_Core.ViewModels.CfavoriteListViewModel>;
+﻿@using prj_Traveldate_Core.ViewModels;
+@model IEnumerable< prj_Traveldate_Core.ViewModels.CfavoriteListViewModel>;
+@using System.Collections.Generic;
 @{
     ViewData["Title"] = "favoriteList";
 }
@@ -7,18 +9,28 @@
 
     <div class="cell" id="div3">
         <div class="cell d-flex flex-column">
+            @*                      原本load二進位的頭像圖片用
             @{
-                if (ViewBag.photo != null)
+            if (ViewBag.photo != null)
+            {
+            <div style="text-align:center;background-color:white;border-radius:10px">
+            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+            </div>
+            }
+            else
+            {
+            <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+            }
+            } *@
+            @{
+                if (ViewBag.image != null)
                 {
-                                    <div style="text-align:center;background-color:white;border-radius:10px">
-                                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                    </div>
-                }
-                else
-                {
-                                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
+                    <div style="text-align:center;background-color:white;border-radius:10px">
+                        <img src="~/images/@ViewBag.image" width="150" height="150" />
+                    </div>
                 }
             }
+        </div>
 
             <ul class="list-group leftarea mt-3">
                 <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
@@ -101,12 +113,12 @@
                     </tr>
     </thead>
     <tbody>
-                @foreach (var item in Model)
+        @foreach (var item in Model)
                 {
                     <tr>
                             <td><img style="width:28px;height:28px;margin-left:26px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
-                            <td>@item.ProductName </td>
-                            <td>@item.Outline </td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Outline</td>
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->

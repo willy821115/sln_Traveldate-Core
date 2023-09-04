@@ -59,11 +59,8 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _couponlist.DueDate; }
             set { _couponlist.DueDate = value; }
         }
-        public string? ImagePath
-        {
-            get { return _couponlist.ImagePath; }
-            set { _couponlist.ImagePath = value; }
-        }
+        public string? ImagePath { get; set; }
+        public List<IFormFile>? photos { get; set; }
         public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
