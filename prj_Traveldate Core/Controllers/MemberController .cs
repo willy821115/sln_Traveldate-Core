@@ -108,7 +108,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -222,7 +222,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (mem.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (mem.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -385,7 +385,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -521,7 +521,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -624,7 +624,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -718,7 +718,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -854,7 +854,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -996,7 +996,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1129,7 +1129,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1277,7 +1277,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1432,7 +1432,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1527,7 +1527,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 

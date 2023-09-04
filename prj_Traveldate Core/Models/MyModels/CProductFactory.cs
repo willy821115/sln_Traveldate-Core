@@ -169,6 +169,17 @@ namespace prj_Traveldate_Core.Models.MyModels
                              select m.Gender).ToList();
             return membergen;
         }
+
+        public List<byte[]> loadMemPic(int id)
+        {
+            List<byte[]> mempic = (from c in db.CommentLists
+                                      join m in db.Members on c.MemberId equals m.MemberId
+                                      where c.ProductId == id
+                                      select m.Photo).ToList();
+            return mempic;
+        }
+       
+
         public List<string> loadCommentDate(int id)
         {
             List<DateTime?> comdate = db.CommentLists.Where(c=>c.ProductId ==id).Select(c=>c.Date).ToList();
