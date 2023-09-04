@@ -301,9 +301,7 @@
                 alert('連線錯誤: ' + err.toString());
             });
 
-            }
-
-        connection.on("UpdReceiveContent", function (msg) {
+  connection.on("UpdReceiveContent", function (msg) {
             // 創建一個新的 <div class="message_row you-message"> 元素
             var messageRow = $('<div class="message_row other-message"></div>');
 
@@ -359,18 +357,7 @@
            
         });
 
-        //傳送訊息
-        $('#sendButton').on('click', function () {
-            let myID = $('#myID').html();
-            let message = $('#message').val();
-            let sendToID = $('#sendToID').val();
-            
-            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
-                alert('傳送錯誤: ' + err.toString());
-            });
-        });
-
-        connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
+connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
             //$("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
 
             // 創建一個新的 <div class="message_row you-message"> 元素
@@ -434,6 +421,24 @@
             $('#myID').val(myID);
             $("#mail").css("display", "inline");
         });
+
+
+            }
+
+      
+
+        //傳送訊息
+        $('#sendButton').on('click', function () {
+            let myID = $('#myID').html();
+            let message = $('#message').val();
+            let sendToID = $('#sendToID').val();
+            
+            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+
+        
           
 
         </script>

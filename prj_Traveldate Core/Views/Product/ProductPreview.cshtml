@@ -127,9 +127,9 @@
                     <span>TWD</span>
                     @*<span>@Model.program.fTripPrice</span>*@
                     <span>起</span>
-                    <a asp-controller="Program" asp-action="AddToFavo" name="pdid" >
+                    @* <a asp-controller="Program" asp-action="AddToFavo" name="pdid" >
                         <img src="/icons/icons8-like-48 (1).png" class="CartIconbtn cartUnlike" style="width:32px; margin-bottom:2px;">
-                    </a>
+                    </a> *@
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 @*@if (Model.program.fStatus == "熱賣中")
@@ -548,7 +548,7 @@
         //const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
         //const discountprice = @Html.Raw(Json.Serialize(Model.program.fDiscountPlanPrice));
         //const discountdate = @Html.Raw(Json.Serialize(Model.program.fDiscountPriceDate));
-        console.log(availableDates, price, discountprice, discountdate);
+        // console.log(availableDates, price, discountprice, discountdate);
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -643,38 +643,38 @@
             daycontent.textContent = date.getDate();
             content.appendChild(daycontent);
 
-            if (availableDates.includes(formatDate(date))) {
-                dayElement.classList.add('available-date');
-                const formattedDate = formatDate(date);
-                const priceIndex = availableDates.indexOf(formattedDate);
-                if (priceIndex !== -1) {
-                    let priceSpan = document.createElement('p');
-                    priceSpan.className = 'price';
+            // if (availableDates.includes(formatDate(date))) {
+            //     dayElement.classList.add('available-date');
+            //     const formattedDate = formatDate(date);
+            //     const priceIndex = availableDates.indexOf(formattedDate);
+            //     if (priceIndex !== -1) {
+            //         let priceSpan = document.createElement('p');
+            //         priceSpan.className = 'price';
 
-                    if (discountprice[priceIndex] !== null && discountprice[priceIndex] !== undefined &&
-                        discountdate[priceIndex] !== null && discountdate[priceIndex] !== undefined) {
-                        // Show original price with strike-through
-                        let originalPriceSpan = document.createElement('span');
-                        originalPriceSpan.className = 'original-price text-gray-600';
-                        originalPriceSpan.textContent = '$' + price[priceIndex];
-                        originalPriceSpan.style.textDecoration = 'line-through';
-                        priceSpan.appendChild(originalPriceSpan);
+            //         if (discountprice[priceIndex] !== null && discountprice[priceIndex] !== undefined &&
+            //             discountdate[priceIndex] !== null && discountdate[priceIndex] !== undefined) {
+            //             // Show original price with strike-through
+            //             let originalPriceSpan = document.createElement('span');
+            //             originalPriceSpan.className = 'original-price text-gray-600';
+            //             originalPriceSpan.textContent = '$' + price[priceIndex];
+            //             originalPriceSpan.style.textDecoration = 'line-through';
+            //             priceSpan.appendChild(originalPriceSpan);
 
-                        // Show discounted price
-                        let discountedPriceSpan = document.createElement('span');
-                        discountedPriceSpan.className = 'discounted-price';
-                        discountedPriceSpan.textContent = ' $' + (price[priceIndex] - discountprice[priceIndex]);
-                        priceSpan.appendChild(discountedPriceSpan);
+            //             // Show discounted price
+            //             let discountedPriceSpan = document.createElement('span');
+            //             discountedPriceSpan.className = 'discounted-price';
+            //             discountedPriceSpan.textContent = ' $' + (price[priceIndex] - discountprice[priceIndex]);
+            //             priceSpan.appendChild(discountedPriceSpan);
 
-                        // priceSpan.textContent = '$' + price[priceIndex];
-                        // content.appendChild(priceSpan);
-                    }
-                    else {
-                        priceSpan.textContent = '$' + price[priceIndex];
-                    }
-                    content.appendChild(priceSpan);
-                }
-            }
+            //             // priceSpan.textContent = '$' + price[priceIndex];
+            //             // content.appendChild(priceSpan);
+            //         }
+            //         else {
+            //             priceSpan.textContent = '$' + price[priceIndex];
+            //         }
+            //         content.appendChild(priceSpan);
+            //     }
+            // }
 
             if (date < new Date()) {
                 dayElement.classList.add('expired-date');
