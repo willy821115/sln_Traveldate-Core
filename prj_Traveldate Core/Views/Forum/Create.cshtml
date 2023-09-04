@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> *@
     <style>
         .my-Heading-color {
             color: #155074;
@@ -108,7 +108,7 @@
                     <div class="d-flex align-items-center">
                         <button type="button" class="btn btn-outline-secondary ml-1 fs-5" onclick='deleteArticle()'>捨棄</button>
                         <input asp-for="isSave" id="btnSaveArticle" type="submit" value="儲存草稿" class="btn btn-outline-secondary ml-1 fs-5" />
-                        <input type="button" value="下一步" class="btn my-btn-primary ml-1 fs-5" />
+                        <button type="button" class="btn my-btn-primary ml-1 fs-5" onclick="confirmArticle()">下一步</button>
                         <input asp-for="isPublish" id="btnPublish" type="submit" value="發布" class="btn my-btn-primary ml-1 fs-5" />
                     </div>
                 </div>
@@ -128,6 +128,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        //刪除文章的sweetAlert
         function deleteArticle() {
             Swal.fire({
                 title: '確定要刪除文章嗎?',
@@ -151,7 +152,7 @@
                 }
             })
         }
-
+        //儲存草稿
         function saveArticle() {
             Swal.fire({
                 icon: 'success',
@@ -160,7 +161,7 @@
                 timer: 1500
             })
         }
-
+        //發布
         function publishArticle() {
             Swal.fire({
                 icon: 'success',
@@ -169,6 +170,33 @@
                 timer: 1500
             })
         }
+        //下一步(去結帳)
+        function confirmArticle() {
+            Swal.fire({
+                title: '儲存草稿成功!',
+                showCancelButton: true,
+                confirmButtonText: '下一步',
+                cancelButtonText: '我想再確認一下'
+            })
+        }
+
+        //     Swal.fire({
+        //     title: 'Do you want to save the changes?',
+        //     showCancelButton: true,
+        //     confirmButtonText: '下一步',
+        //      cancelButtonText: '我想再確認一下',
+        // }).then((result) => {
+        //     /* Read more about isConfirmed, isDenied below */
+        //     if (result.isConfirmed) {
+        //         Swal.fire('Saved!', '', 'success')
+        //     } else if (result.isDenied) {
+        //         Swal.fire('Changes are not saved', '', 'info')
+        //     }
+        // })
+        
+        
+
+
     </script>
     
 

@@ -246,7 +246,16 @@ namespace prj_Traveldate_Core.Controllers
             }
             if (creatArticle.isPublish == "發布")
             {
-                return RedirectToAction("ConfirmOrder", "Cart", new { id = creatArticle.tripIds[0] });
+                var vm_in = new CForumCheckout
+                {
+                    tripId = creatArticle.tripIds // 假設這裡有你的資料
+                };
+
+                var routeValues = new RouteValueDictionary
+{
+    { "vm_in.tripId", vm_in.tripId }
+};
+                return RedirectToAction("ConfirmOrder", "Cart", routeValues);
                 //return RedirectToAction("ConfirmOrder", "Cart", new { });
             }
             return RedirectToAction("forumList", "Member");

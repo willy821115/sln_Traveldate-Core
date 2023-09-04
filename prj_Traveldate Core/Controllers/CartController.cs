@@ -132,7 +132,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         //揪團結帳
-        [ActionName("ForumCheckout")]
+        //[ActionName("ForumCheckout")]
         public ActionResult ConfirmOrder(CForumCheckout vm_in)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
