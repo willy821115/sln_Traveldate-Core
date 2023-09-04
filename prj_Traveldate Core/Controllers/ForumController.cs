@@ -244,9 +244,10 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("forumList", "Member");
             }
-            if (creatArticle.isSave == "發布")
+            if (creatArticle.isPublish == "發布")
             {
-                return RedirectToAction("forumList", "Member");
+                return RedirectToAction("ConfirmOrder", "Cart", new { id = creatArticle.tripIds[0] });
+                //return RedirectToAction("ConfirmOrder", "Cart", new { });
             }
             return RedirectToAction("forumList", "Member");
         }
