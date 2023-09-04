@@ -68,6 +68,7 @@ namespace prj_Traveldate_Core.Controllers
          {
             
             int productID = 0;
+            Thread.Sleep(2000);
             TraveldateContext db = new TraveldateContext();
             //存入ProductLists
             ProductList save = new ProductList();
@@ -158,7 +159,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult Edit(CProductWrap pro) 
         {
-            
+            Thread.Sleep(2000);
             TraveldateContext db = new TraveldateContext();
             ProductList proDb=db.ProductLists.FirstOrDefault(p=>p.ProductId==pro.ProductId);
            //存入ProductList
