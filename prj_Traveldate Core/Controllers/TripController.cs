@@ -80,6 +80,7 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Create(CTripWrap trip)
         {
+            Thread.Sleep(2000);
             TraveldateContext db = new TraveldateContext();
             if (trip.tripDates != null) 
             {
@@ -122,6 +123,7 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Edit(CTripWrap t) 
         {
+            Thread.Sleep(2000);
             companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             TraveldateContext db = new TraveldateContext();
             var tripEdit = db.Trips.FirstOrDefault(tr => tr.TripId == t.TripId);

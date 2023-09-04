@@ -365,8 +365,9 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-            $('#EditProduct').click(fuction(){
+            $('#EditProduct').click(function(){
                 swal("產品編輯成功！", "稍後將自動為您導向", "success");
             });
 
