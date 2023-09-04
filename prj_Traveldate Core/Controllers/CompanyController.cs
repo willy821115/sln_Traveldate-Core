@@ -27,7 +27,8 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Edit(CCompanyWrap edit) 
         {
-        Company cDB =_db.Companies.FirstOrDefault(p=>p.CompanyId==edit.CompanyId);
+            Thread.Sleep(2000);
+            Company cDB =_db.Companies.FirstOrDefault(p=>p.CompanyId==edit.CompanyId);
             if (cDB != null) 
             {
                 cDB.Address = edit.Address;
@@ -62,6 +63,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Password(CCompanyWrap edit)
         {
+            Thread.Sleep(2000);
             if (edit.Password == edit.newPasswordCheck)
             {
                 Company cDB = _db.Companies.FirstOrDefault(p => p.CompanyId == edit.CompanyId);

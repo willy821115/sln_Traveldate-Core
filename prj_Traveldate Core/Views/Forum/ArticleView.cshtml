@@ -250,7 +250,8 @@
                 <img src="~/icons/icons8-like-64.png" />
                     @if (Model.member != null)
                     {
-                        if (Model.likes.First(l => l.MemberId == Model.member.MemberId).IsLike==true)
+                        var like = Model.likes.FirstOrDefault(l => l.MemberId == Model.member.MemberId);
+                        if (like != null && (bool)like.IsLike)
                         {
                             <input id="btnCancelLike" class="btn btn-secondary" type="button" value="取消讚" />
                         }

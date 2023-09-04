@@ -320,7 +320,7 @@
                             <button type="button" class="btn btn-primary prev-tab" style="float:left">上一頁</button>
                             <div class="form-group text-right" >
                                 <input type="button" value="預覽" class="btn btn-success" id="preview" />
-                                <input type="submit" value="新增" class="btn btn-primary" />
+                                <input type="submit" value="新增" class="btn btn-primary" id="createProduct" />
                                  <a asp-action="List" class="btn btn-primary text-right">取消</a>
 
 
@@ -358,7 +358,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/search_jq.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+        
         $('#createProduct').click(function () {
             swal("新增產品成功！", "稍後將自動為您導向", "success");
         
