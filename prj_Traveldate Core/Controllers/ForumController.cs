@@ -240,6 +240,14 @@ namespace prj_Traveldate_Core.Controllers
 
             _context.SaveChanges();
             Task.Delay(3000).Wait();
+            if (creatArticle.isSave == "儲存草稿")
+            {
+                return RedirectToAction("forumList", "Member");
+            }
+            if (creatArticle.isSave == "發布")
+            {
+                return RedirectToAction("forumList", "Member");
+            }
             return RedirectToAction("forumList", "Member");
         }
 
@@ -306,6 +314,9 @@ namespace prj_Traveldate_Core.Controllers
             vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
             ScheduleList1 article = ScheduleStock().FirstOrDefault(s => s.forumListId == id);
             vm.forum = article.ForumList;
+            //打開時加入觀看數
+            vm.forum.Watches++;
+            _context.SaveChanges();
            vm.articleTrips = article.trips;
             var tagDetailsId = article.productTags.Select(t => t.ProductTagDetailsId).ToList();
             vm.trip_Tags = _context.ProductTagDetails
@@ -320,7 +331,7 @@ namespace prj_Traveldate_Core.Controllers
                 .GroupBy(p=>p.prodId)
                 .Select(g=> new CArticle_imgs
                 {
-                    imgId = g.Key,
+                    img_prodId = g.Key,
                     imgPaths = g.Select(path=>path.prodPhotoPath).ToList(),
                    
                 })
@@ -387,31 +398,63 @@ namespace prj_Traveldate_Core.Controllers
         }
         /////////////////////////////////////檢視文章用/////////////////////////////////
         //文章按讚
-        public IActionResult Likes(int id, int status)
+        public IActionResult Likes(int forumId,int memId, int status)
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {
                 TempData[CDictionary.SK_BACK_TO_ACTION] = "ArticleView";
                 TempData[CDictionary.SK_BACK_TO_CONTROLLER] = "Forum";
-                TempData[CDictionary.SK_BACK_TO_PARAM] = "id="+id;
-                Task.Delay(3000).Wait();
+                TempData[CDictionary.SK_BACK_TO_PARAM] = "id="+forumId;
+                Task.Delay(2000).Wait();
                 return RedirectToAction("Login", "Login");
             }
-            ForumList? forum = _context.ForumLists.Find(id);
-            if (status == 0)
+            LikeList? like = _context.LikeLists.FirstOrDefault(l=>l.ForumId==forumId && l.MemberId==memId);
+            //還沒按過讚
+            if(like == null)
             {
-                forum.Likes++;
-                _context.Update(forum);
-                _context.SaveChanges();
-                return Content(forum.Likes.ToString());
+                if (status == 0)
+                {
+                    LikeList addLike = new LikeList();
+                    addLike.ForumId = forumId;
+                    addLike.MemberId = memId;
+                    addLike.IsLike = true;
+                    _context.Add(addLike);
+                    _context.SaveChanges();
+                    var forumLikeCount = _context.LikeLists.Where(l=>l.ForumId==forumId && l.IsLike == true).Count().ToString();
+                    return Content(forumLikeCount);
+                }
+                if (status == 1)
+                {
+                    LikeList addLike = new LikeList();
+                    addLike.ForumId = forumId;
+                    addLike.MemberId = memId;
+                    addLike.IsLike = false;
+                    _context.Add(addLike);
+                    _context.SaveChanges();
+                    var forumLikeCount = _context.LikeLists.Where(l => l.ForumId == forumId && l.IsLike == true).Count().ToString();
+                    return Content(forumLikeCount);
+                }
             }
-            if (status == 1)
+            else
             {
-                forum.Likes--;
-                _context.Update(forum);
-                _context.SaveChanges();
-                return Content(forum.Likes.ToString());
+                if (status == 0)
+                {
+                    like.IsLike=true;
+                    _context.Update(like);
+                    _context.SaveChanges();
+                    var forumLikeCount = _context.LikeLists.Where(l => l.ForumId == forumId && l.IsLike == true).Count().ToString();
+                    return Content(forumLikeCount);
+                }
+                if (status == 1)
+                {
+                    like.IsLike = false;
+                    _context.Update(like);
+                    _context.SaveChanges();
+                    var forumLikeCount = _context.LikeLists.Where(l => l.ForumId == forumId && l.IsLike==true).Count().ToString();
+                    return Content(forumLikeCount);
+                }
             }
+           
             return NoContent();
         }
         //留言回覆
@@ -433,17 +476,26 @@ namespace prj_Traveldate_Core.Controllers
                     n.ForumListId,
                     n.ForumList.Title,
                     n.ForumList.Watches,
-                    n.ForumList.Likes,
                     releaseDatetime = n.ForumList.ReleaseDatetime.Value.ToString("yyyy-MM-dd"),
                     n.Trip.ProductId
                 }).ToList();
+            var forumId = forumInfos.Select(n => n.ForumListId).ToList();
+            var likes = _context.LikeLists
+                .Where(n => forumId.Contains(n.ForumId) && n.IsLike==true)
+                .GroupBy(g=>g.ForumId)
+                .Select(r => new
+                {
+                    forumId = r.Key,
+                    likeCount = r.Count()
+                })
+                .ToList();
+
             var articles = forumInfos.Join(prodPhoto, f => f.ProductId, p => p.prodId,
                 (f, p) => new
                 {
                     f.ForumListId,
                     f.Title,
                     f.Watches,
-                    f.Likes,
                     f.releaseDatetime,
                     p.prodPhotoPath
                 }).GroupBy(f => f.ForumListId)
@@ -452,9 +504,9 @@ namespace prj_Traveldate_Core.Controllers
                     ForumListId = g.Key,
                     Title = g.Select(g => g.Title).First(),
                     Watches = g.Select(g => g.Watches).First(),
-                    Likes = g.Select(g => g.Likes).First(),
                     ReleaseDatetime = g.Select(g => g.releaseDatetime).First(),
-                    ProdPhotoPath = g.Select(g => g.prodPhotoPath).First()
+                    ProdPhotoPath = g.Select(g => g.prodPhotoPath).First(),
+                    LikeCount = likes.FirstOrDefault(l => l.forumId == g.Key)?.likeCount ?? 0 // 取得對應的 likeCount
                 });
             return Json(articles);
         }
