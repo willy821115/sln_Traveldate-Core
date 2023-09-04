@@ -340,6 +340,23 @@ namespace prj_Traveldate_Core.Controllers
             return RedirectToAction("HomePage", "Homepage");
         }
 
+        public bool CheckEmail(string Email)
+        {
+            return _context.Members.Any(m => m.Email == Email);
+        }
+
+        public bool CheckPhone(string Phone)
+        {
+            return _context.Members.Any(m => m.Phone == Phone);
+        }
+        public bool CheckTaxNo(string TaxNo)
+        {
+            return _context.Companies.Any(m => m.TaxIdNumber == TaxNo);
+        }
+        public bool CheckCEmail(string Email)
+        {
+            return _context.Companies.Any(m => m.Email == Email);
+        }
 
     }
 }

@@ -10,6 +10,7 @@ using NuGet.Versioning;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
@@ -1351,7 +1352,8 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                            Likes = fl.Likes,
+                            //Likes = fl.Likes,
+                            //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,
                             IsPublish = fl.IsPublish

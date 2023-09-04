@@ -131,6 +131,89 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
+        //揪團結帳
+        [ActionName("ForumCheckout")]
+        public ActionResult ConfirmOrder(CForumCheckout vm_in)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            List<int> orderDetailIdList = new List<int>();
+
+            var existCart = _context.Orders.Any(o => o.MemberId == _memberID && o.IsCart == true);
+            if (existCart)
+            {
+                int cartOrderID = _context.Orders.FirstOrDefault(o => o.MemberId == _memberID && o.IsCart == true).OrderId;
+
+                foreach (var i in vm_in.tripId)
+                {
+                    OrderDetail newOrderDetail = new OrderDetail
+                    {
+                        Quantity = 1,
+                        TripId = i,
+                        OrderId = cartOrderID
+                    };
+                    _context.OrderDetails.Add(newOrderDetail);
+                    _context.SaveChanges();
+                    orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                }
+            }
+            else
+            {
+                Order newCartOrder = new Order
+                {
+                    MemberId = _memberID,
+                    IsCart = true
+                };
+                _context.Orders.Add(newCartOrder);
+                _context.SaveChanges();
+
+                int newCartOrderID = newCartOrder.OrderId;
+
+                foreach (var i in vm_in.tripId)
+                {
+                    OrderDetail newOrderDetail = new OrderDetail
+                    {
+                        Quantity = 1,
+                        TripId = i,
+                        OrderId = newCartOrderID
+                    };
+                    _context.OrderDetails.Add(newOrderDetail);
+                    _context.SaveChanges();
+                    orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                }
+            }
+
+            CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
+            vm.member = _context.Members.Find(_memberID);
+            vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+            vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
+
+            vm.orders = new List<CCartItem>();
+            for (int i = 0; i < orderDetailIdList.Count; i++)
+            {
+                CCartItem item = new CCartItem();
+                item = _context.OrderDetails.Where(o => o.OrderDetailsId == orderDetailIdList[i]).Select(c =>
+                    new CCartItem
+                    {
+                        orderDetailID = c.OrderDetailsId,
+                        productID = c.Trip.ProductId,
+                        tripID = c.TripId,
+                        planName = c.Trip.Product.ProductName,
+                        date = $"{c.Trip.Date:d}",
+                        quantity = c.Quantity,
+                        photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
+                        ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
+                        unitPrice = c.Trip.UnitPrice,
+                        discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                        ProductTypeID = c.Trip.Product.ProductTypeId,
+                    }).First();
+                vm.orders.Add(item);
+            }
+
+            return View(vm);
+        }
+
+        
 
         [HttpPost]
         public ActionResult Payment(CCreateOrderViewModel vm)
@@ -375,80 +458,6 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        //[HttpPost]
-        //[ActionName("AddDirectToCart")]
-        //public IActionResult ConfirmOrder(int num, int tripId)
-        //{
-        //    TraveldateContext db = new TraveldateContext();
-
-        //    int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-        //    if (loggedInMemberId == 0)
-        //    {
-        //        return Content("請登入會員");
-        //    }
-        //    var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
-        //    if (existCart)
-        //    {
-
-        //        if (db.OrderDetails.Any(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true))
-        //        {
-        //            OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
-        //            od.Quantity += num;
-        //        }
-        //        else
-        //        {
-        //            int cartOrderID = db.Orders.FirstOrDefault(o => o.MemberId == loggedInMemberId && o.IsCart == true).OrderId;
-        //            OrderDetail newOrderDetail = new OrderDetail
-        //            {
-        //                Quantity = num,
-        //                TripId = tripId,
-        //                OrderId = cartOrderID
-        //            };
-        //            db.OrderDetails.Add(newOrderDetail);
-        //            db.SaveChanges();
-        //            int[] orderDetailId = new int[1];
-        //            orderDetailId[0] = newOrderDetail.OrderDetailsId;
-
-
-        //            //ViewBag.orderDetailId = orderDetailId;
-
-        //            //return Content(orderDetailId.ToString());
-        //            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
-
-        //            return View(orderDetailId);
-        //        }
-        //        db.SaveChanges();
-        //    }
-        //    else
-        //    {
-        //        Order newCartOrder = new Order
-        //        {
-        //            MemberId = loggedInMemberId,
-        //            IsCart = true
-        //        };
-        //        db.Orders.Add(newCartOrder);
-        //        db.SaveChanges();
-
-        //        int newCartOrderID = newCartOrder.OrderId;
-
-        //        OrderDetail newOrderDetail = new OrderDetail
-        //        {
-        //            Quantity = num,
-        //            TripId = tripId,
-        //            OrderId = newCartOrderID
-        //        };
-
-        //        db.OrderDetails.Add(newOrderDetail);
-        //        db.SaveChanges();
-        //        int orderDetailId = newOrderDetail.OrderDetailsId;
-        //        ViewBag.orderDetailId = orderDetailId;
-
-        //        return Content(orderDetailId.ToString());
-        //    }
-        //    return View();
-        //}
-
-
-    }
+     }
 }
 

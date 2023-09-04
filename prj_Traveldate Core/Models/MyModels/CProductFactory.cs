@@ -170,12 +170,12 @@ namespace prj_Traveldate_Core.Models.MyModels
             return membergen;
         }
 
-        public List<byte[]> loadMemPic(int id)
+        public List<string> loadMemPic(int id)
         {
-            List<byte[]> mempic = (from c in db.CommentLists
+            List<string> mempic = (from c in db.CommentLists
                                       join m in db.Members on c.MemberId equals m.MemberId
                                       where c.ProductId == id
-                                      select m.Photo).ToList();
+                                      select m.ImagePath).ToList();
             return mempic;
         }
        
