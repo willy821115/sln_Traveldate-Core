@@ -180,7 +180,7 @@ namespace prj_Traveldate_Core.Controllers
                     ViewBag.orderDetailId = orderDetailId;
 
                     return Content(orderDetailId.ToString());
-                    //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+                 //  return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
                     //return RedirectToAction("ShoppingCart", "Cart");
                     //return Json(orderDetailId);
                 }
@@ -211,9 +211,9 @@ namespace prj_Traveldate_Core.Controllers
 
                 ViewBag.orderDetailId = orderDetailId;
 
-                return Content(orderDetailId.ToString());
+               return Content(orderDetailId.ToString());
 
-                //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+                //return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
 
                 //return RedirectToAction("ShoppingCart", "Cart");
             }
@@ -221,7 +221,7 @@ namespace prj_Traveldate_Core.Controllers
             return Content(orderDetailId.ToString());
 
 
-            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
+           // return RedirectToAction("ConfirmOrder", "Cart", new { id = orderDetailId });
 
             //return RedirectToAction("ShoppingCart", "Cart");
         }

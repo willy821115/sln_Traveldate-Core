@@ -590,14 +590,14 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     if (action == "reject")
                     {
-                        product.StatusId = 3; // 更新為拒絕狀態的 statusid
+                        product.StatusId = 3; 
                     }
                     else if (action == "approve")
                     {
-                        product.StatusId = 1; // 更新為批准狀態的 statusid
+                        product.StatusId = 1; 
                     }
 
-                    db.SaveChanges(); // 儲存變更到資料庫
+                    db.SaveChanges(); 
                     return RedirectToAction("Review");
                 }
             }
