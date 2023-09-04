@@ -10,6 +10,7 @@ using NuGet.Versioning;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
@@ -913,7 +914,7 @@ namespace prj_Traveldate_Core.Controllers
                             ProductId = orderdetails3.Trip.ProductId,
 
                             //Date= orderdetails3.Trip.Date,
-                            Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
+                            //Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
                             CommentScore =CommentScore,
                             Content = Content,
                             Title = Title,
@@ -1351,7 +1352,8 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                            Likes = fl.Likes,
+                            //Likes = fl.Likes,
+                            //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,
                             IsPublish = fl.IsPublish
