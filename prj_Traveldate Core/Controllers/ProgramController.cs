@@ -274,7 +274,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 db.Favorites.Remove(existingFavorite);
                 db.SaveChanges();
-                return Json(new { success = true, message = "產品已成功从最愛中移除。" });
+                return Json(new { success = true, message = "產品已成功移除。" });
             }
         }
 

@@ -1140,7 +1140,7 @@
 
                             $("#favButton").data("is-favorite", data.message === "產品已成功加入最愛。");
                         } else {
-                            if (data.message === "請登入會員") {
+                            if (data === "請登入會員") {
                                 swal('請登入會員', '', 'warning');
                             }
                         }
