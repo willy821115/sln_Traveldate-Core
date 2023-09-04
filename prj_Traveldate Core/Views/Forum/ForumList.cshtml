@@ -167,7 +167,6 @@
         </div>
         <div class="p-3 mt-2 mb-2">
             <label class="fs-4 pl-2 pt-2 fw-bold">依旅遊地區</label>
-            @* <partial name="@Url.Content("~/Forum/Region")"></partial> *@
             @Html.Partial("Region",Model)
         </div>
         <div class="p-3 mt-2 mb-2">
@@ -513,7 +512,7 @@
     <script>
          function loginInfo() {
             Swal.fire({
-                icon: 'info',
+                icon: 'warning',
                 title: '請先登入會員!',
                 showConfirmButton: true,
                 confirmButtonText: '前往登入頁面', // 修改確認按鈕文字

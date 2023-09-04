@@ -216,14 +216,15 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Create(CCreatArticleViewModel creatArticle)
         {
-            if (creatArticle.isSave == "儲存草稿")
-            {
-                creatArticle.forum.IsPublish = false;
-            }
-            if (creatArticle.isPublish == "發布")
-            {
-                creatArticle.forum.IsPublish = true;
-            }
+            //if (creatArticle.isSave == "儲存草稿")
+            //{
+                
+            //}
+            //if (creatArticle.isPublish == "發布")
+            //{
+            //    creatArticle.forum.IsPublish = true;
+            //}
+            creatArticle.forum.IsPublish = false;
             creatArticle.forum.ReleaseDatetime = DateTime.Now;
             _context.Add(creatArticle.forum);
             _context.SaveChanges();
@@ -246,7 +247,12 @@ namespace prj_Traveldate_Core.Controllers
             }
             if (creatArticle.isPublish == "發布")
             {
-                return RedirectToAction("ConfirmOrder", "Cart", new { id = creatArticle.tripIds[0] });
+                var routeValues = new RouteValueDictionary
+{
+    { "ForumListID", creatArticle.forum.ForumListId },
+                    {"type",0 }
+}; 
+                return RedirectToAction("ForumCheckout", "Cart", routeValues);
                 //return RedirectToAction("ConfirmOrder", "Cart", new { });
             }
             return RedirectToAction("forumList", "Member");

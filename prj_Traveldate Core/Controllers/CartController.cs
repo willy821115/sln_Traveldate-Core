@@ -219,7 +219,10 @@ namespace prj_Traveldate_Core.Controllers
                         }).First();
                     vm.orders.Add(item);
                 }
-
+             
+                //把forumlistId帶到結帳成功那邊再把文章的isPublish改成true
+               HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY, ForumListID);
+               
                 return View(vm);
             }
             return Content("");
@@ -431,6 +434,16 @@ namespace prj_Traveldate_Core.Controllers
             ViewData["email"] = _context.Members.Find(_memberID).Email;
             //TODO 寄確認信
 
+
+            //如果是從揪團過來的走這裡
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
+            {
+                int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
+                 _context.ForumLists.Find(ForumListID).IsPublish = true;
+                  _context.SaveChanges();
+            }
+ 
+           
             return View();
         }
 
