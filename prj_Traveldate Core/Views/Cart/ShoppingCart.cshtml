@@ -4,7 +4,7 @@
     ViewBag.Title = "我的購物車";
     int count = 0;
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Checkout", "Cart", FormMethod.Post))
 {
     <div class="cart_body">
         <div class="Header">
@@ -173,7 +173,7 @@
                     </div>
                 </div>
             </div>
-            <input asp-action="ConfirmOrder" id="GoConfirm" type="submit" class="mt-2 btn my-btn-primary btn-lg" value="去結帳" />
+            <input asp-action="Checkout" id="GoConfirm" type="submit" class="mt-2 btn my-btn-primary btn-lg" value="去結帳" />
         </div>
     </div>
 }

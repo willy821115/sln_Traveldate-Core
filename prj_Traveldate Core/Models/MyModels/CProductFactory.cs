@@ -75,10 +75,11 @@ namespace prj_Traveldate_Core.Models.MyModels
         }
 
 
+
         //最多可報名可賣數量
         public List<int?> loadQuantityMax(int id)
         {
-            List<int?> maxnum = db.Trips.Where(p => p.ProductId == id).Select(t => t.MaxNum).ToList();
+            List<int?> maxnum = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t => t.MaxNum).ToList();
             return maxnum;
         }
         //最少報名人數
@@ -311,7 +312,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         public string TripStock(int tripID)
         {
             TraveldateContext _db = new TraveldateContext();
-             var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Sum(o=>o.Quantity), max = s.MaxNum }).FirstOrDefault();
+             var q = _db.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Where(o=>o.Order.IsCart==false).Sum(o=>o.Quantity), max = s.MaxNum }).FirstOrDefault();
             string result = $"{q.orders}/{q.max}";
             return result;
         }
@@ -330,7 +331,7 @@ namespace prj_Traveldate_Core.Models.MyModels
             return list;
         }
 
-
+      
 
     }
 }

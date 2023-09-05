@@ -63,6 +63,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         [HttpPost]
+        [Route("Cart/Checkout")]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -239,6 +240,22 @@ namespace prj_Traveldate_Core.Controllers
             var orderIdForPay = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
 
             DateTime dt = DateTime.Now;
+
+            for (int i = 0; i < vm.ods.Count(); i++)
+            {
+                //確認商品庫存量
+                CProductFactory prodFactory = new CProductFactory();
+                string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
+                int ordered = Convert.ToInt32(strStock.Split('/')[0]);
+                int max = Convert.ToInt32(strStock.Split('/')[1]);
+                if (max - ordered < vm.ods[i].Quantity)
+                {
+                    string prodName = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).Select(t => t.Product.ProductName).FirstOrDefault();
+                    string e = $"「{prodName}」數量不足，請重新選購。";
+                    return RedirectToAction("OrderError", new { e });
+                }
+            }
+
             using (var tran = _context.Database.BeginTransaction())
             {
                 EcpayOrder ecpayOrder = new EcpayOrder()
@@ -254,7 +271,7 @@ namespace prj_Traveldate_Core.Controllers
                     TradeDate = dt.ToString("yyyy/MM/dd HH:mm:ss"),
                     SimulatePaid = 0,
                 
-            };
+                 };
                 
 
                 Order newOrder = new Order()
@@ -297,18 +314,6 @@ namespace prj_Traveldate_Core.Controllers
                         SellingPrice = vm.ods[i].SellingPrice, //
                         Note = vm.ods[i].Note
                     };
-
-                    //確認商品庫存量
-                    CProductFactory prodFactory = new CProductFactory();
-                    string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
-                    int ordered = Convert.ToInt32(strStock.Split('/')[0]);
-                    int max = Convert.ToInt32(strStock.Split('/')[1]);
-                    if (max - ordered < vm.ods[i].Quantity)
-                    {
-                        string prodName = _context.Trips.Where(t=>t.TripId == vm.ods[i].OrderId).Select(t=>t.Product.ProductName).FirstOrDefault();
-                        string e = $"「{prodName}」數量不足，請重新選購。";
-                        return RedirectToAction("OrderError", new { e });
-                    }
 
                     //刪除購物車裡的項目
                     OrderDetail? oldOd = _context.OrderDetails.Where(o => o.OrderDetailsId == vm.ods[i].OrderDetailsId).FirstOrDefault();
@@ -436,11 +441,14 @@ namespace prj_Traveldate_Core.Controllers
 
 
             //如果是從揪團過來的走這裡
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
             {
                 int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
-                 _context.ForumLists.Find(ForumListID).IsPublish = true;
-                  _context.SaveChanges();
+                var createArticle = _context.ForumLists.Find(ForumListID);
+                createArticle.IsPublish = true;
+                createArticle.ReleaseDatetime = DateTime.Now;
+                _context.SaveChanges();
+                return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, createStatus =0});
             }
  
            
