@@ -26,19 +26,8 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-
-        public void SendMail(CEmailVerify data)
+        public string CreateVerifyLink(CEmailVerify data)
         {
-            // 檢查資料庫是否有這個帳號
-            var mailCheck = _context.Members.Where(m => m.Email.Equals(data.Email)).FirstOrDefault();
-            if (mailCheck == null && mailCheck.Email == null)
-            {
-                return;
-            }
-
-            List<string> UserEmail = new List<string>();
-            UserEmail.Add(mailCheck.Email);
-
             // 取得系統自定密鑰，在 Web.config 設定
             string SecretKey = _configuration["SendMailSettings:SecretKey"];
 
@@ -65,17 +54,13 @@ namespace prj_Traveldate_Core.Controllers
 
             // 從信件連結回到重設密碼頁面
             string receivePage = data.receivePage;
-            string linkText = data.linkText;
 
-            // 信件內容範本
-            string mailContent = data.mailContent;
-            mailContent = mailContent + "<a href='" + webPath + receivePage + "?verify=" + sVerify + "'  target='_blank'>" + linkText + "</a>";
+            // 認證連結
+            string link = webPath + receivePage + "?verify=" + sVerify;
 
-            // 信件主題
-            string mailSubject = data.mailSubject;
-
-            SimplySendMail(mailSubject, mailContent, UserEmail);
+            return link;
         }
+
 
         public void SimplySendMail(string mailSubject, string mailContent, List<string> UserEmail)
         {

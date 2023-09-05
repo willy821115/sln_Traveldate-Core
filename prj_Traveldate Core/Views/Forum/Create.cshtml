@@ -70,8 +70,8 @@
                 </div>
                 <div>
                     <p class="fs-5 divide-line fs-3">選擇旅行項目與日期</p>
-                    <div class="divAddTrips">
-                        <div class="d-flex mb-2 d-1" id="tripCount">
+                    <div class="divAddTrips" id="tripCount">
+                        <div class="d-flex mb-2 d-1">
                             <div class="form-group col-6 pl-0 mb-0">
                                 <input name="keyword" class="form-control form-select form-select-md inputTrip fs-5" id="inputTrip-1"
                                        placeholder="請選擇旅行項目" />
@@ -124,7 +124,7 @@
                         </button>
                         <!-- Modal -->
                         <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
@@ -149,7 +149,13 @@
     <div>
     </div>
 </div>
-
+<table class="table table-borderless">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 
 
 @section Scripts {
@@ -159,11 +165,23 @@
     <script>
         $('#putInfoOnModal').on('click', function () {
             var values=""
-            var tripCount = $('#tripCount .inputTripDate').length;
+            var tripCount = document.querySelectorAll('#tripCount .inputTripDate').length;
             for (let i = 0; i < tripCount;i++){
-                values += $('.inputTrip').val()[i]
+                var eachTrip = $('.inputTrip').eq(i).val();
+                var eachTripDate = $('.inputTripDate').eq(i).val();
+                var eachPrice = $('.showPrice').eq(i).val();
+                values +=
+                `<table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                               <td>${eachTrip}</td>
+                               <td>${eachTripDate}</td>
+                               <td>${eachPrice}</td>
+                            </tr>
+                       </tbody>
+                </table>`
             }
-            console.log(values)
+            $('#infoBody').html(values);
         })
        
     </script>

@@ -162,6 +162,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -245,7 +246,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("forumList", "Member");
             }
-            if (creatArticle.isPublish == "發布")
+            if (creatArticle.isPublish == "結帳去")
             {
                 var routeValues = new RouteValueDictionary
 {
