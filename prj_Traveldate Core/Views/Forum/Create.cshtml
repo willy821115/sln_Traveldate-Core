@@ -65,7 +65,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
                     <p class="control-label divide-line fs-3">文章標題</p>
-                    <input asp-for="forum.Title" class="form-control fs-4" />
+                    <input asp-for="forum.Title" class="form-control fs-4" id="forumTitle" />
                     @*<span asp-validation-for="Title" class="text-danger"></span>*@
                 </div>
                 <div>
@@ -127,15 +127,14 @@
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">確認揪團內容</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div id="infoBody" class="modal-body">
-                                        ...
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
-                                        <input asp-for="isPublish" id="btnPublish" type="submit" value="結帳去" class="btn my-btn-primary ml-1 fs-5" />
+                                        <input asp-for="isPublish" type="submit" value="結帳去" class="btn my-btn-primary ml-1 fs-5" />
                                     </div>
                                 </div>
                             </div>
@@ -149,38 +148,55 @@
     <div>
     </div>
 </div>
-<table class="table table-borderless">
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+
 
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        // await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
         $('#putInfoOnModal').on('click', function () {
-            var values=""
+            var title = document.querySelector('#forumTitle');
+            var dueDate = document.querySelector('#dashboardcalendar');
+            var values = `
+                                    <div class="divide-line"><h5>文章標題    ${title.value}</h5></div>
+                    <table class="table table-borderless divide-line">
+                    <thead>
+            <tr>
+              <th scope="col">旅行項目</th>
+              <th scope="col">旅行時間</th>
+              <th scope="col">價格</th>
+            </tr>
+          </thead>
+                <tbody>`
+           
             var tripCount = document.querySelectorAll('#tripCount .inputTripDate').length;
+            var totalPrice = 0;
             for (let i = 0; i < tripCount;i++){
                 var eachTrip = $('.inputTrip').eq(i).val();
                 var eachTripDate = $('.inputTripDate').eq(i).val();
-                var eachPrice = $('.showPrice').eq(i).val();
+                var eachPrice = $('.showPrice').eq(i).text();
+                var priceValue = parseFloat(eachPrice.replace(/\$| /g, ''));
+                totalPrice += priceValue
                 values +=
-                `<table class="table table-borderless">
-                        <tbody>
+                    `
                             <tr>
                                <td>${eachTrip}</td>
                                <td>${eachTripDate}</td>
                                <td>${eachPrice}</td>
                             </tr>
-                       </tbody>
-                </table>`
+                    `
             }
+            values += ` 
+                    <tr>
+                      <td></td>
+                      <td class="fw-bolder">總金額</td>
+                              <td>$    ${totalPrice}</td>
+                    </tr>
+                    </tbody>
+                    </table>`
+            values += `<div><h5>截團時間    ${dueDate.value}</h5></div>`
             $('#infoBody').html(values);
         })
        
@@ -466,8 +482,8 @@
         $('#btnSaveArticle').on('click', () => {
             saveArticle();
         })
-        $('#btnPublish').on('click', () => {
-            publishArticle();
-        })
+        // $('#btnPublish').on('click', () => {
+        //     publishArticle();
+        // })
     </script>
   }
