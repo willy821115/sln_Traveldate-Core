@@ -4,9 +4,11 @@
     ViewData["Title"] = "commentList";
 }
 
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @* <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
         <div class="cell d-flex flex-column">
             @*                      原本load二進位的頭像圖片用
             @{
@@ -21,14 +23,20 @@
             <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
             }
             } *@
-            @{
-                if (ViewBag.image != null)
-                {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="~/images/@ViewBag.image" width="150" height="150" />
-                    </div>
-                }
-            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
         </div>
 
             <ul class="list-group leftarea mt-3">
@@ -87,10 +95,10 @@
             </ul>
         </div>
     </div>
-
 </div>
-
-        <!-- 右半邊 - 內容容器 -->
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-10">
 <h3 class="mb-4"><b>我的評論</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -135,7 +143,7 @@
                     }
                 </td>
 
-            <td>@@item.Date @*.ToString("yyyy-MM-dd")*@</td>
+                        <td>@item.Date?.ToString("yyyy-MM-dd")</td>
 @*                 <td>
                     @foreach(var p in @item.ImagePath.Distinct().ToList())
                     {

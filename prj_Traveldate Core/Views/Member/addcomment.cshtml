@@ -3,9 +3,9 @@
     ViewData["Title"] = "addcomment";
 }
 
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-md-2">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+@*     <div class="row"> *@
+        <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
@@ -18,18 +18,24 @@
                         </div>
                         }
                         else
-                        {
+                        
                         <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
                         }
                         } *@
-                        @{
-                            if (ViewBag.image != null)
-                            {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="~/images/@ViewBag.image" width="150" height="150" />
-                                </div>
-                            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
                         }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
                     </div>
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
@@ -88,16 +94,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- 右半邊 - 內容容器 -->
-             
-            <div class="col-md-7">
-
-                <div id="rightPanel">
-                <form asp-action="addcomment" enctype="multipart/form-data">
-                         
-                     
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel"  class="col-md-9">
+                <form asp-action="addcomment" enctype="multipart/form-data">                
                 @* using (Html.BeginForm("addcomment", "Member", FormMethod.Post))
                 { *@
                     <h3 class="mb-4"><b>新增評論</b></h3>
@@ -130,7 +130,7 @@
 
                     <div class="form-group">
                         <label >內容</label>
-                        <input type="text" id="Content" name="Content" class="form-control" />
+                <input type="text" id="Content" name="Content" class="form-control" style="height:80px" />
                     </div>
 
                     <div class="form-group">
@@ -174,8 +174,6 @@
                     <div id="imagePreview" class="w-100 mt-5">
                     </div>
 
-                    <br />
-
                     <div>
                         @*<label>MemberId</label>*@
                         <input type="hidden" id="MemberId" name="MemberId" class="form-control" value="@Model.MemberId"/>
@@ -202,7 +200,9 @@
 @*                             <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送" id="btnAddComment" /> *@
                                <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" id="btnAddComment">傳送</button>
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
-                          </div>              
+                          </div>
+                        <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button> @*DEMO用*@
+
                     </div>
                     @* } *@
                 </form>
@@ -229,8 +229,8 @@
         <div class="carousel-item" data-bs-interval="4000">
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
-    </div>
-</div> *@
+    </div>*@
+</div> 
 
 
 @section styles{
@@ -285,6 +285,24 @@
                     }
                 });
             </script>
+
+    <script>
+        //Demo用-addDEMO
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDEMO = document.getElementById('addDEMO');
+            addDEMO.addEventListener('click', function () {
+                // 填充表單輸入欄位
+
+                document.getElementById('Title').value = '極致經驗的行程體驗！';
+                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與文化之美的旅客！';
+                document.getElementById('CommentScore').value = '4';
+
+                // // 可選：顯示Demo照片
+                // const imagePreview = document.getElementById('imagePreview');
+                // imagePreview.src = '填充的圖片URL';
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

@@ -6,9 +6,9 @@
     ViewData["Title"] = "addCompanion";
 }
 
-<div class="container mt-2">
-    <div class="d-flex row">
-        <div class="col-md-2">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+@*     <div class="d-flex row"> *@
+        <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
@@ -25,14 +25,20 @@
                         <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
                         }
                         } *@
-                        @{
-                            if (ViewBag.image != null)
-                            {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="~/images/@ViewBag.image" width="150" height="150" />
-                                </div>
-                            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
                         }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
                     </div>
 
                         <ul class="list-group leftarea mt-3">
@@ -88,9 +94,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- 右半邊 - 內容容器 -->
-        <div class="col-md-7">
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+<div id="rightPanel"  class="col-md-9">
             <h3 class="mb-4"><b>新增旅伴資料</b></h3>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -101,7 +107,6 @@
                     <li class="breadcrumb-item active" aria-current="page">新增旅伴</li>
                 </ol>
             </nav>
-            <div id="rightPanel">
                 @using (Html.BeginForm("addCompanion", "Member", FormMethod.Post))
                 {
                     <div class="form-group">                     
@@ -114,7 +119,6 @@
                         <span id="errorDiv1" style="color: red;margin-top:px"></span>
                     </div>
 
-
                     <div class="form-group">
                         @Html.LabelFor(model=>model.FirstName)
                         @Html.EditorFor(model=>model.FirstName,"id=FirstName",new {htmlAttributes=new{@class="form-control"}})
@@ -122,12 +126,12 @@
                     </div>
                       
                     <div class="form-group">
-                        <label for="Gender" id="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select>
+                <label for="Gender">性別</label><select id="txtGender" class="form-control"><option value="">請選擇</option><option value="female">女性</option><option value="male">男性</option></select>
                     </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model=>model.BirthDate)
-                        @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
+                @Html.EditorFor(model=>model.BirthDate,"BirthDate",new {htmlAttributes=new{@class="form-control"}})
                     </div>
 
                     <div class="form-group">
@@ -143,16 +147,13 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary" id="btnAddCompanion">增加</button>
-
-                        <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>
-                    
+                        <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>                  
                     </div>
-                    <button type="submit" class="btn my-btn-primary" id="addDEMO">DEMO</button>
+                    <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button> @*DEMO用*@
                 }
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
+
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -221,12 +222,12 @@
             addDEMO.addEventListener('click', function () {
                 // 填充表單輸入欄位
 
-                document.getElementById('FirstName').value = '名';
-                document.getElementById('LastName').value = '吳';
-                document.getElementById('Gender').value = '男';
-                document.getElementById('BirthDate').value = '1993/6/8';
-                document.getElementById('Phone').value = '0922333444';
-                document.getElementById('Email').value = 'qwe123@gmail.com';
+                document.getElementById('FirstName').value = '蘇姬';
+                document.getElementById('LastName').value = '顏';
+                document.getElementById('txtGender').value = 'female';
+                document.getElementById('BirthDate').value= '1991-06-08';
+                document.getElementById('Phone').value = '0911168168';
+                document.getElementById('Email').value = 'qazqwe123@gmail.com';
 
                 // // 可選：顯示Demo照片
                 // const imagePreview = document.getElementById('imagePreview');

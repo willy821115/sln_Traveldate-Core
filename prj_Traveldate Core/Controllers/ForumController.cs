@@ -226,7 +226,11 @@ namespace prj_Traveldate_Core.Controllers
             //    creatArticle.forum.IsPublish = true;
             //}
             creatArticle.forum.IsPublish = false;
-            creatArticle.forum.ReleaseDatetime = DateTime.Now;
+
+            //改成到結帳成功後才有發布時間
+            //creatArticle.forum.ReleaseDatetime = DateTime.Now;
+
+
             _context.Add(creatArticle.forum);
             _context.SaveChanges();
 
@@ -278,34 +282,78 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
         [HttpPost]
-        public IActionResult Edit(CCreatArticleViewModel article)
+        public IActionResult Edit(CCreatArticleViewModel creatArticle)
         {
-            if (article.isSave == "儲存草稿")
-            {
-                article.forum.IsPublish = false;
-            }
-            if (article.isPublish == "發布")
-            {
-                article.forum.IsPublish = true;
-            }
-            article.forum.ReleaseDatetime = DateTime.Now;
-            _context.Update(article.forum);
+            creatArticle.forum.IsPublish = false;
+
+            //結帳後才有發布時間
+            //creatArticle.forum.ReleaseDatetime = DateTime.Now;
+            _context.Add(creatArticle.forum);
             _context.SaveChanges();
 
-            foreach (int tripId in article.tripIds)
+            foreach (int tripId in creatArticle.tripIds)
             {
                 var newSchedule = new ScheduleList
                 {
-                    ForumListId = article.forum.ForumListId,
+                    ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Update(newSchedule);
+                _context.Add(newSchedule);
             }
 
             _context.SaveChanges();
             Task.Delay(3000).Wait();
-            return RedirectToAction("Index", "Member");
+            if (creatArticle.isSave == "儲存草稿")
+            {
+                return RedirectToAction("forumList", "Member");
+            }
+            if (creatArticle.isPublish == "結帳去")
+            {
+                var routeValues = new RouteValueDictionary
+{
+    { "ForumListID", creatArticle.forum.ForumListId },
+                    {"type",0 }
+};
+                return RedirectToAction("ForumCheckout", "Cart", routeValues);
+            }
+            return RedirectToAction("forumList", "Member");
 
+            /////////////////舊的寫法/////////////////
+            //if (article.isSave == "儲存草稿")
+            //{
+            //    article.forum.IsPublish = false;
+            //}
+            //if (article.isPublish == "發布")
+            //{
+            //    article.forum.IsPublish = true;
+            //}
+            //article.forum.ReleaseDatetime = DateTime.Now;
+            //_context.Update(article.forum);
+            //_context.SaveChanges();
+
+            //foreach (int tripId in article.tripIds)
+            //{
+            //    var newSchedule = new ScheduleList
+            //    {
+            //        ForumListId = article.forum.ForumListId,
+            //        TripId = tripId
+            //    };
+            //    _context.Update(newSchedule);
+            //}
+
+            //_context.SaveChanges();
+            //Task.Delay(3000).Wait();
+            //return RedirectToAction("Index", "Member");
+
+
+            //if (creatArticle.isSave == "儲存草稿")
+            //{
+
+            //}
+            //if (creatArticle.isPublish == "發布")
+            //{
+            //    creatArticle.forum.IsPublish = true;
+            //}
 
         }
 
@@ -617,6 +665,7 @@ namespace prj_Traveldate_Core.Controllers
                     .ToList();
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -628,6 +677,7 @@ namespace prj_Traveldate_Core.Controllers
                                 .Where(s => s.trips.Any(t => cities.Contains(t.Product.City.City))).ToList();
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -638,6 +688,7 @@ namespace prj_Traveldate_Core.Controllers
                 vm.schedules = vm.schedules;
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -661,6 +712,7 @@ namespace prj_Traveldate_Core.Controllers
             ViewBag.sortType = sortType;
             var options = new JsonSerializerOptions
             {
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                 ReferenceHandler = ReferenceHandler.Preserve
             };
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDSCHEDULE_INFO))

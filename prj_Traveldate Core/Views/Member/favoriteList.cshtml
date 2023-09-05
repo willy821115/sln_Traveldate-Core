@@ -5,10 +5,12 @@
     ViewData["Title"] = "favoriteList";
 }
 
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
-        <div class="cell d-flex flex-column">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @*     <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
             @*                      原本load二進位的頭像圖片用
             @{
             if (ViewBag.photo != null)
@@ -22,14 +24,20 @@
             <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
             }
             } *@
-            @{
-                if (ViewBag.image != null)
-                {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="~/images/@ViewBag.image" width="150" height="150" />
-                    </div>
-                }
-            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
         </div>
 
             <ul class="list-group leftarea mt-3">
@@ -84,14 +92,14 @@
                 <li class="list-group-item menuItem">
                     @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
-</div>
-
-<!-- 右半邊 - 內容容器 -->
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-10">
 <h3 class="mb-4"><b>收藏清單</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -116,13 +124,13 @@
         @foreach (var item in Model)
                 {
                     <tr>
-                            <td><img style="width:28px;height:28px;margin-left:26px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
+                            <td><img style="width:28px;height:28px;margin-left:16px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
                             <td>@item.ProductName</td>
                             <td>@item.Outline</td>
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
-                            <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove"> 移除</button></td>
+                        <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" style="margin-left:5px"> 移除</button></td>
                          </form>
               
 @*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>

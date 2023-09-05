@@ -458,8 +458,10 @@ namespace prj_Traveldate_Core.Controllers
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
             {
                 int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
-                 _context.ForumLists.Find(ForumListID).IsPublish = true;
-                  _context.SaveChanges();
+                var createArticle = _context.ForumLists.Find(ForumListID);
+                createArticle.IsPublish = true;
+                createArticle.ReleaseDatetime = DateTime.Now;
+                _context.SaveChanges();
                 return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, createStatus =0});
             }
  

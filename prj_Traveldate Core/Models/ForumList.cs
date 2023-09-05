@@ -17,11 +17,11 @@ public partial class ForumList
 
     public DateTime? ReleaseDatetime { get; set; }
 
+    public int? Likes { get; set; }
+
     public int? Watches { get; set; }
 
     public bool? IsPublish { get; set; }
-
-    public int? Likes { get; set; }
 
     public virtual ICollection<ArticlePhoto> ArticlePhotos { get; set; } = new List<ArticlePhoto>();
 

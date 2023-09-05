@@ -145,9 +145,9 @@
                 <h2>@Model.forum.Title</h2>
         </div>
             <div class="mb-4 pl-4">
-                <img src="~/icons/icons8-eye-24.png" />　<span>@Model.forum.Watches　|</span>
-                <img src="~/icons/icons8-like-24.png" />　<span id="likes">@Model.likes.Where(l=>l.IsLike==true).Count()　|</span>
-                <img src="~/icons/icons8-talk-24.png" />　<span>@Model.replys.Count()</span>
+                <img src="~/icons/icons8-eye-24.png" />　<label class="fs-5">@Model.forum.Watches　|</label >
+                <img src="~/icons/icons8-like-24.png" />　<label class="fs-5" id="likes">@Model.likes.Where(l=>l.IsLike==true).Count()　|</label>
+                <img src="~/icons/icons8-talk-24.png" />　<label class="fs-5">@Model.replys.Count()</label>
         </div>
             <div class="d-flex divide-line pl-4 pr-4 pb-4">
             <div>
@@ -170,29 +170,26 @@
 
             </div>
             <div class="col-8">
-                <h4>@Model.forum.Member.FirstName</h4>
+                <h4 class="fw-bolder">@Model.forum.Member.FirstName</h4>
                 <div>
-                    <span>@Model.forum.ReleaseDatetime.Value.ToShortDateString()　|　</span>
-                        <img src="~/icons/icons8-position-16.png" />
+                        <img src="~/icons/icons8-calendar-32.png" height="24" /> <label class="bg-secondary p-1 rounded text-white fw-bolder">@Model.forum.ReleaseDatetime.Value.ToShortDateString()</label>
+                        <img src="~/icons/icons8-position-16.png" height="24" />
                         @foreach(var a in Model.fforumAddress)
                         {
-                             <span class="bg-info p-1 rounded text-white fw-bolder">@a</span>
+                             <label class="bg-warning p-1 rounded text-white fw-bolder">@a</label>
                         }
                 </div>
                 <div>
-                        <img src="~/icons/icons8-tag-16.png" />
+                        <img src="~/icons/icons8-tag-16.png" height="24" />
                         @foreach(var t in Model.trip_Tags)
                         {
-                            <span> #@t</span>
+                            <label class="bg-info p-1 rounded text-white fw-bolder"> #@t</label>
                         }
                         
                 </div>
             </div>
             <div class="col-2 d-block">
-                    <div class="mb-2 d-inline-flex">
-                        <button id="showDialogBtn" class="btn my-btn-primary col-6 pr-2 pl-2 mr-2" value="@Model.forum.Member.MemberId">聊聊</button>
-                        <a class="btn my-btn-primary col-6 pr-2 pl-2" href="#">追蹤</a>
-                    </div>
+                     <button id="showDialogBtn" class="btn my-btn-primary pr-2 pl-2 mr-2 w-100 mb-1" value="@Model.forum.Member.MemberId">聊聊</button>
                     <button id="otherArticles" class="btn btn-secondary col">其他揪團文</button>
                     <div id="showOtherArticles" class="showTop"></div>
             </div>

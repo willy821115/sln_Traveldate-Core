@@ -3,9 +3,9 @@
 @foreach (var article in Model.schedules)
 {
     var schedule_tag = Model.productTags.Where(tag => article.trips.Any(trip => tag.ProductId == trip.ProductId)).ToList();
-    <a asp-action="ArticleView" asp-route-id="@article.forumListId" class="my-article-item text-secondary">
-        <div class="col-2 m-1">
 
+    <a asp-action="ArticleView" asp-route-id="@article.forumListId" class="my-article-item text-secondary">
+        <div class="col-2 m-1 p-0">
             @{
                 var imgPath = article.trips
                 .Select(trip => Model.prodPhoto
@@ -17,11 +17,6 @@
             {
                 <img class="img-fluid img-thumbnail " src="~/images/@imgPath" alt="@article.trips.Select(t=>t.Product.ProductName).First()" />
             }
-            else
-            {
-                <img class="img-fluid img-thumbnail " src="~/icons/logos/Logo_traveldate.png" />
-            }
-
         </div>
 
         <div class="rounded bg-gray-100 col-5 m-1 d-flex row p-0">
@@ -35,20 +30,28 @@
                 {
                     if (!displayedCities.Contains(c.Product.City.City))
                     {
-                        <span class="bg-gradient-warning fw-bolder mr-1 rounded text-light p-1">@c.Product.City.City</span>
+                        <label class="bg-gradient-warning fw-bolder rounded text-light p-1">@c.Product.City.City</label>
                         displayedCities.Add(c.Product.City.City);
                     }
                 }
+
             </div>
-            <div class="mt-2">
+            <div>
+                @{
+                    HashSet<string> displayedTags = new HashSet<string>();
+                }
                 <img src="~/icons/icons8-tag-16.png" />
-                @foreach (var tags in schedule_tag)
+                @foreach (var tags in schedule_tag.Distinct())
                 {
-                    <span id="@tags.ProductTagDetailsId" class="bg-gradient-info fw-bolder mr-1 rounded text-light p-1">#@tags.ProductTagDetails.ProductTagDetailsName</span>
+                    if (!displayedTags.Contains(tags.ProductTagDetails.ProductTagDetailsName))
+                    {
+                        <label id="@tags.ProductTagDetailsId" class="bg-gradient-info fw-bolder rounded text-light p-1">#@tags.ProductTagDetails.ProductTagDetailsName</label>
+                        displayedTags.Add(tags.ProductTagDetails.ProductTagDetailsName);
+                    }
                 }
 
             </div>
-            <div class="d-flex align-items-end">
+            <div class="">
                 @{
                     var memLevel = article.ForumList.Member.Level.Level;
                 }
@@ -57,50 +60,49 @@
                     case "黑鑽會員":
                         <img src="~/icons/level_dimond48.png" height="24">
 
-                        <span class="my-sm-text text-black fw-bolder">@article.ForumList.Member.Level.Level</span>
+                        <label class="my-sm-text text-black fw-bolder p-0">@article.ForumList.Member.Level.Level</label>
                         break;
                     case "白銀會員":
                         <img src="~/icons/level-slover-50.png" height="24">
-                        <span class="my-sm-text  fw-bolder">@article.ForumList.Member.Level.Level</span>
+                        <label class="my-sm-text fw-bolder p-0">@article.ForumList.Member.Level.Level</label>
                         break;
                     case "黃金會員":
                         <img src="~/icons/level-gold-50.png" height="24">
-                        <span class="my-sm-text text-warning fw-bolder">@article.ForumList.Member.Level.Level</span>
+                        <label class="my-sm-text text-warning fw-bolder p-0">@article.ForumList.Member.Level.Level</label>
                         break;
                     default:
-                        <img src="~/icons/level-gold-50.png" height="24" />
-                        <span class="my-sm-text fw-bolder">@article.ForumList.Member.Level.Level</span>
+                        <label class="my-sm-text fw-bolder p-0">@article.ForumList.Member.Level.Level</label>
                         break;
                 }
 
 
-                <span class="my-sm-text fw-bolder"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</span>
-                <span class="my-sm-text fw-bolder"> | 發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</span>
+                <label class="my-sm-text fw-bolder p-0 text-black"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</label>
+                <label class="my-sm-text fw-bolder p-0 "><img src="~/icons/icons8-calendar-32.png" height="24" />發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</label>
             </div>
         </div>
-        <div class="rounded bg-gray-100 col-2 m-1 pt-1 fs-5">
-            <p class="pt-1 fs-5 fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
+        <div class="rounded bg-gray-100 col-2 m-1 pt-1 ">
+            <p class="  fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
             @if (article.numStock == 1)
             {
-                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
                 <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
             }
-            else if (article.numStock > 0.05 && article.numStock < 1)
+            else if (article.numStock > 0.05 && article.numStock < 1 && article.ForumList.DueDate > DateTime.Now)
             {
-                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
                 <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
             }
             else
             {
-                <span class="pt-1 fs-5 fw-bolder text-black">名額現況 : @article.strStock</span>
+                <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
             }
         </div>
         <div class="rounded bg-gray-100 col-2 m-1">
-            <p class="pt-1 fs-5 fw-bolder text-black">截團日期 : </p>
+            <p class="pt-1  fw-bolder text-black">截團日期 : </p>
             @if (article.ForumList.DueDate.HasValue && article.ForumList.DueDate.Value < DateTime.Now)
             {
                 <div class="d-flex">
-                    <del class="fs-5 text-gray-900 fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</del>
+                    <del class=" text-gray-900 fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</del>
                 </div>
                 <div>
                     <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
@@ -108,14 +110,14 @@
             }
             else if (article.ForumList.DueDate > DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
             {
-                <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class="fs-5 text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
+                <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class=" text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
                 <div>
                     <span class=" fw-bolder bg-gradient-danger text-white rounded-pill p-1">即將截止</span>
                 </div>
             }
             else
             {
-                <p class="fs-5 my-text-secondary fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
+                <p class="my-text-secondary fw-bolder">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p>
                 <div>
                     <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1">報名中</span>
                 </div>
