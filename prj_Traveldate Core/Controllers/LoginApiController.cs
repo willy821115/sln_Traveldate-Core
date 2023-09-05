@@ -8,6 +8,7 @@ using System.Web;
 using prj_Traveldate_Core.Models.MyModels;
 using Microsoft.AspNetCore.Http;
 using System;
+using prj_Traveldate_Core.ViewModels;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -79,6 +80,39 @@ namespace prj_Traveldate_Core.Controllers
             mms.From = new MailAddress(GoogleMailUserID);
             mms.Subject = mailSubject;
             mms.Body = mailContent;
+            mms.IsBodyHtml = true;
+            mms.SubjectEncoding = Encoding.UTF8;
+
+            foreach (string email in UserEmail)
+            {
+                mms.To.Add(new MailAddress(email));
+            }
+            using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
+            {
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(GoogleMailUserID, GoogleMailUserPwd);//寄信帳密 
+                client.Send(mms); //寄出信件
+            }
+        }
+
+        //有圖片的email
+        public void SimplySendMail(string mailSubject, string mailContent, List<string> UserEmail, AlternateView alv)
+        {
+            // mailSubject : 信件主旨
+            // mailContent : 信件內文
+            // UserEmail : 收件者的email(可多個)
+
+            // Google 發信帳號密碼
+            string GoogleMailUserID = _configuration["SendMailSettings:GoogleMailUserID"];
+            string GoogleMailUserPwd = _configuration["SendMailSettings:GoogleMailUserPwd"];
+
+            // 使用 Google Mail Server 發信
+            string SmtpServer = "smtp.gmail.com";
+            int SmtpPort = 587;
+            MailMessage mms = new MailMessage();
+            mms.AlternateViews.Add(alv);
+            mms.From = new MailAddress(GoogleMailUserID);
+            mms.Subject = mailSubject;
             mms.IsBodyHtml = true;
             mms.SubjectEncoding = Encoding.UTF8;
 

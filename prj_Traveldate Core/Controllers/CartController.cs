@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using RazorEngine;
+using RazorEngine.Templating;
 using System.Drawing.Imaging;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -13,8 +20,13 @@ namespace prj_Traveldate_Core.Controllers
     {
         int _memberID = 0;
         TraveldateContext _context;
-        public CartController()
+        private IWebHostEnvironment _enviro;
+        private readonly IConfiguration _configuration;
+
+        public CartController(IWebHostEnvironment p, IConfiguration configuration)
         {
+            _enviro = p;
+            _configuration = configuration;
             _context = new TraveldateContext();
 
             ////////////////////////////////
@@ -35,6 +47,8 @@ namespace prj_Traveldate_Core.Controllers
         }
         public ActionResult ShoppingCart()
         {
+            //TestOrderMail();
+
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
@@ -479,7 +493,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             var result = new StringBuilder();
             var sha256 = SHA256.Create();
-            var bts = Encoding.UTF8.GetBytes(value);
+            var bts = System.Text.Encoding.UTF8.GetBytes(value);
             var hash = sha256.ComputeHash(bts);
             for (int i = 0; i < hash.Length; i++)
             {
@@ -489,6 +503,50 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-     }
+        public void TestOrderMail()
+        {
+            string imagePath = _enviro.WebRootPath + "/images/" + "467abeac-99cd-4501-b431-9927afc468d3.jpg";
+            string templatePath = "Views/Emails/OrderEmailTemplate.cshtml";
+
+            COrderEmailViewModel vm = new COrderEmailViewModel();
+            vm.userName = "小明";
+            vm.orders = new List<COrderMail>();
+            COrderMail od = new COrderMail();
+            od.planName = "蘭嶼三天兩夜之旅 2人房";
+            od.unitPrice = 1000;
+            od.quantity = 1;
+            vm.buttonLink = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + "/Member/orderList";
+            vm.coupon = 100;
+            vm.point = 3;
+            vm.total = 897;
+
+            List<string> UserEmail = new List<string>();
+            UserEmail.Add("traveldate3@gmail.com");
+
+            LoginApiController api = new LoginApiController(_configuration, HttpContext);
+
+
+            //建立連結資源
+            var res = new LinkedResource(imagePath);
+            res.ContentId = Guid.NewGuid().ToString();
+            //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
+            od.imagePath = $@"cid:{res.ContentId}";
+            //建立AlternativeView
+
+            vm.orders.Add(od);
+            vm.orders.Add(od);
+
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "ordermail", typeof(COrderEmailViewModel), vm);
+            var altView = AlternateView.CreateAlternateViewFromString(
+                mailContent, null, MediaTypeNames.Text.Html);
+            //將圖檔資源加入AlternativeView
+            altView.LinkedResources.Add(res);
+
+            string mailSubject = "您的 Traveldate 訂單明細";
+            api.SimplySendMail(mailSubject, mailContent, UserEmail, altView);
+
+        }
+
+    }
 }
 
