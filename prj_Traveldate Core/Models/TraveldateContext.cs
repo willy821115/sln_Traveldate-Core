@@ -315,6 +315,7 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.IsPublish).HasColumnName("isPublish");
+            entity.Property(e => e.Likes).HasDefaultValueSql("((0))");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ReleaseDatetime).HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(50);
