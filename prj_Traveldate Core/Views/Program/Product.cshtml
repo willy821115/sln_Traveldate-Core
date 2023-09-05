@@ -355,11 +355,13 @@
         </div>
     </div>
 
+    <!--顯示所有可購買日期)-->
     <div id="tripidContainer" class="detailplan-container" style="display: none;">
         <div>更多日期： </div>
         @for (int i = 0; i < Model.program.fTripDate.Count; i++)
         {
             var tripDate = Model.program.fTripDate[i];
+            var maxNum = Model.program.fMaxnum[i];
 
             <div class="card-container">
                 <div class="card">
@@ -401,17 +403,16 @@
                                         string dateFormat = "yyyy-MM-dd";
                                         DateTime tripDates = DateTime.ParseExact(Model.program.fTripDate[i], dateFormat, System.Globalization.CultureInfo.InvariantCulture);
 
-                                        if (tripDates < DateTime.Now)
+                                        if (tripDates < DateTime.Now || maxNum == 0)
                                         {
-                                                                <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                          <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
                                         }
                                         else
                                         {
-                                                        <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
-                                                      <input type="hidden" id="nums" name="nums" value="1">
-                                                         <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
-                                                         <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
-                                                 
+                                            <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                            <input type="hidden" id="nums" name="nums" value="1">
+                                            <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                            <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
                                         }
                                     }
                                     
@@ -1243,7 +1244,7 @@
         }
 
         .front-slanted{
-            padding: 10px;
+            padding: 8px;
             box-shadow: 0px 1px 5px rgba(128, 128, 128, 0.5) inset;
             border-radius: 5px;
             position: relative;
