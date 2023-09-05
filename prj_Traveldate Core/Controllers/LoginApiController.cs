@@ -96,7 +96,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         //有圖片的email
-        public void SimplySendMail(string mailSubject, string mailContent, List<string> UserEmail, AlternateView alv)
+        public void SimplySendMail(string mailSubject, List<string> UserEmail, AlternateView alv)
         {
             // mailSubject : 信件主旨
             // mailContent : 信件內文

@@ -249,6 +249,7 @@ namespace prj_Traveldate_Core.Controllers
         public ActionResult Payment(CCreateOrderViewModel vm)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            int oid;
 
             //產生付款ID填入Payment欄位
             var orderIdForPay = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
@@ -316,6 +317,8 @@ namespace prj_Traveldate_Core.Controllers
                 _context.EcpayOrders.Add(ecpayOrder);
                 _context.Orders.Add(newOrder);
                 _context.SaveChanges();
+
+                oid = newOrder.OrderId;
 
                 for (int i = 0; i < vm.ods.Count(); i++)
                 {
@@ -409,6 +412,7 @@ namespace prj_Traveldate_Core.Controllers
                 }
             }
 
+            TempData["OID"] = oid;
 
             //準備付款所需資料
             //網址
@@ -505,10 +509,26 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        public void TestOrderMail()
+        public void SendOrderMail()
         {
-            string imagePath = _enviro.WebRootPath + "/images/" + "467abeac-99cd-4501-b431-9927afc468d3.jpg";
+            if (TempData["OID"] == null)
+            {
+                return;
+            }
+
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            List<string> UserEmail = new List<string>
+            {
+                _context.Members.Find(_memberID).Email
+            };
             string templatePath = "Views/Emails/OrderEmailTemplate.cshtml";
+            int oid = (int)TempData["OID"];
+
+            LoginApiController api = new LoginApiController(_configuration, HttpContext);
+
+
+            //開始用oid抓資料/////////////////////////////////////
+            string imagePath = _enviro.WebRootPath + "/images/" + "467abeac-99cd-4501-b431-9927afc468d3.jpg";
 
             COrderEmailViewModel vm = new COrderEmailViewModel();
             vm.userName = "小明";
@@ -522,15 +542,11 @@ namespace prj_Traveldate_Core.Controllers
             vm.point = 3;
             vm.total = 897;
 
-            List<string> UserEmail = new List<string>();
-            UserEmail.Add("traveldate3@gmail.com");
-
-            LoginApiController api = new LoginApiController(_configuration, HttpContext);
-
-
             //建立連結資源
+            List<LinkedResource> linkedrs = new List<LinkedResource>();
             var res = new LinkedResource(imagePath);
             res.ContentId = Guid.NewGuid().ToString();
+            linkedrs.Add(res);
             //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
             od.imagePath = $@"cid:{res.ContentId}";
             //建立AlternativeView
@@ -538,14 +554,19 @@ namespace prj_Traveldate_Core.Controllers
             vm.orders.Add(od);
             vm.orders.Add(od);
 
+            /////////////////////////////////////////////////
+
             string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "ordermail", typeof(COrderEmailViewModel), vm);
             var altView = AlternateView.CreateAlternateViewFromString(
                 mailContent, null, MediaTypeNames.Text.Html);
             //將圖檔資源加入AlternativeView
-            altView.LinkedResources.Add(res);
+            foreach(var r in linkedrs)
+            {
+                altView.LinkedResources.Add(r);
+            }
 
             string mailSubject = "您的 Traveldate 訂單明細";
-            api.SimplySendMail(mailSubject, mailContent, UserEmail, altView);
+            api.SimplySendMail(mailSubject, UserEmail, altView);
 
         }
 
