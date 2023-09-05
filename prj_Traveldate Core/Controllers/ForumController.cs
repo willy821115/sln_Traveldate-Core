@@ -665,6 +665,7 @@ namespace prj_Traveldate_Core.Controllers
                     .ToList();
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -676,6 +677,7 @@ namespace prj_Traveldate_Core.Controllers
                                 .Where(s => s.trips.Any(t => cities.Contains(t.Product.City.City))).ToList();
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -686,6 +688,7 @@ namespace prj_Traveldate_Core.Controllers
                 vm.schedules = vm.schedules;
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -709,6 +712,7 @@ namespace prj_Traveldate_Core.Controllers
             ViewBag.sortType = sortType;
             var options = new JsonSerializerOptions
             {
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                 ReferenceHandler = ReferenceHandler.Preserve
             };
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDSCHEDULE_INFO))
