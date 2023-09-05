@@ -246,7 +246,7 @@
                     <div class="chat_input">
                         
                         <input id="message" class="sendMsg" type="text" placeholder="請輸入訊息">
-                        <div class="myIcon2" id="sendButton">
+                        <div class="myIcon2" id="sendButtonLayout">
                             <i class="fa fa-share send_icon"></i>
                         </div>
                     </div>
@@ -356,7 +356,7 @@
         });
 
         //傳送訊息
-        $('#sendButton').on('click', function () {
+        $('#sendButtonLayout').on('click', function () {
             let myID = $('#myID').html();
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
