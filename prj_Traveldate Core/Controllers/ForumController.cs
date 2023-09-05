@@ -310,12 +310,13 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        public IActionResult ArticleView(int? id)
+        public IActionResult ArticleView(int? id,int? createStatus)
         {
             if (id == null)
             {
                 return RedirectToAction("ForumList");
             }
+
             CArticleViewModel vm = new CArticleViewModel();
             vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
@@ -373,6 +374,16 @@ namespace prj_Traveldate_Core.Controllers
                     ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
                 }
             };
+            //成功回傳0
+            if (createStatus==0)
+            {
+                vm.createStatus = createStatus;
+            }
+            else
+            { 
+                //失敗回傳1
+                vm.createStatus =1;
+            }
             return View(vm);
         }
         /////////////////////////////////////Api/////////////////////////////////
