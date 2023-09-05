@@ -224,9 +224,10 @@ namespace prj_Traveldate_Core.Controllers
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
             string verifyLink = api.CreateVerifyLink(data);
             mail.buttonLink = verifyLink;
+            mail.userName = m.FirstName + "，您好！";
 
             string mailSubject = "Traveldate信箱驗證連結";
-            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), templatePath, null, mail);
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "SignUpVerify", typeof(CSimpleEmailViewModel), mail);
 
             api.SimplySendMail(mailSubject, mailContent, UserEmail);
 
@@ -264,17 +265,11 @@ namespace prj_Traveldate_Core.Controllers
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
             string verifyLink = api.CreateVerifyLink(data);
             mail.buttonLink = verifyLink;
+            mail.userName = mailCheck.FirstName + "，您好！";
 
             string mailSubject = "Traveldate重設密碼連結";
 
-            Engine.Razor.AddTemplate(
-                "MailBody", // Cache Key
-                System.IO.File.ReadAllText(templatePath));
-            //傳入Cache Key、Model物件型別、Model物件取得套表結果
-
-            //string result = Engine.Razor.RunCompile(templatePath, typeof(CSimpleEmailViewModel),null, mail);
-
-            string mailContent = Engine.Razor.RunCompile(templatePath, "MailBody", null, mail);
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "forgotpwd", typeof(CSimpleEmailViewModel), mail);
 
             api.SimplySendMail(mailSubject, mailContent, UserEmail);
 
@@ -330,9 +325,16 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult NotVerified(CForgotPwdViewModel vm)
         {
+
+            var mailCheck = _context.Members.Where(m => m.Email.Equals(vm.email)).FirstOrDefault();
+            if (mailCheck == null || mailCheck.Email == null)
+            {
+                ViewData["Error"] = "輸入信箱與註冊信箱不同，請再試一次";
+                return View();
+            }
+
             string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
             CSimpleEmailViewModel mail = CreateSignUpEmail();
-
             List<string> UserEmail = new List<string>();
             UserEmail.Add(vm.email);
 
@@ -347,9 +349,10 @@ namespace prj_Traveldate_Core.Controllers
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
             string verifyLink = api.CreateVerifyLink(data);
             mail.buttonLink = verifyLink;
+            mail.userName = mailCheck.FirstName + "，您好！";
 
             string mailSubject = "Traveldate信箱驗證連結";
-            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), typeof(CSimpleEmailViewModel), mail);
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "SignUpVerify", typeof(CSimpleEmailViewModel), mail);
 
             api.SimplySendMail(mailSubject, mailContent, UserEmail);
 
@@ -413,7 +416,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
             vm.title = "重新設定密碼";
-            vm.content1 = "您好！<br>信箱驗證成功。點擊以下連結，即可回到Traveldate重新設定密碼。";
+            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate重新設定密碼。";
             vm.content2 = "連結將在30分鐘後失效。";
             vm.buttonText = "重設密碼";
             vm.contentFooter = "如果您並未申請重設密碼，或不想要變更密碼，請忽略此信。";
@@ -424,7 +427,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
             vm.title = "啟用您的帳號";
-            vm.content1 = "您好！<br>信箱驗證成功。點擊以下連結，即可回到Traveldate正式啟用帳號。";
+            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate正式啟用帳號。";
             vm.content2 = "連結將在30分鐘後失效。";
             vm.buttonText = "啟用帳號";
             vm.contentFooter = "如果您並未註冊Traveldate，請忽略此信。";

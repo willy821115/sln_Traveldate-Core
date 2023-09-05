@@ -1,5 +1,6 @@
 ﻿using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
+using RazorEngine.Compilation.ImpromptuInterface;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -15,6 +16,7 @@ namespace prj_Traveldate_Core.ViewModels
         public List<CArticle_imgs> img_Paths { get; set; }
       public List<CCommentScore> avgCommentScores { get; set; }
         public List<LikeList> likes { get; set; }
+        public int? createStatus { get; set; }
     }
     public class CArticle_imgs
     {
