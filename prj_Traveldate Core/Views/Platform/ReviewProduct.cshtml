@@ -66,7 +66,7 @@
                                 <form action="/Platform/ReviewAction" method="post">
                                 <div>
                                     <div>
-                                        <label>供應商</label>
+                                        <label>旅行社</label>
                                         <br />
                                         <span>@Model.CompanyName</span>
                                     </div>
@@ -147,6 +147,18 @@
                                                     <img src="/images/@photo" class="img-thumbnail" style="height:200px;width:300px;margin-right:5px;" />
                                                 }
                                 </div>
+                                        <div style="margin-top:10px;">
+                                            <label>供應日期&價格</label>
+                                            <br />
+                                            @foreach (var date in Model.tripdate)
+                                            {
+                                                <span>@date</span>
+                                            }
+                                            @foreach (var price in Model.tripprice)
+                                            {
+                                                <span>@price</span>
+                                            }
+                                        </div>
                                         <input type="hidden" name="productId" value="@Model.ProductId" />
                                 </div>
                                     <div class="text-center" style="margin-top: 20px;margin-right:50px;">
