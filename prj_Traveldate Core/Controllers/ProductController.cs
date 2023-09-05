@@ -20,7 +20,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             _enviro = p;
         }
-        //public ProductController() 
+        //public ProductController()
         //{
         //    _db = new TraveldateContext();
         //    HttpContext.Session.SetInt32(CDictionary.SK_COMPANYID, 1);

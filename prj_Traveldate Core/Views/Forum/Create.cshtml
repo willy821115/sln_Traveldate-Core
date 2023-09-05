@@ -54,6 +54,14 @@
             ::-webkit-scrollbar-thumb:hover {
                 background: #74abcc;
             }
+
+        .confirmContent{
+            max-height:350px;
+            overflow-y: auto;
+            border-radius: 7px;
+            padding: 2px;
+            border:solid 1px #155074;
+        }
     </style>
   }
 <div class="row justify-content-center pb-4">
@@ -126,8 +134,8 @@
                         <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">確認揪團內容</h1>
+                                    <div class="modal-header my-bg-primary">
+                                        <h1 class="modal-title fs-5  text-white" id="exampleModalLabel">確認揪團內容</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div id="infoBody" class="modal-body">
@@ -159,14 +167,16 @@
         $('#putInfoOnModal').on('click', function () {
             var title = document.querySelector('#forumTitle');
             var dueDate = document.querySelector('#dashboardcalendar');
+            var rrr = document.querySelector('.note-editable');
+            console.log(rrr.innerHTML)
             var values = `
-                                    <div class="divide-line"><h5>文章標題    ${title.value}</h5></div>
-                    <table class="table table-borderless divide-line">
+                    <img src="/icons/beach-vacation.png" height="100"/>
+                            <table class="table fs-5 table-hover">
                     <thead>
             <tr>
-              <th scope="col">旅行項目</th>
-              <th scope="col">旅行時間</th>
-              <th scope="col">價格</th>
+              <th class="col-7">旅行項目</th>
+              <th class="col-3">旅行時間</th>
+              <th class="col-2">價格</th>
             </tr>
           </thead>
                 <tbody>`
@@ -192,11 +202,15 @@
                     <tr>
                       <td></td>
                       <td class="fw-bolder">總金額</td>
-                              <td>$    ${totalPrice}</td>
+                      <td>$    ${totalPrice}</td>
                     </tr>
                     </tbody>
                     </table>`
-            values += `<div><h5>截團時間    ${dueDate.value}</h5></div>`
+            values += `<h5 class="fw-bolder mb-2">截團時間 <span class="my-bg-primary text-white p-1 rounded">${dueDate.value}</span></h5>
+            <h5 class="fw-bolder">文章標題 ${title.value}</h5>
+            <div class="confirmContent">       
+            ${ rrr.innerHTML }
+            </div>`
             $('#infoBody').html(values);
         })
        

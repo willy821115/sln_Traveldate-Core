@@ -707,6 +707,7 @@ namespace prj_Traveldate_Core.Controllers
             return PartialView(vm);
         }
         //排序
+        
         public IActionResult filteredBySort(string sortType, int page = 1, int pageSize = 8)
         {
             ViewBag.sortType = sortType;
@@ -726,17 +727,19 @@ namespace prj_Traveldate_Core.Controllers
 
             json = HttpContext.Session.GetString(CDictionary.SK_FILETREDSCHEDULE_INFO);
             vm.schedules = JsonSerializer.Deserialize<List<ScheduleList1>>(json,options);
-            //依發文時間(近到遠)
-            if(sortType == "發起時間")
+
+           
+            //依發文時間遠到近
+            if (sortType == "發起時間")
             {
-                forumInfos();
-                vm.schedules = vm.schedules.OrderBy(s => s.ForumList.ReleaseDatetime).ToList();
-                vm.pageSize = pageSize; // 每頁顯示的項目數
-                vm.currentPage = page < 1 ? 1 : page;
-                itemsToSkip = (page - 1) * pageSize;
-                vm.totalCount = vm.schedules.Count();
-                vm.schedules = vm.schedules.Skip(itemsToSkip).Take(pageSize).ToList();
-                return PartialView(vm);
+                    forumInfos();
+                    vm.schedules = vm.schedules.OrderByDescending(s => s.ForumList.ReleaseDatetime).ToList();
+                    vm.pageSize = pageSize; // 每頁顯示的項目數
+                    vm.currentPage = page < 1 ? 1 : page;
+                    itemsToSkip = (page - 1) * pageSize;
+                    vm.totalCount = vm.schedules.Count();
+                    vm.schedules = vm.schedules.Skip(itemsToSkip).Take(pageSize).ToList();
+                    return PartialView(vm);
             }
             //依回覆數
             if (sortType == "回覆數")

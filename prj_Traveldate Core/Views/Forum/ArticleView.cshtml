@@ -269,7 +269,16 @@
              </div>
              
             <div><img src="~/icons/icons8-talk-64.png" /><a href="#my-reply" id="btnReply">回覆</a></div>
-            <div><img src="~/icons/icons8-group-64.png" /><input id="btnJoin" class="btn btn-light" type="button" value="我要跟團" /></div>
+            <div><img src="~/icons/icons8-group-64.png" />
+                    @if (Model.member != null)
+                    {
+                       <input id="btnJoin" class="btn btn-light" type="button" value="我要跟團" />
+                    }
+                    else
+                    {
+                        <a id="confirmedLoginStatus" asp-action="Likes" asp-route-forumId="@Model.forum.ForumListId" class="btn btn-light">我要跟團</a>
+                    }
+                
         </div>
         <div id="replyBody">
                 @if(Model.replys == null)
