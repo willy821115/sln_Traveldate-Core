@@ -3,10 +3,12 @@
     ViewData["Title"] = "showCompanion";
 }
 
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
-        <div class="cell d-flex flex-column">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @* <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
             @*                      原本load二進位的頭像圖片用
             @{
             if (ViewBag.photo != null)
@@ -20,14 +22,20 @@
             <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
             }
             } *@
-            @{
-                if (ViewBag.image != null)
-                {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="~/images/@ViewBag.image" width="150" height="150" />
-                    </div>
-                }
-            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
         </div>
 
             <ul class="list-group leftarea mt-3">
@@ -85,11 +93,11 @@
                 </li>
             </ul>
         </div>
+        </div>
     </div>
-
-</div>
-
-<!-- 右半邊 - 內容容器 -->
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+<div id="rightPanel" class="col-md-10">
 <h3 class="mb-4"><b>常用旅伴</b><span></span></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -103,7 +111,7 @@
 @using (Html.BeginForm("addcomment", "Member", FormMethod.Post)){
 @* <button type="submit" class="btn btn-primary link-offset-2 link-underline link-underline-opacity-0" style="margin-top:45px;margin-left:190px;background-color:#155074"> *@
 
-    @Html.ActionLink("新增旅伴", "addCompanion", "Member", "",new {@class="btn.link-offset-2 a.black-link2:hover  link-offset-2 link-underline link-underline-opacity-0 btn btn-primary",style="margin-top:-0px;margin-left:170px;background-color:#155074"} )
+            @Html.ActionLink("新增旅伴", "addCompanion", "Member", "",new {@class="btn.link-offset-2 a.black-link2:hover  link-offset-2 link-underline link-underline-opacity-0 btn btn-primary",style="margin-top:0px;margin-left:170px;margin-bottom:-50px;background-color:#155074"} )
 
 @*     </button> *@
 }
@@ -112,10 +120,10 @@
     <thead>
          <tr>
             <th class ="col-md-1"></th>
-              <th>姓</th>
-              <th>名</th>                                
-             <th>出生日期</th>                       
-             <th>手機號碼</th>
+                    <th class="col-md-1">姓</th>
+                    <th class="col-md-1">名</th>
+                    <th class="col-md-4">出生日期</th>
+                    <th class="col-md-4">手機號碼</th>
          </tr>
     </thead>
     <tbody>
@@ -125,7 +133,7 @@
                         {
                             //count++;
                             <tr data-toggle="collapse" data-target="#comment1">
-                                <td class="col-md-1"><i class="material-icons" style="font-size:30px;margin-left:24px">person_pin</i></td>
+                                <td class="col-md-1"><i class="material-icons" style="font-size:30px;margin-left:16px">person_pin</i></td>
                                 <td>@item.LastName</td>
                                 <td>@item.FirstName</td>
                                 <td>@item.BirthDate?.ToString("yyyy-MM-dd")</td>
@@ -136,7 +144,9 @@
     </tbody>
 
 </table>
-
+</div>
+</div>
+</div>
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">

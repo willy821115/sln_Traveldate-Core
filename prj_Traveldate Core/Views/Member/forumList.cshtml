@@ -13,12 +13,13 @@
         }
     </style>
 }
-@*<h1>forumList3</h1>*@
 
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
-        <div class="cell d-flex flex-column">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @* <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
             @*                      原本load二進位的頭像圖片用
             @{
             if (ViewBag.photo != null)
@@ -32,14 +33,20 @@
             <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
             }
             } *@
-            @{
-                if (ViewBag.image != null)
-                {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="~/images/@ViewBag.image" width="150" height="150" />
-                    </div>
-                }
-            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
         </div>
 
             <ul class="list-group leftarea mt-3">
@@ -100,9 +107,9 @@
     </div>
 
 </div>
-
-
-<!-- 右半邊 - 內容容器 -->
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-12">
 <h3 class="mb-4"><b>我的揪團</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -115,15 +122,14 @@
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
-
-            <th class="col-md-1"></th>
-            <th class="col-md-2">行程名稱</th>
-            <th >發布日期</th>
-            <th c>截止日期</th>
-            <th>讚數</th>
-            <th >觀看數</th>
-            <th class="col-md-3">行程敘述</th>
-            <th>操作</th>
+                   <th></th>
+                    <th class="col-md-2">行程名稱</th>
+                  <th class="col-md-3">發布日期</th>
+                  <th class="col-md-3">截止日期</th>
+                    <th class="col-md-2">讚數</th>
+                    <th class="col-md-2">觀看數</th>
+                  <th class="col-md-2">行程敘述</th>
+                  <th >操作</th>
         </tr>
     </thead>
 
@@ -136,9 +142,8 @@
                     <td><img style="marging-left:-20px" src="~/icons/icon-forum-1.png" /></td>
                     <td>@item.Title</td>
                     <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
-                    <td>@item.DueDate/* .ToString("yyyy-MM-dd") */</td>
-                    @*<td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item.Likes</td>*@
-                    <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item.Likes</td>
+                    <td>@item.DueDate?.ToString("yyyy-MM-dd") </td>
+                    <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item</td>
                     <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
                     <td><div class="content-cell">@Html.Raw(item.Content)</div></td>
                     @*<td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "orderList","Member","",new {@class="black-link"})</td>*@
@@ -178,7 +183,7 @@
         </div>
     </div>
 </div>*@
-}
+
 
 @section scripts{
     <script>
