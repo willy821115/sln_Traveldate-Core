@@ -345,8 +345,19 @@
     {
         <input id="isLogin" type="hidden" />
     }
-   
-   
+    @if (Model.createStatus != null)
+    {
+        if(Model.createStatus == 0)
+        {
+                <input type="hidden" id="createStatus" value="0" />
+        }
+        else
+        {
+            <input type="hidden" id="createStatus" value="1" />
+        }
+    }
+    
+
     
     
     @* <div id ="dialogBox" class="dialog-box">
@@ -362,7 +373,32 @@
 </div>
 
 @section Scripts{
+    <script>
+        //結帳成功後回到發文頁面會跳成功通知
+        document.addEventListener("DOMContentLoaded",function(){
+            var createStatusInput = document.getElementById("createStatus");
+            if (createStatusInput) {
+                var createStatusValue = createStatusInput.value;
+                if (createStatusValue === "0"){
+                    publishArticle()
+                }
+            }
+        })
     
+        //發布
+        function publishArticle() {
+            Swal.fire({
+                icon: 'success',
+                title: '發布成功!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    </script>
+
+
+
+
     <script>
         $('#btnCloseTalk').on('click', () => {
             $('#dialogBox').hide()

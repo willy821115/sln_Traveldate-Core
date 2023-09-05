@@ -162,6 +162,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 var options = new JsonSerializerOptions
                 {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
@@ -225,7 +226,11 @@ namespace prj_Traveldate_Core.Controllers
             //    creatArticle.forum.IsPublish = true;
             //}
             creatArticle.forum.IsPublish = false;
-            creatArticle.forum.ReleaseDatetime = DateTime.Now;
+
+            //改成到結帳成功後才有發布時間
+            //creatArticle.forum.ReleaseDatetime = DateTime.Now;
+
+
             _context.Add(creatArticle.forum);
             _context.SaveChanges();
 
@@ -245,7 +250,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 return RedirectToAction("forumList", "Member");
             }
-            if (creatArticle.isPublish == "發布")
+            if (creatArticle.isPublish == "結帳去")
             {
                 var routeValues = new RouteValueDictionary
 {
@@ -277,44 +282,89 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
         [HttpPost]
-        public IActionResult Edit(CCreatArticleViewModel article)
+        public IActionResult Edit(CCreatArticleViewModel creatArticle)
         {
-            if (article.isSave == "儲存草稿")
-            {
-                article.forum.IsPublish = false;
-            }
-            if (article.isPublish == "發布")
-            {
-                article.forum.IsPublish = true;
-            }
-            article.forum.ReleaseDatetime = DateTime.Now;
-            _context.Update(article.forum);
+            creatArticle.forum.IsPublish = false;
+
+            //結帳後才有發布時間
+            //creatArticle.forum.ReleaseDatetime = DateTime.Now;
+            _context.Add(creatArticle.forum);
             _context.SaveChanges();
 
-            foreach (int tripId in article.tripIds)
+            foreach (int tripId in creatArticle.tripIds)
             {
                 var newSchedule = new ScheduleList
                 {
-                    ForumListId = article.forum.ForumListId,
+                    ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Update(newSchedule);
+                _context.Add(newSchedule);
             }
 
             _context.SaveChanges();
             Task.Delay(3000).Wait();
-            return RedirectToAction("Index", "Member");
+            if (creatArticle.isSave == "儲存草稿")
+            {
+                return RedirectToAction("forumList", "Member");
+            }
+            if (creatArticle.isPublish == "結帳去")
+            {
+                var routeValues = new RouteValueDictionary
+{
+    { "ForumListID", creatArticle.forum.ForumListId },
+                    {"type",0 }
+};
+                return RedirectToAction("ForumCheckout", "Cart", routeValues);
+            }
+            return RedirectToAction("forumList", "Member");
 
+            /////////////////舊的寫法/////////////////
+            //if (article.isSave == "儲存草稿")
+            //{
+            //    article.forum.IsPublish = false;
+            //}
+            //if (article.isPublish == "發布")
+            //{
+            //    article.forum.IsPublish = true;
+            //}
+            //article.forum.ReleaseDatetime = DateTime.Now;
+            //_context.Update(article.forum);
+            //_context.SaveChanges();
+
+            //foreach (int tripId in article.tripIds)
+            //{
+            //    var newSchedule = new ScheduleList
+            //    {
+            //        ForumListId = article.forum.ForumListId,
+            //        TripId = tripId
+            //    };
+            //    _context.Update(newSchedule);
+            //}
+
+            //_context.SaveChanges();
+            //Task.Delay(3000).Wait();
+            //return RedirectToAction("Index", "Member");
+
+
+            //if (creatArticle.isSave == "儲存草稿")
+            //{
+
+            //}
+            //if (creatArticle.isPublish == "發布")
+            //{
+            //    creatArticle.forum.IsPublish = true;
+            //}
 
         }
 
 
-        public IActionResult ArticleView(int? id)
+        public IActionResult ArticleView(int? id,int? createStatus)
         {
             if (id == null)
             {
                 return RedirectToAction("ForumList");
             }
+
             CArticleViewModel vm = new CArticleViewModel();
             vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
@@ -372,6 +422,16 @@ namespace prj_Traveldate_Core.Controllers
                     ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
                 }
             };
+            //成功回傳0
+            if (createStatus==0)
+            {
+                vm.createStatus = createStatus;
+            }
+            else
+            { 
+                //失敗回傳1
+                vm.createStatus =1;
+            }
             return View(vm);
         }
         /////////////////////////////////////Api/////////////////////////////////
