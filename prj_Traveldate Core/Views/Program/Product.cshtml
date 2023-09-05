@@ -281,6 +281,11 @@
                         <div>SAT</div>
                     </div>
                     <div class="days" id="calendarDays"></div>
+                    <div style="margin-top:10px; text-align:center">
+                        <span class="front-red">即將完售</span>
+                        <span class="front-green">熱賣中</span>
+                        <span class="front-slanted">售完</span>
+                    </div>
                 </div>
             </div>
 
@@ -664,7 +669,8 @@
         const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
         const discountprice = @Html.Raw(Json.Serialize(Model.program.fDiscountPlanPrice));
         const discountdate = @Html.Raw(Json.Serialize(Model.program.fDiscountPriceDate));
-        console.log(availableDates, price, discountprice, discountdate);
+        const tripNum = @Html.Raw(Json.Serialize(Model.program.fMaxnum));
+        console.log(availableDates, price, discountprice, discountdate, tripNum);
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -763,6 +769,16 @@
                 dayElement.classList.add('available-date');
                 const formattedDate = formatDate(date);
                 const priceIndex = availableDates.indexOf(formattedDate);
+
+                if (tripNum[priceIndex] <= 6 && tripNum[priceIndex]>0) {
+                    dayElement.classList.add('red-box-shadow');
+                } else if (tripNum[priceIndex] === 0) {
+                    dayElement.classList.add('slanted');
+                    // dayElement.classList.add('expired-date');
+                } else {
+                    dayElement.classList.add('green-box-shadow');
+                }
+
                 if (priceIndex !== -1) {
                     let priceSpan = document.createElement('p');
                     priceSpan.className = 'price';
@@ -870,15 +886,15 @@
             if (ulElement) {
                 let html = '';
 
-                if (data.maxnum > 9) {
-                    html += `<li>可訂購數：${data.maxnum}</li>`;
+                if (data.maxnum > 6) {
+                    html += `<li style="color:#00A600;">可訂購數：${data.maxnum} （熱賣中）</li>`;
                 }
-                else if (data.maxnum < 10) {
-                    var availableDateElements = document.getElementsByClassName("available-date");
-                    for (var i = 0; i < availableDateElements.length; i++) {
-                        availableDateElements[i].style.color = "red";
-                        availableDateElements[i].style.boxShadow = "0 2px 5px rgba(255, 0, 0, 0.5)";
-                    }
+                else if (data.maxnum <= 6) {
+                    // var availableDateElements = document.getElementsByClassName("available-date");
+                    // for (var i = 0; i < availableDateElements.length; i++) {
+                    //     availableDateElements[i].style.color = "red";
+                    //     availableDateElements[i].style.boxShadow = "0 2px 5px rgba(255, 0, 0, 0.5)";
+                    // }
 
                     html += `<li style="color:red;">可訂購數：${data.maxnum}  （即將額滿）</li>`;
                 }
@@ -922,6 +938,7 @@
             addDirCartBtn.addEventListener('click', addDirectToCart);
         }
 
+        //Calendar加到購物車
         function addToCart() {
             const tripId = this.getAttribute('data-tripid');
             const quantity = document.getElementById('var-value').textContent;
@@ -944,6 +961,7 @@
                 });
         }
 
+        //Calendar立即訂購
         function addDirectToCart() {
             const tripId = this.getAttribute('data-tripid');
             const quantity = document.getElementById('var-value').textContent;
@@ -1009,29 +1027,6 @@
         //     image.style.cursor = 'auto';
         // });
         
-        //顯示所有的加購物車
-        // const addToCartButtons = document.querySelectorAll('.addToCartButton');
-        // function handleAddToCartClick(event) {
-        //     event.preventDefault();
-        //     const num = parseInt(event.target.getAttribute('data-num'));
-        //     const tripId = parseInt(event.target.getAttribute('data-tripId'));
-
-        //     fetch(`/Program/AddToCart?num=${num}&tripId=${tripId}`, {
-        //         method: 'POST',
-        //     })
-        //         .then(response => response.text())
-        //         .then(data => {
-        //             if (data === "請登入會員") {
-        //                 swal('請登入會員', '', 'warning');
-        //             } else {
-        //                 swal('已加入購物車!', '', 'success');
-        //             }
-        //         });
-        // }
-
-        // addToCartButtons.forEach(button => {
-        //     button.addEventListener('click', handleAddToCartClick);
-        // });
 
        // var modal = document.getElementById("myModal");
 
@@ -1188,7 +1183,7 @@
     <script>
         $(document).ready(function () {
             var windowHeight = $(window).height();
-            var scrollThreshold = 1200; 
+            var scrollThreshold = 1800; 
             var navbar = $('.navbar.navbar-expand-md');
             var navbarHeight = navbar.outerHeight();
             var navbarPosition = 90; 
@@ -1233,6 +1228,37 @@
             background-color: #F0F0F0;
         }
 
+        .front-red{
+            padding: 10px;
+            color: red !important;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5) inset;
+        }
+
+        .front-green{
+            padding: 10px;
+            color: #00A600 !important;
+            box-shadow: 0 0px 5px rgba(0, 200, 0, 0.5) inset;
+            border-radius: 5px;
+        }
+
+        .front-slanted{
+            padding: 10px;
+            box-shadow: 0px 1px 5px rgba(128, 128, 128, 0.5) inset;
+            border-radius: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+            .front-slanted::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                border-top: 1px solid rgba(128, 128, 128, 0.5);
+                transform: rotate(-45deg);
+            }
 
         /* 48px */
         .toTop-arrow {
