@@ -6,6 +6,7 @@ namespace prj_Traveldate_Core.Controllers
     //金使用的 2023.09.04
     internal class CForumListViewModel2
     {
+        internal bool? isLike;
         private ForumList _forumList = null;
         private LikeList _likeList = null;
 

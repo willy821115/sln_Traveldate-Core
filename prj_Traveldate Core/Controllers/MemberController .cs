@@ -950,7 +950,7 @@ namespace prj_Traveldate_Core.Controllers
                             ProductId = orderdetails3.Trip.ProductId,
 
                             //Date= orderdetails3.Trip.Date,
-                            //Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
+                            Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
                             CommentScore =CommentScore,
                             Content = Content,
                             Title = Title,
@@ -1401,6 +1401,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
+                                    from like in context.LikeLists
                         join fl in context.ForumLists
                         on m.MemberId equals fl.MemberId
                         where m.MemberId == MemberId
@@ -1410,7 +1411,7 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                            //Likes = fl.Likes,
+                          //(int)  isLike= IsLike
                             //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,

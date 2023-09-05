@@ -3,9 +3,9 @@
     ViewData["Title"] = "addcomment";
 }
 
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-md-2">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+@*     <div class="row"> *@
+        <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
@@ -18,18 +18,24 @@
                         </div>
                         }
                         else
-                        {
+                        
                         <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
                         }
                         } *@
-                        @{
-                            if (ViewBag.image != null)
-                            {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="~/images/@ViewBag.image" width="150" height="150" />
-                                </div>
-                            }
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
                         }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
                     </div>
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
@@ -88,16 +94,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- 右半邊 - 內容容器 -->
-             
-            <div class="col-md-7">
-
-                <div id="rightPanel">
-                <form asp-action="addcomment" enctype="multipart/form-data">
-                         
-                     
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel"  class="col-md-9">
+                <form asp-action="addcomment" enctype="multipart/form-data">                
                 @* using (Html.BeginForm("addcomment", "Member", FormMethod.Post))
                 { *@
                     <h3 class="mb-4"><b>新增評論</b></h3>
@@ -229,8 +229,8 @@
         <div class="carousel-item" data-bs-interval="4000">
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
-    </div>
-</div> *@
+    </div>*@
+</div> 
 
 
 @section styles{
