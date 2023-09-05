@@ -83,7 +83,7 @@ public partial class TraveldateContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=192.168.31.90;Initial Catalog=Traveldate;User ID=tdSQL;Password=1234;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Traveldate;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -315,6 +315,7 @@ public partial class TraveldateContext : DbContext
             entity.Property(e => e.ForumListId).HasColumnName("ForumListID");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.IsPublish).HasColumnName("isPublish");
+            entity.Property(e => e.Likes).HasDefaultValueSql("((0))");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.ReleaseDatetime).HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(50);

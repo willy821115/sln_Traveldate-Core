@@ -248,7 +248,7 @@
                     <div class="chat_input">
                         
                         <input id="message" class="sendMsg" type="text" placeholder="請輸入訊息">
-                        <div class="myIcon2" id="sendButton">
+                        <div class="myIcon2" id="sendButtonLayout">
                             <i class="fa fa-share send_icon"></i>
                         </div>
                     </div>
@@ -357,7 +357,18 @@
            
         });
 
-connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
+        //傳送訊息
+            $('#sendButtonLayout').on('click', function () {
+            let myID = $('#myID').html();
+            let message = $('#message').val();
+            let sendToID = $('#sendToID').val();
+            
+            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+
+        connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
             //$("#chatRoom").append($("<div></div>").attr("class", "message-text").text(msg));
 
             // 創建一個新的 <div class="message_row you-message"> 元素
@@ -428,15 +439,15 @@ connection.on("UpdateSupplierID", function (msg, SupplierID,myID) {
       
 
         //傳送訊息
-        $('#sendButton').on('click', function () {
-            let myID = $('#myID').html();
-            let message = $('#message').val();
-            let sendToID = $('#sendToID').val();
+        //$('#sendButtonLayout').on('click', function () {
+        //    let myID = $('#myID').html();
+        //    let message = $('#message').val();
+        //    let sendToID = $('#sendToID').val();
             
-            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
-                alert('傳送錯誤: ' + err.toString());
-            });
-        });
+        //    connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
+        //        alert('傳送錯誤: ' + err.toString());
+        //    });
+        //});
 
         
           

@@ -130,7 +130,7 @@
 
                     <div class="form-group">
                         <label >內容</label>
-                        <input type="text" id="Content" name="Content" class="form-control" />
+                <input type="text" id="Content" name="Content" class="form-control" style="height:80px" />
                     </div>
 
                     <div class="form-group">
@@ -174,8 +174,6 @@
                     <div id="imagePreview" class="w-100 mt-5">
                     </div>
 
-                    <br />
-
                     <div>
                         @*<label>MemberId</label>*@
                         <input type="hidden" id="MemberId" name="MemberId" class="form-control" value="@Model.MemberId"/>
@@ -202,7 +200,9 @@
 @*                             <input type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" value="傳送" id="btnAddComment" /> *@
                                <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" id="btnAddComment">傳送</button>
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
-                          </div>              
+                          </div>
+                        <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button> @*DEMO用*@
+
                     </div>
                     @* } *@
                 </form>
@@ -285,6 +285,24 @@
                     }
                 });
             </script>
+
+    <script>
+        //Demo用-addDEMO
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDEMO = document.getElementById('addDEMO');
+            addDEMO.addEventListener('click', function () {
+                // 填充表單輸入欄位
+
+                document.getElementById('Title').value = '極致經驗的行程體驗！';
+                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與文化之美的旅客！';
+                document.getElementById('CommentScore').value = '4';
+
+                // // 可選：顯示Demo照片
+                // const imagePreview = document.getElementById('imagePreview');
+                // imagePreview.src = '填充的圖片URL';
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

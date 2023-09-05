@@ -46,9 +46,9 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
             vm.program.fMemPic = pf.loadMemPic((int)id);
-            vm.program.fMaxnum = pf.loadQuantityMax((int)id);
+            //vm.program.fMaxnum = pf.loadQuantityMax((int)id);
 
-                TraveldateContext db = new TraveldateContext();
+            TraveldateContext db = new TraveldateContext();
                 int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
                 var favorite = db.Favorites
                     .FirstOrDefault(f => f.MemberId == memberID && f.ProductId == id);
