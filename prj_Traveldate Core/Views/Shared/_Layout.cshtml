@@ -358,7 +358,7 @@
         });
 
         //傳送訊息
-        $('#sendButton').on('click', function () {
+            $('#sendButtonLayout').on('click', function () {
             let myID = $('#myID').html();
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
@@ -439,15 +439,15 @@
       
 
         //傳送訊息
-        $('#sendButton').on('click', function () {
-            let myID = $('#myID').html();
-            let message = $('#message').val();
-            let sendToID = $('#sendToID').val();
+        //$('#sendButtonLayout').on('click', function () {
+        //    let myID = $('#myID').html();
+        //    let message = $('#message').val();
+        //    let sendToID = $('#sendToID').val();
             
-            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
-                alert('傳送錯誤: ' + err.toString());
-            });
-        });
+        //    connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
+        //        alert('傳送錯誤: ' + err.toString());
+        //    });
+        //});
 
         
           
