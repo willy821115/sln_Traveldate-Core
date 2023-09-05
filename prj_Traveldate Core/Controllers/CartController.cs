@@ -441,11 +441,12 @@ namespace prj_Traveldate_Core.Controllers
 
 
             //如果是從揪團過來的走這裡
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
             {
                 int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
                  _context.ForumLists.Find(ForumListID).IsPublish = true;
                   _context.SaveChanges();
+                return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, createStatus =0});
             }
  
            
