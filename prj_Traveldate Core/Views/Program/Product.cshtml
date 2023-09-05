@@ -98,14 +98,14 @@
     </div>
     
 
-    <!--Outline、立即預定-->
+    <!--Outline、立即預定、加入最愛-->
     <div class="plancal-container mb-3">
         <div class="product-description">
             <ul>
                 <li style="list-style-image: url('/icons/icons8-tag-16.png');">
                     <div style="display:flex;align-items:center;">
                         @foreach( var tags in Model.program.fProdTags){
-                            <p class="mb-0" style="color:#6C6C6C; margin-right:5px;">#@tags </p>
+                            <p class="bg-gradient-info rounded p-1 text-white fw-bolder" style="color:#6C6C6C; margin-right:5px; margin-bottom:0px !important;">#@tags </p>
                         }
                     </div>
                 </li>
@@ -125,9 +125,11 @@
                     <span>TWD</span>
                     <span>@Model.program.fTripPrice</span>
                     <span>起</span>
-                    <a asp-controller="Program" asp-action="AddToFavo" name="pdid" asp-route-id="@Model.product.ProductId">
-                        <img src="/icons/icons8-like-48 (1).png" class="CartIconbtn cartUnlike" style="width:32px; margin-bottom:2px;">
-                    </a>
+                    @{
+                        bool isFavorite = Model.program.fIsFav;
+                        string iconSrc = isFavorite ? "/icons/icons8-like-48.png" : "/icons/icons8-like-48 (1).png";
+                    }
+                    <img id="favButton" src="@iconSrc" class="CartIconbtn" style="width:32px; margin-bottom:2px;" data-product-id="@Model.product.ProductId" data-is-favorite="@Model.program.fIsFav">
                 </div>
                 <a href="#booking-section" class="btn my-btn-primary" style="width:100%;margin:5px 0;font-size: 20px;">立即預訂</a>
                 @if(Model.program.fStatus == "熱賣中")
@@ -157,7 +159,20 @@
             <div class="comments-title"><p>旅客評價<a href="#commentdetail" class="more-comment">更多評價<i class="fa fa-angle-right"></i></a></p></div>
                 <div class="be-comment">
                 <div class="be-img-comment">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                        @if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "男")
+                        {
+                            <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                        }
+                        else if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "女")
+                        {
+                            <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                        }
+                        else if (Model.program.fMemPic != null)
+                        {
+                            <img src="~/images/@Model.program.fMemPic[0]" alt="commentpic" class="comment-pic" id="myImg" />
+                        }
+
+                        
                 </div>
                 <div class="comment-header">
                     @if (Model.program.fComMem[0] != null)
@@ -266,6 +281,11 @@
                         <div>SAT</div>
                     </div>
                     <div class="days" id="calendarDays"></div>
+                    <div style="margin-top:10px; text-align:center">
+                        <span class="front-red">即將完售</span>
+                        <span class="front-green">熱賣中</span>
+                        <span class="front-slanted">售完</span>
+                    </div>
                 </div>
             </div>
 
@@ -335,11 +355,13 @@
         </div>
     </div>
 
+    <!--顯示所有可購買日期)-->
     <div id="tripidContainer" class="detailplan-container" style="display: none;">
         <div>更多日期： </div>
         @for (int i = 0; i < Model.program.fTripDate.Count; i++)
         {
             var tripDate = Model.program.fTripDate[i];
+            var maxNum = Model.program.fMaxnum[i];
 
             <div class="card-container">
                 <div class="card">
@@ -381,17 +403,16 @@
                                         string dateFormat = "yyyy-MM-dd";
                                         DateTime tripDates = DateTime.ParseExact(Model.program.fTripDate[i], dateFormat, System.Globalization.CultureInfo.InvariantCulture);
 
-                                        if (tripDates < DateTime.Now)
+                                        if (tripDates < DateTime.Now || maxNum == 0)
                                         {
-                                                        <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
+                                          <button class="btn btn-outline-danger addToCartButtons" data-tripid="@Model.program.fTripId[i]" data-quantity="1" disabled>售完</button>
                                         }
                                         else
                                         {
-                                                <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
-                                              <input type="hidden" id="nums" name="nums" value="1">
-                                                 <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
-                                                 <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
-                                                 
+                                            <input type="hidden" id="tripIds" name="tripIds" value="@Model.program.fTripId[i]">
+                                            <input type="hidden" id="nums" name="nums" value="1">
+                                            <button type="button" class="btn btn-outline-dark addToCartButtonss" data-tripid="@Model.program.fTripId[i]" data-quantity="1">加入購物車</button>
+                                            <a asp-area="" asp-controller="Program" asp-action="AddDirectToCart" data-tripid="@Model.program.fTripId[i]" data-orderdetailid="@ViewBag.orderDetailId" class="btn my-btn-primary addToCartButtonsss">立即購買</a>
                                         }
                                     }
                                     
@@ -478,7 +499,18 @@
                     {
                         <div class="be-comment" style="margin-bottom:40px">
                             <div class="be-img-comment">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "男")
+                                {
+                                    <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                                }
+                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "女")
+                                {
+                                    <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                                }
+                                @if (Model.program.fMemPic != null && Model.program.fMemPic.Count > 0 && Model.program.fMemPic[comIndex] != null)
+                                {
+                                    <img src="/images/@Model.program.fMemPic[comIndex]" alt="commentpic" class="comment-pic" id="myImg" />
+                                }
                             </div>
                             <div class="comment-header">
                                 @if (Model.program.fComMem[comIndex] != null)
@@ -638,7 +670,8 @@
         const price = @Html.Raw(Json.Serialize(Model.program.fPlanPrice));
         const discountprice = @Html.Raw(Json.Serialize(Model.program.fDiscountPlanPrice));
         const discountdate = @Html.Raw(Json.Serialize(Model.program.fDiscountPriceDate));
-        console.log(availableDates, price, discountprice, discountdate);
+        const tripNum = @Html.Raw(Json.Serialize(Model.program.fMaxnum));
+        console.log(availableDates, price, discountprice, discountdate, tripNum);
         // const availableDates = ["2023-08-16", "2023-08-20", "2023-08-25"];
         // Event listeners for navigation buttons
         prevMonthButton.addEventListener('click', showPreviousMonth);
@@ -737,6 +770,16 @@
                 dayElement.classList.add('available-date');
                 const formattedDate = formatDate(date);
                 const priceIndex = availableDates.indexOf(formattedDate);
+
+                if (tripNum[priceIndex] <= 6 && tripNum[priceIndex]>0) {
+                    dayElement.classList.add('red-box-shadow');
+                } else if (tripNum[priceIndex] === 0) {
+                    dayElement.classList.add('slanted');
+                    // dayElement.classList.add('expired-date');
+                } else {
+                    dayElement.classList.add('green-box-shadow');
+                }
+
                 if (priceIndex !== -1) {
                     let priceSpan = document.createElement('p');
                     priceSpan.className = 'price';
@@ -844,10 +887,16 @@
             if (ulElement) {
                 let html = '';
 
-                if (data.maxnum > 9) {
-                    html += `<li>可訂購數：${data.maxnum}</li>`;
+                if (data.maxnum > 6) {
+                    html += `<li style="color:#00A600;">可訂購數：${data.maxnum} （熱賣中）</li>`;
                 }
-                else if (data.maxnum < 10) {
+                else if (data.maxnum <= 6) {
+                    // var availableDateElements = document.getElementsByClassName("available-date");
+                    // for (var i = 0; i < availableDateElements.length; i++) {
+                    //     availableDateElements[i].style.color = "red";
+                    //     availableDateElements[i].style.boxShadow = "0 2px 5px rgba(255, 0, 0, 0.5)";
+                    // }
+
                     html += `<li style="color:red;">可訂購數：${data.maxnum}  （即將額滿）</li>`;
                 }
 
@@ -890,6 +939,7 @@
             addDirCartBtn.addEventListener('click', addDirectToCart);
         }
 
+        //Calendar加到購物車
         function addToCart() {
             const tripId = this.getAttribute('data-tripid');
             const quantity = document.getElementById('var-value').textContent;
@@ -912,14 +962,21 @@
                 });
         }
 
+        //Calendar立即訂購
         function addDirectToCart() {
             const tripId = this.getAttribute('data-tripid');
             const quantity = document.getElementById('var-value').textContent;
 
             console.log(quantity, tripId)
 
-            fetch(`/Program/AddToCart?num=${quantity}&tripId=${tripId}`, {
+            var formData = new FormData();
+            formData.append('num', quantity);
+            formData.append('tripId', tripId);
+
+
+            fetch('/Program/AddDirectToCart', {
                 method: 'POST',
+                body: formData
             }).then(response => response.text())
                 .then(data => {
                     if (data === "請登入會員") {
@@ -929,9 +986,11 @@
                         console.log(orderDetailId);
                         console.log(data);
 
+                        if (!isNaN(orderDetailId) && orderDetailId != 0) {
+                            window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                        }
                         //window.orderDetailId = orderDetailId;
                         //window.location.href = `/Cart/ShoppingCart`;
-                        window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
 
                         //window.location.href = `/Cart/ShoppingCart`;
                     }
@@ -969,29 +1028,6 @@
         //     image.style.cursor = 'auto';
         // });
         
-        //顯示所有的加購物車
-        // const addToCartButtons = document.querySelectorAll('.addToCartButton');
-        // function handleAddToCartClick(event) {
-        //     event.preventDefault();
-        //     const num = parseInt(event.target.getAttribute('data-num'));
-        //     const tripId = parseInt(event.target.getAttribute('data-tripId'));
-
-        //     fetch(`/Program/AddToCart?num=${num}&tripId=${tripId}`, {
-        //         method: 'POST',
-        //     })
-        //         .then(response => response.text())
-        //         .then(data => {
-        //             if (data === "請登入會員") {
-        //                 swal('請登入會員', '', 'warning');
-        //             } else {
-        //                 swal('已加入購物車!', '', 'success');
-        //             }
-        //         });
-        // }
-
-        // addToCartButtons.forEach(button => {
-        //     button.addEventListener('click', handleAddToCartClick);
-        // });
 
        // var modal = document.getElementById("myModal");
 
@@ -1101,13 +1137,44 @@
                             console.log(orderDetailId);
                             console.log(data);
 
+                            if (!isNaN(orderDetailId) && orderDetailId != 0) {
+                                window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
+                            }
                             //window.orderDetailId = orderDetailId;
                             //window.location.href = `/Cart/ShoppingCart`;
-                            window.location.href = `/Cart/ConfirmOrder/${orderDetailId}`;
                         }
                     });
             });
         });
+
+
+        $(document).ready(function () {
+            $("#favButton").click(function () {
+                var productId = $(this).data("product-id");
+                var isFavorite = $(this).data("is-favorite");
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Program/FavOrNot", 
+                    data: { id: productId },
+                    success: function (data) {
+                        if (data.success) {
+                            var newIconSrc = data.message === "產品已成功加入最愛。"
+                                ? "/icons/icons8-like-48.png"
+                                : "/icons/icons8-like-48 (1).png";
+                            $("#favButton").attr("src", newIconSrc);
+
+                            $("#favButton").data("is-favorite", data.message === "產品已成功加入最愛。");
+                        } else {
+                            if (data === "請登入會員") {
+                                swal('請登入會員', '', 'warning');
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
 
 
 
@@ -1117,7 +1184,7 @@
     <script>
         $(document).ready(function () {
             var windowHeight = $(window).height();
-            var scrollThreshold = 1200; 
+            var scrollThreshold = 1800; 
             var navbar = $('.navbar.navbar-expand-md');
             var navbarHeight = navbar.outerHeight();
             var navbarPosition = 90; 
@@ -1162,6 +1229,37 @@
             background-color: #F0F0F0;
         }
 
+        .front-red{
+            padding: 10px;
+            color: red !important;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5) inset;
+        }
+
+        .front-green{
+            padding: 10px;
+            color: #00A600 !important;
+            box-shadow: 0 0px 5px rgba(0, 200, 0, 0.5) inset;
+            border-radius: 5px;
+        }
+
+        .front-slanted{
+            padding: 8px;
+            box-shadow: 0px 1px 5px rgba(128, 128, 128, 0.5) inset;
+            border-radius: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+            .front-slanted::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                border-top: 1px solid rgba(128, 128, 128, 0.5);
+                transform: rotate(-45deg);
+            }
 
         /* 48px */
         .toTop-arrow {
@@ -1176,7 +1274,7 @@
             cursor: pointer;
             position: fixed;
             right: 3rem;
-            bottom: 1rem;
+            bottom: 3rem;
             display: none;
         }
 

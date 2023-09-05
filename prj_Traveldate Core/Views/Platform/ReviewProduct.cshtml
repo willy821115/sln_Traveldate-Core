@@ -66,32 +66,32 @@
                                 <form action="/Platform/ReviewAction" method="post">
                                 <div>
                                     <div>
-                                        <label>供應商</label>
+                                            <label><img src="~/icons/icon_office_work.png"/>旅行社</label>
                                         <br />
                                         <span>@Model.CompanyName</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>產品名稱</label>
+                                            <label><img src="~/icons/icon_documents.png"/>產品名稱</label>
                                         <br />
                                         <span>@Model.ProductName</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>產品類型</label>
+                                            <label><img src="~/icons/icon_documents.png" />產品類型</label>
                                         <br />
                                         <span>@Model.ProductType</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>所在國家／城市</label>
+                                            <label><img src="~/icons/icon_documents.png" />所在國家／城市</label>
                                         <br />
                                         <span>台灣／@Model.CityName</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>產品地址</label>
+                                            <label><img src="~/icons/icon_documents.png" />產品地址</label>
                                         <br />
                                         <span>@Model.Address</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>輪播圖</label>
+                                            <label><img src="~/icons/icon_documents.png" />輪播圖</label>
                                         <br />
                                         @foreach (var photo in Model.Photos)
                                         {
@@ -99,7 +99,7 @@
                                         }
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>產品標籤</label>
+                                            <label><img src="~/icons/icon_price_tag.png" />產品標籤</label>
                                         <br />
                                         @foreach (var tags in Model.Prodtags)
                                         {
@@ -107,46 +107,69 @@
                                         }
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>簡介 (搜尋頁)</label>
+                                            <label><img src="~/icons/icon_documents.png" />簡介 (搜尋頁)</label>
                                         <br />
                                         <span>@Model.OutlineForSearch</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                        <label>產品大綱</label>
+                                            <label><img src="~/icons/icon_documents.png" />產品大綱</label>
                                         <br />
                                         <span>@Model.Outline</span>
                                     </div>
                                     <div style="margin-top:10px;">
-                                            <label>產品描述</label>
+                                            <label><img src="~/icons/icon_documents.png" />產品描述</label>
                                             <br />
                                             <span>@Model.Description</span>
                                         </div>
                                    <div style="margin-top:10px;">
-                                            <label>方案名稱</label>
+                                            <label><img src="~/icons/icon_documents.png" />方案名稱</label>
                                             <br />
                                             <span>@Model.PlanName</span>
                                     </div>
                                    <div style="margin-top:10px;">
-                                    <label>方案描述</label>
+                                            <label><img src="~/icons/icon_documents.png" />方案描述</label>
                                     <br />
                                     <span>@Model.PlanDescription</span>
                                 </div>
                                     <div style ="margin-top:10px;">
-                                                <label>行程詳情</label>
+                                            <label><img src="~/icons/icon_documents.png" />行程詳情</label>
                                                 <br />
+                                                <ul>
                                                 @for (int i = 0; i < Model.tripdetail.Count; i++)
                                                 {
-                                                    <span>第 @(i + 1) 天：@Model.tripdetail[i] <br /></span>
+                                                    <li>第 @(i + 1) 天：<br />@Model.tripdetail[i]</li>
                                                 }
+                                            </ul>
                                             </div>
                                     <div style="margin-top:10px;">
-                                       <label>行程照片</label>
+                                            <label><img src="~/icons/icon_documents.png" />行程照片</label>
                                        <br />
                                                 @foreach (var photo in Model.trippic)
                                                 {
                                                     <img src="/images/@photo" class="img-thumbnail" style="height:200px;width:300px;margin-right:5px;" />
                                                 }
                                 </div>
+                                        <div style="margin-top:10px;">
+                                            <label><img src="~/icons/icon_documents.png" />供應日期&價格</label>
+                                            <br />
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>日期</th>
+                                                        <th>價格</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < Model.tripdate.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>@Model.tripdate[i]</td>
+                                                            <td>＄@Model.tripprice[i]</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         <input type="hidden" name="productId" value="@Model.ProductId" />
                                 </div>
                                     <div class="text-center" style="margin-top: 20px;margin-right:50px;">
@@ -191,7 +214,15 @@
                     font-weight:bold;
                     font-size:20px;
                 }
+                .card-body img{
+                margin-bottom:2px;
+                margin-right:3px;
+                }
 
+            .card-body span{
+                margin-left: 24px;
+            }
+            
             </style>
         }
 

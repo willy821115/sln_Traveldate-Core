@@ -36,7 +36,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>供應商專區</span>
+                <span>旅行社專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -149,8 +149,8 @@
                                                         int i = 0;
                                                         foreach (ProductTypeList type in Model.types)
                                                         {
-                                                                        <input asp-for="ProductTypeId" type="radio" value="@type.ProductTypeId" id="typeradio-@i" />
-                                                                        <label for="typeradio-@i" class="control-label">@type.ProductType</label>
+                                                                                <input asp-for="ProductTypeId" type="radio" value="@type.ProductTypeId" id="typeradio-@i" />
+                                                                                <label for="typeradio-@i" class="control-label">@type.ProductType</label>
                                                             i++;
                                                         }
                                                     }
@@ -216,10 +216,10 @@
                                                             int id = 0;
                                                             foreach (var t in c.productTags.Distinct())
                                                             {
-                                                                            <li class=" d-flex align-items-center divide-line my-w-80-percent">
-                                                                    <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" id="@t.ProductTagDetailsId" />
-                                                                                <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
-                                                                            </li>
+                                                                                    <li class=" d-flex align-items-center divide-line my-w-80-percent">
+                                                                            <input name="Tags" type="checkbox" value="@t.ProductTagDetailsId" id="@t.ProductTagDetailsId" />
+                                                                                        <span>@Html.DisplayFor(modelItem => t.ProductTagDetailsName)</span>
+                                                                                    </li>
                                                                 id++;
                                                             }
                                                         }
@@ -320,7 +320,7 @@
                             <button type="button" class="btn btn-primary prev-tab" style="float:left">上一頁</button>
                             <div class="form-group text-right" >
                                 <input type="button" value="預覽" class="btn btn-success" id="preview" />
-                                <input type="submit" value="新增" class="btn btn-primary" />
+                                <input type="submit" value="新增" class="btn btn-primary" id="createProduct" />
                                  <a asp-action="List" class="btn btn-primary text-right">取消</a>
 
 
@@ -358,7 +358,15 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/search_jq.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+        
+        $('#createProduct').click(function () {
+            swal("新增產品成功！", "稍後將自動為您導向", "success");
+        
+        });
+
+
         $('.next-tab').click(function () {
             const $activeTab = $('.tab-pane.active');
             const $nextTab = $activeTab.next('.tab-pane');

@@ -3,68 +3,102 @@
     ViewData["Title"] = "couponList3";
 }
 
-@*<h1>couponList3</h1>*@
-
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
-        <div class="cell d-flex flex-column">
-            @{
-                if (ViewBag.photo != null)
-                {
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @* <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
+                    @*                      原本load二進位的頭像圖片用
+                    @{
+                    if (ViewBag.photo != null)
+                    {
                     <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
                     </div>
-                }
-                else
-                {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
-                }
-            }
+                    }
+                    else
+                    {
+                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+                    }
+                    } *@
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
+                </div>
 
-            <ul class="list-group leftarea mt-3">
-                <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
-            </ul>
+                <ul class="list-group leftarea mt-3">
+                    <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
 
-        </div>
-        <div class="cell" id="div2">
-            <ul class="list-group leftarea lgmenu mt-3 ">
-                <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
-                <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
-                </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
-                </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
-                </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
-                </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
-                </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
-                </li>
-            </ul>
+                    @{
+                        if (ViewBag.level == "黑鑽會員")
+                        {
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                        }
+                        else if (ViewBag.level == "黃金會員")
+                        {
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                        }
+                        else if (ViewBag.level == "白銀會員")
+                        {
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                        }
+                    }
+                </ul>
+
+            </div>
+            <div class="cell" id="div2">
+                <ul class="list-group leftarea lgmenu mt-3 ">
+                    <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
+                    <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
+                    </li>
+                    <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
+                    </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("會員訂單", "orderList","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@ViewBag.countsorder</span>
+                    </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("我的評論", "commentList","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@ViewBag.countscomment</span>
+                    </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
+                    </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
-</div>
-
-        <!-- 右半邊 - 內容容器 -->
-<h3 class="mb-4"><b>優惠券清單</b></h3>
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+<div id="rightPanel" class="col-md-10">
+    <h3 class="mb-4"><b>優惠券清單</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
@@ -78,10 +112,10 @@
                 <tr>
                         @*<th class="col-md-1"></th>*@
                         <th class="col-md-1"></th>
-                        <th>優惠券名稱</th>
-                        <th>折扣</th>
-                        <th>描述</th>
-                        <th>到期日</th>
+                        <th class="col-md-3">優惠券名稱</th>
+                         <th class="col-md-1">折扣</th>
+                         <th class="col-md-3">描述</th>
+                        <th class="col-md-3">到期日</th>
                     </tr>
             </thead>
 
@@ -89,25 +123,33 @@
         @foreach (var item in Model)
                     {
                         <tr>
-                            @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
+                                    @*@<td><img style="width:32px;height:32px;margin-left:26px" src="~/icons/icon-coupon-1 (member) 原圖.png" /></td>*@
                                     @{
-                                            if (item.ImagePath != null)
+                                            if (item.ImagePath!= null)
                                             {
-                                                 <td><img class="couponImg img-thumbnail img-fluid" style="width:67px;height:47px;margin-left:5px;radious:10px" src="~/images/@item.ImagePath" /></td>
+                                                 <td><img class="couponImg img-thumbnail img-fluid" style="width:67px;height:47px;margin-left:2px;radious:10px" src="~/images/@item.ImagePath" /></td>
                                             }
                                             else
                                             {
                                                 <td><img class="couponImg img-thumbnail" src="~/Images/icons/icon-noimage(couponList)-1.png" /></td>
                                             }
                                     }
-                            <td>@item.CouponName</td>
-                            <td>@item.Discount</td>
+                            <td> @item.CouponName </td>
+                            <td>
+                            @{
+                                var discountvalue =@item.Discount* 100;
+                                var discountshow = discountvalue % 10 == 0 ? $"{discountvalue / 10:F0} 折" : $"{discountvalue:F0} 折"; //檢查數值是否可被10整除
+                             }
+                                @discountshow
+                           </td>
+
                             <td>@item.Description</td>
-                            <td>@item.DueDate@*.ToString("yyyy-MM-dd")*@</td>
+                            <td>@item.DueDate?.ToString("yyyy-MM-dd")</td>
                         </tr>
                     }
             </tbody>
-        </table>
+ </table>
+
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">

@@ -54,7 +54,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
     @await RenderSectionAsync("Styles", required: false)
     <link href="~/css/search.css" rel="stylesheet" />
@@ -150,7 +152,7 @@
                                 <a asp-area="" asp-controller="Login" asp-action="Login">會員登入</a>
                             </li>
                             <li class="nav-item mr-2">
-                                <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">供應商登入</a>
+                                <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">旅行社登入</a>
                             </li>
                         }
 
@@ -280,7 +282,9 @@
     <script src="~/Template/js/sb-admin-2.min.js"></script>
     <script src="~/Template/vendor/chart.js/Chart.min.js"></script>
     <script src="~/js/Myjs.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
+
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
         <script src="~/js/signalr/dist/browser/signalr.js"></script>
@@ -297,9 +301,7 @@
                 alert('連線錯誤: ' + err.toString());
             });
 
-            }
-
-        connection.on("UpdReceiveContent", function (msg) {
+  connection.on("UpdReceiveContent", function (msg) {
             // 創建一個新的 <div class="message_row you-message"> 元素
             var messageRow = $('<div class="message_row other-message"></div>');
 
@@ -356,7 +358,7 @@
         });
 
         //傳送訊息
-        $('#sendButtonLayout').on('click', function () {
+        $('#sendButton').on('click', function () {
             let myID = $('#myID').html();
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
@@ -430,6 +432,24 @@
             $('#myID').val(myID);
             $("#mail").css("display", "inline");
         });
+
+
+            }
+
+      
+
+        //傳送訊息
+        $('#sendButton').on('click', function () {
+            let myID = $('#myID').html();
+            let message = $('#message').val();
+            let sendToID = $('#sendToID').val();
+            
+            connection.invoke("SendMessage", myID, message, sendToID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+
+        
           
 
         </script>

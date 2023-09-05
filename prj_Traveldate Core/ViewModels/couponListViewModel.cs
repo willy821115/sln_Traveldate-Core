@@ -1,4 +1,6 @@
 ﻿using prj_Traveldate_Core.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -42,7 +44,6 @@ namespace prj_Traveldate_Core.ViewModels
         }
         public decimal? Discount
         {
-            //get { return (this.Discount *10)+" 折"; }
             get { return _couponlist.Discount; }
             set { _couponlist.Discount = value; }
         }
@@ -51,16 +52,15 @@ namespace prj_Traveldate_Core.ViewModels
             get { return _couponlist.Description; }
             set { _couponlist.Description = value; }
         }
+
+       // [DataType(DataType.Date)]
         public DateTime? DueDate
         {
             get { return _couponlist.DueDate; }
             set { _couponlist.DueDate = value; }
         }
-        public string? ImagePath
-        {
-            get { return _couponlist.ImagePath; }
-            set { _couponlist.ImagePath = value; }
-        }
+        public string? ImagePath { get; set; }
+        public List<IFormFile>? photos { get; set; }
         public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

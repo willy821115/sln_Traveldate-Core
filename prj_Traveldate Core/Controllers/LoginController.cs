@@ -15,6 +15,8 @@ using System.Web;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using RazorEngine;
+using RazorEngine.Templating;
 
 //TODO: 登入: 第三方登入 & 記住帳號密碼(cookie) & 確認Enable & 登入後跳轉
 //TODO: 註冊: 欄位名稱 & 必填欄位 & 驗證 & 註冊成功跳轉
@@ -56,7 +58,7 @@ namespace prj_Traveldate_Core.Controllers
                 //string json = JsonSerializer.Serialize(mem);
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER, mem.MemberId.ToString());
                 HttpContext.Session.SetString(CDictionary.SK_LOGGEDIN_USER_NAME, mem.FirstName);
-                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER))
+                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_CONTROLLER) && !TempData.ContainsKey(CDictionary.SK_BACK_TO_PARAM))
                 {
                     string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
                     string goaction = TempData[CDictionary.SK_BACK_TO_ACTION].ToString();
@@ -66,7 +68,25 @@ namespace prj_Traveldate_Core.Controllers
 
                     return RedirectToAction(goaction, gocontroller);
                 }
-
+                if (TempData.ContainsKey(CDictionary.SK_BACK_TO_PARAM))
+                {
+                    //可以帶入參數+值,下面是一組key+value的情況
+                    string gocontroller = TempData[CDictionary.SK_BACK_TO_CONTROLLER].ToString();
+                    string goaction = TempData[CDictionary.SK_BACK_TO_ACTION].ToString();
+                    //這邊帶回來的假設是id=8
+                    string param = TempData[CDictionary.SK_BACK_TO_PARAM].ToString();
+                    TempData.Remove(CDictionary.SK_BACK_TO_CONTROLLER);
+                    TempData.Remove(CDictionary.SK_BACK_TO_ACTION);
+                    TempData.Remove(CDictionary.SK_BACK_TO_PARAM);
+                    //把param切開
+                    var keyValuePairs = param.Split('=');
+                    var routeValues = new RouteValueDictionary
+                        {
+                            { keyValuePairs[0], keyValuePairs[1]}
+                        };
+                    return RedirectToAction(goaction, gocontroller, routeValues);
+                }
+               
                 return RedirectToAction("HomePage", "HomePage");
             }
             ViewBag.Message = "帳號或密碼錯誤";
@@ -186,18 +206,31 @@ namespace prj_Traveldate_Core.Controllers
             _context.Members.Add(m.member);
             _context.SaveChanges();
 
+
+            string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
+            CSimpleEmailViewModel mail = CreateSignUpEmail();
+
+            List<string> UserEmail = new List<string>();
+            UserEmail.Add(m.Email);
+
             CEmailVerify data = new CEmailVerify()
             {
                 Email = m.Email,
-                mailSubject = "Traveldate信箱驗證連結",
-                mailContent = "點擊以下連結，即可回到Traveldate完成註冊驗證，連結將在 30 分鐘後失效。<br><br>",
                 receivePage = "Login/VerifyMail",
-                linkText = "點我啟用帳號",
                 scheme = HttpContext.Request.Scheme,
                 host = HttpContext.Request.Host.ToString(),
             };
+
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
-            api.SendMail(data);
+            string verifyLink = api.CreateVerifyLink(data);
+            mail.buttonLink = verifyLink;
+            mail.userName = m.FirstName + "，您好！";
+
+            string mailSubject = "Traveldate信箱驗證連結";
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "SignUpVerify", typeof(CSimpleEmailViewModel), mail);
+
+            api.SimplySendMail(mailSubject, mailContent, UserEmail);
+
             return RedirectToAction("VerifyMailSent");
         }
 
@@ -208,18 +241,37 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult ForgotPwd(CForgotPwdViewModel vm)
         {
+            string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
+            CSimpleEmailViewModel mail = CreateForgotPwdEmail();
+
+            // 檢查資料庫是否有這個帳號
+            var mailCheck = _context.Members.Where(m => m.Email.Equals(vm.email)).FirstOrDefault();
+            if (mailCheck == null || mailCheck.Email == null)
+            {
+                return RedirectToAction("SentResetMail");
+            }
+
+            List<string> UserEmail = new List<string>();
+            UserEmail.Add(mailCheck.Email);
+
             CEmailVerify data = new CEmailVerify()
             {
                 Email = vm.email,
-                mailSubject = "Traveldate重設密碼連結",
-                mailContent = "點擊以下連結，即可回到Traveldate重新設定密碼，連結將在 30 分鐘後失效。<br><br>",
                 receivePage = "Login/ResetPwd",
-                linkText = "點我重設密碼",
                 scheme = HttpContext.Request.Scheme,
                 host = HttpContext.Request.Host.ToString(),
             };
+
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
-            api.SendMail(data);
+            string verifyLink = api.CreateVerifyLink(data);
+            mail.buttonLink = verifyLink;
+            mail.userName = mailCheck.FirstName + "，您好！";
+
+            string mailSubject = "Traveldate重設密碼連結";
+
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "forgotpwd", typeof(CSimpleEmailViewModel), mail);
+
+            api.SimplySendMail(mailSubject, mailContent, UserEmail);
 
             return RedirectToAction("SentResetMail");
         }
@@ -273,18 +325,37 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult NotVerified(CForgotPwdViewModel vm)
         {
+
+            var mailCheck = _context.Members.Where(m => m.Email.Equals(vm.email)).FirstOrDefault();
+            if (mailCheck == null || mailCheck.Email == null)
+            {
+                ViewData["Error"] = "輸入信箱與註冊信箱不同，請再試一次";
+                return View();
+            }
+
+            string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
+            CSimpleEmailViewModel mail = CreateSignUpEmail();
+            List<string> UserEmail = new List<string>();
+            UserEmail.Add(vm.email);
+
             CEmailVerify data = new CEmailVerify()
             {
                 Email = vm.email,
-                mailSubject = "Traveldate信箱驗證連結",
-                mailContent = "點擊以下連結，即可回到Traveldate完成註冊驗證，連結將在 30 分鐘後失效。<br><br>",
                 receivePage = "Login/VerifyMail",
-                linkText = "點我啟用帳號",
                 scheme = HttpContext.Request.Scheme,
                 host = HttpContext.Request.Host.ToString(),
             };
+
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
-            api.SendMail(data);
+            string verifyLink = api.CreateVerifyLink(data);
+            mail.buttonLink = verifyLink;
+            mail.userName = mailCheck.FirstName + "，您好！";
+
+            string mailSubject = "Traveldate信箱驗證連結";
+            string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "SignUpVerify", typeof(CSimpleEmailViewModel), mail);
+
+            api.SimplySendMail(mailSubject, mailContent, UserEmail);
+
             return RedirectToAction("VerifyMailSent");
         }
 
@@ -329,7 +400,38 @@ namespace prj_Traveldate_Core.Controllers
 
         public bool CheckPhone(string Phone)
         {
-            return _context.Members.Any(m => m.Email == Phone);
+            return _context.Members.Any(m => m.Phone == Phone);
+        }
+        public bool CheckTaxNo(string TaxNo)
+        {
+            return _context.Companies.Any(m => m.TaxIdNumber == TaxNo);
+        }
+        public bool CheckCEmail(string Email)
+        {
+            return _context.Companies.Any(m => m.Email == Email);
+        }
+
+
+        public CSimpleEmailViewModel CreateForgotPwdEmail()
+        {
+            CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
+            vm.title = "重新設定密碼";
+            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate重新設定密碼。";
+            vm.content2 = "連結將在30分鐘後失效。";
+            vm.buttonText = "重設密碼";
+            vm.contentFooter = "如果您並未申請重設密碼，或不想要變更密碼，請忽略此信。";
+            return vm;
+        }
+
+        public CSimpleEmailViewModel CreateSignUpEmail()
+        {
+            CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
+            vm.title = "啟用您的帳號";
+            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate正式啟用帳號。";
+            vm.content2 = "連結將在30分鐘後失效。";
+            vm.buttonText = "啟用帳號";
+            vm.contentFooter = "如果您並未註冊Traveldate，請忽略此信。";
+            return vm;
         }
     }
 }

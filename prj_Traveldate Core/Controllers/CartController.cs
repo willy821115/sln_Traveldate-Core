@@ -63,6 +63,7 @@ namespace prj_Traveldate_Core.Controllers
         }
 
         [HttpPost]
+        [Route("Cart/Checkout")]
         public ActionResult ConfirmOrder(int[] orderDetailID)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -131,6 +132,104 @@ namespace prj_Traveldate_Core.Controllers
             return View(vm);
         }
 
+        //揪團結帳
+        [Route("Cart/ForumCheckout")]
+        public IActionResult ConfirmOrder(int ForumListID, int type)
+        {
+            _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            List<int> orderDetailIdList = new List<int>();
+            List<int?> tripId = new List<int?>();
+
+            if (type == 0)
+            {
+                var list = _context.ScheduleLists.Where(l => l.ForumListId == ForumListID).Select(l => l.TripId).ToList();
+                if (list != null)
+                {
+                    tripId = list;
+                }
+                else return Content("");
+
+                var existCart = _context.Orders.Any(o => o.MemberId == _memberID && o.IsCart == true);
+                if (existCart)
+                {
+                    int cartOrderID = _context.Orders.FirstOrDefault(o => o.MemberId == _memberID && o.IsCart == true).OrderId;
+
+                    foreach (var i in tripId)
+                    {
+                        OrderDetail newOrderDetail = new OrderDetail
+                        {
+                            Quantity = 1,
+                            TripId = i,
+                            OrderId = cartOrderID
+                        };
+                        _context.OrderDetails.Add(newOrderDetail);
+                        _context.SaveChanges();
+                        orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                    }
+                }
+                else
+                {
+                    Order newCartOrder = new Order
+                    {
+                        MemberId = _memberID,
+                        IsCart = true
+                    };
+                    _context.Orders.Add(newCartOrder);
+                    _context.SaveChanges();
+
+                    int newCartOrderID = newCartOrder.OrderId;
+
+                    foreach (var i in tripId)
+                    {
+                        OrderDetail newOrderDetail = new OrderDetail
+                        {
+                            Quantity = 1,
+                            TripId = i,
+                            OrderId = newCartOrderID
+                        };
+                        _context.OrderDetails.Add(newOrderDetail);
+                        _context.SaveChanges();
+                        orderDetailIdList.Add(newOrderDetail.OrderDetailsId);
+                    }
+                }
+
+                CConfirmOrderViewModel vm = new CConfirmOrderViewModel();
+                vm.member = _context.Members.Find(_memberID);
+                vm.companions = _context.Companions.Where(c => c.MemberId == _memberID).ToList();
+
+                vm.coupons = _context.Coupons.Where(c => c.MemberId == _memberID && c.CouponList.DueDate > DateTime.Now).Select(c => c.CouponList).ToList();
+
+                vm.orders = new List<CCartItem>();
+                for (int i = 0; i < orderDetailIdList.Count; i++)
+                {
+                    CCartItem item = new CCartItem();
+                    item = _context.OrderDetails.Where(o => o.OrderDetailsId == orderDetailIdList[i]).Select(c =>
+                        new CCartItem
+                        {
+                            orderDetailID = c.OrderDetailsId,
+                            productID = c.Trip.ProductId,
+                            tripID = c.TripId,
+                            planName = c.Trip.Product.ProductName,
+                            date = $"{c.Trip.Date:d}",
+                            quantity = c.Quantity,
+                            photo = c.Trip.Product.ProductPhotoLists.FirstOrDefault().Photo,
+                            ImagePath = (c.Trip.Product.ProductPhotoLists.FirstOrDefault() != null) ? c.Trip.Product.ProductPhotoLists.FirstOrDefault().ImagePath : "no_image.png",
+                            unitPrice = c.Trip.UnitPrice,
+                            discount = (c.Trip.Discount != null) ? c.Trip.Discount : 0,
+                            ProductTypeID = c.Trip.Product.ProductTypeId,
+                        }).First();
+                    vm.orders.Add(item);
+                }
+             
+                //把forumlistId帶到結帳成功那邊再把文章的isPublish改成true
+               HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY, ForumListID);
+               
+                return View(vm);
+            }
+            return Content("");
+        }
+
+        
 
         [HttpPost]
         public ActionResult Payment(CCreateOrderViewModel vm)
@@ -141,6 +240,22 @@ namespace prj_Traveldate_Core.Controllers
             var orderIdForPay = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 20);
 
             DateTime dt = DateTime.Now;
+
+            for (int i = 0; i < vm.ods.Count(); i++)
+            {
+                //確認商品庫存量
+                CProductFactory prodFactory = new CProductFactory();
+                string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
+                int ordered = Convert.ToInt32(strStock.Split('/')[0]);
+                int max = Convert.ToInt32(strStock.Split('/')[1]);
+                if (max - ordered < vm.ods[i].Quantity)
+                {
+                    string prodName = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).Select(t => t.Product.ProductName).FirstOrDefault();
+                    string e = $"「{prodName}」數量不足，請重新選購。";
+                    return RedirectToAction("OrderError", new { e });
+                }
+            }
+
             using (var tran = _context.Database.BeginTransaction())
             {
                 EcpayOrder ecpayOrder = new EcpayOrder()
@@ -156,7 +271,7 @@ namespace prj_Traveldate_Core.Controllers
                     TradeDate = dt.ToString("yyyy/MM/dd HH:mm:ss"),
                     SimulatePaid = 0,
                 
-            };
+                 };
                 
 
                 Order newOrder = new Order()
@@ -199,18 +314,6 @@ namespace prj_Traveldate_Core.Controllers
                         SellingPrice = vm.ods[i].SellingPrice, //
                         Note = vm.ods[i].Note
                     };
-
-                    //確認商品庫存量
-                    CProductFactory prodFactory = new CProductFactory();
-                    string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
-                    int ordered = Convert.ToInt32(strStock.Split('/')[0]);
-                    int max = Convert.ToInt32(strStock.Split('/')[1]);
-                    if (max - ordered < vm.ods[i].Quantity)
-                    {
-                        string prodName = _context.Trips.Where(t=>t.TripId == vm.ods[i].OrderId).Select(t=>t.Product.ProductName).FirstOrDefault();
-                        string e = $"「{prodName}」數量不足，請重新選購。";
-                        return RedirectToAction("OrderError", new { e });
-                    }
 
                     //刪除購物車裡的項目
                     OrderDetail? oldOd = _context.OrderDetails.Where(o => o.OrderDetailsId == vm.ods[i].OrderDetailsId).FirstOrDefault();
@@ -336,6 +439,19 @@ namespace prj_Traveldate_Core.Controllers
             ViewData["email"] = _context.Members.Find(_memberID).Email;
             //TODO 寄確認信
 
+
+            //如果是從揪團過來的走這裡
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
+            {
+                int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
+                var createArticle = _context.ForumLists.Find(ForumListID);
+                createArticle.IsPublish = true;
+                createArticle.ReleaseDatetime = DateTime.Now;
+                _context.SaveChanges();
+                return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, createStatus =0});
+            }
+ 
+           
             return View();
         }
 
@@ -375,80 +491,6 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        //[HttpPost]
-        //[ActionName("AddDirectToCart")]
-        //public IActionResult ConfirmOrder(int num, int tripId)
-        //{
-        //    TraveldateContext db = new TraveldateContext();
-
-        //    int loggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-        //    if (loggedInMemberId == 0)
-        //    {
-        //        return Content("請登入會員");
-        //    }
-        //    var existCart = db.Orders.Any(o => o.MemberId == loggedInMemberId && o.IsCart == true);
-        //    if (existCart)
-        //    {
-
-        //        if (db.OrderDetails.Any(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true))
-        //        {
-        //            OrderDetail od = db.OrderDetails.FirstOrDefault(o => o.TripId == tripId && o.Order.MemberId == loggedInMemberId && o.Order.IsCart == true);
-        //            od.Quantity += num;
-        //        }
-        //        else
-        //        {
-        //            int cartOrderID = db.Orders.FirstOrDefault(o => o.MemberId == loggedInMemberId && o.IsCart == true).OrderId;
-        //            OrderDetail newOrderDetail = new OrderDetail
-        //            {
-        //                Quantity = num,
-        //                TripId = tripId,
-        //                OrderId = cartOrderID
-        //            };
-        //            db.OrderDetails.Add(newOrderDetail);
-        //            db.SaveChanges();
-        //            int[] orderDetailId = new int[1];
-        //            orderDetailId[0] = newOrderDetail.OrderDetailsId;
-
-
-        //            //ViewBag.orderDetailId = orderDetailId;
-
-        //            //return Content(orderDetailId.ToString());
-        //            //return RedirectToAction("ConfirmOrder", "Cart", new { orderDetailID = orderDetailId });
-
-        //            return View(orderDetailId);
-        //        }
-        //        db.SaveChanges();
-        //    }
-        //    else
-        //    {
-        //        Order newCartOrder = new Order
-        //        {
-        //            MemberId = loggedInMemberId,
-        //            IsCart = true
-        //        };
-        //        db.Orders.Add(newCartOrder);
-        //        db.SaveChanges();
-
-        //        int newCartOrderID = newCartOrder.OrderId;
-
-        //        OrderDetail newOrderDetail = new OrderDetail
-        //        {
-        //            Quantity = num,
-        //            TripId = tripId,
-        //            OrderId = newCartOrderID
-        //        };
-
-        //        db.OrderDetails.Add(newOrderDetail);
-        //        db.SaveChanges();
-        //        int orderDetailId = newOrderDetail.OrderDetailsId;
-        //        ViewBag.orderDetailId = orderDetailId;
-
-        //        return Content(orderDetailId.ToString());
-        //    }
-        //    return View();
-        //}
-
-
-    }
+     }
 }
 

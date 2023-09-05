@@ -1,33 +1,65 @@
 ﻿@using prj_Traveldate_Core.Models;
+@model prj_Traveldate_Core.Models.Member;
 @{
     ViewData["Title"] = "Index";
 }
 
-@*<h1>帳號設定</h1>
-*@
-
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-md-3">
-            <div id="div1">
-                <div class="cell" id="div3">
-                    <div class="cell d-flex flex-column">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @*     <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
+                        @*                      原本load二進位的頭像圖片用
                         @{
-                            if (ViewBag.photo != null)
-                            {
-                                                                                        <div style="text-align:center;background-color:white;border-radius:10px">
-                                                                                            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                                                        </div>
-                            }
-                            else
-                            {
-                                                                                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
-                            }
+                        if (ViewBag.photo != null)
+                        {
+                        <div style="text-align:center;background-color:white;border-radius:10px">
+                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                        </div>
                         }
+                        else
+                        {
+                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+                        }
+                        } *@
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
+                    </div>
 
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+
+                            @{
+                                if (ViewBag.level == "黑鑽會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else if (ViewBag.level == "黃金會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else if (ViewBag.level == "白銀會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                                }
+                            }
                         </ul>
 
                     </div>
@@ -59,16 +91,14 @@
                                 <li class="list-group-item menuItem">
                                     @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
                                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
-                                </li>
-                            </ul>
-                        </a>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <!-- 右半邊 - 內容容器 -->
-        <div class="col-9">
+    </div>
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-9">
             <h1 class="mb-4" style="color:#00000098"><b>會員專區</b></h1>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -78,7 +108,6 @@
                     <li class="breadcrumb-item active" aria-current="page">會員專區</li>
                 </ol>
             </nav>
-            <div id="rightPanel">
                 <!-- 這裡會顯示根據左邊所選擇的按鈕而改變的內容 -->
 @*                 <div class="form-group">
                     <h2 style="margin:150px 150px 310px 230px;line-height:80px; color:#9D9D9D; text-align:justify"><span>～TravelDate 與您一起～<br></span></h2>
@@ -92,7 +121,7 @@
                         <span id="h1weather">即時天氣預報</span>
                     </div>
                         <select name="" id="choceLocation">                  
-                        <option value="Taipei" selected="selected">台北市</option>
+                        <option value="Taipei "selected="selected">台北市</option>
                         <option value="New Taipei">新北市</option>
                         <option value="Taoyuan">桃園市</option>
                         <option value="Taichung">台中市</option>
@@ -110,10 +139,10 @@
                         <option value="Yilan">宜蘭縣</option>
                         <option value="Hualien">花蓮縣</option>
 
-                        <option value="	Taitung">台東縣</option>
+                        <option value="Taitung">台東縣</option>
                         <option value="Penghu">澎湖縣</option>
                         <option value="Kinmen">金門縣</option>
-                        <option value="	Lienchiang">連江縣</option>
+                        <option value="Lienchiang">連江縣</option>
                         <option value="Keelung">基隆市</option>
 
                         <option value="Hsinchu">新竹市</option>
@@ -149,8 +178,7 @@
 
             </div>
         </div>
-        </div>
-</div>
+
 
 <p></p>
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">

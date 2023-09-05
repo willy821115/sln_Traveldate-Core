@@ -546,6 +546,10 @@ namespace prj_Traveldate_Core.Controllers
                 var protype = db.ProductTypeLists.FirstOrDefault(c => c.ProductTypeId == product.ProductTypeId);
                 var protags = db.ProductTagLists.Where(c => c.ProductId == product.ProductId).Select(p => p.ProductTagDetails.ProductTagDetailsName).ToList(); ;
 
+                var tripdate = db.Trips.Where(t=>t.ProductId == product.ProductId).OrderBy(t=>t.Date).Select(t=>t.Date).ToList();
+
+                var formatTripDates = tripdate.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
+                var tripprice = db.Trips.Where(t=>t.ProductId == product.ProductId).OrderBy(t => t.Date).Select(t=>t.UnitPrice).ToList();
                 var tripdetail = db.TripDetails.Where(t => t.ProductId == product.ProductId).Select(t => t.TripDetail1).ToList();
                 var propic = db.ProductPhotoLists.Where(p => p.ProductId == product.ProductId).Select(p => p.ImagePath).ToList();
                 var trippic = db.TripDetails.Where(td => td.ProductId == id).OrderBy(t => t.TripDay).Select(t => t.ImagePath).ToList();
@@ -568,7 +572,9 @@ namespace prj_Traveldate_Core.Controllers
                         Photos = propic,
                         Prodtags = protags,
                         tripdetail = tripdetail,
-                        trippic = trippic
+                        trippic = trippic,
+                        tripdate = formatTripDates,
+                        tripprice = tripprice
                     };
 
                     return View(productDetails);
@@ -590,14 +596,14 @@ namespace prj_Traveldate_Core.Controllers
                 {
                     if (action == "reject")
                     {
-                        product.StatusId = 3; // 更新為拒絕狀態的 statusid
+                        product.StatusId = 3; 
                     }
                     else if (action == "approve")
                     {
-                        product.StatusId = 1; // 更新為批准狀態的 statusid
+                        product.StatusId = 1; 
                     }
 
-                    db.SaveChanges(); // 儲存變更到資料庫
+                    db.SaveChanges(); 
                     return RedirectToAction("Review");
                 }
             }

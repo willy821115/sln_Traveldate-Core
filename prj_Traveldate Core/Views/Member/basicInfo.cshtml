@@ -1,15 +1,15 @@
-﻿@model prj_Traveldate_Core.Models.Member
+﻿@model prj_Traveldate_Core.ViewModels.CMemberForBasicInfoViewModel; 
 @{
     ViewData["Title"] = "basicInfo";
 }
 
-@*<h1>basicInfo</h1>*@
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-md-3">
+<div class="container mt-2" style="justify-content:space-between;display:flex"> 
+    @* <div class="row"> *@
+        <div class="col-md-3"> 
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
+@*                      原本load二進位的頭像圖片用
                         @{
                             if (ViewBag.photo != null)
                             {
@@ -21,14 +21,45 @@
                             {
                                 <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
                             }
-                        }
+                        }*@
+                         @{
+                            if (ViewBag.image != null)
+                            {
+                                <div style="text-align:center;background-color:white;border-radius:10px">
+                                    <img src="~/images/@ViewBag.image" width="150" height="150" />
+                               </div>
+                            }
+                            else
+                            {
+                                <div style = "text-align:center;background-color:white;border-radius:10px" >
+                                    <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                                 </div>
+                            }
+                    }
                     </div>
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>                   
+                       
+                        @{
+                            if (ViewBag.level == "黑鑽會員")
+                                    {
+                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                                    }
+                            else if (ViewBag.level == "黃金會員")
+                                    {
+                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                                    }
+                            else if (ViewBag.level == "白銀會員")
+                                    {
+                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                                     }
+                            else
+                                    {
+                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                                   }
+                        }                
                         </ul>
 
-                    
                     <div class="cell" id="div2">
                         <ul class="list-group leftarea lgmenu mt-3 ">
                             <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
@@ -56,19 +87,17 @@
                             </li>
                             <li class="list-group-item menuItem">
                                 @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
-                                <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                                
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
-            <!-- 右半邊 - 內容容器 -->
-            
-        <div class="col-md-9">
-            
-            <h3 class="mb-4"><b>基本資料設定</b></h3>
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-9">
+        <h3 class="mb-4"><b>基本資料設定</b></h3>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
@@ -77,72 +106,66 @@
                     <li class="breadcrumb-item active" aria-current="page">基本資料設定</li>
                 </ol>
             </nav>
-            <div id="rightPanel">
+            <div >
 @*                @foreach (var member in Model)
                 {*@
-                @using (Html.BeginForm("basicInfo","Member",FormMethod.Post)){
+                <form asp-action="basicInfo" enctype="multipart/form-data">
+                @* using (Html.BeginForm("basicInfo","Member",FormMethod.Post)){ *@
                     <div class="form-group">
-@*                      @Html.LabelFor(model=>model.MemberId)
-                        @Html.EditorFor (model=>model.MemberId,"",new {htmlAttributes=new{@class="form-control"}}) *@
+
                         @Html.HiddenFor(model => model.MemberId)
                     </div>
                     <div class="form-group">
-@*                         @Html.LabelFor(model=>model.LastName) *@
                         姓
                         @Html.EditorFor(model=>model.LastName,"",new {htmlAttributes=new{@class="form-control"}})                    
                     </div>
                     <div class="form-group">
-@*                         @Html.LabelFor(model=>model.FirstName) *@
                         名
                         @Html.EditorFor(model=>model.FirstName,"",new {htmlAttributes=new{@class="form-control"}})                      
                     </div>
                     <div class="form-group">
-@*                         @Html.LabelFor(model=>model.Gender) *@
                         性別
-                       @*  @Html.EditorFor(model=>model.Gender,new {htmlAttributes=new{@class="form-control"}}) *@
                         <select asp-for="Gender" class="form-control">
                             <option value="男" >男</option>
                             <option value="女" >女</option>
                        </select>
                     </div>
                     <div class="form-group">
-@*                         @{
-                            DateTime birthDate = DateTime.Parse(member.BirthDate.ToString());
-                            string formattedBirthDate = member.BirthDate.Value.ToString("yyyy-MM-dd");
-                            } *@
-@*                         @Html.LabelFor(model=>model.BirthDate) *@
                         出生日期
-                        @Html.EditorFor(model=>model.BirthDate,"",new {htmlAttributes=new{@class="form-control"}})
+                        <input asp-for="BirthDate" type="date" class="form-control" />
                     </div>
                     <div class="form-group">
-@*                          @Html.LabelFor(model=>model.Phone) *@
                         手機號碼
                         @Html.EditorFor(model=>model.Phone,"",new {htmlAttributes=new{@class="form-control"}})                       
                     </div>
                     <div class="form-group">
-@*                         @Html.LabelFor(model=>model.Email) *@
-                        聯絡信箱
-                        @Html.EditorFor(model=>model.Email,"",new {htmlAttributes=new{@class="form-control"}})
+                        聯絡信箱                       
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "background-color: whitesmoke; color: #7B7B7B;", @title = "此欄位不得修改", data_bs_toggle = "tooltip", data_bs_placement = "right" } })
+                    </div>
+                    <div class="form-group">
+                        <label for="formfiles">照片</label>
+                        <input asp-for="photos" type="file" class="form-control" id=" formFile" />
                     </div>
 
                     <div class="form-group">
-@*                         @Html.LabelFor(model=>model.Password)
-                        @Html.EditorFor (model=>model.Password,"",new {htmlAttributes=new{@class="form-control"}}) *@
                         @Html.HiddenFor(model => model.Password)
+                    </div>
+                    <div class="form-group">
+                        @Html.HiddenFor(model => model.LevelId)
                     </div>
 
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary" id="btnEditbasicInfo">儲存</button>
                     </div>
-                }
+                        @*}*@
+                </form>
                 
-            </div>
-            
+            </div>      
         </div>
+</div>
 
 
 
-    
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="4000">
@@ -163,22 +186,22 @@
         <div class="carousel-item" data-bs-interval="4000">
             <img src="https://picsum.photos/id/770/1500/300" class="d-block w-100" alt="...">
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 
 @section Styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 }
 
-@section scripts{          
+@section scripts{
+    <script src="path/to/sweetalert.js"></script>
     <script>              
         const btnEditbasicInfo = document.getElementById('btnEditbasicInfo');     
         
         btnEditbasicInfo.addEventListener('click', () => {                       
-            swal("基本資料修改成功！", "稍後將自動為您導向", "success", { button: false });                       
+            swal("基本資料修改成功！", "", "success", { button: false });                       
             setTimeout(() => {                       
-            }, 2000);                                 
+            }, 1500);                                 
         });           
     </script>
 }

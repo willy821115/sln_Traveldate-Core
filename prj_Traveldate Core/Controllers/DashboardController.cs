@@ -42,7 +42,7 @@ namespace prj_Traveldate_Core.Controllers
             cOrderState.status = factory.loadStauts();
             cOrderState.types = factory.loadTypes();
             cOrderState.orderQuantity = cOrderState.OrderCount(companyID);
-            cOrderState.turnover = cOrderState.Turnover(companyID);
+            cOrderState.turnover =string.Format("{0:0}",cOrderState.Turnover(companyID)) ;
             cOrderState.top3product = cOrderState.Top3(companyID);
              
             

@@ -1,6 +1,7 @@
 ﻿using prj_Traveldate_Core.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -37,10 +38,17 @@ namespace prj_Traveldate_Core.ViewModels
         [DisplayName("手機號碼")]
         public string? Phone { get; set; }
 
+        [DisplayName("聯絡信箱")]
+        public string? Email { get; set; }
+
         public int? MemberId { get; set; }
 
         [DisplayName("出生日期")]
        [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
+
+        public string? ImagePath { get; set; }
+
+        public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 }

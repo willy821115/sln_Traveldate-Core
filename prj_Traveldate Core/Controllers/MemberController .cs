@@ -10,6 +10,7 @@ using NuGet.Versioning;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
@@ -30,18 +31,25 @@ namespace prj_Traveldate_Core.Controllers
         }
         public IActionResult Index() // 左側欄 先維持原版V
         {
-            int MemberId =Convert.ToInt32( HttpContext.Session.GetString( CDictionary.SK_LOGGEDIN_USER));
+            int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -108,7 +116,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -120,34 +128,53 @@ namespace prj_Traveldate_Core.Controllers
 
             return View();
         }
+        private string email; // 私有字段
+
+        //public string Email
+        //{
+        //    get
+        //    {
+        //        return email; // 只提供 get 方法，不提供 set 方法
+        //    }
+        //}
         public IActionResult basicInfo() //基本資料設定 V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-            //var memm = from m in context.Members
-            //          where m.MemberId == MemberId
-            //          select new CMemberModel
-            //          {
-            //              MemberId = m.MemberId,
-            //              LastName = m.LastName,
-            //              FirstName = m.FirstName,
-            //              Gender = m.Gender,
-            //              BirthDate = m.BirthDate,
-            //              Phone = m.Phone,
-            //              Email = m.Email,
-            //          };
+            Member memshow = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
+            var cmvm =context.Members
+                    .Where(m => m.MemberId == MemberId)
+                    .Select(m => new CMemberForBasicInfoViewModel
+                    {
+                        LastName = m.LastName,
+                        FirstName = m.FirstName,
+                        Gender = m.Gender,
+                        BirthDate = m.BirthDate,
+                        Phone = m.Phone,
+                        Email = m.Email,
+                        Password=m.Password,
+                        LevelId = m.LevelId,
+                        ImagePath=m.ImagePath                       
+                    })
+                    .FirstOrDefault();
 
             Member mem2 =(from m in  context.Members where (m.MemberId == MemberId) select m).FirstOrDefault() ;
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo= mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -207,64 +234,31 @@ namespace prj_Traveldate_Core.Controllers
                           on m.LevelId equals l.LevelId
                           where MemberId == m.MemberId
                           select m;
-            if (mem.LevelId == 1)
+            if (memshow.LevelId == 1)
                 ViewBag.level = "一般會員";
-            else if (mem.LevelId == 2)
+            else if (memshow.LevelId == 2)
                 ViewBag.level = "白銀會員";
-            else if (mem.LevelId == 3)
-                ViewBag.level = "白金會員";
+            else if (memshow.LevelId == 3)
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
-            if (mem.FirstName == mem.FirstName)
-                ViewBag.firstName = mem.FirstName;
+            //if (cmvm.FirstName == cmvm.FirstName)
+            //    ViewBag.firstName = cmvm.FirstName;
 
-            if (mem.LastName == mem.LastName)
-                ViewBag.LastName = mem.LastName;
+            //if (cmvm.LastName == cmvm.LastName)
+            //    ViewBag.LastName = cmvm.LastName;
 
-            return View(mem);
-            #region 先註解掉的程式碼
-            //int MemberId = 3;
-            //Member mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
-            //// var datas =context.Members.Where(mm=>mm.MemberId == MemberId).FirstOrDefault();
-            //return View(mem);
-            //CMemberLevelViewModel viewModel = new CMemberLevelViewModel();
-            //viewModel.Member = context.Members.Where(m => m.MemberId == MemberId).ToList();
-            //return View(viewModel);
-            //CMemberLevelViewModel vmml = new CMemberLevelViewModel();
-            //Member mem =context.Members.FirstOrDefault(m=>m.MemberId == MemberId);
-            //if (mem != null) {
-            //    mem.FirstName=Views_Member_commentList.
-            //return View(mem);
+            ViewBag.firstName = memshow.FirstName;
+            ViewBag.LastName = memshow.LastName;
 
-            //var datas = from m in context.Members
-            //            join l in context.LevelLists
-            //            on m.LevelId equals l.LevelId
-            //            where m.MemberId == MemberId
-            //            select new CMemberLevelViewModel
-            //            {
-            //                FirstName = m.FirstName,
-            //                LastName = m.LastName,
-            //                Gender = m.Gender,
-            //                BirthDate = m.BirthDate,
-            //                Phone = m.Phone,
-            //                Email = m.Email,
-            //                LevelId = m.LevelId,
-            //            };
-            //return View(datas);
-            //var levelvm = from m in vmml.Member
-            //              join l in vmml.LevelList
-            //              on m.LevelId equals l.LevelId
-            //              where MemberId == m.MemberId
-            //              select m;
-            //ViewBag.level = levelvm.ToString();
-            #endregion
+            return View(cmvm);
         }
         [HttpPost]
-        public IActionResult basicInfo(Member edit) //基本資料設定edit V
+        public IActionResult basicInfo(CMemberForBasicInfoViewModel edit, IFormFile photos) //基本資料設定edit V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            Member mDB = context.Members.FirstOrDefault(m => m.MemberId == edit.MemberId);
+            Member mDB = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             if (mDB != null)
             {
                 mDB.FirstName = edit.FirstName;
@@ -272,14 +266,29 @@ namespace prj_Traveldate_Core.Controllers
                 mDB.Gender = edit.Gender;
                 mDB.BirthDate = edit.BirthDate;
                 mDB.Phone = edit.Phone;
-                mDB.Email = edit.Email;
-                mDB.MemberId = edit.MemberId;
+                mDB.Email = edit.Email;            
+                //mDB.MemberId = MemberId;
+                //mDB.ImagePath= edit.ImagePath;
+                
                 mDB.Password = edit.Password;
 
                 context.SaveChanges();
+            };
+
+            if (edit.photos != null)
+            {
+                //foreach (IFormFile photo in edit.photos) 
+                //{
+                    string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                    mDB.ImagePath = photoName;
+                    mDB.MemberId = MemberId;
+                    photos.CopyTo(new FileStream(_enviro.WebRootPath + "/images/"+ photoName, FileMode.Create));
+                    //context.Members.Add(photoName);
+                    context.SaveChanges();
+                //}              
             }
-            Thread.Sleep(4000);
-            return RedirectToAction("Index");
+            Thread.Sleep(3000);
+            return RedirectToAction("basicInfo");
             #region 先註解掉的程式碼
             //context.Members.ToList();
 
@@ -300,16 +309,23 @@ namespace prj_Traveldate_Core.Controllers
             prd.MemberId = MemberId;
             Member x = context.Members.FirstOrDefault(m => m.MemberId == prd.MemberId);
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -374,7 +390,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -390,6 +406,10 @@ namespace prj_Traveldate_Core.Controllers
             //Member mem=context.Members.FirstOrDefault(m=>m.MemberId==MemberId);
             //Member m=context.Members.FirstOrDefault(m=>m.Password==prd.txtNewPassword);
             #endregion
+            if (mem2 != null)
+            {
+                ViewBag.image = mem2.ImagePath;
+            }
         }
         [HttpPost]
         public IActionResult passwordChange(CpasswordChangeViewModel edit) //密碼更改 edit V
@@ -405,7 +425,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.Entry(mDB).State = EntityState.Modified;
                     context.SaveChanges();
 
-                    Thread.Sleep(3500);
+                    Thread.Sleep(3000);
                 }
                 else if(edit.txtNewPassword != edit.txtCheckPassword )
                 {
@@ -431,20 +451,27 @@ namespace prj_Traveldate_Core.Controllers
                             CouponName = cl.CouponName,
                             Discount =(cl.Discount),
                             Description = cl.Description,
-                            DueDate = cl.DueDate,
+                            DueDate = cl.DueDate,  
                             ImagePath= cl.ImagePath,
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -510,7 +537,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -538,16 +565,23 @@ namespace prj_Traveldate_Core.Controllers
                             BirthDate= cm.BirthDate,
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -613,7 +647,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -631,16 +665,23 @@ namespace prj_Traveldate_Core.Controllers
             CCompanionViewModel cm = new CCompanionViewModel();
             cm.MemberId = MemberId;
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -707,7 +748,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -727,10 +768,9 @@ namespace prj_Traveldate_Core.Controllers
                  (string.IsNullOrEmpty(vm.FirstName)) ||
                  (string.IsNullOrEmpty(vm.Phone))
                )
-                {   Thread.Sleep(60000);
-                    return RedirectToAction("addCompanion");
+                {   
+                    Thread.Sleep(60000);
                 }
-
             else
             {
                 Companion cpDB = new Companion();
@@ -744,8 +784,8 @@ namespace prj_Traveldate_Core.Controllers
 
                     context.Companions.Add(cpDB);
                     context.SaveChanges();
-                    Thread.Sleep(3500);
-                }     
+                    Thread.Sleep(3000);
+                }                        
             }
             return RedirectToAction("showCompanion");
         }
@@ -769,16 +809,23 @@ namespace prj_Traveldate_Core.Controllers
                             FavoriteId =f.FavoriteId
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -844,7 +891,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -902,24 +949,31 @@ namespace prj_Traveldate_Core.Controllers
                             ProductName = orderdetails3.Trip.Product.ProductName,
                             ProductId = orderdetails3.Trip.ProductId,
 
-                            Date= orderdetails3.Trip.Date,
-
+                            //Date= orderdetails3.Trip.Date,
+                            Date = string.Format("{0:yyyy-MM-dd}", orderdetails3.Trip.Date),
                             CommentScore =CommentScore,
                             Content = Content,
                             Title = Title,
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -986,7 +1040,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -998,28 +1052,6 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(data5);
             //return View(data2.Distinct());
-            #region 先註解掉的程式碼
-            //var datas = from tripde in context.TripDetails
-            //            join trip in context.Trips
-            //            on tripde.ProductId equals trip.ProductId
-            //            join orderde in context.OrderDetails
-            //            on trip.TripId equals orderde.TripId
-
-            //            join order in context.Orders
-            //            on orderde.OrderId equals order.OrderId
-
-            //            join m in context.Members
-            //            on order.MemberId equals m.MemberId
-
-            //            where m.MemberId == id
-            //            select new COrdersViewModel
-            //            {
-            //                OrderId = orderde.OrderId,
-            //                Date = trip.Date,
-            //                Datetime = order.Datetime,
-            //                //TripDetaill = tripde.TripDetaill,
-            //            };
-            #endregion
         }
 
         #region 我的評論 0817(四)版 暫時用不到
@@ -1042,13 +1074,11 @@ namespace prj_Traveldate_Core.Controllers
         //    return View(datas);
         //}
         #endregion
+
         public IActionResult commentList() //我的評論new V
         {
-
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-
-           
-
+                            
             var datas = from m in context.Members
                         from cmp in context.CommentPhotoLists
                         join cm in context.CommentLists
@@ -1062,23 +1092,30 @@ namespace prj_Traveldate_Core.Controllers
                             Title = cm.Title,
                             Content = cm.Content,
                             CommentScore = cm.CommentScore,
-                            Date = cm.Date,
+                            Date =cm.Date,
                             ProductName = pl.ProductName,
                             CommentId=cm.CommentId,
-                            //ImagePath= cmp.ImagePath
+                            //ImagePath= cmp.ImagePath,
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -1144,7 +1181,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1154,7 +1191,7 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas);
+            return View(datas.Distinct());
         }
 
         [HttpPost]
@@ -1164,12 +1201,12 @@ namespace prj_Traveldate_Core.Controllers
             //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
             if (id != null)
             {
-                // 使用 .Where() 来选择所有匹配特定 CommentId 的记录
+                // 使用 .Where() 來選擇所有匹配特定 CommentId 的紀錄
                 var recordsToDelete = context.CommentPhotoLists.Where(p => p.CommentId == id).ToList();
 
                 if (recordsToDelete.Count > 0)
                 {
-                    // 使用 RemoveRange() 删除所有匹配的记录
+                    // 使用 RemoveRange() 刪除所有匹配的紀錄
                     context.CommentPhotoLists.RemoveRange(recordsToDelete);
                     context.SaveChanges();
                 }
@@ -1183,6 +1220,7 @@ namespace prj_Traveldate_Core.Controllers
                     context.SaveChanges();
                 }
             }
+
             Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
@@ -1190,7 +1228,6 @@ namespace prj_Traveldate_Core.Controllers
         #region 添加評論view 暫時用不到2023.08.20
         public IActionResult addcomment(int? id) //添加評論 先維持舊版V
         {
-
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             //var datas = from m in context.Members
             //            join cm in context.CommentLists
@@ -1217,16 +1254,23 @@ namespace prj_Traveldate_Core.Controllers
 
 
                 Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -1292,7 +1336,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1357,6 +1401,7 @@ namespace prj_Traveldate_Core.Controllers
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             var datas = from m in context.Members
+                                    from like in context.LikeLists
                         join fl in context.ForumLists
                         on m.MemberId equals fl.MemberId
                         where m.MemberId == MemberId
@@ -1366,22 +1411,30 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                            Likes = fl.Likes,
+                          //(int)  isLike= IsLike
+                            //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,
                             IsPublish = fl.IsPublish
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                          join fl in context.ForumLists
@@ -1447,7 +1500,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1467,16 +1520,23 @@ namespace prj_Traveldate_Core.Controllers
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
+            #region 原本load二進位的頭像圖片用
+            //原本load二進位的頭像圖片用
+            //if (mem2 != null)
+            //{
+            //    byte[] photo = mem2.Photo;
+            //    if (photo != null)
+            //    {
+            //        string base64String = Convert.ToBase64String(photo);
+            //        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+            //    }
+            //};
+            //ViewBag.photo = mem2;
+            #endregion
             if (mem2 != null)
             {
-                byte[] photo = mem2.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
-                }
-            };
-            ViewBag.photo = mem2;
+                ViewBag.image = mem2.ImagePath;
+            }
             //===============================我是分隔線===================================//
             var countsForum = from m in context.Members
                               join fl in context.ForumLists
@@ -1542,7 +1602,7 @@ namespace prj_Traveldate_Core.Controllers
             else if (x.LevelId == 2)
                 ViewBag.level = "白銀會員";
             else if (x.LevelId == 3)
-                ViewBag.level = "白金會員";
+                ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
@@ -1552,9 +1612,10 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-
             return View();
         }
+
+
     }
 }
 

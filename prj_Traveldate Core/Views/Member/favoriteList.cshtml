@@ -1,28 +1,66 @@
-﻿@model IEnumerable<prj_Traveldate_Core.ViewModels.CfavoriteListViewModel>;
+﻿@using prj_Traveldate_Core.ViewModels;
+@model IEnumerable< prj_Traveldate_Core.ViewModels.CfavoriteListViewModel>;
+@using System.Collections.Generic;
 @{
     ViewData["Title"] = "favoriteList";
 }
 
-<div class="left col-md-2">
-
-    <div class="cell" id="div3">
-        <div class="cell d-flex flex-column">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+    @*     <div class="row"> *@
+    <div class="col-md-3">
+        <div id="div1">
+            <div class="cell" id="div3">
+                <div class="cell d-flex flex-column">
+            @*                      原本load二進位的頭像圖片用
             @{
-                if (ViewBag.photo != null)
-                {
-                    <div style="text-align:center;background-color:white;border-radius:10px">
-                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                    </div>
-                }
-                else
-                {
-                    <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
-                }
+            if (ViewBag.photo != null)
+            {
+            <div style="text-align:center;background-color:white;border-radius:10px">
+            <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+            </div>
             }
+            else
+            {
+            <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+            }
+            } *@
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
+        </div>
 
             <ul class="list-group leftarea mt-3">
                 <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+
+                @{
+                    if (ViewBag.level == "黑鑽會員")
+                    {
+                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                    }
+                    else if (ViewBag.level == "黃金會員")
+                    {
+                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                    }
+                    else if (ViewBag.level == "白銀會員")
+                    {
+                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                    }
+                }
             </ul>
 
         </div>
@@ -54,14 +92,14 @@
                 <li class="list-group-item menuItem">
                     @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
-</div>
-
-<!-- 右半邊 - 內容容器 -->
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+    <div id="rightPanel" class="col-md-10">
 <h3 class="mb-4"><b>收藏清單</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -83,16 +121,16 @@
                     </tr>
     </thead>
     <tbody>
-                @foreach (var item in Model)
+        @foreach (var item in Model)
                 {
                     <tr>
-                            <td><img style="width:28px;height:28px;margin-left:26px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
-                            <td>@item.ProductName </td>
-                            <td>@item.Outline </td>
+                            <td><img style="width:28px;height:28px;margin-left:16px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Outline</td>
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
-                            <td><button type="submit" value="移除" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove"> 移除</button></td>
+                        <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" style="margin-left:5px"> 移除</button></td>
                          </form>
               
 @*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
@@ -129,18 +167,85 @@
 
 @section styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 }
 
 @section scripts{
+    <script src="path/to/sweetalert.js"></script> 
+@*  <script src="https://unpkg.com/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> *@
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnFavoriteRemove = document.getElementById('btnFavoriteRemove');
 
-        const btnFavoriteRemove = document.getElementById('btnFavoriteRemove');
+            btnFavoriteRemove.addEventListener('click', () => {
+                swal("移除成功！", "稍後將自動為您導向", "success", { buttons: false })
 
-        btnFavoriteRemove.addEventListener('click', () => {
-            swal("移除成功！", "稍後將自動為您導向", "success", { button: false });
-            setTimeout(() => {
-            }, 1500);
+                // 在這裡執行其他操作，例如發送 AJAX 請求或導向頁面
+            });
         });
+        // $(function () {
+        //     $("#btnFavoriteRemove").click(function () {
+        //         swal({
+        //             title: "確定要移除嗎？",
+        //             text: "移除此收藏",
+        //             type: "warning",
+        //             showCancelButton: true,
+        //             confirmButtonColor: "#DD6B55",
+        //             confirmButtonText: "確定移除！",
+        //             cancelButtonText: "取消移除！",
+        //             closeOnConfirm: false,
+        //             closeOnCancel: false
+        //         }).then(function (isConfirm) {
+        //             if (isConfirm) {
+        //                 swal("移除！", "移除成功！", "稍後將自動為您導向", "success");
+        //                 // 在這裡執行實際的刪除操作
+        //             } else {
+        //                 swal("取消！", "", "error");
+        //             }
+        //         });
+        //     });
+        // });
+
+
+        // $(document).ready(function () {
+        //     $("#btnFavoriteRemove").click(function () {
+        //         swal({
+        //             title: "確定要移除嗎？",
+        //             text: "移除此收藏",
+        //             type: "warning",
+        //             showCancelButton: true,
+        //             confirmButtonColor: "#DD6B55",
+        //             confirmButtonText: "確定移除！",
+        //             cancelButtonText: "取消移除！",
+        //             closeOnConfirm: false,
+        //             closeOnCancel: false
+        //         }).then(function (isConfirm) {
+        //             if (isConfirm) {
+        //                 // 如果確認移除，執行實際的刪除操作
+        //                 removeFavorite(); // 呼叫刪除操作的函數
+        //             } else {
+        //                 swal("取消！", "", "error");
+        //             }
+        //         });
+        //     });
+
+        //     // 新增一個函數來執行刪除操作
+        //     function removeFavorite() {
+        //         // 在這裡執行實際的刪除操作
+        //         $.ajax({
+        //             url: '/Member/favoriteList/' + item.FavoriteId, // 請替換成您的控制器和路由
+        //             type: 'get', // 或 'POST'，視情況而定
+        //             success: function () {
+        //                 swal("移除！", "移除成功！", "success");
+        //                 // 刷新頁面或者執行其他必要的操作
+        //             },
+        //             error: function () {
+        //                 swal("錯誤！", "刪除失敗！", "error");
+        //             }
+        //         });
+        //     }
+        // });
     </script>
 
     <script>

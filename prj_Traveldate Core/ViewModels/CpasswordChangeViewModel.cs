@@ -26,6 +26,7 @@ namespace prj_Traveldate_Core.ViewModels
         public int? LevelId { get; set; }
 
         public string? Level { get; set; }
+        public string? ImagePath { get; set; }
 
     }
 }

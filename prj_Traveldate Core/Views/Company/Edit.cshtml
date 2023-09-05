@@ -37,7 +37,7 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompany"
                aria-expanded="true" aria-controls="collapseCompany">
                 <img src="~/icons/company.png" class="subicon" />
-                <span>廠商專區</span>
+                <span>旅行社專區</span>
             </a>
             <div id="collapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -242,7 +242,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                <input type="submit" value="確認並儲存" class="btn btn-success " />
+                                    <input type="submit" value="確認並儲存" class="btn btn-success" id="EditProduct" />
                                 </div>
                             </div>
 
@@ -276,5 +276,13 @@
     }
     
 </style>
+}
+@section Scripts{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('#EditProduct').click(function(){
+            swal("旅行社資料編輯成功！", "稍後將自動為您導向", "success");
+        });
+    </script>
 }
  

@@ -9,25 +9,26 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <div asp-validation-summary="All"></div>
         <form asp-action="SignUp" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
             <br />
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control LastName" required />
+                <input asp-for="LastName" class="form-control LastName" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control FirstName" required />
+                <input asp-for="FirstName" class="form-control FirstName"  />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                     <label asp-for="Gender" class="control-label"></label><br />
                 <div class="radio-group pl-2">
                     <div class="form-check">
-                        <input class="form-check-input" asp-for="Gender" type="radio" value="男" id="gender_male" checked />
+                        <input class="form-check-input" asp-for="Gender" type="radio" value="男" id="gender_male"  />
                         <label class="form-check-label" for="gender_male">男</label>
                     </div>
                 <div class="form-check">
@@ -43,12 +44,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Idnumber" class="control-label"></label>
-                <input asp-for="Idnumber" class="form-control Idnumber" required />
+                <input asp-for="Idnumber" class="form-control Idnumber"  />
                 <span asp-validation-for="Idnumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control BirthDate" type="date" required />
+                <input asp-for="BirthDate" class="form-control BirthDate" type="date"  />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,26 +60,36 @@
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control Phone" required />
                 <span asp-validation-for="Phone" class="text-danger"></span>
+                <span id="Phoneerr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" type="email" class="form-control Email" required />
+                <input asp-for="Email" type="email" class="form-control Email"  id="Email"  />
                 <span asp-validation-for="Email" class="text-danger"></span>
+                <span id="Emailerr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control Password" required />
+                <input asp-for="Password" type="password" class="form-control Password" id="pwd" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">確認密碼</label>
+                <input id="confirmpwd" type="password" class="form-control Password" required />
+                <span id="confirmpwderr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">上傳大頭照</label>
                 <input asp-for="photo" class="form-control" type="file" name="photo" id="photo" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">大頭照預覽</label>
                 <div id="preview-box">
                     <img src="" id="preview" />
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="送出資料" class="btn my-btn-primary" />
+                <input type="submit" value="送出資料" class="btn my-btn-primary" id="btnSignup" />
             </div>
         </form>
     </div>
@@ -139,9 +150,53 @@
             $('.Password').val("1234");
         })
 
-        //資料驗證
-        //  https://blog.csdn.net/weixin_45147894/article/details/106391212
+        const btn = document.querySelector('#btnSignup')
+        const Email = document.querySelector('#Email');
+        const Emailerr = document.querySelector('#Emailerr')
 
+        //資料驗證
+
+        $('#confirmpwd').on('blur', function(){
+            if ($('#confirmpwd').val() !== $('#pwd').val()){
+                $('#confirmpwderr').text("輸入密碼不相符");
+                btn.setAttribute('disabled', 'disabled');
+            }
+            else{
+                $('#confirmpwderr').text("");
+                btn.removeAttribute('disabled');
+            }
+        })
+
+
+        $('.Email').on('blur', () => {
+            console.log('blur');
+            const email = $('.Email').val();
+            $.get(`@Url.Content("/Login/CheckEmail")?Email=${email}`, function (data) {
+                console.log(data);
+                if (data == true) {
+                    btn.setAttribute('disabled', 'disabled');
+                    $('#Emailerr').text("這個Email已經註冊過囉");
+                } else {
+                    btn.removeAttribute('disabled');
+                    $('#Emailerr').text("");
+                }
+            })
+        })
+
+        $('.Phone').on('blur', () => {
+            console.log('blur');
+            const phone = $('.Phone').val();
+            $.get(`@Url.Content("/Login/CheckPhone")?Phone=${phone}`, function (data) {
+                console.log(data);
+                if (data == true) {
+                    btn.setAttribute('disabled', 'disabled');
+                    $('#Phoneerr').text("這個電話已經註冊過囉");
+                } else {
+                    btn.removeAttribute('disabled');
+                    $('#Phoneerr').text("");
+                }
+            })
+        })
 
     </script>
 }

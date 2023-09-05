@@ -26,6 +26,10 @@
 
         public List<decimal?> fDiscountPlanPrice { get; set; }
         public List<string> fDiscountPriceDate { get; set; }
+        public List<string> fMemPic { get; set; }
+        public bool fIsFav { get; set; }
+        public string fTripStatus { get; set; }
+        public List<int?> fMaxnum { get; set; }
 
     }
 }

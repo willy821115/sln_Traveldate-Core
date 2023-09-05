@@ -12,76 +12,83 @@
         <form asp-action="CompanySignUp">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TaxIdNumber" class="control-label">公司統一編號</label>
-                <input asp-for="TaxIdNumber" class="form-control" required/>
+                <label asp-for="TaxIdNumber" class="control-label"></label>
+                <input asp-for="TaxIdNumber" class="form-control" id="taxno" required/>
                 <span asp-validation-for="TaxIdNumber" class="text-danger"></span>
+                <span id="taxerr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyName" class="control-label">法定公司名稱</label>
+                <label asp-for="CompanyName" class="control-label"></label>
                 <input asp-for="CompanyName" class="form-control" required />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Country" class="control-label">國家</label>
+                <label asp-for="Country" class="control-label"></label>
                 <select asp-for="Country" class="form-control" asp-items="ViewBag.Country" required></select>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="City" class="control-label">縣市</label>
+                <label asp-for="City" class="control-label"></label>
                 <select asp-for="City" class="form-control" asp-items="ViewBag.City" required></select>
             </div>
             <div class="form-group">
-                <label asp-for="PostalCode" class="control-label">郵遞區號</label>
+                <label asp-for="PostalCode" class="control-label"></label>
                 <input asp-for="PostalCode" class="form-control" required />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label">公司地址</label>
+                <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" required />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label">聯絡電話</label>
+                <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" required />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Url" class="control-label">官方網站</label>
+                <label asp-for="Url" class="control-label"></label>
                 <input asp-for="Url" class="form-control" />
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Principal" class="control-label">負責人姓名</label>
+                <label asp-for="Principal" class="control-label"></label>
                 <input asp-for="Principal" class="form-control" required />
                 <span asp-validation-for="Principal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contact" class="control-label">聯絡人姓名</label>
+                <label asp-for="Contact" class="control-label"></label>
                 <input asp-for="Contact" class="form-control" required />
                 <span asp-validation-for="Contact" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label">聯絡人職稱</label>
+                <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label">聯絡E-mail</label>
-                <input asp-for="Email" class="form-control" type="email" required />
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" type="email" id="email" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
+                <span id="Emailerr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label">密碼</label>
-                <input asp-for="Password" class="form-control" required  type="password"/>
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control Password" id="pwd" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServerDescription" class="control-label">服務描述</label>
+                <label class="control-label">確認密碼</label>
+                <input id="confirmpwd" type="password" class="form-control Password" required />
+                <span id="confirmpwderr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServerDescription" class="control-label"></label>
                 <input asp-for="ServerDescription" class="form-control" />
                 <span asp-validation-for="ServerDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="送出資料" class="btn my-btn-primary" />
+                <input type="submit" value="送出資料" class="btn my-btn-primary" id="btnSignup" />
             </div>
         </form>
     </div>
@@ -94,5 +101,62 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
 
+                $('#demobtn').on('click', function () {
+                $('.LastName').val("張");
+                $('.FirstName').val("仁安");
+                $('.Idnumber').val("A137854126");
+                $('.BirthDate').val("1998-07-09");
+                $('.Phone').val("0935765315");
+                $('.Email').val("traveldate3@gmail.com");
+                $('.Password').val("1234");
+            })
+
+            const btn = document.querySelector('#btnSignup')
+
+            //資料驗證
+
+            $('#confirmpwd').on('blur', function(){
+                if ($('#confirmpwd').val() !== $('#pwd').val()){
+                    $('#confirmpwderr').text("輸入密碼不相符");
+                    btn.setAttribute('disabled', 'disabled');
+                }
+                else{
+                    $('#confirmpwderr').text("");
+                    btn.removeAttribute('disabled');
+                }
+            })
+
+
+            $('#email').on('blur', () => {
+                console.log('blur');
+                const email = $('#email').val();
+                $.get(`@Url.Content("/Login/CheckCEmail")?Email=${email}`, function (data) {
+                    console.log(data);
+                    if (data == true) {
+                        btn.setAttribute('disabled', 'disabled');
+                        $('#Emailerr').text("Email已使用");
+                    } else {
+                        btn.removeAttribute('disabled');
+                        $('#Emailerr').text("");
+                    }
+                })
+            })
+
+        $('#taxno').on('blur', () => {
+                console.log('blur');
+            const taxno = $('#taxno').val();
+            $.get(`@Url.Content("/Login/CheckTaxNo")?TaxNo=${taxno}`, function (data) {
+                console.log(data);
+                if (data == true) {
+                    btn.setAttribute('disabled', 'disabled');
+                    $('#taxerr').text("統一編號已使用");
+                } else {
+                    btn.removeAttribute('disabled');
+                    $('#taxerr').text("");
+                }
+            })
+        })
+        </script>
 }

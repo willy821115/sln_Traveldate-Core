@@ -1,4 +1,4 @@
-﻿@model prj_Traveldate_Core.ViewModels.CCompanionViewModel
+﻿@model prj_Traveldate_Core.ViewModels.CCompanionViewModel;
 @using System.ComponentModel;
 @using System.ComponentModel.DataAnnotations;
 
@@ -6,28 +6,62 @@
     ViewData["Title"] = "addCompanion";
 }
 
-<div class="container mt-2">
-    <div class="d-flex row">
+<div class="container mt-2" style="justify-content:space-between;display:flex">
+@*     <div class="d-flex row"> *@
         <div class="col-md-3">
             <div id="div1">
                 <div class="cell" id="div3">
                     <div class="cell d-flex flex-column">
+                        @*                      原本load二進位的頭像圖片用
                         @{
-                            if (ViewBag.photo != null)
-                            {
-                                                                                                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                                                                                                    <img src="@ViewBag.PhotoBase64" width="150" height="150" />
-                                                                                                                </div>
-                            }
-                            else
-                            {
-                                                                                                                <img src="~/icons/User profile - border vector image.png" style="width: 150px; height: 150px;" />
-                            }
+                        if (ViewBag.photo != null)
+                        {
+                        <div style="text-align:center;background-color:white;border-radius:10px">
+                        <img src="@ViewBag.PhotoBase64" width="150" height="150" />
+                        </div>
                         }
+                        else
+                        {
+                        <img src="~/icons/User profile - border vector image.png" style="width: 150px; height" alt="noimage" />
+                        }
+                        } *@
+                    @{
+                        if (ViewBag.image != null)
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                            </div>
+                        }
+                    }
+                    </div>
 
                         <ul class="list-group leftarea mt-3">
                             <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
-                            <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+
+                            @{
+                                if (ViewBag.level == "黑鑽會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else if (ViewBag.level == "黃金會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else if (ViewBag.level == "白銀會員")
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                                }
+                            }
                         </ul>
 
                     </div>
@@ -60,9 +94,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- 右半邊 - 內容容器 -->
-        <div class="col-md-9">
+    <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
+    <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
+<div id="rightPanel"  class="col-md-9">
             <h3 class="mb-4"><b>新增旅伴資料</b></h3>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -73,7 +107,6 @@
                     <li class="breadcrumb-item active" aria-current="page">新增旅伴</li>
                 </ol>
             </nav>
-            <div id="rightPanel">
                 @using (Html.BeginForm("addCompanion", "Member", FormMethod.Post))
                 {
                     <div class="form-group">                     
@@ -85,7 +118,6 @@
                         @Html.EditorFor(model=>model.LastName,"id=LastName",new {htmlAttributes=new{@class="form-control"}})
                         <span id="errorDiv1" style="color: red;margin-top:px"></span>
                     </div>
-
 
                     <div class="form-group">
                         @Html.LabelFor(model=>model.FirstName)
@@ -115,16 +147,13 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn my-btn-primary" id="btnAddCompanion">增加</button>
-
-                        <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>
-                    
+                        <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>                  
                     </div>
-                    <button type="submit" class="btn my-btn-primary" id="addDEMO">DEMO</button>
+                    <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button>
                 }
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
+
 
 @*<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -154,6 +183,7 @@
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
     }
 @section scripts{
+    <script src="path/to/sweetalert.js"></script>
     <script>
         const btnAddCompanion = document.getElementById('btnAddCompanion');
 
@@ -166,23 +196,20 @@
         const errorDiv3 = document.getElementById('errorDiv3');
 
         btnAddCompanion.addEventListener('click', () => {
-            if (LastName.value === "") {
-                errorDiv1.textContent = "此欄位為必填";
-                errorDiv2.textContent = "此欄位為必填";
-                errorDiv3.textContent = "此欄位為必填";
+            if (LastName.value === "" || FirstName.value === "" || Phone.value === "") {
 
                 setTimeout(() => {
-                    swal("請確認必填欄位是否皆已填寫！", "", "warning");
+                    swal("請確認必填欄位皆已填寫！", "", "warning");
                     errorDiv1.textContent = "此欄位為必填";
                     errorDiv2.textContent = "此欄位為必填";
                     errorDiv3.textContent = "此欄位為必填";
                     //errorDiv1.textContent = ""
-                }, 1200);
+                }, 1000);
             };
             if (LastName.value.trim() !== "" && FirstName.value.trim() !== "" && Phone.value.trim() !== "") {
-                swal("新增旅伴成功！", "稍後將自動為您導向", "success", { button: false });
+                swal("新增旅伴成功！", "稍後將自動為您導向", "success", { button: false })
                 setTimeout(() => {
-                    
+
                 }, 1500);
             }
         });
@@ -195,12 +222,12 @@
             addDEMO.addEventListener('click', function () {
                 // 填充表單輸入欄位
 
-                document.getElementById('FirstName').value = '名';
-                document.getElementById('LastName').value = '吳';
-                document.getElementById('Gender').value = '男';
-                document.getElementById('BirthDate').value = '1993/6/8';
-                document.getElementById('Phone').value = '0922333444';
-                document.getElementById('Email').value = 'qwe123@gmail.com';
+                document.getElementById('FirstName').value = '蘇姬';
+                document.getElementById('LastName').value = '顏';
+                document.getElementById('Gender').value = '女';
+                document.getElementById('BirthDate').value = '1991/6/8';
+                document.getElementById('Phone').value = '0911168168';
+                document.getElementById('Email').value = 'qazqwe123@gmail.com';
 
                 // // 可選：顯示Demo照片
                 // const imagePreview = document.getElementById('imagePreview');
