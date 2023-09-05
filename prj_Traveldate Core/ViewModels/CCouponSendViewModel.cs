@@ -14,5 +14,6 @@ namespace prj_Traveldate_Core.ViewModels
         public bool SendToGoldMembers { get; set; }
         public bool SendToDiamondMembers { get; set; }
 
+        public string email { get; set; }
     }
 }

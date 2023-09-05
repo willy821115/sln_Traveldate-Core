@@ -1,19 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
+using RazorEngine;
+using RazorEngine.Templating;
 using System.ComponentModel.Design;
+using System.Configuration;
 using System.Drawing;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prj_Traveldate_Core.Controllers
 {
     public class PlatformController : PlatformSuperController
     {
-        private IWebHostEnvironment _enviro = null;//要找到照片串流的路徑需要IWebHostEnvironment
-        public PlatformController(IWebHostEnvironment p) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
+        private IWebHostEnvironment _enviro ;//要找到照片串流的路徑需要IWebHostEnvironment
+        private readonly IConfiguration _configuration;
+        public PlatformController(IWebHostEnvironment p, IConfiguration configuration) //利用建構子將p注入全域的_enviro來使用，因為interface無法被new
         {
             _enviro = p;
+            _configuration = configuration;
         }
         public IActionResult Review(CPlatformViewModel vm)
         {
@@ -246,8 +254,26 @@ namespace prj_Traveldate_Core.Controllers
                     };
                     db.Coupons.Add(coupon);
                 }
-
                 db.SaveChanges();
+
+                string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
+                CSimpleEmailViewModel mail = CreateForgotPwdEmail();
+
+                var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
+                string sendmail = "g2207120@gmail.com";
+
+                List<string> UserEmail = new List<string>();
+                UserEmail.Add(sendmail);
+                LoginApiController api = new LoginApiController(_configuration, HttpContext);
+               
+                mail.userName =  memname + "，您好！";
+                string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
+
+                string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CSimpleEmailViewModel), mail);
+
+                api.SimplySendMail(mailSubject, mailContent, UserEmail);
+
+
 
                 TempData["CouponSentMessage"] = "優惠券已成功發放";
                 return RedirectToAction("Coupon");
@@ -255,6 +281,21 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(vm);
         }
+
+
+
+        public CSimpleEmailViewModel CreateForgotPwdEmail()
+        {
+            CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
+            vm.title = "重新設定密碼";
+            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate重新設定密碼。";
+            vm.content2 = "連結將在30分鐘後失效。";
+            vm.buttonText = "重設密碼";
+            vm.contentFooter = "如果您並未申請重設密碼，或不想要變更密碼，請忽略此信。";
+            return vm;
+        }
+
+
 
 
         [HttpPost]
@@ -402,7 +443,7 @@ namespace prj_Traveldate_Core.Controllers
                 couponName = couponDetails.CouponName,
                 couponDiscount = couponDetails.Discount,
                 couponDescription = couponDetails.Description,
-                couponDate = String.Format("{0:yyyy-MM-dd}", couponDetails.DueDate),
+                couponDate = System.String.Format("{0:yyyy-MM-dd}", couponDetails.DueDate),
                 couponImage = couponDetails.ImagePath
             });
         }
