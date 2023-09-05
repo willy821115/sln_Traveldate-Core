@@ -547,6 +547,8 @@ namespace prj_Traveldate_Core.Controllers
                 var protags = db.ProductTagLists.Where(c => c.ProductId == product.ProductId).Select(p => p.ProductTagDetails.ProductTagDetailsName).ToList(); ;
 
                 var tripdate = db.Trips.Where(t=>t.ProductId == product.ProductId).OrderBy(t=>t.Date).Select(t=>t.Date).ToList();
+
+                var formatTripDates = tripdate.Select(d => d?.ToString("yyyy-MM-dd")).ToList();
                 var tripprice = db.Trips.Where(t=>t.ProductId == product.ProductId).OrderBy(t => t.Date).Select(t=>t.UnitPrice).ToList();
                 var tripdetail = db.TripDetails.Where(t => t.ProductId == product.ProductId).Select(t => t.TripDetail1).ToList();
                 var propic = db.ProductPhotoLists.Where(p => p.ProductId == product.ProductId).Select(p => p.ImagePath).ToList();
@@ -571,7 +573,7 @@ namespace prj_Traveldate_Core.Controllers
                         Prodtags = protags,
                         tripdetail = tripdetail,
                         trippic = trippic,
-                        tripdate = tripdate,
+                        tripdate = formatTripDates,
                         tripprice = tripprice
                     };
 
