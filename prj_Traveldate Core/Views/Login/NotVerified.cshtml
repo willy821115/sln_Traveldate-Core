@@ -18,6 +18,8 @@
         <br />
         <label asp-for="email" class="form-label"></label>
         <input type="email" class="form-control Email" asp-for="email" required />
+        <span class="text-danger">@ViewData["Error"]</span>
+        <br>
         <br>
         <input type="submit" class="btn my-btn-primary" value="重寄驗證信" />
         <br>
