@@ -141,7 +141,15 @@
                      @*<td><i class="material-icons" style="font-size:24px;margin-left:24px">exposure_plus_1</i></td>*@
                     <td><img style="marging-left:-20px" src="~/icons/icon-forum-1.png" /></td>
                     <td>@item.Title</td>
-                    <td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
+                            @if (item.ReleaseDatetime != null)
+                            {
+<td>@item.ReleaseDatetime.ToString("yyyy-MM-dd")</td>
+                            }
+                            else
+                            {
+                                <td>尚未發佈</td>
+                            }
+                            
                     <td>@item.DueDate?.ToString("yyyy-MM-dd") </td>
                     <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item</td>
                     <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
