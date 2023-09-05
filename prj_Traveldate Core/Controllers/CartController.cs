@@ -148,7 +148,7 @@ namespace prj_Traveldate_Core.Controllers
 
         //揪團結帳
         [Route("Cart/ForumCheckout")]
-        public IActionResult ConfirmOrder(int ForumListID, int type)
+        public IActionResult ConfirmOrder(int ForumListID,int from, int type=0)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             List<int> orderDetailIdList = new List<int>();
@@ -234,10 +234,18 @@ namespace prj_Traveldate_Core.Controllers
                         }).First();
                     vm.orders.Add(item);
                 }
-             
-                //把forumlistId帶到結帳成功那邊再把文章的isPublish改成true
-               HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY, ForumListID);
-               
+                if (from == 0)
+                {
+                    //把forumlistId帶到結帳成功那邊再把文章的isPublish改成true
+                    HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY, ForumListID);
+                }
+                if(from == 1)
+                {
+                    //for跟團
+                    HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN, ForumListID);
+                }
+
+
                 return View(vm);
             }
             return Content("");
@@ -458,7 +466,7 @@ namespace prj_Traveldate_Core.Controllers
             //TODO 寄確認信
 
 
-            //如果是從揪團過來的走這裡
+            //如果是從揪團發文過來的走這裡
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
             {
                 int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY);
@@ -466,10 +474,16 @@ namespace prj_Traveldate_Core.Controllers
                 createArticle.IsPublish = true;
                 createArticle.ReleaseDatetime = DateTime.Now;
                 _context.SaveChanges();
-                return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, createStatus =0});
+                return RedirectToAction("ArticleView", "Forum", new {id= ForumListID, returnType = 0});
             }
- 
-           
+            //如果是從跟團過來的走這裡
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN))
+            {
+                int? ForumListID = HttpContext.Session.GetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN);
+
+                return RedirectToAction("ArticleView", "Forum", new { id = ForumListID, returnType = 1 });
+            }
+
             return View();
         }
 

@@ -272,13 +272,70 @@
             <div><img src="~/icons/icons8-group-64.png" />
                     @if (Model.member != null)
                     {
-                       <input id="btnJoin" class="btn btn-light" type="button" value="我要跟團" />
+                        
+                        <!-- Button trigger modal -->
+                        <button id="putInfoOnModal" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            我要跟團
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header my-bg-primary">
+                                        <h1 class="modal-title fs-5  text-white" id="exampleModalLabel">確認揪團內容</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div id="infoBody" class="modal-body">
+                                        <img src="/icons/beach-vacation.png" height="100" />
+                                        <table class="table fs-5 table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-7">旅行項目</th>
+                                                    <th class="col-3">旅行時間</th>
+                                                    <th class="col-2">價格</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    decimal? total = 0;
+                                                    decimal? discount = 0;
+                                                    foreach(var trip in Model.articleTrips)
+                                                    {
+                                                        if (trip.Discount == null)
+                                                        {
+                                                            discount = 0;
+                                                        }
+                                                        decimal? tripPrice = trip.UnitPrice - discount;
+                                                        total += tripPrice;
+                                                        <tr>
+                                                        <td>@trip.Product.ProductName</td>
+                                                        <td>@trip.Date.Value.ToShortDateString()</td>
+                                                        <td>@tripPrice</td>
+                                                    </tr>
+                                                }
+                                                    <tr>
+                                                        <td></td>
+                                                        <td class="fw-bolder">總金額</td>
+                                                        <td>$    @total</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
+                                        <a asp-action="ForumCheckout" asp-controller="Cart" asp-route-ForumListID="@Model.forum.ForumListId" asp-route-from="1" class="btn my-btn-primary ml-1 fs-5">結帳去</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                     else
                     {
-                        <a id="confirmedLoginStatus" asp-action="Likes" asp-route-forumId="@Model.forum.ForumListId" class="btn btn-light">我要跟團</a>
+                        <a id="confirmedLoginStatusJoin" asp-action="Join" asp-route-forumId="@Model.forum.ForumListId"  class="btn btn-light">我要跟團</a>
                     }
                 
+        </div>
         </div>
         <div id="replyBody">
                 @if(Model.replys == null)
@@ -352,15 +409,15 @@
     {
         <input id="isLogin" type="hidden" />
     }
-    @if (Model.createStatus != null)
+    @if (Model.returnStatus != null)
     {
-        if(Model.createStatus == 0)
+        if(Model.returnStatus == 0)
         {
-                <input type="hidden" id="createStatus" value="0" />
+            <input type="hidden" id="returnStatus" value="0" />
         }
-        else
+        else if ((Model.returnStatus == 1))
         {
-            <input type="hidden" id="createStatus" value="1" />
+            <input type="hidden" id="returnStatus" value="1" />
         }
     }
     
@@ -380,14 +437,18 @@
 </div>
 
 @section Scripts{
+
     <script>
         //結帳成功後回到發文頁面會跳成功通知
         document.addEventListener("DOMContentLoaded",function(){
-            var createStatusInput = document.getElementById("createStatus");
+            var createStatusInput = document.getElementById("returnStatus");
             if (createStatusInput) {
                 var createStatusValue = createStatusInput.value;
                 if (createStatusValue === "0"){
                     publishArticle()
+                }
+                if(createStatusValue === "1"){
+                    joinSchedule()
                 }
             }
         })
@@ -397,6 +458,15 @@
             Swal.fire({
                 icon: 'success',
                 title: '發布成功!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+        //跟團
+        function joinSchedule() {
+            Swal.fire({
+                icon: 'success',
+                title: '跟團成功!',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -450,7 +520,7 @@
 
     </script>
     <script>
-        /********還沒登入按讚********/
+        /********還沒登入去登入********/
         function loginInfo() {
             Swal.fire({
                 icon: 'info',
@@ -460,12 +530,18 @@
             })
         }
         var isLoggedIn = $('#loginMem').text()
+        //for按讚
         $('#confirmedLoginStatus').on('click', function () {
             if (!isLoggedIn) {
                 loginInfo();
             }
         });
-
+        //for跟團
+        $('#confirmedLoginStatusJoin').on('click', function () {
+            if (!isLoggedIn) {
+                loginInfo();
+            }
+        });
        /*****按讚/取消讚*****/
         
          $('#btnLike').click(function (b) {

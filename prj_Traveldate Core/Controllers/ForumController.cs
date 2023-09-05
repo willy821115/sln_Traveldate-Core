@@ -255,7 +255,7 @@ namespace prj_Traveldate_Core.Controllers
                 var routeValues = new RouteValueDictionary
 {
     { "ForumListID", creatArticle.forum.ForumListId },
-                    {"type",0 }
+                    {"from",0 }
 }; 
                 return RedirectToAction("ForumCheckout", "Cart", routeValues);
                 //return RedirectToAction("ConfirmOrder", "Cart", new { });
@@ -288,7 +288,7 @@ namespace prj_Traveldate_Core.Controllers
 
             //結帳後才有發布時間
             //creatArticle.forum.ReleaseDatetime = DateTime.Now;
-            _context.Add(creatArticle.forum);
+            _context.Update(creatArticle.forum);
             _context.SaveChanges();
 
             foreach (int tripId in creatArticle.tripIds)
@@ -298,7 +298,7 @@ namespace prj_Traveldate_Core.Controllers
                     ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Add(newSchedule);
+                _context.Update(newSchedule);
             }
 
             _context.SaveChanges();
@@ -312,7 +312,7 @@ namespace prj_Traveldate_Core.Controllers
                 var routeValues = new RouteValueDictionary
 {
     { "ForumListID", creatArticle.forum.ForumListId },
-                    {"type",0 }
+                    {"from",0 }
 };
                 return RedirectToAction("ForumCheckout", "Cart", routeValues);
             }
@@ -358,13 +358,15 @@ namespace prj_Traveldate_Core.Controllers
         }
 
 
-        public IActionResult ArticleView(int? id,int? createStatus)
+        public IActionResult ArticleView(int? id,int? returnType)
         {
             if (id == null)
             {
                 return RedirectToAction("ForumList");
             }
-
+            //將發文跟跟團的ID區隔避免衝突
+            HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY);
+            HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN);
             CArticleViewModel vm = new CArticleViewModel();
             vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
             vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
@@ -422,15 +424,15 @@ namespace prj_Traveldate_Core.Controllers
                     ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
                 }
             };
-            //成功回傳0
-            if (createStatus==0)
+            //揪團發文回傳0
+            if (returnType==0)
             {
-                vm.createStatus = createStatus;
+                vm.returnStatus = returnType;
             }
-            else
-            { 
-                //失敗回傳1
-                vm.createStatus =1;
+            else if(returnType ==1)
+            {
+                //揪團跟團回傳1
+                vm.returnStatus =1;
             }
             return View(vm);
         }
@@ -464,8 +466,22 @@ namespace prj_Traveldate_Core.Controllers
             return Json(dates);
         }
         /////////////////////////////////////檢視文章用/////////////////////////////////
-        //文章按讚
-        public IActionResult Likes(int forumId,int memId, int status)
+        //文章跟團
+        public IActionResult Join(int forumId)
+        {
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
+            {
+                TempData[CDictionary.SK_BACK_TO_ACTION] = "ArticleView";
+                TempData[CDictionary.SK_BACK_TO_CONTROLLER] = "Forum";
+                TempData[CDictionary.SK_BACK_TO_PARAM] = "id=" + forumId;
+                Task.Delay(2000).Wait();
+                return RedirectToAction("Login", "Login");
+            }
+            //有登入的情況下回傳給前面判斷
+            return Content("00");
+        }
+            //文章按讚
+            public IActionResult Likes(int forumId,int memId, int status)
         {
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
             {

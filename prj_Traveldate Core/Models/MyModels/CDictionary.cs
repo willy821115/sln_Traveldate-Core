@@ -16,5 +16,6 @@
         public static readonly string SK_RESET_PWD_EMAIL = "SK_RESET_PWD_EMAIL";
         public static readonly string SK_BACK_TO_PARAM = "SK_BACK_TO_PARAM";
         public static readonly string SK_FORUMLISTID_FOR_PAY = "SK_FORUMLISTID_FOR_PAY ";
+        public static readonly string SK_FORUMLISTID_FOR_PAY_JOIN = "SK_FORUMLISTID_FOR_PAY_JOIN ";
     }
 }
