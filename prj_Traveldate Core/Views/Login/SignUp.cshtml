@@ -14,6 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
             <br />
+            <br />
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control LastName" />
@@ -142,12 +143,12 @@
 
         $('#demobtn').on('click', function () {
             $('.LastName').val("張");
-            $('.FirstName').val("仁安");
+            $('.FirstName').val("柏文");
             $('.Idnumber').val("A137854126");
             $('.BirthDate').val("1998-07-09");
             $('.Phone').val("0935765315");
-            $('.Email').val("traveldate3@gmail.com");
-            $('.Password').val("1234");
+            $('.Email').val("bowenchang7979@gmail.com");
+            $('.Password').val("12345678");
         })
 
         const btn = document.querySelector('#btnSignup')

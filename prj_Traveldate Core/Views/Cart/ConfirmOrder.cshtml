@@ -247,7 +247,7 @@
                                                                     <p>
                                                                         @Model.coupons[i].Description
                                                                     </p>
-                                                                    <input type="hidden" id="couponOriginal" value="@(Model.coupons[i].Discount)">
+                                                                    <input type="hidden" id="couponOriginal_@i" value="@(Model.coupons[i].Discount)">
                                                                     @{
                                                                         if (Model.coupons[i].Discount > 1)
                                                                         {

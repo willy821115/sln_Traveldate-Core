@@ -251,6 +251,8 @@
                         <div class="myIcon2" id="sendButtonLayout">
                             <i class="fa fa-share send_icon"></i>
                         </div>
+                        <button  type="button" id="main" style="font-size:10px;width:50px;">主揪</button>
+                        <button type="button" id="sub" style="font-size:10px;width:50px;">跟團</button>
                     </div>
                 </div>
             </div>
@@ -359,7 +361,7 @@
 
         //傳送訊息
             $('#sendButtonLayout').on('click', function () {
-            let myID = $('#myID').html();
+            let myID = $('#myID').val();
             let message = $('#message').val();
             let sendToID = $('#sendToID').val();
             
@@ -433,10 +435,15 @@
             $("#mail").css("display", "inline");
         });
 
-
             }
 
-      
+        $('#sub').click(function () {
+                $('#message').val('你好，我對您的揪團行程有興趣，只可惜我當天有事不克前往，請問還會再開團嗎?');
+             });
+
+        $('#main').click(function () {
+            $('#message').val('你好，感謝你對我行程的支持，我近期還會再開團');
+        });
 
         //傳送訊息
         //$('#sendButtonLayout').on('click', function () {

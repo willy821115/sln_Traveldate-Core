@@ -79,20 +79,20 @@ namespace prj_Traveldate_Core.Hubs
                 var ReceiveName = MemberConnection.Where(c=>c.ConnectID== sendToID).Select(c=>c.FirstName).FirstOrDefault();
                 var SendName = MemberConnection.Where(c => c.ConnectID == myID).Select(c => c.FirstName).FirstOrDefault();
                 // 接收人
-                await Clients.Client(sendToID).SendAsync("UpdReceiveContent", ReceiveName + " 私訊向你說: " + message);
+                await Clients.Client(sendToID).SendAsync("UpdReceiveContent", SendName + " 私訊向你說: " + message);
 
                 // 發送人
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdSendContent", "你向 " + SendName + " 私訊說: " + message);
+                await Clients.Client(Context.ConnectionId).SendAsync("UpdSendContent", "你向 " + ReceiveName + " 私訊說: " + message);
             }
         }
-        public override async Task OnDisconnectedAsync(Exception ex)
-        {
-            var memberinfo = MemberConnection.Where(p => p.ConnectID == Context.ConnectionId).FirstOrDefault();
-            if (memberinfo != null)
-            {
-                MemberConnection.Remove(memberinfo);
-            }
-        }
+        //public override async Task OnDisconnectedAsync(Exception ex)
+        //{
+        //    var memberinfo = MemberConnection.Where(p => p.ConnectID == Context.ConnectionId).FirstOrDefault();
+        //    if (memberinfo != null)
+        //    {
+        //        MemberConnection.Remove(memberinfo);
+        //    }
+        //}
 
 
     }

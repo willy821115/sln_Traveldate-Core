@@ -1,4 +1,5 @@
-﻿using prj_Traveldate_Core.Models.MyModels;
+﻿using prj_Traveldate_Core.Models;
+using prj_Traveldate_Core.Models.MyModels;
 
 namespace prj_Traveldate_Core.ViewModels
 {
@@ -13,6 +14,7 @@ namespace prj_Traveldate_Core.ViewModels
         public string buttonLink { get; set; }
         //public string contentFooter { get; set; }
         //public string contentTitle { get; set; }
+        public List<OrderDetail> ods { get; set; } 
         public List<COrderMail> orders { get; set; } 
         public int coupon { get; set; }
         public int point { get; set; }

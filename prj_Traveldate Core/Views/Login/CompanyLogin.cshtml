@@ -7,14 +7,18 @@
 <form asp-action="CompanyLogin">
 
     <div class="mb-3">
+        <br>
+        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <br />
+        <br />
         <label for="clUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" pattern="{8}" value="04315397" />
+        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" pattern="{8}" />
         <span id="phoneHelp" class="form-text">請輸入統一編號，格式為八位數字</span>
         <br>
 
         <div class="mb-3">
             <label for="clPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" id="clPassword" asp-for="clPassword" value="cola">
+            <input type="password" class="form-control" id="clPassword" asp-for="clPassword" >
             <span class="loginAlert ml-1">@ViewBag.Message</span>
         </div>
 
@@ -30,9 +34,9 @@
 <br>
 
 <div class="downlabel">
-    <a asp-area="" asp-controller="Login" asp-action="CompanySignUp">建立供應商帳戶</a>
-    <label for="exampleInputEmail1" class="form-label">忘記密碼</label>
-    <a asp-area="" asp-controller="Login" asp-action="Login">切換客戶登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="CompanySignUp" class="btn my-btn-primary">建立供應商帳戶</a>
+@*    <a class="btn btn-outline-secondary ml-2 mr-2">忘記密碼</a>*@
+    <a asp-area="" asp-controller="Login" asp-action="Login" class="btn btn-outline-secondary ml-2 mr-2">切換客戶登入</a>
     <a asp-area="" asp-controller="Login" asp-action="PlatformLogin">切換平台登入</a>
 </div>
 @* <a asp-area="" asp-controller="Dashboard" asp-action="List">開發用供應商登入</a>
@@ -42,4 +46,13 @@
 @section Styles
     {
     <link href="~/css/Login.css" rel="stylesheet" />
+ }
+
+@section Scripts{
+    <script>
+        $('#demobtn').on('click', function () {
+            $('.account').val("04315397");
+            $('.password').val("cola");
+        })
+    </script>
  }

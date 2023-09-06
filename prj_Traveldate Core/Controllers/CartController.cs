@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
@@ -47,8 +48,6 @@ namespace prj_Traveldate_Core.Controllers
         }
         public ActionResult ShoppingCart()
         {
-            //TestOrderMail();
-
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
@@ -420,7 +419,8 @@ namespace prj_Traveldate_Core.Controllers
                 }
             }
 
-            TempData["OID"] = oid;
+            //將此筆訂單編號存入Session
+            HttpContext.Session.SetString(CDictionary.SK_PAID_ORDER_ID, oid.ToString());
 
             //準備付款所需資料
             //網址
@@ -463,8 +463,8 @@ namespace prj_Traveldate_Core.Controllers
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             ViewData["email"] = _context.Members.Find(_memberID).Email;
-            //TODO 寄確認信
-
+            //寄確認信
+            SendOrderMail();
 
             //如果是從揪團發文過來的走這裡
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
@@ -525,7 +525,7 @@ namespace prj_Traveldate_Core.Controllers
 
         public void SendOrderMail()
         {
-            if (TempData["OID"] == null)
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PAID_ORDER_ID))
             {
                 return;
             }
@@ -536,41 +536,65 @@ namespace prj_Traveldate_Core.Controllers
                 _context.Members.Find(_memberID).Email
             };
             string templatePath = "Views/Emails/OrderEmailTemplate.cshtml";
-            int oid = (int)TempData["OID"];
+            int oid = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_PAID_ORDER_ID));
+            HttpContext.Session.Remove(CDictionary.SK_PAID_ORDER_ID);
 
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
 
 
             //開始用oid抓資料/////////////////////////////////////
-            string imagePath = _enviro.WebRootPath + "/images/" + "467abeac-99cd-4501-b431-9927afc468d3.jpg";
 
             COrderEmailViewModel vm = new COrderEmailViewModel();
-            vm.userName = "小明";
+            var orderdata = _context.Orders.Where(o => o.OrderId == oid)
+                .Select(o => new {
+                    name = o.Member.FirstName,
+                    ods = _context.OrderDetails.Where(od => od.OrderId == o.OrderId).ToList(),
+                    point = (o.Discount == null) ? 0 : o.Discount,
+                    coupon = (o.CouponListId == null) ? 0 : o.CouponListId,
+                }).First();
+            
+            
+            vm.userName = orderdata.name;
             vm.orders = new List<COrderMail>();
-            COrderMail od = new COrderMail();
-            od.planName = "蘭嶼三天兩夜之旅 2人房";
-            od.unitPrice = 1000;
-            od.quantity = 1;
-            vm.buttonLink = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + "/Member/orderList";
-            vm.coupon = 100;
-            vm.point = 3;
-            vm.total = 897;
-
             //建立連結資源
             List<LinkedResource> linkedrs = new List<LinkedResource>();
-            var res = new LinkedResource(imagePath);
-            res.ContentId = Guid.NewGuid().ToString();
-            linkedrs.Add(res);
-            //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
-            od.imagePath = $@"cid:{res.ContentId}";
-            //建立AlternativeView
 
-            vm.orders.Add(od);
-            vm.orders.Add(od);
+            foreach(var i in orderdata.ods)
+            {
+                var od = _context.OrderDetails.Where(o => o.OrderDetailsId == i.OrderDetailsId).Select(o => new COrderMail
+                {
+                    planName = o.Trip.Product.PlanName,
+                    date = $"{o.Trip.Date:d}",
+                    unitPrice = Decimal.ToInt32((decimal)o.SellingPrice),
+                    quantity = (int)o.Quantity,
+                    imageFileName = _context.ProductPhotoLists.Where(p => p.ProductId == o.Trip.ProductId).Select(p=>p.ImagePath).First()
+                }).FirstOrDefault();
+
+                string imagePath = _enviro.WebRootPath + "/images/" + od.imageFileName;
+
+                vm.total += od.unitPrice * od.quantity;
+                
+                var res = new LinkedResource(imagePath);
+                res.ContentId = Guid.NewGuid().ToString();
+                linkedrs.Add(res);
+                //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
+                od.imagePath = $@"cid:{res.ContentId}";
+                vm.orders.Add(od);
+
+            }
+
+            double temp = vm.total;
+            double discount = (orderdata.coupon==0)? 1 : Decimal.ToDouble((decimal)_context.CouponLists.Where(c=>c.CouponListId==orderdata.coupon).Select(c=>c.Discount).FirstOrDefault());
+            vm.buttonLink = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + "/Member/orderList";
+            vm.coupon = (int)Math.Ceiling(temp * (1 - discount));
+            vm.point = (int)orderdata.point;
+            vm.total = vm.total - vm.coupon - vm.point;
+
 
             /////////////////////////////////////////////////
-
             string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "ordermail", typeof(COrderEmailViewModel), vm);
+            
+            //建立AlternativeView
             var altView = AlternateView.CreateAlternateViewFromString(
                 mailContent, null, MediaTypeNames.Text.Html);
             //將圖檔資源加入AlternativeView
