@@ -76,7 +76,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 var comments = db.CommentLists.Where(c => c.ProductId == item.productID).Select(c => c.CommentScore);
                 item.commentAvgScore = comments.Average();
                 item.commentCount = comments.Count();
-                item.strComment =  comments.Any() ? $"{comments.Average():0.0} ({comments.Count()})" : "No comment";
+                item.strComment =  comments.Any() ? $"{comments.Average():0.0} ({comments.Count()})" : "尚無評論";
                 //購買次數
                 var buy = db.OrderDetails.Where(o => o.Trip.Product.ProductId == item.productID).Select(o => o.Quantity).Sum();
                 item.orederCount = buy.HasValue ? buy: 0;
@@ -95,7 +95,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 {
                     item.strProdStock = $"已額滿   名額:{r}/{m}";
                 }
-                else if(item.prodStock > 0.03)
+                else if(item.prodStock > 0.1)
                 {
                     item.strProdStock = $"即將額滿   名額:{r}/{m}";
                 }

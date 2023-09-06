@@ -425,7 +425,7 @@
                             <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
                             <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
                         }
-                        else if (article.numStock > 0.05 && article.numStock<1 &&article.ForumList.DueDate > DateTime.Now)
+                        else if (article.numStock > 0.5 && article.numStock<1 &&article.ForumList.DueDate > DateTime.Now)
                         {
                             <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
                             <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
