@@ -460,10 +460,16 @@ namespace prj_Traveldate_Core.Controllers
                 return Content("no data"); 
             }
 
+            decimal discountValue = (decimal)couponDetails.Discount * 100;
+
+            var discountText = discountValue % 10 == 0
+                ? $"{discountValue / 10:F0} 折"
+                : $"{discountValue:F0} 折";
+
             return Json(new
             {
                 couponName = couponDetails.CouponName,
-                couponDiscount = couponDetails.Discount,
+                couponDiscount = discountText,
                 couponDescription = couponDetails.Description,
                 couponDate = System.String.Format("{0:yyyy-MM-dd}", couponDetails.DueDate),
                 couponImage = couponDetails.ImagePath
