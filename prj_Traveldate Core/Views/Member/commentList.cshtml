@@ -89,7 +89,7 @@
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
                 <li class="list-group-item menuItem">
-                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                   @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                 </li>
             </ul>
@@ -98,7 +98,7 @@
 </div>
     <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
     <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
-    <div id="rightPanel" class="col-md-10">
+    <div id="rightPanel" class="col-md-12">
 <h3 class="mb-4"><b>我的評論</b></h3>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -115,13 +115,13 @@
     <thead>
         <tr>
             <th ></th>
-            <th class="col-md-3">商品名稱</th>
-            <th class="col-md-1.5">標題</th>
-            <th class="col-md-5">內容</th>
-            <th class="col-md-1.5">您的評分</th>
-            <th class="col-md-1">評論日期</th>
+                    <th class="col-md-2">商品名稱</th>
+                    <th class="col-md-2">標題</th>
+                    <th class="col-md-4">內容</th>
+            <th >您的評分</th>
+            <th >評論日期</th>
             @* <th class="col-md-1">pic</th> *@
-            <th >操作</th>
+                    <th class="col-md-1">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -228,6 +228,7 @@
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({
+                        order: [[5, 'desc']],
                 // 中文化
                 'language': {
                     "processing": "處理中...",

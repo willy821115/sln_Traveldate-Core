@@ -87,7 +87,7 @@
                                 <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                             </li>
                             <li class="list-group-item menuItem">
-                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                 @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                                 <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                             </li>
                         </ul>
@@ -130,7 +130,8 @@
 
                     <div class="form-group">
                         <label >內容</label>
-                <input type="text" id="Content" name="Content" class="form-control" style="height:80px" />
+                <input type="text" id="Content" name="Content" class="form-control" style="height:80px;overflow-wrap:break-word;white-space:pre-wrap" />
+                @* <textarea type=input""  id="Content" name="Content" class="form-control" style="height:80px;overflow-wrap:break-word;white-space:pre-wrap" ></textarea> *@
                     </div>
 
                     <div class="form-group">
@@ -201,7 +202,7 @@
                                <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" id="btnAddComment">傳送</button>
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                           </div>
-                        <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button> @*DEMO用*@
+                        <button type="button" class="btn btn-outline-secondary" id="addDEMO">DEMO</button> @*DEMO用*@
 
                     </div>
                     @* } *@
@@ -265,7 +266,7 @@
                 const imagePreview = document.getElementById('imagePreview');
 
                 input.addEventListener('change', function () {
-                    // 清空预览区域
+                     //清空預覽區域
                     imagePreview.innerHTML = '';
 
                     const files = input.files;
@@ -276,8 +277,8 @@
                             reader.addEventListener('load', () => {
                                 const img = document.createElement('img');
                                 img.src = reader.result;
-                                img.style.height = '100px'; // 设置图像高度
-                                img.style.marginRight = '10px'; // 可选的间距
+                        img.style.height = '100px'; // 設置圖像高度
+                        img.style.marginRight = '10px'; // 可選的間距
                                 imagePreview.appendChild(img);
                             });
                             reader.readAsDataURL(file);
@@ -294,7 +295,7 @@
                 // 填充表單輸入欄位
 
                 document.getElementById('Title').value = '極致經驗的行程體驗！';
-                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與文化之美的旅客！';
+                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與\n文化之美的旅客！';
                 document.getElementById('CommentScore').value = '4';
 
                 // // 可選：顯示Demo照片

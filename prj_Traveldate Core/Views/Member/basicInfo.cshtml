@@ -25,15 +25,15 @@
                          @{
                             if (ViewBag.image != null)
                             {
-                                <div style="text-align:center;background-color:white;border-radius:10px">
-                                    <img src="~/images/@ViewBag.image" width="150" height="150" />
-                               </div>
+                                                            <div style="text-align:center;background-color:white;border-radius:10px">
+                                                                <img src="~/images/@ViewBag.image" width="150" height="150" />
+                                                           </div>
                             }
                             else
                             {
-                                <div style = "text-align:center;background-color:white;border-radius:10px" >
-                                    <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
-                                 </div>
+                                                            <div style = "text-align:center;background-color:white;border-radius:10px" >
+                                                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                                                             </div>
                             }
                     }
                     </div>
@@ -43,19 +43,19 @@
                         @{
                             if (ViewBag.level == "黑鑽會員")
                                     {
-                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                                                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
                                     }
                             else if (ViewBag.level == "黃金會員")
                                     {
-                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                                                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
                                     }
                             else if (ViewBag.level == "白銀會員")
                                     {
-                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                                                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
                                      }
                             else
                                     {
-                                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                                                                    <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
                                    }
                         }                
                         </ul>
@@ -86,7 +86,7 @@
                                 <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                             </li>
                             <li class="list-group-item menuItem">
-                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                                 
                             </li>
                         </ul>
@@ -147,6 +147,12 @@
                         <input asp-for="photos" type="file" class="form-control" id=" formFile" />
                     </div>
 
+                <div class="form-group" >
+                    <div id="imagePreview" class="w-100 mt-5" >
+                        <img src="" id="show" />
+                    </div>
+                </div>
+
                     <div class="form-group">
                         @Html.HiddenFor(model => model.Password)
                     </div>
@@ -203,5 +209,30 @@
             setTimeout(() => {                       
             }, 1500);                                 
         });           
+    </script>
+
+    <script>
+        const input = document.getElementById('formFile');
+        const imagePreview = document.getElementById('imagePreview');
+
+        input.addEventListener('change', function (event) { // 添加参数 event
+            // 清空预览区域
+            imagePreview.innerHTML = '';
+
+            const file = input.files[0];
+            const reader = new FileReader();
+
+           // if (file != null) {
+                
+                reader.addEventListener('load', () => {
+                    document.createElement('#show').src = reader.result;
+
+                   // imagePreview.appendChild(img); // 将图像添加到预览区域
+                });
+            if (file != null) { 
+                reader.readAsDataURL(file);
+            }
+          //  }
+        });
     </script>
 }

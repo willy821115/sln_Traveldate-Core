@@ -1,4 +1,5 @@
 ﻿//using AspNetCore;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -1397,9 +1398,12 @@ namespace prj_Traveldate_Core.Controllers
             Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
-        public IActionResult forumList() //我的揪團new V
+        public IActionResult forumList(int? id) //我的揪團new V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            int isLike = context.LikeLists.Where(m => m.MemberId == MemberId && m.IsLike == true && m.ForumId==id).Count();//Count();
+            //int isLikeForumId = context.LikeLists.Where(m => m.MemberId == MemberId && m.ForumId == (m.IsLike==true);
+
             var datas = from m in context.Members
                                     from like in context.LikeLists
                         join fl in context.ForumLists
@@ -1411,7 +1415,8 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                          //(int)  isLike= IsLike
+                            IsLike=Convert.ToInt32( isLike),
+                            Likes=fl.Likes,
                             //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,
@@ -1512,7 +1517,7 @@ namespace prj_Traveldate_Core.Controllers
 
 
 
-            return View(datas);
+            return View(datas.Distinct());
         }
 
         public IActionResult SignalR()

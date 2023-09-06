@@ -84,8 +84,8 @@
                         <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                     </li>
                     <li class="list-group-item menuItem">
-                           @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})                               
-                           <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
+                        @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
+                        <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                     </li>
                 </ul>
             </div>
@@ -94,6 +94,15 @@
     <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
     <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
     <div id="rightPanel" class="col-md-9">
+        <h3 class="mb-4"><b>樂旅Chat</b><span></span></h3>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
+                <li class="breadcrumb-item active" aria-current="page">樂旅Chat</li>
+            </ol>
+        </nav>
 @*         @using (Html.BeginForm("basicInfo", "Member", FormMethod.Post))
         { *@
                 <div class="row mt-3" style="overflow-y:auto">
@@ -105,7 +114,7 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="messageInput" style="color:black" placeholder="我想說...">
+                    <input type="text" class="form-control" id="messageInput" style="color:black;margin-top:500px" placeholder="我想說...">
                     <label for="messageInput" id="messageLabel" style="color:black">我想說...</label>
                 </div>
             <div class="form-group">
@@ -161,7 +170,7 @@
 
                 // 更新聊天內容事件
                 connection.on("UpdContent", function (msg) {
-                    $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
+            $("#Content").append($("<div></div>").attr("class", "list-group-item").text(msg)); //"<li></li>"  attr("class", "list-group-item")
                 });
 
                 //傳送訊息
@@ -175,9 +184,9 @@
                 });
 
                 connection.on("UpdContent", function (selfID, message, sendToID) {
-                    var messageElement = $("<li></li>").attr("class", "list-group-item");
+                var messageElement = $("<div></div>").attr("class", "list-group-item"); //<li></li>
 
-                    // 判断消息的发送者与接收者，并根据条件添加不同的CSS类
+                    // 判斷信息發送者與鳩受者，並依據條件添加不同的CSS
                     if (selfID === sendToID) {
                         messageElement.addClass("sent-message");
                     } else {
