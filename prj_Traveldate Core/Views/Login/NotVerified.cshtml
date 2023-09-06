@@ -14,7 +14,8 @@
         <span class="loginAlert ml-1">您的帳號尚未完成信箱驗證，驗證後方可使用會員功能</span>
         <br>
         <br>
-        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <button type="button" class="btn btn-outline-secondary" id="demobtn1">DEMO-瑋倫</button>
+        <button type="button" class="btn btn-outline-secondary ml-2" id="demobtn2">DEMO-柏文</button>
         <br />
         <label asp-for="email" class="form-label"></label>
         <input type="email" class="form-control Email" asp-for="email" required />
@@ -43,8 +44,12 @@
 
  @section Scripts{
      <script>
-        $('#demobtn').on('click', function () {
-            $('.Email').val("traveldate3@gmail.com");
+        $('#demobtn1').on('click', function () {
+            $('.Email').val("weilunjiang3737@gmail.com");
+        })
+
+        $('#demobtn2').on('click', function () {
+            $('.Email').val("bowenchang7979@gmail.com");
         })
      </script>
  }

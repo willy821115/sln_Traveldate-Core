@@ -11,14 +11,16 @@
     <br>
     <div class="mb-3">
         <br>
+        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <br />
         <div class="form-group">
             <label asp-for="txtNewPassword">輸入新密碼</label>
-            <input type="password" class="form-control" asp-for="txtNewPassword" required />
+            <input type="password" class="form-control pwd" asp-for="txtNewPassword" required />
         </div>
 
         <div class="form-group">
             <label asp-for="txtCheckPassword">確認新密碼</label>
-            <input type="password" class="form-control" asp-for="txtCheckPassword" required />
+            <input type="password" class="form-control pwd" asp-for="txtCheckPassword" required />
         </div>
         <input id="checkbox" type="checkbox" onclick="cbshow()" /> 顯示密碼
         <br />
@@ -75,7 +77,10 @@
                 }, 5000);
             }
         });
-
+        
+        $('#demobtn').on('click', function () {
+            $('.pwd').val("12345678");
+        })
 
     </script>
 }
