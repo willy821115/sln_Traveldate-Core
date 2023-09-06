@@ -7,7 +7,9 @@
             <div class="search-container w-100">
                 <div class="d-flex justify-content-center w-50 position-relative">
                     <input type="text" name="txtKeyword" class="search-input rounded p-0" placeholder="搜尋..."/>
-                    <input type="submit" value="搜尋" class="btn my-btn-primary btn-dock-right"/> <!-- 調整搜尋按鈕的高度 -->
+                    <a asp-area="" asp-controller="Search" asp-action="SearchList">
+                    <input type="button" value="搜尋" class="btn my-btn-primary btn-dock-right"/> <!-- 調整搜尋按鈕的高度 -->
+                    </a>
                 </div>
             </div>      
         </form>
