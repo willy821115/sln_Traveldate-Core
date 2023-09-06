@@ -17,5 +17,7 @@
         public static readonly string SK_BACK_TO_PARAM = "SK_BACK_TO_PARAM";
         public static readonly string SK_FORUMLISTID_FOR_PAY = "SK_FORUMLISTID_FOR_PAY ";
         public static readonly string SK_FORUMLISTID_FOR_PAY_JOIN = "SK_FORUMLISTID_FOR_PAY_JOIN ";
+        public static readonly string SK_PAID_ORDER_ID = "SK_PAID_ORDER_ID ";
+
     }
 }

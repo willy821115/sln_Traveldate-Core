@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
@@ -9,6 +10,8 @@ using RazorEngine.Templating;
 using System.ComponentModel.Design;
 using System.Configuration;
 using System.Drawing;
+using System.Net.Mail;
+using System.Net.Mime;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -136,7 +139,6 @@ namespace prj_Traveldate_Core.Controllers
                 int couponNum = pf.couponNum(item.CouponListId);
                 int couponUsedNum = pf.couponUsedNum(item.CouponListId);
 
-                // 将计算结果存入对象
                 CouponWrap.CouponNum = couponNum;
                 CouponWrap.CouponUsedNum = couponUsedNum;
                 vm.coupon.Add(CouponWrap);
@@ -256,45 +258,94 @@ namespace prj_Traveldate_Core.Controllers
                 }
                 db.SaveChanges();
 
-                string templatePath = "Views/Emails/SimpleEmailTemplate.cshtml";
-                CSimpleEmailViewModel mail = CreateForgotPwdEmail();
-
-                var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
-                string sendmail = "g2207120@gmail.com";
-
-                List<string> UserEmail = new List<string>();
-                UserEmail.Add(sendmail);
-                LoginApiController api = new LoginApiController(_configuration, HttpContext);
+                string templatePath = "Views/Emails/CouponEmailTemplate.cshtml";
+                CCouponEmailViewModel mail = new CCouponEmailViewModel();
                
-                mail.userName =  memname + "，您好！";
-                string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
+                mail.title = "專屬優惠降臨!!!";
+                mail.content1 = "您的優惠券已歸戶，快到TravelDate找行程出遊去～";
+                mail.CouponName = selectedCoupon.CouponName;
+                mail.CouponDescription = selectedCoupon.Description;
+                //顯示XX折
+                decimal discountValue = (decimal)selectedCoupon.Discount * 100;
 
-                string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CSimpleEmailViewModel), mail);
+                var discountText = discountValue % 10 == 0
+                    ? $"{discountValue / 10:F0} 折"
+                    : $"{discountValue:F0} 折";
 
-                api.SimplySendMail(mailSubject, mailContent, UserEmail);
+                mail.CouponDiscount = discountText;
 
+                mail.CouponExpDate = System.String.Format("{0:yyyy-MM-dd}", selectedCoupon.DueDate);
+                mail.buttonText = "立即使用優惠";
+                mail.buttonLink = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + "/";
+                mail.contentFooter = "【使用說明】進入會員專區並點選優惠券清單，結帳時即可使用。";
+               
+                string imagePath = _enviro.WebRootPath +"/images/" + selectedCoupon.ImagePath;
+                string catchimg = _enviro.WebRootPath + "/images/democoupon.jpg";
+                try
+                {
+                    //建立連結資源
+                    var res = new LinkedResource(imagePath);
+                    res.ContentId = Guid.NewGuid().ToString();
 
+                    //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
+                    mail.CouponImg = $@"cid:{res.ContentId}";
 
-                TempData["CouponSentMessage"] = "優惠券已成功發放";
+                    var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
+                    string sendmail = "weilunjiang3737@gmail.com";
+
+                    List<string> UserEmail = new List<string>();
+                    UserEmail.Add(sendmail);
+                    LoginApiController api = new LoginApiController(_configuration, HttpContext);
+
+                    mail.userName = "Hi, " + memname;
+                    string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
+
+                    string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CCouponEmailViewModel), mail);
+
+                    //建立AlternativeView
+                    var altView = AlternateView.CreateAlternateViewFromString(
+                        mailContent, null, MediaTypeNames.Text.Html);
+                    //將圖檔資源加入AlternativeView
+                    altView.LinkedResources.Add(res);
+                    api.SimplySendMail(mailSubject, UserEmail, altView);
+                }
+                catch (IOException)
+                {
+                    //建立連結資源
+                    var res = new LinkedResource(catchimg);
+                    res.ContentId = Guid.NewGuid().ToString();
+
+                    //使用<img src="/img/loading.svg" data-src="cid:..."方式引用內嵌圖片
+                    mail.CouponImg = $@"cid:{res.ContentId}";
+
+                    var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
+                    string sendmail = "weilunjiang3737@gmail.com";
+
+                    List<string> UserEmail = new List<string>();
+                    UserEmail.Add(sendmail);
+                    LoginApiController api = new LoginApiController(_configuration, HttpContext);
+
+                    mail.userName = "Hi, " + memname;
+                    string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
+
+                    string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CCouponEmailViewModel), mail);
+
+                    //建立AlternativeView
+                    var altView = AlternateView.CreateAlternateViewFromString(
+                        mailContent, null, MediaTypeNames.Text.Html);
+                    //將圖檔資源加入AlternativeView
+                    altView.LinkedResources.Add(res);
+                    api.SimplySendMail(mailSubject, UserEmail, altView);
+                }
+
+             
+
+                TempData["CouponSentMessage"] = "優惠券 & 優惠電子報 已成功發放";
                 return RedirectToAction("Coupon");
             }
 
             return View(vm);
         }
-
-
-
-        public CSimpleEmailViewModel CreateForgotPwdEmail()
-        {
-            CSimpleEmailViewModel vm = new CSimpleEmailViewModel();
-            vm.title = "重新設定密碼";
-            vm.content1 = "信箱驗證成功。點擊以下連結，即可回到Traveldate重新設定密碼。";
-            vm.content2 = "連結將在30分鐘後失效。";
-            vm.buttonText = "重設密碼";
-            vm.contentFooter = "如果您並未申請重設密碼，或不想要變更密碼，請忽略此信。";
-            return vm;
-        }
-
 
 
 
@@ -438,10 +489,16 @@ namespace prj_Traveldate_Core.Controllers
                 return Content("no data"); 
             }
 
+            decimal discountValue = (decimal)couponDetails.Discount * 100;
+
+            var discountText = discountValue % 10 == 0
+                ? $"{discountValue / 10:F0} 折"
+                : $"{discountValue:F0} 折";
+
             return Json(new
             {
                 couponName = couponDetails.CouponName,
-                couponDiscount = couponDetails.Discount,
+                couponDiscount = discountText,
                 couponDescription = couponDetails.Description,
                 couponDate = System.String.Format("{0:yyyy-MM-dd}", couponDetails.DueDate),
                 couponImage = couponDetails.ImagePath

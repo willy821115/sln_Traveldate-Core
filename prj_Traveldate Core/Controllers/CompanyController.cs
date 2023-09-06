@@ -63,7 +63,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Password(CCompanyWrap edit)
         {
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             if (edit.Password == edit.newPasswordCheck)
             {
                 Company cDB = _db.Companies.FirstOrDefault(p => p.CompanyId == edit.CompanyId);
@@ -73,14 +73,15 @@ namespace prj_Traveldate_Core.Controllers
 
                     _db.SaveChanges();
                 }
-
+                return RedirectToAction("List", "Dashboard");
             }
             else 
             {
                 ViewBag.CompanyPasswordAlarm = "新密碼與確認密碼不一致";
+                return RedirectToAction("Password");
             }
-
-            return RedirectToAction("List", "Dashboard");
+         
+            
         }
     }
 }

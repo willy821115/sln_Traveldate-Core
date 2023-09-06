@@ -7,13 +7,17 @@
 <form asp-action="PlatformLogin">
 
     <div class="mb-3">
+        <br>
+        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <br />
+        <br />
         <label for="clUsername" class="form-label">帳號</label>
-        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" value="yahoo001" />
+        <input type="tel" class="form-control" asp-for="clUsername" id="clUsername" aria-describedby="phoneHelp" />
         <br>
 
         <div class="mb-3">
             <label for="clPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control" id="clPassword" asp-for="clPassword" value="001">
+            <input type="password" class="form-control" id="clPassword" asp-for="clPassword">
             <span class="loginAlert ml-1">@ViewBag.Message</span>
         </div>
 
@@ -31,4 +35,14 @@
 @section Styles
     {
     <link href="~/css/Login.css" rel="stylesheet" />
+ }
+
+
+@section Scripts{
+    <script>
+        $('#demobtn').on('click', function () {
+            $('#clUsername').val("yahoo001");
+            $('#clPassword').val("001");
+        })
+    </script>
  }

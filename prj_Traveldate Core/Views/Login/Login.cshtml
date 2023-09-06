@@ -9,17 +9,20 @@
     <button type="submit" class="btn my-btn-primary">第三方登入</button>
     <br>
     <br>
-    <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+    <button type="button" class="btn btn-outline-secondary" id="demobtn1">DEMO-瑋倫</button>
+    <button type="button" class="btn btn-outline-secondary ml-2 mr-2" id="demobtn2">DEMO-柏文</button>
+    <button type="button" class="btn btn-outline-secondary" id="demobtn3">DEMO-廷全</button>
+    <br />
     <br />
     <div class="mb-3">
         <label for="mlUsername" class="form-label">帳號</label>
-        <input type="email" class="form-control account" asp-for="mlUsername" value="P987654321@gamil.com" required />
+        <input type="email" class="form-control account" asp-for="mlUsername" required />
         <span id="phoneHelp" class="form-text ml-1">會員帳號為註冊時填寫的Email</span>
         <br>
 
         <div class="mb-3">
             <label for="mlPassword" class="form-label">密碼</label>
-            <input type="password" class="form-control password" asp-for="mlPassword" value="11" required>
+            <input type="password" class="form-control password" asp-for="mlPassword" required>
             <span class="loginAlert ml-1">@ViewBag.Message</span>
             <span class="loginAlert ml-1">@TempData["ErrorMsg"]</span>
         </div>
@@ -36,10 +39,10 @@
 <br>
 
 <div class="downlabel">
-
-        <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a> 
-        <a asp-area="" asp-controller="Login" asp-action="ForgotPwd">忘記密碼</a>
-    <a asp-area="" asp-controller="Login" asp-action="CompanyLogin">切換廠商登入</a>
+    <h6 class="text-danger fw-bold">登入時遇到問題？</h6>
+        <a asp-area="" asp-controller="Login" asp-action="SignUp" class="btn my-btn-primary">建立帳戶</a>
+    <a asp-area="" asp-controller="Login" asp-action="ForgotPwd" class="btn btn-outline-secondary ml-2 mr-2">忘記密碼</a>
+    <a asp-area="" asp-controller="Login" asp-action="CompanyLogin" class="btn btn-outline-secondary">切換廠商登入</a>
     <br />
 @* <a asp-area="" asp-controller="Member" asp-action="Index">開發用會員登入</a> *@
 </div>
@@ -51,12 +54,20 @@
 
 @section Scripts{
     <script>
-        $('#demobtn').on('click', function () {
-            $('.account').val("traveldate3@gmail.com");
-            $('.password').val("1234");
+        $('#demobtn1').on('click', function () {
+            $('.account').val("weilunjiang3737@gmail.com");
+            $('.password').val("12345678");
         })
 
+        $('#demobtn2').on('click', function () {
+            $('.account').val("bowenchang7979@gmail.com");
+            $('.password').val("12345678");
+        })
 
+        $('#demobtn3').on('click', function () {
+            $('.account').val("p123456789@gamil.com");
+            $('.password').val("eC26PFKp");
+        })
 
     </script>
  }

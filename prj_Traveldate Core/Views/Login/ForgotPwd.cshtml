@@ -10,7 +10,9 @@
     <br>
     <br>
     <div class="mb-3">
-        <button type="button" class="btn btn-outline-secondary" id="demobtn">DEMO</button>
+        <button type="button" class="btn btn-outline-secondary" id="demobtn1">DEMO-瑋倫</button>
+        <button type="button" class="btn btn-outline-secondary ml-2" id="demobtn2">DEMO-柏文</button>
+        <br />
         <br />
 
         <label asp-for="email" class="form-label"></label>
@@ -24,8 +26,8 @@
 <br>
 
 <div class="downlabel">
-    <a asp-area="" asp-controller="Login" asp-action="Login">回到登入</a>
-    <a asp-area="" asp-controller="Login" asp-action="SignUp">建立帳戶</a>
+    <a asp-area="" asp-controller="Login" asp-action="Login" class="btn my-btn-primary">回到登入</a>
+    <a asp-area="" asp-controller="Login" asp-action="SignUp" class="btn btn-outline-secondary ml-2">建立帳戶</a>
 </div>
 
 @section Styles
@@ -38,8 +40,12 @@
 
 @section Scripts{
     <script>
-        $('#demobtn').on('click', function () {
-            $('.Email').val("traveldate3@gmail.com");
+        $('#demobtn1').on('click', function () {
+            $('.Email').val("weilunjiang3737@gmail.com");
+        })
+
+        $('#demobtn2').on('click', function () {
+            $('.Email').val("bowenchang7979@gmail.com");
         })
     </script>
  }
