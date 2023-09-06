@@ -115,15 +115,22 @@ $('.useCouponButton').on('click', function () {
     const CNameID = "#couponName_" + Cid;
     const CDiscountID = "#couponDiscount_" + Cid;
     const CID = "#couponID_" + Cid;
+    const CORG = "#couponOriginal_" + Cid;
+
+
     $('#usecouponID').val($(CID).val());
     $('#usecoupon').text($(CNameID).text() + " - " + $(CDiscountID).text());
 
 
-    if (Number($('#couponOriginal').val()) < 1) {
-        $('#coupondisc').val((Number($('#prodsum').val()) * (1 - Number($('#couponOriginal').val()))).toFixed(0));
+    if (Number($(CORG).val()) < 1) {
+        $('#coupondisc').val(Math.ceil((Number($('#prodsum').val()) * (1 - Number($(CORG).val())))).toFixed(0));
+        console.log(Number($('#prodsum').val()));
+        console.log(Number($('#coupondisc').val()));
+        console.log(Number($(CORG).val()));
+
     }
     else {
-        $('#coupondisc').val(Number($('#couponOriginal').val()));
+        $('#coupondisc').val(Number($(CORG).val()));
     }
 
     refreshDiscount();

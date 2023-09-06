@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
@@ -47,8 +48,6 @@ namespace prj_Traveldate_Core.Controllers
         }
         public ActionResult ShoppingCart()
         {
-            //SendOrderMail();
-
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
 
             CShoppingCartViewModel vm = new CShoppingCartViewModel();
@@ -420,7 +419,8 @@ namespace prj_Traveldate_Core.Controllers
                 }
             }
 
-            TempData["OID"] = oid;
+            //將此筆訂單編號存入Session
+            HttpContext.Session.SetString(CDictionary.SK_PAID_ORDER_ID, oid.ToString());
 
             //準備付款所需資料
             //網址
@@ -463,8 +463,8 @@ namespace prj_Traveldate_Core.Controllers
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             ViewData["email"] = _context.Members.Find(_memberID).Email;
-            //TODO 寄確認信
-
+            //寄確認信
+            SendOrderMail();
 
             //如果是從揪團發文過來的走這裡
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_FORUMLISTID_FOR_PAY))
@@ -525,10 +525,10 @@ namespace prj_Traveldate_Core.Controllers
 
         public void SendOrderMail()
         {
-            //if (TempData["OID"] == null)
-            //{
-            //    return;
-            //}
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PAID_ORDER_ID))
+            {
+                return;
+            }
 
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
             List<string> UserEmail = new List<string>
@@ -536,7 +536,8 @@ namespace prj_Traveldate_Core.Controllers
                 _context.Members.Find(_memberID).Email
             };
             string templatePath = "Views/Emails/OrderEmailTemplate.cshtml";
-            int oid = 140; //(int)TempData["OID"];
+            int oid = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_PAID_ORDER_ID));
+            HttpContext.Session.Remove(CDictionary.SK_PAID_ORDER_ID);
 
             LoginApiController api = new LoginApiController(_configuration, HttpContext);
 
@@ -582,9 +583,10 @@ namespace prj_Traveldate_Core.Controllers
 
             }
 
-            int discount = (orderdata.coupon==0)? 1 : Decimal.ToInt32((decimal)_context.CouponLists.Where(c=>c.CouponListId==orderdata.coupon).Select(c=>c.Discount).FirstOrDefault());
+            double temp = vm.total;
+            double discount = (orderdata.coupon==0)? 1 : Decimal.ToDouble((decimal)_context.CouponLists.Where(c=>c.CouponListId==orderdata.coupon).Select(c=>c.Discount).FirstOrDefault());
             vm.buttonLink = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.ToString() + "/Member/orderList";
-            vm.coupon = vm.total * (1 - discount);
+            vm.coupon = (int)Math.Ceiling(temp * (1 - discount));
             vm.point = (int)orderdata.point;
             vm.total = vm.total - vm.coupon - vm.point;
 
