@@ -8,8 +8,14 @@
 {
     <div class="d-flex divide-line-top" id="reply-@reply.ReplyId">
         <div>
-            @if (reply.Member.Photo != null)
+            @if (reply.Member.ImagePath != null)
             {
+                <img src="~/images/@reply.Member.ImagePath" class="my-w100-h100" alt="@reply.MemberId">
+            }
+            else
+            {
+                if (reply.Member.Photo != null) 
+                {
                 <img src="data:image/jpg;base64,@Convert.ToBase64String(reply.Member.Photo)" class="my-w100-h100" alt="@reply.MemberId">
             }
             else
@@ -23,6 +29,9 @@
                     <img src="~/icons/icons8-person-female-100.png" class="my-w100-h100" alt="null">
                 }
             }
+         }
+
+           
 
         </div>
         <div class="col">
