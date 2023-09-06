@@ -172,7 +172,7 @@
                         <input asp-for="photos" type="file" class="form-control" id="formFile" multiple />
                     </div>
 
-                    <div id="imagePreview" class="w-100 mt-5">
+                    <div id="imagePreview" class="w-100 mt-4"> @*w-100 是元素寬度 ;mt-2 是頂部外邊距單位*@
                     </div>
 
                     <div>
@@ -184,16 +184,6 @@
                         @*<label>ProductId</label>*@
                         <input type="hidden" name="ProductId" value="@Model.ProductId" class="form-control" />
 @*                         <input type="hidden" id="ProductId" name="ProductId" class="form-control/> *@
-                    </div>
-                    <div>
-                        @*<label>photos</label>*@
-                        @* <input type="hidden" name="photos" value="photos" class="form-control" /> *@
-                        @*                         <input type="hidden" id="photos" name="photos" class="form-control/> *@
-                    </div>
-                    <div>
-                        @*<label>ImagePath</label>*@
-                        @* <input type="hidden" name="ImagePath" value="ImagePath" class="form-control" /> *@
-                        @*                         <input type="hidden" id="ImagePath" name="ImagePath" class="form-control/> *@
                     </div>
 
                     <div>
@@ -279,7 +269,9 @@
                                 img.src = reader.result;
                         img.style.height = '100px'; // 設置圖像高度
                         img.style.marginRight = '10px'; // 可選的間距
-                                imagePreview.appendChild(img);
+                        img.style.marginBottom = '20px';
+                        //img.style.marginTop = '10px';
+                        imagePreview.appendChild(img);
                             });
                             reader.readAsDataURL(file);
                         }
@@ -288,7 +280,7 @@
             </script>
 
     <script>
-        //Demo用-addDEMO
+        //Demo用-addDEMO 新增評論示範
         document.addEventListener('DOMContentLoaded', function () {
             const addDEMO = document.getElementById('addDEMO');
             addDEMO.addEventListener('click', function () {

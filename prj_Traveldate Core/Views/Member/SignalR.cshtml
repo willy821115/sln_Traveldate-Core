@@ -94,9 +94,10 @@
     <!-- ↑↑↑左半邊 - 內容容器↑↑↑ -->
     <!-- ↓↓↓右半邊 - 內容容器↓↓↓ -->
     <div id="rightPanel" class="col-md-9">
-        <h3 class="mb-4"><b>樂旅Chat</b><span></span></h3>
+        <h3 class="mb-4"><b>樂旅Chat</b><span><img style="width:270px;height:150px;margin-bottom:0px;margin-left:-80px; margin-top:-15px" src="~/icons/icon-chat-1.gif" /></span></h3>
+        
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb" style="margin-top:-40px;margin-bottom:-15px">
                 <li class="breadcrumb-item"><a href="~/HomePage/HomePage">首頁</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><a href="~/Login/Login"> 會員登入</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><a href="~/Member/index"> 會員專區</a></li>
@@ -105,26 +106,32 @@
         </nav>
 @*         @using (Html.BeginForm("basicInfo", "Member", FormMethod.Post))
         { *@
-                <div class="row mt-3" style="overflow-y:auto">
-                    <div class="col-12">
-                        <h3>聊天內容</h3>
-                        <ul id="IDList" style="color:#FF359A">@* @ViewBag.LastName@ViewBag.firstName  *@</ul>
-                        <ul class="list-group" id="Content" style="height:300px;"></ul>
-                    </div>
-                </div>
+        <div class="row mt-2" style="overflow-y:auto">
+            <div class="col-12">
+                <h3>聊天內容</h3>
+                @* <ul id="IDList" style="color:#FF359A">@ViewBag.LastName@ViewBag.firstName </ul> *@
+                <ul class="list-group" id="Content" style="height:300px;width: 800px;border-radius:10px; border: 1px ;"></ul>
+            </div>
+        </div>
 
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="messageInput" style="color:black;margin-top:500px" placeholder="我想說...">
-                    <label for="messageInput" id="messageLabel" style="color:black">我想說...</label>
-                </div>
+        <div class="form-floating mb-1">
+            
+            <input type="text" class="form-control" id="messageInput" style="color:black;border-radius:10px;width:800px; margin-top:500px;box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;" placeholder="我想說...">
+            <label for="messageInput" id="messageLabel" style="color:#FF8040">我想說...</label>
+        </div>
+
             <div class="form-group">
-@*                 <label for="sendToID" class="form-label">指定 ID</label> *@
-                    <input type="hidden" class="form-control" id="sendToID" />
+            @* <label for="sendToID" class="form-label">指定 ID</label> *@
+             <input type="hidden" class="form-control" id="sendToID" /> 
+            @* <input type="text" class="form-control" id="sendToID" value="sendToID"/> *@
             </div>
 
             <div class="form-group">
                     <button type="submit" class="btn my-btn-primary" id="sendButton" style="margin-right:-100px">傳送訊息</button>
             </div>
+
+        <button type="submit" class="btn btn-outline-secondary" id="addDEMOfirstmessage">DEMOIM1</button> @*DEMO用*@
+        <button type="submit" class="btn btn-outline-secondary" id="addDEMOsecondmessage">DEMOIM2</button> @*DEMO用*@
 @*         } *@
 
 
@@ -136,9 +143,24 @@
 @section Styles{
     <link rel="stylesheet" href="~/css/Member.css" asp-append-version="true" />
 
-    <style>.sent-message {
+    <style>
+        .sent-message {
         color: blue; /* 设置发送者消息的颜色 */
         background-color: lightblue;}  /* 设置发送者 */
+
+        .received-message{
+            color: red;
+            background-color: lightpink;
+        }
+
+        #Content li {
+            color: blue;
+            box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;
+        }
+
+        #messageInput  {
+            box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;
+        }
     </style>
 }
 
@@ -170,31 +192,52 @@
 
                 // 更新聊天內容事件
                 connection.on("UpdContent", function (msg) {
-            $("#Content").append($("<div></div>").attr("class", "list-group-item").text(msg)); //"<li></li>"  attr("class", "list-group-item")
+            $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg)); //"<li></li>"  attr("class", "list-group-item")
                 });
 
                 //傳送訊息
-                $('#sendButton').on('click', function () {
-                    let selfID = $('#SelfID').html();
-                    let messageInput = $('#messageInput').val();
-                    let sendToID = $('#sendToID').val();
-                    connection.invoke("SendMessage", selfID, messageInput, sendToID).catch(function (err) {
-                        alert('傳送錯誤: ' + err.toString());
-                    });
+        $('#sendButton').on('click', function () {
+            let selfID = $('#SelfID').html();
+            let messageInput = $('#messageInput').val();
+
+
+            var sendToIDInput = document.getElementById("sendToID");
+            var receiverID = sendToIDInput.value;
+            // 将接收者ID传递给 SendMessage 方法
+            connection.invoke("SendMessage", selfID, messageInput, receiverID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+            if (selfID !== sendToID) {
+                messageElement.addClass("sent-message");
+            } else {
+                messageElement.addClass("received-message");
+            }
+                messageElement.text(message);
+                $("#Content").append(messageElement);
                 });
+    </script>
 
-                connection.on("UpdContent", function (selfID, message, sendToID) {
-                var messageElement = $("<div></div>").attr("class", "list-group-item"); //<li></li>
+    <script>
+        //Demo用-addDEMOfirstmessage 由江瑋倫身分發第一條信息示範
+        document.addEventListener('DOMContentLoaded', function () {
+            const addaddDEMOfirstmessageDEMOture = document.getElementById('addDEMOfirstmessage');
+            addDEMOfirstmessage.addEventListener('click', function () {
+                // 填充表單輸入欄位
 
-                    // 判斷信息發送者與鳩受者，並依據條件添加不同的CSS
-                    if (selfID === sendToID) {
-                        messageElement.addClass("sent-message");
-                    } else {
-                        messageElement.addClass("received-message");
-                    }
+                document.getElementById('messageInput').value = '嗨~在線大大，有什麼地方是去台南一定要去的嗎?';
+            });
+        });
+    </script>
 
-                    messageElement.text(message);
-                    $("#Content").append(messageElement);
-                });
+    <script>
+        //Demo用-addDEMOsecondmessage 由柏全身分發第一條信息示範
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDEMOsecondmessage = document.getElementById('addDEMOsecondmessage');
+            addDEMOsecondmessage.addEventListener('click', function () {
+                // 填充表單輸入欄位
+
+                document.getElementById('messageInput').value = '滿多的呀~';
+            });
+        });
     </script>
 }

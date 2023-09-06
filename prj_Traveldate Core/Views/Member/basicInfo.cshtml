@@ -144,12 +144,13 @@
                     </div>
                     <div class="form-group">
                         <label for="formfiles">照片</label>
-                        <input asp-for="photos" type="file" class="form-control" id=" formFile" />
+                        <input asp-for="photos" type="file" class="form-control" id="formFile" />
                     </div>
 
                 <div class="form-group" >
-                    <div id="imagePreview" class="w-100 mt-5" >
-                        <img src="" id="show" />
+                    <div id="imagePreview" class="w-100 mt-4">
+                        @*w-100 是元素寬度 ;mt-2 是頂部外邊距單位*@
+                        <img src="" alt="" id="show" />
                     </div>
                 </div>
 
@@ -216,23 +217,22 @@
         const imagePreview = document.getElementById('imagePreview');
 
         input.addEventListener('change', function (event) { // 添加参数 event
-            // 清空预览区域
+            // 清空預覽區塊
             imagePreview.innerHTML = '';
 
             const file = input.files[0];
             const reader = new FileReader();
 
-           // if (file != null) {
-                
                 reader.addEventListener('load', () => {
-                    document.createElement('#show').src = reader.result;
-
-                   // imagePreview.appendChild(img); // 将图像添加到预览区域
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.style.height = '100px'; // 設置圖像高度
+                img.style.marginRight = '10px'; // 可選的間距
+                imagePreview.appendChild(img); //將圖添加到預覽區塊
                 });
             if (file != null) { 
                 reader.readAsDataURL(file);
             }
-          //  }
         });
     </script>
 }
