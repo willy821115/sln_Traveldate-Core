@@ -46,7 +46,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
             vm.program.fMemPic = pf.loadMemPic((int)id);
-            vm.program.fMaxnum = pf.loadQuantityMax((int)id);
+            vm.program.fMaxnum = pf.loadStock((int)id);
 
             TraveldateContext db = new TraveldateContext();
                 int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
@@ -76,7 +76,31 @@ namespace prj_Traveldate_Core.Controllers
             List<decimal?> discount = db.Trips.Where(p => p.ProductId == id).Select(t => t.Discount).ToList();
             List<int> tripid = db.Trips.Where(p => p.ProductId == id).Select(t => t.TripId).ToList();
 
-            int? maxnum = max[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
+            List<int?> quantities = new List<int?>();
+            List<int?> maxnums = db.Trips
+                .Where(p => p.ProductId == id)
+                .OrderBy(t => t.Date)
+                .Select(t => t.MaxNum)
+                .ToList();
+
+            List<int> tripIds = db.Trips
+                .Where(p => p.ProductId == id)
+                .OrderBy(t => t.Date)
+                .Select(t => t.TripId)
+                .ToList();
+
+            foreach (int tripsId in tripIds)
+            {
+                int? quantity = db.OrderDetails
+                    .Where(o => o.Order.IsCart == false && o.TripId == tripsId)
+                    .Sum(o => (int?)o.Quantity); // 使用 int? 轉型為可為 null 的整數
+                quantities.Add(quantity);
+            }
+
+            // 使用 Zip 方法將 maxnum 和 quantities 組合成一個 List<int?>
+            List<int?> combinedList = maxnums.Zip(quantities, (m, q) => m - q).ToList();
+
+            int? maxnum = combinedList[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             int? minnum = min[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             decimal? pricenum = price[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             decimal? discountnum = discount[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];

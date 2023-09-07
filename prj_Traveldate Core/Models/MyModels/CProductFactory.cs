@@ -82,6 +82,37 @@ namespace prj_Traveldate_Core.Models.MyModels
             List<int?> maxnum = db.Trips.Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7)).OrderBy(t => t.Date).Select(t => t.MaxNum).ToList();
             return maxnum;
         }
+
+
+        public List<int?> loadStock(int id)
+        {
+            List<int?> quantities = new List<int?>();
+            List<int?> maxnum = db.Trips
+                .Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7))
+                .OrderBy(t => t.Date)
+                .Select(t => t.MaxNum)
+                .ToList();
+
+            List<int> tripIds = db.Trips
+                .Where(p => p.ProductId == id && p.Date > DateTime.Now.AddDays(-7))
+                .OrderBy(t => t.Date)
+                .Select(t => t.TripId)
+                .ToList();
+
+            foreach (int tripId in tripIds)
+            {
+                int? quantity = db.OrderDetails
+                    .Where(o => o.Order.IsCart == false && o.TripId == tripId)
+                    .Sum(o => (int?)o.Quantity); // 使用 int? 轉型為可為 null 的整數
+                quantities.Add(quantity);
+            }
+
+            // 使用 Zip 方法將 maxnum 和 quantities 組合成一個 List<int?>
+            List<int?> combinedList = maxnum.Zip(quantities, (m, q) => m - q).ToList();
+
+            return combinedList;
+        }
+
         //最少報名人數
         public List<int?> loadQuantityMin(int id)
         {
