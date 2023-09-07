@@ -1,4 +1,5 @@
 ﻿//using AspNetCore;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -1400,6 +1401,15 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult forumList() //我的揪團new V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+            //bool IsLike = context.LikeLists.Any(m => m.MemberId == MemberId && m.IsLike == true);
+            //var IsLike2 = from isl in context.LikeLists where  isl.IsLike == true select new CForumListViewModel2 { IsLike = isl.IsLike };
+            //var IsLike3 = context.LikeLists.Where(isl => isl.MemberId== MemberId && isl.IsLike == true);
+
+            //ViewBag.countisLike3= IsLike3.ToList().Count();
+            //bool IsLike = context.LikeLists.Where(m => m.MemberId == MemberId && m.IsLike == true).Count();//Count();
+            //ViewBag.countisLike = Convert.ToInt32(IsLike).ToString().Count();//.ToString();//.Count();
+            //int isLikeForumId = context.LikeLists.Where(m => m.MemberId == MemberId && m.ForumId == (m.IsLike==true);
+
             var datas = from m in context.Members
                                     from like in context.LikeLists
                         join fl in context.ForumLists
@@ -1411,7 +1421,9 @@ namespace prj_Traveldate_Core.Controllers
                             Title = fl.Title,
                             DueDate = fl.DueDate,
                             ReleaseDatetime = fl.ReleaseDatetime,
-                          //(int)  isLike= IsLike
+                            //IsLike = context.LikeLists.Any(like => like.ForumId == fl.ForumListId && like.MemberId == MemberId && like.IsLike == true),
+                            //IsLike = like.IsLike.Value==true,
+                            Likes =fl.Likes,
                             //IsLike=fl.MemberId,
                             Watches = fl.Watches,
                             Content = fl.Content,
@@ -1512,7 +1524,7 @@ namespace prj_Traveldate_Core.Controllers
 
 
 
-            return View(datas);
+            return View(datas.Distinct());
         }
 
         public IActionResult SignalR()

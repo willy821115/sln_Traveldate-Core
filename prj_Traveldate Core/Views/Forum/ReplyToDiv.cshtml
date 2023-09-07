@@ -1,13 +1,20 @@
-﻿
+﻿@using prj_Traveldate_Core.ViewModels;
+@model CArticleViewModel
 
 <div id="my-reply" class="d-flex divide-line-top col bg-white pt-2 pb-2">
-    @if (Model.Photo != null)
+    @if (Model.member.ImagePath != null)
     {
-        <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.Photo)" class="my-w100-h100" alt="@Model.FirstName">
+        <img src="~/images/@Model.member.ImagePath" class="my-w100-h100" alt="@Model.member.MemberId">
     }
     else
     {
-        if (Model.Gender == "男")
+        if (Model.member.Photo != null)
+    {
+        <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.member.Photo)" class="my-w100-h100" alt="@Model.member.MemberId">
+    }
+    else
+    {
+        if (Model.member.Gender == "男")
         {
             <img src="~/icons/icons8-person-100.png" class="my-w100-h100" alt="null">
         }
@@ -17,13 +24,16 @@
         }
 
     }
+    }
+    
     
     <div class="col">
-        <h4>@Model.LastName@Model.FirstName</h4>
+        <h4>@Model.member.LastName@Model.member.FirstName</h4>
         <div>
             <textarea id="replyContent" name="Content" type="text" class="form-control reply-input" placeholder="留言..."></textarea>
         </div>
         <div class="d-flex justify-content-end pt-1">
+            <button id="btnDemoReply" class="btn btn-outline-secondary mr-1">DEMO回覆</button>
             <input id="btnSubmit" class="btn my-btn-primary mr-1" type="submit" value="送出"/>
             <input class="btn btn-secondary "type="reset" value="取消" />
         </div>

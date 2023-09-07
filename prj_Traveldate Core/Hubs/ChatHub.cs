@@ -24,6 +24,9 @@ namespace prj_Traveldate_Core.Hubs
         //    await Clients.All.SendAsync("ReceiveMessage", user, message);
         //}
         public static List<string> ConnIDList = new List<string>();
+        private readonly Dictionary<string, string> _userConnectionMap = new Dictionary<string, string>();
+
+
         /// <summary>
         /// 連線事件
         /// </summary>
@@ -64,7 +67,7 @@ namespace prj_Traveldate_Core.Hubs
             await Clients.All.SendAsync("UpdList", jsonString);
 
             // 更新聊天內容
-            await Clients.All.SendAsync("UpdContent", "已離線 ID: " + Context.ConnectionId);
+            await Clients.All.SendAsync("UpdContent",Context.ConnectionId+ " 已離線");
 
             await base.OnDisconnectedAsync(ex);
         }
@@ -79,17 +82,24 @@ namespace prj_Traveldate_Core.Hubs
         {
             if (string.IsNullOrEmpty(sendToID))
             {
-                await Clients.All.SendAsync("UpdContent", selfID + " 說: " + message);
+                await Clients.All.SendAsync("UpdContent", selfID + " 說: " + message + "    " + DateTime.Now);
             }
             else
             {
                 // 接收人
-                await Clients.Client(sendToID).SendAsync("UpdContent", selfID + " 私訊向你說: " + message);
+                await Clients.Client(sendToID).SendAsync("UpdContent", selfID + " 私訊向你說: " + message + " " + DateTime.Now);
 
                 // 發送人
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + sendToID + " 私訊說: " + message);
+                await Clients.Client(Context.ConnectionId).SendAsync("UpdContent", "你向 " + sendToID + " 私訊說: " + message + " " + DateTime.Now);
+
             }
         }
+
+
+
+
+
+
     }
 }
 

@@ -176,7 +176,7 @@ namespace prj_Traveldate_Core.Controllers
 
             if (type == 0)
             {
-                var list = _context.ScheduleLists.Where(l => l.ForumListId == ForumListID).Select(l => l.TripId).ToList();
+                var list = _context.ScheduleLists.Where(l => l.ForumListId == ForumListID).Select(l => l.TripId).Distinct().ToList();
                 if (list != null)
                 {
                     tripId = list;
