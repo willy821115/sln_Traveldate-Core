@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using static NuGet.Packaging.PackagingConstants;
 using System;
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -15,6 +16,16 @@ namespace prj_Traveldate_Core.Controllers
         {
             if (id == null)
                 return RedirectToAction("SearchList", "Search");
+
+            List<int> visitedProducts = GetVisitedProductsFromSession();
+            visitedProducts.Add((int)id);
+            if (visitedProducts.Count > 4)
+            {
+                visitedProducts.RemoveAt(0);
+            }
+            string visitedProductsString = string.Join(",", visitedProducts);
+            HttpContext.Session.SetString(CDictionary.SK_PRODUCT_VISITED_ID, visitedProductsString);
+
             CProductFactory pf = new CProductFactory();
             ProgramViewModel vm = new ProgramViewModel();
             //vm.program.fPhotoList = pf.loadPhoto((int)id);
@@ -57,7 +68,21 @@ namespace prj_Traveldate_Core.Controllers
 
             return View(vm);
         }
-        
+
+
+
+        private List<int> GetVisitedProductsFromSession()
+        {
+            string visitedProductsString = HttpContext.Session.GetString(CDictionary.SK_PRODUCT_VISITED_ID);
+
+            if (!string.IsNullOrEmpty(visitedProductsString))
+            {
+                return visitedProductsString.Split(',').Select(int.Parse).ToList();
+            }
+
+            return new List<int>();
+        }
+
 
         public IActionResult Address(int id)
         {

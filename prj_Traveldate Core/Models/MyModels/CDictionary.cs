@@ -18,6 +18,7 @@
         public static readonly string SK_FORUMLISTID_FOR_PAY = "SK_FORUMLISTID_FOR_PAY ";
         public static readonly string SK_FORUMLISTID_FOR_PAY_JOIN = "SK_FORUMLISTID_FOR_PAY_JOIN ";
         public static readonly string SK_PAID_ORDER_ID = "SK_PAID_ORDER_ID ";
+        public static readonly string SK_PRODUCT_VISITED_ID = "SK_PRODUCT_VISITED_ID";
 
     }
 }
