@@ -77,15 +77,8 @@ namespace prj_Traveldate_Core.Controllers
             List<int> tripid = db.Trips.Where(p => p.ProductId == id).Select(t => t.TripId).ToList();
 
             List<int?> quantities = new List<int?>();
-            List<int?> maxnums = db.Trips
-                .Where(p => p.ProductId == id)
-                .OrderBy(t => t.Date)
-                .Select(t => t.MaxNum)
-                .ToList();
-
             List<int> tripIds = db.Trips
                 .Where(p => p.ProductId == id)
-                .OrderBy(t => t.Date)
                 .Select(t => t.TripId)
                 .ToList();
 
@@ -93,12 +86,12 @@ namespace prj_Traveldate_Core.Controllers
             {
                 int? quantity = db.OrderDetails
                     .Where(o => o.Order.IsCart == false && o.TripId == tripsId)
-                    .Sum(o => (int?)o.Quantity); // 使用 int? 轉型為可為 null 的整數
+                    .Sum(o => (int?)o.Quantity); 
                 quantities.Add(quantity);
             }
 
             // 使用 Zip 方法將 maxnum 和 quantities 組合成一個 List<int?>
-            List<int?> combinedList = maxnums.Zip(quantities, (m, q) => m - q).ToList();
+            List<int?> combinedList = max.Zip(quantities, (m, q) => m - q).ToList();
 
             int? maxnum = combinedList[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
             int? minnum = min[tripdate.FindIndex(d => d?.ToString("yyyy-MM-dd") == selectedDate)];
