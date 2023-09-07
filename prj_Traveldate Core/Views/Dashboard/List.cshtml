@@ -59,7 +59,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="~/Product/List">產品列表</a>
                     <a class="collapse-item" href="~/Product/Create">新增產品</a>
-                    <a class="collapse-item" href="~/Trip/List">產品日期</a>
+                    <a class="collapse-item" href="~/Trip/List">出團日期</a>
                 </div>
             </div>
         </li>
@@ -296,6 +296,7 @@
         // new DataTable('#dataTable');
         $(document).ready(function () {
             $('#dataTable').DataTable({
+                order: [[2, 'desc']],
                 'language': {
                     "processing": "處理中...",
                     "loadingRecords": "載入中...",

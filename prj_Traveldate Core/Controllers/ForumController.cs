@@ -286,11 +286,12 @@ namespace prj_Traveldate_Core.Controllers
         {
             creatArticle.forum.IsPublish = false;
 
-            //結帳後才有發布時間
-            //creatArticle.forum.ReleaseDatetime = DateTime.Now;
-            _context.Update(creatArticle.forum);
+            //先把原本db該文章的Schedule刪除
+            var original_scheduleId = _context.ScheduleLists.Where(s => s.ForumListId == creatArticle.forum.ForumListId).ToList();
+            _context.RemoveRange(original_scheduleId);
             _context.SaveChanges();
 
+            //再新增一次該文的Schedule
             foreach (int tripId in creatArticle.tripIds)
             {
                 var newSchedule = new ScheduleList
