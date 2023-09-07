@@ -12,7 +12,7 @@ namespace prj_Traveldate_Core.ViewModels
         private Member _member = null;
         private Trip _trip = null;
 
-
+        public List<CCommentViewModel> comment { get; set; }
 
         public ProductList product
         {

@@ -47,6 +47,7 @@ namespace prj_Traveldate_Core.Controllers
             vm.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int) id);
             vm.program.fMemPic = pf.loadMemPic((int)id);
             vm.program.fMaxnum = pf.loadStock((int)id);
+            vm.comment = pf.LoadCommentsForProduct((int)id);
 
             TraveldateContext db = new TraveldateContext();
                 int memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));

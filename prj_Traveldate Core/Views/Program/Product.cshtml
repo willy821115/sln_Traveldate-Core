@@ -154,44 +154,44 @@
     <!--評價專區-->
     <div class="plan-container">
         <div class="be-comment-block">
-            @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
+            @if (Model.comment != null && Model.comment.Count > 0)
             {
             <div class="comments-title"><p>旅客評價<a href="#commentdetail" class="more-comment">更多評價<i class="fa fa-angle-right"></i></a></p></div>
                 <div class="be-comment">
                 <div class="be-img-comment">
-                        @if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "男")
+                        @if (Model.comment[0].MemPhotoPath == null && Model.comment[0].MemGender == "男")
                         {
                             <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
                         }
-                        else if (Model.program.fMemPic[0] == null && Model.program.fComMemGender[0] == "女")
+                        else if (Model.comment[0].MemPhotoPath == null && Model.comment[0].MemGender == "女")
                         {
                             <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
                         }
-                        else if (Model.program.fMemPic != null)
+                        else if (Model.comment[0].MemPhotoPath != null)
                         {
-                            <img src="~/images/@Model.program.fMemPic[0]" alt="commentpic" class="comment-pic" id="myImg" />
+                            <img src="~/images/@Model.comment[0].MemPhotoPath" alt="commentpic" class="comment-pic" id="myImg" />
                         }
 
                         
                 </div>
                 <div class="comment-header">
-                    @if (Model.program.fComMem[0] != null)
+                        @if (!string.IsNullOrEmpty(Model.comment[0].MemLastName))
                     {
-                        if (Model.program.fComMemGender[0] == "男")
+                            if (Model.comment[0].MemGender == "男")
                         {
-                            <span class="be-comment-name">@Model.program.fComMem[0] 先生</span>
+                                <span class="be-comment-name">@Model.comment[0].MemLastName 先生</span>
                         }
-                        else if (Model.program.fComMemGender[0] == "女")
+                            else if (Model.comment[0].MemGender == "女")
                         {
-                            <span class="be-comment-name">@Model.program.fComMem[0] 小姐</span>
+                                <span class="be-comment-name">@Model.comment[0].MemLastName 小姐</span>
                         }
                     }
-                    <span class="be-comment-time">@Model.program.fCommentDate[0]</span>
+                        <span class="be-comment-time">@Model.comment[0].ComDate.ToString("yyyy-MM-dd")</span>
                 </div>
 
                 <div class="comments-title">
                     <span class="rating">
-                        @for (int i = 1; i <= Model.program.fComScore[0]; i++)
+                            @for (int i = 1; i <= Model.comment[0].ComScore; i++)
                         {
                             <i>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -199,7 +199,7 @@
                                 </svg>
                             </i>
                         }
-                       @for (int i = Model.program.fComScore[0] + 1; i <= 5; i++)
+                            @for (int i = Model.comment[0].ComScore + 1; i <= 5; i++)
                         {
                             <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="	#ADADAD" class="bi bi-star" viewBox="0 0 16 16">
@@ -210,15 +210,17 @@
                     </span>
                 </div>
                 <div class="be-comment-text">
-                    <div class="be-comment-title">@Model.program.fComTitle[0]</div>
+                        <div class="be-comment-title">@Model.comment[0].ComTitle</div>
                     <p>
-                        @Model.program.fComContent[0]
+                            @Model.comment[0].Content
                     </p>
-                        @if (Model.program.fCommentPhotoList != null)
+
+                        @if (!string.IsNullOrEmpty(Model.comment[0].ComPhotoPath))
                         {
-                            foreach (var photoBytes in Model.program.fCommentPhotoList)
+                            var photoPaths = Model.comment[0].ComPhotoPath.Split(',');
+                            foreach (var photoPath in photoPaths)
                             {
-                                <img src="~/images/@photoBytes" alt="commentpic" class="comment-pic" id="myImg" />
+                                <img src="~/images/@photoPath" alt="commentpic" class="comment-pic" id="myImg" />
                             }
                         }
                         
@@ -481,95 +483,88 @@
     </div>
 
     <!--更多評論區-->
-    @if (Model.program.fComContent != null && Model.program.fComContent.Count > 0)
+    @if (Model.comment != null && Model.comment.Count > 0)
             {
         <div class="plan-container" id="section4">
             <div class="be-comment-block">
                 <div class="comments-title" id="commentdetail"><p>旅客評價區</p></div>
                 <hr />
 
-                @for (int comIndex = 0; comIndex < Model.program.fComMem.Count; comIndex++)
+                @foreach (var comment in Model.comment)
                 {
-                    @if (Model.program.fComMem[comIndex] != null &&
-                                     Model.program.fComMemGender[comIndex] != null &&
-                                     Model.program.fCommentDate[comIndex] != null &&
-                                     Model.program.fComScore[comIndex] != null &&
-                                     Model.program.fComTitle[comIndex] != null &&
-                                     Model.program.fComContent[comIndex] != null)
-                    {
-                        <div class="be-comment" style="margin-bottom:40px">
-                            <div class="be-img-comment">
-                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "男")
+                    <div class="be-comment">
+                        <div class="be-img-comment">
+                            @if (string.IsNullOrEmpty(comment.MemPhotoPath) && comment.MemGender == "男")
+                            {
+                                <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                            }
+                            else if (string.IsNullOrEmpty(comment.MemPhotoPath) && comment.MemGender == "女")
+                            {
+                                <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                            }
+                            else
+                            {
+                                <img src="~/images/@comment.MemPhotoPath" alt="commentpic" class="comment-pic" id="myImg" />
+                            }
+                        </div>
+                        <div class="comment-header">
+                            @if (!string.IsNullOrEmpty(comment.MemLastName))
+                            {
+                                if (comment.MemGender == "男")
                                 {
-                                    <img src="/icons/icons8-person-100.png" alt="" class="be-ava-comment">
+                                    <span class="be-comment-name">@comment.MemLastName 先生</span>
                                 }
-                                @if (Model.program.fMemPic[comIndex] == null && Model.program.fComMemGender[0] == "女")
+                                else if (comment.MemGender == "女")
                                 {
-                                    <img src="/icons/icons8-person-female-100.png" alt="" class="be-ava-comment">
+                                    <span class="be-comment-name">@comment.MemLastName 小姐</span>
                                 }
-                                @if (Model.program.fMemPic != null && Model.program.fMemPic.Count > 0 && Model.program.fMemPic[comIndex] != null)
-                                {
-                                    <img src="/images/@Model.program.fMemPic[comIndex]" alt="commentpic" class="comment-pic" id="myImg" />
-                                }
-                            </div>
-                            <div class="comment-header">
-                                @if (Model.program.fComMem[comIndex] != null)
-                                {
-                                    if (Model.program.fComMemGender[comIndex] == "男")
-                                    {
-                                        <span class="be-comment-name">@Model.program.fComMem[comIndex] 先生</span>
-                                    }
-                                    else if (Model.program.fComMemGender[comIndex] == "女")
-                                    {
-                                        <span class="be-comment-name">@Model.program.fComMem[comIndex] 小姐</span>
-                                    }
-                                }
-                                <span class="be-comment-time">@Model.program.fCommentDate[comIndex]</span>
-                            </div>
-                            <div class="comments-title">
-                                <span class="rating">
-                                    @for (int i = 1; i <= Model.program.fComScore[comIndex]; i++)
-                                    {
-                                        <i>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                            </svg>
-                                        </i>
-                                    }
-                                    @for (int i = Model.program.fComScore[comIndex] + 1; i <= 5; i++)
-                                    {
-                                        <i>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="	#ADADAD" class="bi bi-star" viewBox="0 0 16 16">
-                                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                            </svg>
-                                        </i>
-                                    }
-                                </span>
-                            </div>
+                            }
+                            <span class="be-comment-time">@comment.ComDate.ToString("yyyy-MM-dd")</span>
+                        </div>
 
-                            <div class="be-comment-text">
-                                @if (comIndex >= 0 && comIndex < Model.program.fComTitle.Count)
+                        <div class="comments-title">
+                            <span class="rating">
+                                @for (int i = 1; i <= comment.ComScore; i++)
                                 {
-                                    <div class="be-comment-title">@Model.program.fComTitle[comIndex]</div>
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFD306" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                        </svg>
+                                    </i>
                                 }
-                                @if (comIndex >= 0 && comIndex < Model.program.fComContent.Count)
+                                @for (int i = comment.ComScore + 1; i <= 5; i++)
                                 {
-                                    <p>@Model.program.fComContent[comIndex]</p>
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ADADAD" class="bi bi-star" viewBox="0 0 16 16">
+                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                                        </svg>
+                                    </i>
                                 }
-                                @if (comIndex >= 0 && comIndex < Model.program.fCommentPhotoList.Count && Model.program.fCommentPhotoList[comIndex] != null)
+                            </span>
+                        </div>
+                        <div class="be-comment-text">
+                            <div class="be-comment-title">@comment.ComTitle</div>
+                            <p>
+                                @comment.Content
+                            </p>
+                            @if (!string.IsNullOrEmpty(comment.ComPhotoPath))
+                            {
+                                var photoPaths = comment.ComPhotoPath.Split(',');
+                                foreach (var photoPath in photoPaths)
                                 {
-                                    <img src="~/images/@Model.program.fCommentPhotoList[comIndex]" alt="Image" class="comment-pic" style="border-radius:5px;"/>
+                                    <img src="~/images/@photoPath" alt="commentpic" class="comment-pic" id="myImg" />
                                 }
-                              
-                                <div id="myModal" class="modal">
-                                    <div class="close">&times;</div>
-                                    <img class="modal-content" id="img01">
-                                    <div id="caption"></div>
-                                </div>
+                            }
+
+                            <div id="myModal" class="modal">
+                                <div class="close">&times;</div>
+                                <img class="modal-content" id="img01">
+                                <div id="caption"></div>
                             </div>
                         </div>
-                    }
+                    </div>
                 }
+                
             
             
         </div>

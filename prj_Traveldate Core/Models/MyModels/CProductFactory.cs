@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using prj_Traveldate_Core.ViewModels;
 
 namespace prj_Traveldate_Core.Models.MyModels
 {
@@ -245,6 +246,32 @@ namespace prj_Traveldate_Core.Models.MyModels
                                      select c.ImagePath).ToList();
             return comphoto;
         }
+
+        public List<CCommentViewModel> LoadCommentsForProduct(int id)
+        {
+
+            List<CCommentViewModel> comments = db.CommentLists
+                .Where(c => c.ProductId == id)
+                .OrderByDescending(c=>c.Date)
+                .Select(c => new CCommentViewModel
+                {
+                    ComTitle = c.Title,
+                    MemLastName = c.Member.LastName,
+                    MemGender = c.Member.Gender,
+                    ComDate = c.Date,
+                    ComScore = c.CommentScore,
+                    Content = c.Content,
+                    MemPhotoPath = c.Member.ImagePath,
+                    ComPhotoPath = string.Join(",", c.CommentPhotoLists.Select(photo => photo.ImagePath))
+                })
+                .ToList();
+
+            return comments;
+        }
+
+
+
+
 
         //loadTripPrice原價
         public List<decimal?> loadPlanprice(int id)
