@@ -73,14 +73,15 @@ namespace prj_Traveldate_Core.Controllers
 
                     _db.SaveChanges();
                 }
-
+                return RedirectToAction("List", "Dashboard");
             }
             else 
             {
                 ViewBag.CompanyPasswordAlarm = "新密碼與確認密碼不一致";
+                return View();
             }
-
-            return RedirectToAction("List", "Dashboard");
+         
+            
         }
     }
 }

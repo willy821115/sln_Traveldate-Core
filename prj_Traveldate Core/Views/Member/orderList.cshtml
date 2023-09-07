@@ -27,15 +27,15 @@
                     @{
                         if (ViewBag.image != null)
                         {
-                            <div style="text-align:center;background-color:white;border-radius:10px">
-                                <img src="~/images/@ViewBag.image" width="150" height="150" />
-                            </div>
+                                    <div style="text-align:center;background-color:white;border-radius:10px">
+                                        <img src="~/images/@ViewBag.image" width="150" height="150" />
+                                    </div>
                         }
                         else
                         {
-                            <div style="text-align:center;background-color:white;border-radius:10px">
-                                <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
-                            </div>
+                                    <div style="text-align:center;background-color:white;border-radius:10px">
+                                        <img src="~/icons/User profile - border vector image.png" width="150" height="150" />
+                                    </div>
                         }
                     }
         </div>
@@ -46,19 +46,19 @@
                 @{
                     if (ViewBag.level == "黑鑽會員")
                     {
-                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
+                                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:30px;width:30px;padding-bottom:5px" src="~/icons/level_dimond48.png" /></span><b>@ViewBag.level</b></li>
                     }
                     else if (ViewBag.level == "黃金會員")
                     {
-                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
+                                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-gold-50.png" /></span><b>@ViewBag.level</b></li>
                     }
                     else if (ViewBag.level == "白銀會員")
                     {
-                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
+                                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke"><span><img style=" height:40px;width:40px;padding-bottom:5px" src="~/icons/level-slover-50.png" /></span><b>@ViewBag.level</b></li>
                     }
                     else
                     {
-                        <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
+                                <li class="list-group-item menuItem" data-content="subItem2" style="background-color:whitesmoke; margin-top:-10px">@ViewBag.level </li>
                     }
                 }
             </ul>
@@ -90,7 +90,7 @@
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
                 <li class="list-group-item menuItem">
-                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                    @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                 </li>
             </ul>
@@ -128,14 +128,14 @@
             foreach (var item in Model)
             {
                 //count++;
-                    <tr>
-                        <td><i class='fas fa-tag' style='font-size:24px;margin-left:20px'></i></td>
-                        <td>@item.ProductName</td>
-                        <td>@item.Datetime.ToString()</td>
-                        <td>@item.Date</td>
+                            <tr>
+                                <td><i class='fas fa-tag' style='font-size:24px;margin-left:20px'></i></td>
+                                <td>@item.ProductName</td>
+                                <td>@item.Datetime.ToString()</td>
+                                <td>@item.Date</td>
 
-                        <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId /* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
-                    </tr>
+                                <td>@Html.ActionLink("去評論", "addcomment","Member",new{id=@item.ProductId /* ,title=@item.Title,Content=@item.Content,CommentScore=@item.CommentScore,photos=item.photos */ },new {@class="btn my-btn-primary btn-sm"})</td>
+                            </tr>
             }
         }
     </tbody>
@@ -193,7 +193,8 @@
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({
-                // 中文化
+                        order: [[2, 'desc']],
+                // 中文化   
                 'language': {
                     "processing": "處理中...",
                     "loadingRecords": "載入中...",
@@ -385,7 +386,7 @@
                                 "visible": "欄位顯示"
                             },
                             "name": "名稱：",
-                            "order": "排序",
+                            "order":"排序",
                             "paging": "分頁",
                             "scroller": "卷軸位置",
                             "search": "搜尋",

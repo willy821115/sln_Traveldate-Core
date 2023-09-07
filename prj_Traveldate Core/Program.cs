@@ -16,8 +16,8 @@ builder.Services.AddDbContext<TraveldateContext>(
         builder.Configuration.GetConnectionString("TraveldateConnection"))
     );
 
-builder.WebHost
-    .UseUrls("https://localhost:7061");
+//builder.WebHost
+//    .UseUrls("https://localhost:7061");
 
 //¥[¤J SignalR
 builder.Services.AddSignalR();

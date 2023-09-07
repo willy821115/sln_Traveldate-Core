@@ -1,4 +1,6 @@
 ﻿@using prj_Traveldate_Core.Controllers;
+@using prj_Traveldate_Core.ViewModels;
+@using prj_Traveldate_Core.Models;
 @{
     ViewData["Title"] = "forumList3";
 }
@@ -99,7 +101,7 @@
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
              </li>
                 <li class="list-group-item menuItem">
-                    @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                        @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                 </li>
             </ul>
@@ -122,14 +124,14 @@
 <table id="table_id" class="display cell-border compact hover col-md-12">
     <thead>
         <tr>
-                   <th></th>
-                    <th class="col-md-2">行程名稱</th>
-                  <th class="col-md-3">發布日期</th>
-                  <th class="col-md-3">截止日期</th>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-4">行程名稱</th>
+                    <th class="col-md-3">發布日期</th>
+                    <th class="col-md-3">截止日期</th>
                     <th class="col-md-2">讚數</th>
-                    <th class="col-md-2">觀看數</th>
-                  <th class="col-md-2">行程敘述</th>
-                  <th >操作</th>
+                    <th class="col-md-4">觀看數</th>
+                    <th >行程敘述</th>
+                    <th >操作</th>
         </tr>
     </thead>
 
@@ -139,7 +141,7 @@
             {
                 <tr>
                      @*<td><i class="material-icons" style="font-size:24px;margin-left:24px">exposure_plus_1</i></td>*@
-                    <td><img style="marging-left:-20px" src="~/icons/icon-forum-1.png" /></td>
+                    <td><img style="marging-left:-20px;height;" src="~/icons/icon-forum-1.png" /></td>
                     <td>@item.Title</td>
                             @if (item.ReleaseDatetime != null)
                             {
@@ -151,8 +153,12 @@
                             }
                             
                     <td>@item.DueDate?.ToString("yyyy-MM-dd") </td>
-                    <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" /> @item</td>
-                    <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
+                            <td><img style="margin-bottom:10px" src="~/icons/icon-thumb up-1.png" />
+
+                                    @item.IsLike
+                                @*item.Likes + item.IsLike;*@
+                                  </td>
+                            <td><i class='fas fa-eye' style='font-size:20px;margin-top:-15px'></i> @item.Watches</td>
                     <td><div class="content-cell">@Html.Raw(item.Content)</div></td>
                     @*<td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("修改", "orderList","Member","",new {@class="black-link"})</td>*@
                     @if (!item.IsPublish)
@@ -197,6 +203,7 @@
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({
+                order:[[2,'desc']],
                 // 中文化
                 'language': {
                     "processing": "處理中...",

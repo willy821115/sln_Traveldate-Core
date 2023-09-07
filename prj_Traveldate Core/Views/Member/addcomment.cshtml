@@ -87,7 +87,7 @@
                                 <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                             </li>
                             <li class="list-group-item menuItem">
-                                @Html.ActionLink("去聊聊", "SignalR","Member","",new {@class="black-link"})
+                                 @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                                 <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
                             </li>
                         </ul>
@@ -130,7 +130,8 @@
 
                     <div class="form-group">
                         <label >內容</label>
-                <input type="text" id="Content" name="Content" class="form-control" style="height:80px" />
+                <input type="text" id="Content" name="Content" class="form-control" style="height:80px;overflow-wrap:break-word;white-space:pre-wrap" />
+                @* <textarea type=input""  id="Content" name="Content" class="form-control" style="height:80px;overflow-wrap:break-word;white-space:pre-wrap" ></textarea> *@
                     </div>
 
                     <div class="form-group">
@@ -171,7 +172,7 @@
                         <input asp-for="photos" type="file" class="form-control" id="formFile" multiple />
                     </div>
 
-                    <div id="imagePreview" class="w-100 mt-5">
+                    <div id="imagePreview" class="w-100 mt-4"> @*w-100 是元素寬度 ;mt-2 是頂部外邊距單位*@
                     </div>
 
                     <div>
@@ -184,16 +185,6 @@
                         <input type="hidden" name="ProductId" value="@Model.ProductId" class="form-control" />
 @*                         <input type="hidden" id="ProductId" name="ProductId" class="form-control/> *@
                     </div>
-                    <div>
-                        @*<label>photos</label>*@
-                        @* <input type="hidden" name="photos" value="photos" class="form-control" /> *@
-                        @*                         <input type="hidden" id="photos" name="photos" class="form-control/> *@
-                    </div>
-                    <div>
-                        @*<label>ImagePath</label>*@
-                        @* <input type="hidden" name="ImagePath" value="ImagePath" class="form-control" /> *@
-                        @*                         <input type="hidden" id="ImagePath" name="ImagePath" class="form-control/> *@
-                    </div>
 
                     <div>
                           <div class="form-group">
@@ -201,7 +192,7 @@
                                <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0" id="btnAddComment">傳送</button>
                               <button type="submit" class="btn my-btn-primary link-offset-2 link-underline link-underline-opacity-0"><td class="link-offset-2 link-underline link-underline-opacity-0">@Html.ActionLink("取消", "orderList","Member","",new {@class="black-link2"})</td></button>
                           </div>
-                        <button type="button" class="btn my-btn-primary" id="addDEMO">DEMO</button> @*DEMO用*@
+                        <button type="button" class="btn btn-outline-secondary" id="addDEMO">DEMO</button> @*DEMO用*@
 
                     </div>
                     @* } *@
@@ -265,7 +256,7 @@
                 const imagePreview = document.getElementById('imagePreview');
 
                 input.addEventListener('change', function () {
-                    // 清空预览区域
+                     //清空預覽區域
                     imagePreview.innerHTML = '';
 
                     const files = input.files;
@@ -276,9 +267,11 @@
                             reader.addEventListener('load', () => {
                                 const img = document.createElement('img');
                                 img.src = reader.result;
-                                img.style.height = '100px'; // 设置图像高度
-                                img.style.marginRight = '10px'; // 可选的间距
-                                imagePreview.appendChild(img);
+                        img.style.height = '100px'; // 設置圖像高度
+                        img.style.marginRight = '10px'; // 可選的間距
+                        img.style.marginBottom = '20px';
+                        //img.style.marginTop = '10px';
+                        imagePreview.appendChild(img);
                             });
                             reader.readAsDataURL(file);
                         }
@@ -287,14 +280,14 @@
             </script>
 
     <script>
-        //Demo用-addDEMO
+        //Demo用-addDEMO 新增評論示範
         document.addEventListener('DOMContentLoaded', function () {
             const addDEMO = document.getElementById('addDEMO');
             addDEMO.addEventListener('click', function () {
                 // 填充表單輸入欄位
 
                 document.getElementById('Title').value = '極致經驗的行程體驗！';
-                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與文化之美的旅客！';
+                document.getElementById('Content').value = '浮潛在蔚藍的海水中，彷彿置身於水下仙境，絕對值得推薦給想要探索自然與\n文化之美的旅客！';
                 document.getElementById('CommentScore').value = '4';
 
                 // // 可選：顯示Demo照片
