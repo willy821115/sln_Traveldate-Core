@@ -70,26 +70,34 @@ namespace prj_Traveldate_Core.Controllers
 
             //做可以抓推薦欄的Factory in:會員ID out:List<ProductListID>[4/8/12]
             //  個人化推薦(抓OD 搜尋商品 回傳)
-            //CartApiController api = new CartApiController();
-            //var ps = api.recommendPlid(_memberID); //推薦的商品ID們
+            CartApiController api = new CartApiController();
+            var ps = api.recommendPlid(_memberID); //推薦的商品ID們
 
-            //List<CHomeViewModel> recommendList = new List<CHomeViewModel>();
-            //foreach (var p in ps)
-            //{
-            //    CHomeViewModel item = new CHomeViewModel();
-            //    item.productId = p;
-            //    item.productName = _context.ProductLists.Find(p).PlanName;
-            //    item.unitPrice = (decimal)_context.Trips.Where(t=>t.ProductId==p).OrderBy(t=>t.UnitPrice).Select(t=>t.UnitPrice).FirstOrDefault();
+            List<CHomeViewModel> recommendList = new List<CHomeViewModel>();
+            foreach (var p in ps)
+            {
+                CHomeViewModel item = new CHomeViewModel();
+                item.productId = p;
+                item.productName = _context.ProductLists.Find(p).ProductName;
+                var n = _context.Trips.Where(t => t.ProductId == p).OrderBy(t => t.UnitPrice).Select(t => t.UnitPrice).FirstOrDefault();
+                item.unitPrice = (decimal)(n==null ? 0: n);
 
-            //    var commentScore = _context.CommentLists.Where(c => c.ProductId == p).Select(c => c.CommentScore).Average();
-            //    var imagePath = _context.ProductPhotoLists.Where(c => c.ProductId == p).Select(c => c.ImagePath).FirstOrDefault();
+                if(_context.CommentLists.Where(c => c.ProductId == p).Any())
+                {
+                    item.commentScore = _context.CommentLists.Where(c => c.ProductId == p).Select(c => c.CommentScore).Average();
+                    item.commentScoreString = string.Format("{0:F1}", item.commentScore) + "/5";
+                }
+                else
+                {
+                    item.commentScoreString = "尚無評價";
+                }
+                var imagePath = _context.ProductPhotoLists.Where(c => c.ProductId == p).Select(c => c.ImagePath).FirstOrDefault();
 
-            //    item.ImagePath = imagePath;
-            //    item.commentScore = commentScore;
-            //    item.commentScoreString = string.Format("{0:F1}", commentScore);
-            //    recommendList.Add(item);
-            //}
-            //vm.recommends = recommendList;
+                item.ImagePath = imagePath;
+                
+                recommendList.Add(item);
+            }
+            vm.recommends = recommendList;
 
             //  瀏覽紀錄(抓Session回傳)
             //  List加到vm裡顯示

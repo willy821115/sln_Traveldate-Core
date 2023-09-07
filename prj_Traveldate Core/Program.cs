@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using prj_Traveldate_Core.Hubs;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Hubs;
-
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,7 @@ builder.Services.AddDbContext<TraveldateContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("TraveldateConnection"))
     );
+
 
 //builder.WebHost
 //    .UseUrls("https://localhost:7061");
@@ -34,6 +35,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
+
+Microsoft.Extensions.Configuration.ConfigurationManager configuration = builder.Configuration;
 
 app.UseRouting();
 
