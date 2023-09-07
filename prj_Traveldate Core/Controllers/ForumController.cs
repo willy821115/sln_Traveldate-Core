@@ -290,7 +290,7 @@ namespace prj_Traveldate_Core.Controllers
             //creatArticle.forum.ReleaseDatetime = DateTime.Now;
             // _context.Update(creatArticle.forum);
             // _context.Remove(creatArticle.schedule.ScheduleId);
-            var tt = creatArticle.schedules.Where(s => s.ForumListId == creatArticle.forum.ForumListId).Select(s => s.ScheduleId).ToList();
+            var tt = _context.ScheduleLists.Where(s => s.ForumListId == creatArticle.forum.ForumListId).Select(s => s.ScheduleId).ToList();
             _context.RemoveRange(tt);
             //_context.Remove(tt);
             _context.SaveChanges();
