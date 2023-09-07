@@ -232,11 +232,11 @@
         </div> *@
         <input id="LayoutMemberID" type="hidden" value="@Context.Session.GetString(CDictionary.SK_LOGGEDIN_USER)" />
        
-        <div id="dialogBox" class="dialog-box ">
+        <div id="dialogBox" class="dialog-box d-none">
             <div class="dialog-content">
-                <div class="d-flex justify-content-between align-items-center bg-gray-300 toggle-button">
+                <div class="d-flex justify-content-between align-items-center bg-gray-300">
                     <span class="fw-bold text-black ">即時訊息</span>
-                    <img src="~/icons/mail.png" style="height:24px;width:24px;display:none" id="mail" />
+                    @* <img src="~/icons/mail.png" style="height:24px;width:24px;display:none" id="mail" /> *@
                  </div>
                 <div class="chat_box">
                     <div id="chatRoom" class="chat_message">
@@ -251,13 +251,17 @@
                         <div class="myIcon2" id="sendButtonLayout">
                             <i class="fa fa-share send_icon"></i>
                         </div>
-                        <button  type="button" id="main" style="font-size:10px;width:50px;">主揪</button>
-                        <button type="button" id="sub" style="font-size:10px;width:50px;">跟團</button>
+                        <button type="button" id="main" style="font-size:10px;width:50px;" class="my-btn-primary rounded border-0 mr-1">主揪</button>
+                        <button type="button" id="sub" style="font-size:10px;width:50px;" class="my-btn-primary rounded border-0">跟團</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="dialog-icon2">
+        <img src="~/icons/chatbox.png" id="dialogicon" />
+            <span id="ChatBoxBagde" class="position-absolute dialog-Bagde translate-middle p-3">
+             </span>
+        </div>
     <footer id="contact-us">
         <div>
             <p class="m-0">TravelDate</p>
@@ -289,7 +293,7 @@
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/signalr/dist/browser/signalr.js" id="dialogicon"></script>
   
         <script>
             var memberID = $("#LayoutMemberID").val();
@@ -400,7 +404,7 @@
 
             $('#sendToID').val(SupplierID);
             $('#myID').val(myID);
-            $("#mail").css("display", "inline");
+                $("#ChatBoxBagde").addClass("bg-danger border border-light rounded-circle");
         });
 
         connection.on("UpdateCustomerID", function (msg, CustomerID,myID) {
@@ -432,7 +436,7 @@
 
             $('#sendToID').val(CustomerID);
             $('#myID').val(myID);
-            $("#mail").css("display", "inline");
+                $("#ChatBoxBagde").addClass("bg-danger border border-light rounded-circle");
         });
 
             }
@@ -444,6 +448,17 @@
         $('#main').click(function () {
             $('#message').val('你好，感謝你對我行程的支持，我近期還會再開團');
         });
+
+            $('#dialogicon').click(function () {
+
+                if ($('#dialogBox').hasClass('d-none')) {
+                    $('#dialogBox').removeClass('d-none');
+                }
+                else { 
+                $('#dialogBox').addClass('d-none');
+                }
+            $("#ChatBoxBagde").removeClass("bg-danger border border-light rounded-circle");
+            });
 
         //傳送訊息
         //$('#sendButtonLayout').on('click', function () {

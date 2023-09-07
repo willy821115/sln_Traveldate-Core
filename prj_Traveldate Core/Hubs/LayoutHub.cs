@@ -54,11 +54,12 @@ namespace prj_Traveldate_Core.Hubs
             var SelectSupplierID = MemberConnection.FirstOrDefault(m => m.MemberID == id);
             if (SelectSupplierID != null)
             {
-                
+                var ReceiveName = MemberConnection.Where(c => c.ConnectID == SelectSupplierID.ConnectID).Select(c => c.FirstName).FirstOrDefault();
+                var SendName = MemberConnection.Where(c => c.ConnectID == Context.ConnectionId).Select(c => c.FirstName).FirstOrDefault();
                 //傳送訊息給主揪，並把傳送者的ConnectionID傳過去
-                await Clients.Client(SelectSupplierID.ConnectID).SendAsync("UpdateSupplierID", "有人聯絡您", Context.ConnectionId, SelectSupplierID.ConnectID);
+                await Clients.Client(SelectSupplierID.ConnectID).SendAsync("UpdateSupplierID", SendName + "私訊您", Context.ConnectionId, SelectSupplierID.ConnectID);
                 //傳送訊息給自己，並把主揪的ConnectionID傳過去
-                await Clients.Client(Context.ConnectionId).SendAsync("UpdateCustomerID", "已連絡上主揪人", SelectSupplierID.ConnectID, Context.ConnectionId);
+                await Clients.Client(Context.ConnectionId).SendAsync("UpdateCustomerID", "已連絡上"+ ReceiveName, SelectSupplierID.ConnectID, Context.ConnectionId);
             }
             else
             {
