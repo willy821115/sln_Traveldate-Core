@@ -132,6 +132,50 @@ namespace prj_Traveldate_Core.Controllers
 
 
         //TODO  抓推薦
+        public List<int> recommendPlid(int mID)
+        {
+            List<int> idList = new List<int>();
+
+            //已訂購過或在購物車的商品ID
+            List<int> buyed = _context.OrderDetails.Where(o => o.Order.MemberId == mID).Select(o => o.Trip.ProductId).Distinct().ToList();
+
+            //buyed的商品的tags
+            List<int> tags = new List<int>();
+            foreach (var tag in _context.ProductTagLists)
+            {
+                if (buyed.Contains((int)tag.ProductId))
+                {
+                    tags.Add((int)tag.ProductTagDetailsId);
+                }
+            }
+
+            Random rnd = new Random();
+            while (idList.Count < 4)
+            {
+                int n = rnd.Next(tags.Count);
+                var ps = _context.ProductTagLists.Where(o => o.ProductTagDetailsId == tags[n]).Select(o => o.ProductId).ToList();
+                if (ps.Any())
+                {
+                    int m = rnd.Next(ps.Count);
+                    idList.Add((int)ps[m]);
+                    ps.RemoveAt(m);
+                }
+                tags.RemoveAt(n);
+                if (tags.Count == 0)
+                    break;
+            }
+
+            if (idList.Count < 4)
+            {
+                var plist = _context.OrderDetails.GroupBy(o => o.Trip.ProductId).Select(g => new { prodID = g.Key, ocount = g.Count() }).OrderByDescending(x => x.ocount).Take(4).ToList();
+                for (int i = 0; i < plist.Count(); i++)
+                {
+                    idList.Add(plist[i].prodID);
+                }
+            }
+            return idList;
+        }
+
         //TODO  抓瀏覽紀錄
 
 
