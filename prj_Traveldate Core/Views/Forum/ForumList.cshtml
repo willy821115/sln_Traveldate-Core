@@ -221,7 +221,14 @@
                                                         </div>
                                                         <div>
                                                             <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @f_memName</p>
-                                                            <span class="fw-bolder">發起時間 : @f_time</span>
+                                                            @if (f_time != null)
+                                                            {
+                                                                <span class="fw-bolder">發起時間 : @f_time</span>
+                                                            }else
+                                                                {
+                                                                <span class="fw-bolder">發起時間 : @DateTime.Now.ToShortDateString()</span>
+                                                                }
+
                                                             <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @f_reply 人</span>
                                                             <div class="text-body-secondary d-block">
                                                                 <img src="~/icons/icons8-tag-16.png" />
@@ -275,7 +282,14 @@
                                                         </div>
                                                         <div>
                                                             <p class="mb-1 fs-5 fw-bold text-black">主揪人 : @s_memName</p>
-                                                            <span class="fw-bolder">發起時間 : @s_time</span>
+                                                            @if (s_time != null)
+                                                            {
+                                                                <span class="fw-bolder">發起時間 : @s_time</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="fw-bolder">發起時間 : @DateTime.Now.ToShortDateString()</span>
+                                                            }
                                                             <span class="d-block"><img src="~/icons/icons8-talk-24.png" height="16" /> @s_reply 人</span>
                                                             <div class="text-body-secondary d-block">
                                                                 <img src="~/icons/icons8-tag-16.png" />
@@ -315,7 +329,7 @@
             <div class="divide-line pl-3">
                 <span id="total" class="fs-3 fw-bolder me-2">@Model.schedules.Count()</span><span class="fs-5 my-text-primary">
                     <img src="~/icons/icons8-rhombus-loader.gif" class="d-none loading-icon" />
-                    個揪團行程
+                    組揪團行程
                 </span>
                 <div id="selected-checkboxes"><input type="button" class="btn btn-secondary d-none cleanAll mr-1" value="清除全部" onclick="clearAllFiltered()" /></div>
 
@@ -415,7 +429,15 @@
 
 
                             <label class="my-sm-text fw-bolder p-0 text-black"> | @article.ForumList.Member.LastName@article.ForumList.Member.FirstName</label>
-                            <label class="my-sm-text fw-bolder p-0 "><img src="~/icons/icons8-calendar-32.png" height="24" />發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</label>
+                            @if (article.ForumList.ReleaseDatetime != null)
+                            {
+                                <label class="my-sm-text fw-bolder p-0 "><img src="~/icons/icons8-calendar-32.png" height="24" />發起時間 : @article.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/d")</label>
+                            }
+                            else
+                            {
+                                <label class="my-sm-text fw-bolder p-0 "><img src="~/icons/icons8-calendar-32.png" height="24" />發起時間 : @DateTime.Now.ToShortDateString()</label>
+                            }
+                            
                         </div>
                     </div>
                     <div class="rounded bg-gray-100 col-2 m-1 pt-1 ">
@@ -529,6 +551,7 @@
         let timeoutId;
         $('#keyword-for-forum').on('input', function () {
             clearTimeout(timeoutId); // 清除先前的計時器
+            pageNumber = 1;
             const keyword = $(this).val();
            
             // 設定一個新的計時器，延遲 1000 毫秒 (1 秒) 執行 loadFilteredForum
@@ -552,8 +575,8 @@
                     window.scrollTo({
                         top: target_top,
                         behavior: 'smooth'
-                       
                     });
+                    
                 })
         }
 

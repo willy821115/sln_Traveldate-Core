@@ -1,4 +1,5 @@
-﻿@model prj_Traveldate_Core.ViewModels.CConfirmOrderViewModel
+﻿@using prj_Traveldate_Core.Models.MyModels;
+@model prj_Traveldate_Core.ViewModels.CConfirmOrderViewModel
 @{
     ViewBag.Title = "確認訂購內容";
     int count = 0;
@@ -338,6 +339,7 @@
                 </div>
                 <input type="submit" asp-action="Payment" id="ConfirmAndPay" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="前往付款" />
                 @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
+                @Html.ActionLink("DEMO揪團結帳","ArticleView","Forum",new{id =  ViewBag.demoPay,returnType=0},new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
             </div>
 
         </div>

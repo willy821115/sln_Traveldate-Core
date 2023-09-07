@@ -244,6 +244,7 @@
                     <a id="sortByStock" href="#" class=" fw-bolder" name="status">即將額滿</a>
                 </div>
             </div>
+            <h5 id="status"></h5>
             <div class="alert alert-light d-none">
                 <img src="~/icons/icons8-rhombus-loader.gif" class="loading-icon" />
             </div>
@@ -361,7 +362,7 @@
                    page: pageNumber
                 },
                 success: function (response) {
-                    
+                    $('#status').text("")
                     hideLoadingIcon()
                     $('#filteredBody').html(response)
                     roadRating()
@@ -402,6 +403,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
+                    
                     $('#filteredBody').html(data);
                     $('#from-home-page-tags').text("")
                     roadRating()
@@ -428,21 +430,25 @@
         const sortByHot = document.querySelector('#sortByHot');
         sortByHot.addEventListener('click',()=>{
             loadData("sortType=hot")
+            $('#status').text('依"' + sortByHot.innerText + '"排序')
         })
         //by評價
         const sortByCommet = document.querySelector('#sortByCommet');
         sortByCommet.addEventListener('click', () => {
             loadData("sortType=comment")
+            $('#status').text('依"' + sortByCommet.innerText + '"排序')
         })
         //by價格
         const sortByPrice = document.querySelector('#sortByPrice');
         sortByPrice.addEventListener('click', () => {
             loadData("sortType=price")
+            $('#status').text('依"' + sortByPrice.innerText + '"排序')
         })
         //by庫存
         const sortByStock = document.querySelector('#sortByStock');
         sortByStock.addEventListener('click', () => {
             loadData("sortType=stock")
+            $('#status').text('依"' + sortByStock.innerText + '"排序')
         })
       
     </script>

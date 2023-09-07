@@ -284,7 +284,7 @@ namespace prj_Traveldate_Core.Controllers
         [HttpPost]
         public IActionResult Edit(CCreatArticleViewModel creatArticle)
         {
-            creatArticle.forum.IsPublish = false;
+            //creatArticle.forum.IsPublish = false;
 
             //先把原本db該文章的Schedule刪除
             var original_scheduleId = _context.ScheduleLists.Where(s => s.ForumListId == creatArticle.forum.ForumListId).ToList();
@@ -299,7 +299,7 @@ namespace prj_Traveldate_Core.Controllers
                     ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
-                _context.Update(newSchedule);
+                _context.Add(newSchedule);
             }
 
             _context.SaveChanges();
@@ -310,52 +310,33 @@ namespace prj_Traveldate_Core.Controllers
             }
             if (creatArticle.isPublish == "結帳去")
             {
+
                 var routeValues = new RouteValueDictionary
-{
-    { "ForumListID", creatArticle.forum.ForumListId },
-                    {"from",0 }
-};
+                {
+                    { "ForumListID", creatArticle.forum.ForumListId },
+                                    {"from",0 }
+                };
+
                 return RedirectToAction("ForumCheckout", "Cart", routeValues);
             }
-            return RedirectToAction("forumList", "Member");
-
-            /////////////////舊的寫法/////////////////
-            //if (article.isSave == "儲存草稿")
-            //{
-            //    article.forum.IsPublish = false;
-            //}
-            //if (article.isPublish == "發布")
-            //{
-            //    article.forum.IsPublish = true;
-            //}
-            //article.forum.ReleaseDatetime = DateTime.Now;
-            //_context.Update(article.forum);
-            //_context.SaveChanges();
-
-            //foreach (int tripId in article.tripIds)
-            //{
-            //    var newSchedule = new ScheduleList
-            //    {
-            //        ForumListId = article.forum.ForumListId,
-            //        TripId = tripId
-            //    };
-            //    _context.Update(newSchedule);
-            //}
-
-            //_context.SaveChanges();
-            //Task.Delay(3000).Wait();
-            //return RedirectToAction("Index", "Member");
-
-
-            //if (creatArticle.isSave == "儲存草稿")
-            //{
-
-            //}
-            //if (creatArticle.isPublish == "發布")
-            //{
-            //    creatArticle.forum.IsPublish = true;
-            //}
-
+            if (creatArticle.isDemo == "DEMO結帳去")
+            {
+                var routeValues = new RouteValueDictionary
+                {
+                    { "ForumListID", creatArticle.forum.ForumListId },
+                                    {"from",2 }
+                };
+                var originArticle = _context.ForumLists.Find(creatArticle.forum.ForumListId);
+                originArticle.IsPublish = true;
+                originArticle.ReleaseDatetime = DateTime.Now;
+                _context.SaveChanges();
+                //if(creatArticle.forum.DueDate == null)
+                //{
+                //    creatArticle.forum.DueDate = DateTime.Now;
+                //}
+                return RedirectToAction("ForumCheckout", "Cart", routeValues);
+            }
+            return RedirectToAction("forumList", "Member");  
         }
 
 

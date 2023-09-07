@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            align-items: center;
+        }
         .my-Heading-color {
             color: #155074;
         }
@@ -45,6 +50,14 @@
             ::-webkit-scrollbar-thumb:hover {
                 background: #74abcc;
             }
+
+        .confirmContent {
+            max-height: 350px;
+            overflow-y: auto;
+            border-radius: 7px;
+            padding: 2px;
+            border: solid 1px #155074;
+        }
     </style>
   }
 <div class="row justify-content-center pb-4">
@@ -131,6 +144,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
                                         <input asp-for="isPublish" type="submit" value="結帳去" class="btn my-btn-primary ml-1 fs-5" />
+                                        <input asp-for="isDemo" type="submit" value="DEMO結帳去" class="btn my-btn-primary ml-1 fs-5" />
                                     </div>
                                 </div>
                             </div>

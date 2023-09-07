@@ -308,6 +308,12 @@ namespace prj_Traveldate_Core.Controllers
                     //for跟團
                     HttpContext.Session.SetInt32(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN, ForumListID);
                 }
+                if (from == 2) 
+                {
+                    //forDemo
+                    //將文章id儲存在 ViewBag.demoPay 到結帳畫面中取出並返回剛才發布的文章
+                    ViewBag.demoPay =  ForumListID;
+                }
 
 
                 return View(vm);

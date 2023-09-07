@@ -11,6 +11,7 @@ namespace prj_Traveldate_Core.ViewModels
         public Trip trips { get; set; }
         public string isSave { get; set; }
         public string isPublish { get; set; }
+        public string isDemo{ get; set; }
         public List<ScheduleList> schedules { get; set; }
     }
 }

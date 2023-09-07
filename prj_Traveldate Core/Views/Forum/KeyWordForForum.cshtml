@@ -169,6 +169,6 @@
     $(".pagination>a").on("click", function (e) {
         e.preventDefault();
         pageNumber = $(this).data("page");
-        loadFilteredForum($(this).val(), pageNumber)
+        loadFilteredForum($('#keyword-for-forum').val(), pageNumber)
     });
 </script>

@@ -150,7 +150,7 @@ namespace prj_Traveldate_Core.Controllers
             {
                 DateTime startDateTime = DateTime.Parse(startTime);
                 DateTime endDateTime = DateTime.Parse(endTime).AddDays(1);
-                _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) > startDateTime && DateTime.Parse(p.date) < endDateTime).ToList();
+                _vm.filterProducts = _vm.filterProducts.Where(p => DateTime.Parse(p.date) >= startDateTime && DateTime.Parse(p.date) <= endDateTime).ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
                 if (_vm.filterProducts.Count == 0)
