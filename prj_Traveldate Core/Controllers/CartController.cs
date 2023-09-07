@@ -99,6 +99,42 @@ namespace prj_Traveldate_Core.Controllers
             }
             vm.recommends = recommendList;
 
+
+            var visitedProductIds = HttpContext.Session.GetString(CDictionary.SK_PRODUCT_VISITED_ID)?.Split(',') ?? new string[0];
+
+            List<CHomeViewModel> browsingList = new List<CHomeViewModel>();
+
+            foreach (var productId in visitedProductIds)
+            {
+                if (int.TryParse(productId, out int p))
+                {
+                    CHomeViewModel item = new CHomeViewModel();
+                    item.productId = p;
+                    item.productName = _context.ProductLists.Find(p)?.ProductName;
+
+                    var n = _context.Trips.Where(t => t.ProductId == p).OrderBy(t => t.UnitPrice).Select(t => t.UnitPrice).FirstOrDefault();
+                    item.unitPrice = (decimal)(n == null ? 0 : n);
+
+                    if (_context.CommentLists.Where(c => c.ProductId == p).Any())
+                    {
+                        item.commentScore = _context.CommentLists.Where(c => c.ProductId == p).Select(c => c.CommentScore).Average();
+                        item.commentScoreString = string.Format("{0:F1}", item.commentScore) + "/5";
+                    }
+                    else
+                    {
+                        item.commentScoreString = "尚無評價";
+                    }
+
+                    var imagePath = _context.ProductPhotoLists.Where(c => c.ProductId == p).Select(c => c.ImagePath).FirstOrDefault();
+                    item.ImagePath = imagePath;
+
+                    browsingList.Add(item);
+                }
+            }
+
+            vm.browsing = browsingList;
+
+
             //  瀏覽紀錄(抓Session回傳)
             //  List加到vm裡顯示
             return View(vm);
