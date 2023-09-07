@@ -658,11 +658,19 @@ namespace prj_Traveldate_Core.Controllers
                 else
                 {
                     filteredForum.totalCount = filteredForum.schedules.Count();
+                    filteredForum.pageSize = pageSize; // 每頁顯示的項目數
+                    filteredForum.currentPage = page < 1 ? 1 : page;
+                    itemsToSkip = (page - 1) * pageSize;
+                    filteredForum.schedules = filteredForum.schedules.Skip(itemsToSkip).Take(pageSize).ToList();
                     return Content($"<h4><img src={Url.Content("~/icons/icons8-error-96.png")}>沒有符合篩選的項目</h4><input id={"updateTotal"} type={"hidden"} value={"0"}>");
                 }
 
             }
             filteredForum.totalCount = filteredForum.schedules.Count();
+            filteredForum.pageSize = pageSize; // 每頁顯示的項目數
+            filteredForum.currentPage = page < 1 ? 1 : page;
+            itemsToSkip = (page - 1) * pageSize;
+            filteredForum.schedules = filteredForum.schedules.Skip(itemsToSkip).Take(pageSize).ToList();
             return PartialView(filteredForum);
         }
 
