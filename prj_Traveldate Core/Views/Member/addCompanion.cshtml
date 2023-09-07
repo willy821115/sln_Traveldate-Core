@@ -149,7 +149,8 @@
                         <button type="submit" class="btn my-btn-primary" id="btnAddCompanion">增加</button>
                         <button type="submit" class="btn btn-outline-secondary">@Html.ActionLink("返回", "showCompanion","Member","","")</button>                  
                     </div>
-                    <button type="button" class="btn btn-outline-secondary" id="addDEMO">DEMO</button> @*DEMO用*@
+                    <button type="button" class="btn btn-outline-secondary" id="addDEMOfalse">DEMOF</button> @*DEMO用*@
+                    <button type="button" class="btn btn-outline-secondary" id="addDEMOture">DEMOT</button> @*DEMO用*@
                 }
   </div>
 </div>
@@ -215,11 +216,30 @@
         });
     </script>
 
-    <script> 
-        //Demo用
+    <script>
+        //Demo用-addDEMOfalse新增旅伴錯誤示範
         document.addEventListener('DOMContentLoaded', function () {
-            const addDEMO = document.getElementById('addDEMO');
-            addDEMO.addEventListener('click', function () {
+            const addDEMOfalse = document.getElementById('addDEMOfalse');
+            addDEMOfalse.addEventListener('click', function () {
+                // 填充表單輸入欄位
+
+                document.getElementById('LastName').value = '顏';
+                document.getElementById('txtGender').value = 'female';
+                document.getElementById('BirthDate').value = '1991-06-08';
+                document.getElementById('Email').value = 'qazqwe123@gmail.com';
+
+                // // 可選：顯示Demo照片
+                // const imagePreview = document.getElementById('imagePreview');
+                // imagePreview.src = '填充的圖片URL';
+            });
+        });
+    </script>
+
+    <script>
+        //Demo用-addDEMOture新增旅伴正確示範
+        document.addEventListener('DOMContentLoaded', function () {
+            const addDEMOture = document.getElementById('addDEMOture');
+            addDEMOture.addEventListener('click', function () {
                 // 填充表單輸入欄位
 
                 document.getElementById('FirstName').value = '蘇姬';
