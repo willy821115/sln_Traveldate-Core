@@ -152,13 +152,17 @@ namespace prj_Traveldate_Core.Controllers
             Random rnd = new Random();
             while (idList.Count < 4)
             {
+                //隨機選一個tag
                 int n = rnd.Next(tags.Count);
-                var ps = _context.ProductTagLists.Where(o => o.ProductTagDetailsId == tags[n]).Select(o => o.ProductId).ToList();
+                var ps = _context.ProductTagLists.Where(o => o.ProductTagDetailsId == tags[n]).Select(o => o.ProductId).Distinct().ToList();
                 if (ps.Any())
                 {
                     int m = rnd.Next(ps.Count);
-                    idList.Add((int)ps[m]);
-                    ps.RemoveAt(m);
+                    if (!idList.Contains((int)ps[m]))
+                    {
+                        idList.Add((int)ps[m]);
+                        ps.RemoveAt(m);
+                    }
                 }
                 tags.RemoveAt(n);
                 if (tags.Count == 0)
