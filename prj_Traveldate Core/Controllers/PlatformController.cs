@@ -221,28 +221,28 @@ namespace prj_Traveldate_Core.Controllers
 
                 if (vm.SendToAllMembers)
                 {
-                    memberIdsToSend = db.Members.Select(m => m.MemberId).ToList();
+                    memberIdsToSend = db.Members.Where(m=>m.Enable==true).Select(m => m.MemberId).ToList();
                 }
                 else
                 {
                     if (vm.SendToNormalMembers)
                     {
-                        var normalMemberIds = db.Members.Where(m => m.LevelId == 1).Select(m => m.MemberId).ToList();
+                        var normalMemberIds = db.Members.Where(m => m.LevelId == 1 && m.Enable == true).Select(m => m.MemberId).ToList();
                         memberIdsToSend.AddRange(normalMemberIds);
                     }
                     if (vm.SendToSilverMembers)
                     {
-                        var silverMemberIds = db.Members.Where(m => m.LevelId == 2).Select(m => m.MemberId);
+                        var silverMemberIds = db.Members.Where(m => m.LevelId == 2 && m.Enable == true).Select(m => m.MemberId);
                         memberIdsToSend.AddRange(silverMemberIds);
                     }
                     if (vm.SendToGoldMembers)
                     {
-                        var goldMemberIds = db.Members.Where(m => m.LevelId == 3).Select(m => m.MemberId);
+                        var goldMemberIds = db.Members.Where(m => m.LevelId == 3 && m.Enable == true).Select(m => m.MemberId);
                         memberIdsToSend.AddRange(goldMemberIds);
                     }
                     if (vm.SendToDiamondMembers)
                     {
-                        var diamondMemberIds = db.Members.Where(m => m.LevelId == 4).Select(m => m.MemberId);
+                        var diamondMemberIds = db.Members.Where(m => m.LevelId == 4 && m.Enable == true).Select(m => m.MemberId);
                         memberIdsToSend.AddRange(diamondMemberIds);
                     }
                 }
@@ -291,7 +291,8 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
-                    string sendmail = "weilunjiang3737@gmail.com";
+                    //string sendmail = "weilunjiang3737@gmail.com";
+                    string sendmail = "traveldate3@gmail.com";
 
                     List<string> UserEmail = new List<string>();
                     UserEmail.Add(sendmail);
@@ -319,7 +320,8 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
-                    string sendmail = "weilunjiang3737@gmail.com";
+                    // string sendmail = "weilunjiang3737@gmail.com";
+                    string sendmail = "traveldate3@gmail.com";
 
                     List<string> UserEmail = new List<string>();
                     UserEmail.Add(sendmail);
@@ -341,6 +343,7 @@ namespace prj_Traveldate_Core.Controllers
              
 
                 TempData["CouponSentMessage"] = "優惠券 & 優惠電子報 已成功發放";
+                
                 return RedirectToAction("Coupon");
             }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -98,15 +99,18 @@ namespace prj_Traveldate_Core.Controllers
         //TODO  編輯訂購內容(修改OD)
         public IActionResult LoadTrips(int id) //tripid
         {
+
             var pid = _context.Trips.Find(id).ProductId;
-            var trips = _context.Trips.Where(t => t.ProductId == pid && t.Date>DateTime.Now).OrderBy(t=>t.Date);
-            foreach (var trip in trips)
+            var trips = _context.Trips.Where(t => t.ProductId == pid && t.Date > DateTime.Now).OrderBy(t => t.Date).Select(t => new
             {
-                if (trip.Discount == null)
-                {
-                    trip.Discount = 0;
-                }
-            }
+                tripId = t.TripId,
+                date = t.Date,
+                unitPrice = t.UnitPrice,
+                discount = t.Discount?? 0,
+                maxNum = t.MaxNum,
+                stock = t.MaxNum - _context.Trips.Where(s => s.TripId == t.TripId).Select(s => s.OrderDetails.Where(o => o.Order.IsCart == false).Sum(o => o.Quantity)).FirstOrDefault()
+        }).ToList();
+
             return Json(trips);
         }
 
@@ -160,8 +164,11 @@ namespace prj_Traveldate_Core.Controllers
                     int m = rnd.Next(ps.Count);
                     if (!idList.Contains((int)ps[m]))
                     {
-                        idList.Add((int)ps[m]);
-                        ps.RemoveAt(m);
+                        if(_context.Trips.Any(t=>t.ProductId == (int)ps[m]))
+                        {
+                            idList.Add((int)ps[m]);
+                            ps.RemoveAt(m);
+                        }
                     }
                 }
                 tags.RemoveAt(n);
@@ -196,10 +203,5 @@ namespace prj_Traveldate_Core.Controllers
             var count = _context.OrderDetails.Where(o => o.Order.IsCart == true && o.Order.MemberId == _memberID).Count();
             return Content(count.ToString());
         }
-
-        //揪團用結帳
-        //傳入ScheduleID + CouponListID + Discount (Quantity? SellingPrice?)
-
-
     }
 }

@@ -64,7 +64,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">發放優惠券＆優惠電子報</h6>
                         </div>
                         <div class="card-body">
-                            <form action="/Platform/Send" method="post">
+                            <form action="/Platform/Send" method="post" enctype="multipart/form-data" id="myForm">
                                 <div class="form-group">
                                     <label for="SelectedCouponId">選擇優惠券：</label>
                                     <select name="SelectedCouponId" id="SelectedCouponId" class="form-select">
@@ -101,14 +101,14 @@
                                 <div class="form-group">
                                     <label for="SelectedMemberIds">選擇發送對象：</label>
                                     <div>
-                                        <input type="checkbox" name="SendToAllMembers" class="mb-3 mr-1" value="true" />全部會員
+                                        <input type="checkbox" id="SendToAllMembers" name="SendToAllMembers" class="mb-3 mr-1" value="true" />全部會員
                                     </div>
                                     <label for="SelectedMemberIds">選擇會員等級：</label>
                                     <div>
-                                        <input type="checkbox" name="SendToNormalMembers" class="mr-1" value="true" />一般會員
-                                        <input type="checkbox" name="SendToSilverMembers" class="mr-1" value="true" />白銀會員
-                                        <input type="checkbox" name="SendToGoldMembers" class="mr-1" value="true" />白金會員
-                                        <input type="checkbox" name="SendToDiamondMembers" class="mr-1" value="true" />黑鑽會員
+                                        <input type="checkbox" id="SendToNormalMembers" name="SendToNormalMembers" class="mr-1" value="true" />一般會員
+                                        <input type="checkbox" id="SendToSilverMembers" name="SendToSilverMembers" class="mr-1" value="true" />白銀會員
+                                        <input type="checkbox" id="SendToGoldMembers" name="SendToGoldMembers" class="mr-1" value="true" />白金會員
+                                        <input type="checkbox" id="SendToDiamondMembers" name="SendToDiamondMembers" class="mr-1" value="true" />黑鑽會員
                                     </div>
                                     @*<select name="SelectedMemberIds" id="SelectedMemberIds" class="form-control" multiple>
                                         @foreach (var member in Model.Members)
@@ -118,7 +118,7 @@
                                     </select>*@
                                 </div>
                                  <a asp-action="Coupon" class="btn btn-outline-dark">取消</a>
-                                <button type="submit" class="btn btn-primary">發放優惠券＆電子報</button>
+                                <button type="submit" id="sendEmailButton" class="btn btn-primary">發放優惠券＆電子報</button>
                             </form>
                         </div>
 
@@ -173,7 +173,83 @@
                 loadCouponInfo();
             });
 
+            //如要發送全部會員，就不能複選會員等級
+            const sendToAllMembers = document.getElementById('SendToAllMembers');
+            const sendToNormalMembers = document.getElementById('SendToNormalMembers');
+            const sendToSilverMembers = document.getElementById('SendToSilverMembers');
+            const sendToGoldMembers = document.getElementById('SendToGoldMembers');
+            const sendToDiamondMembers = document.getElementById('SendToDiamondMembers');
+
+            sendToAllMembers.addEventListener('change', function () {
+                if (sendToAllMembers.checked) {
+                    sendToNormalMembers.checked = false;
+                    sendToSilverMembers.checked = false;
+                    sendToGoldMembers.checked = false;
+                    sendToDiamondMembers.checked = false;
+                }
+            });
+
+            sendToNormalMembers.addEventListener('change', function () {
+                if (sendToNormalMembers.checked) {
+                    sendToAllMembers.checked = false;
+                }
+            });
+
+            sendToSilverMembers.addEventListener('change', function () {
+                if (sendToSilverMembers.checked) {
+                    sendToAllMembers.checked = false;
+                }
+            });
+
+            sendToGoldMembers.addEventListener('change', function () {
+                if (sendToGoldMembers.checked) {
+                    sendToAllMembers.checked = false;
+                }
+            });
+
+            sendToDiamondMembers.addEventListener('change', function () {
+                if (sendToDiamondMembers.checked) {
+                    sendToAllMembers.checked = false;
+                }
+            });
+
+
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const sendEmailButton = document.getElementById("sendEmailButton");
+                const form = document.getElementById("myForm");
+
+                sendEmailButton.addEventListener("click", function (event) {
+                    event.preventDefault(); 
+
+                    Swal.fire({
+                        title: 'Sending Emails',
+                        html: 'Sending <b></b>/19 emails...',
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const b = Swal.getHtmlContainer().querySelector('b');
+                            let emailCount = 0;
+
+                            const simulateEmailSending = setInterval(() => {
+                                b.textContent = emailCount;
+                                emailCount++;
+                                if (emailCount > 19) {
+                                    clearInterval(simulateEmailSending);
+                                    form.submit();
+                                    Swal.close().then(() => {
+                                        form.submit();
+                                    });
+                                }
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        </script>
+
     }
 
 

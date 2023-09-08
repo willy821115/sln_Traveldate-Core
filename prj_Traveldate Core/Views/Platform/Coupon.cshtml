@@ -86,7 +86,7 @@
                                             <th>建立日期</th>
                                             <th>截止日</th>
                                             <th>照片</th>
-                                            <th>發放／使用　數量</th>
+                                            <th>使用／發放　數量</th>
                                             <th>修改</th>
                                         </tr>
                                     </thead>
@@ -112,7 +112,7 @@
                                                     <img src="~/Images/@item.ImagePath" class="couponImg img-thumbnail" alt="noimages" />
                                                 </td>
                                                 <td class ="counum">
-                                                    @item.CouponNum/@item.CouponUsedNum
+                                                    @item.CouponUsedNum/@item.CouponNum
                                                 </td>
                                                 <td>
                                                     <img class="btn" src="~/icons/icon_edit.png"
@@ -555,7 +555,7 @@
                     successMessage.fadeIn();
                     setTimeout(function () {
                         successMessage.fadeOut();
-                    }, 3000);
+                    }, 5000);
                 }
             });
 

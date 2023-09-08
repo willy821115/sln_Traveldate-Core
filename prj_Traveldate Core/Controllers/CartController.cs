@@ -134,10 +134,6 @@ namespace prj_Traveldate_Core.Controllers
             }
             else vm.browsing = null;
 
-
-
-            //  瀏覽紀錄(抓Session回傳)
-            //  List加到vm裡顯示
             return View(vm);
         }
 
@@ -337,12 +333,11 @@ namespace prj_Traveldate_Core.Controllers
 
             for (int i = 0; i < vm.ods.Count(); i++)
             {
+                int tripID = vm.ods[i].TripId ?? 0;
                 //確認商品庫存量
-                CProductFactory prodFactory = new CProductFactory();
-                string strStock = prodFactory.TripStock((int)vm.ods[i].TripId);
-                int ordered = Convert.ToInt32(strStock.Split('/')[0]);
-                int max = Convert.ToInt32(strStock.Split('/')[1]);
-                if (max - ordered < vm.ods[i].Quantity)
+                var q = _context.Trips.Where(s => s.TripId == tripID).Select(s => new { orders = s.OrderDetails.Where(o => o.Order.IsCart == false).Sum(o => o.Quantity), max = s.MaxNum }).FirstOrDefault();
+
+                if (q.max - q.orders < vm.ods[i].Quantity)
                 {
                     string prodName = _context.Trips.Where(t => t.TripId == vm.ods[i].TripId).Select(t => t.Product.ProductName).FirstOrDefault();
                     string e = $"「{prodName}」數量不足，請重新選購。";
