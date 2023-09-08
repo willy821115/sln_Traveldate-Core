@@ -212,6 +212,7 @@
                                         <th>產品類型</th>
                                         <th>產品日期</th>
                                         <th>天數</th>
+                                        <th>單價</th>
                                         <th>
                                             <div>報名人數/</div>
                                             <div>人數上限</div>
@@ -522,7 +523,7 @@
          if (datas != null) {
              console.log(datas)
              const rows = datas.map(row => {
-                 const { tripID, tripName, tripType, stock, tripDay, tripDate } = row
+                 const { tripID, tripName, tripType, stock, tripDay, tripDate,tripUnitPrice } = row
                     if (eval(stock) < 0.5) {
                     return (
                      ` <tr>
@@ -530,6 +531,7 @@
                                <td>${tripType}</td>
                                 <td>${tripDate}</td>
                                 <td>${tripDay}</td>
+                                <td>${tripUnitPrice}</td>
                                   <td> <div class="btn btn-outline-success"> ${stock} </div></td>
                                   <td>
                                          <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
@@ -544,6 +546,7 @@
                                        <td>${tripType}</td>
                                         <td>${tripDate}</td>
                                         <td>${tripDay}</td>
+                                                <td>${tripUnitPrice}</td>
                                                   <td><div class="btn btn-outline-warning"> ${stock}</div></td>
                                           <td>
                                                  <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>
@@ -559,6 +562,7 @@
                                                <td>${tripType}</td>
                                                 <td>${tripDate}</td>
                                                 <td>${tripDay}</td>
+                                                        <td>${tripUnitPrice}</td>
                                                     <td><div class="btn btn-outline-danger"> ${stock}</td>
                                                   <td>
                                                          <a href="@Url.Content("~/Trip/Edit")?tripID=${tripID}" class="btn btn-success">編輯</a>

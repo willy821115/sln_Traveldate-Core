@@ -67,7 +67,7 @@ namespace prj_Traveldate_Core.Controllers
 CProductFactory cProductFactory = new CProductFactory();
             var trips = from t in db.Trips
                         where t.Product.ProductId == productID
-                        select new { tripID = t.TripId,  tripName = t.Product.ProductName, tripType = t.Product.ProductType.ProductType, tripDate = string.Format("{0:yyyy-MM-dd}", t.Date) ,tripDay =  cProductFactory.TripDays(t.ProductId), stock= cProductFactory.TripStock(t.TripId) };
+                        select new { tripID = t.TripId,  tripName = t.Product.ProductName, tripType = t.Product.ProductType.ProductType, tripDate = string.Format("{0:yyyy-MM-dd}", t.Date) ,tripDay =  cProductFactory.TripDays(t.ProductId),tripUnitPrice=t.UnitPrice ,stock= cProductFactory.TripStock(t.TripId) };
        
             return Json(trips);
         }
