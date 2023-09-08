@@ -170,7 +170,7 @@
                                                 @Html.DisplayFor(model =>item.productStatus)
                                             </td>
                                             <td>
-                                                <button  value="@item.ProductId" class="btn btn-primary btnDetail">現有行程</button>
+                                                <button  value="@item.ProductId" class="btn btn-primary btnDetail">現有日期</button>
                                                 @* @Html.ActionLink("現有行程", "Create","Trip", new { id=item.ProductId },new {@class="btn btn-primary"}) *@
                                                 @Html.ActionLink("新增", "Create","Trip", new { id=item.ProductId },new {@class="btn btn-primary"})
                                             </td>
@@ -201,7 +201,7 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary cardTitle">行程列表</h6>
+                        <h6 class="m-0 font-weight-bold text-primary cardTitle">日期列表</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
