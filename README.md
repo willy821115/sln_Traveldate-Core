@@ -9,3 +9,7 @@ Scaffold-DbContext "Data Source=.;Initial Catalog=Traveldate;Integrated Security
 綠界測試付款
 綠界提供測試用的特店管理後台，主要提供查詢測試的訂單相關資訊與執行訂單模擬付款的功能。
 一般信用卡測試卡號 : 4311-9522-2222-2222 安全碼 : 222
+
+bowenchang7979@gmail.com
+weilunjiang3737@gmail.com
+@Traveldate1234@
