@@ -166,7 +166,7 @@ namespace prj_Traveldate_Core.Controllers
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
-                HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+                HttpContext.Session.SetString(CDictionary.SK_FILETREDSCHEDULE_INFO, json);
             }
 
             vm.replyList = _context.ReplyLists.ToList();
