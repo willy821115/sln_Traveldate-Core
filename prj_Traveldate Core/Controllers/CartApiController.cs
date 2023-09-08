@@ -118,7 +118,7 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult EditCart(int odid, int num, int tripid)
         {
             _memberID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            var exixt = _context.OrderDetails.Where(o=>o.Order.MemberId==_memberID && o.Order.IsCart==true && o.TripId==tripid).FirstOrDefault();
+            var exixt = _context.OrderDetails.Where(o=>o.Order.MemberId==_memberID && o.Order.IsCart==true && o.TripId==tripid && o.OrderDetailsId!= odid).FirstOrDefault();
             if (exixt != null)
             {
                 return Content("exist");
@@ -156,6 +156,8 @@ namespace prj_Traveldate_Core.Controllers
             Random rnd = new Random();
             while (idList.Count < 5)
             {
+                if (tags.Count == 0)
+                    break;
                 //隨機選一個tag
                 int n = rnd.Next(tags.Count);
                 var ps = _context.ProductTagLists.Where(o => o.ProductTagDetailsId == tags[n]).Select(o => o.ProductId).Distinct().ToList();
@@ -171,14 +173,11 @@ namespace prj_Traveldate_Core.Controllers
                         }
                     }
                 }
-                tags.RemoveAt(n);
-                if (tags.Count == 0)
-                    break;
             }
 
             if (idList.Count < 5)
             {
-                var plist = _context.OrderDetails.GroupBy(o => o.Trip.ProductId).Select(g => new { prodID = g.Key, ocount = g.Count() }).OrderByDescending(x => x.ocount).Take(4).ToList();
+                var plist = _context.OrderDetails.GroupBy(o => o.Trip.ProductId).Select(g => new { prodID = g.Key, ocount = g.Count() }).OrderByDescending(x => x.ocount).Take(5).ToList();
                 for (int i = 0; i < plist.Count(); i++)
                 {
                     idList.Add(plist[i].prodID);
