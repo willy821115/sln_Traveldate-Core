@@ -183,18 +183,17 @@
 <div class="card-deck">
     @for(int i = 0; i < 5; i++)
     {
-            <div class="card">
+        <div class="card" style="height:360px;">
                          <a asp-action="Product" asp-controller="Program" asp-route-id="@Model.recommends[i].productId" class="text-secondary">
 
-                <img class="card-img-top" src="~/images/@Model.recommends[i].ImagePath" alt="@Model.recommends[i].productName">
-                <div class="card-body d-flex flex-column justify-content-between">
+                <img class="card-img-top" src="~/images/@Model.recommends[i].ImagePath" alt="@Model.recommends[i].productName" style="height:170px;">
+                <div class="card-body d-flex flex-column justify-content-between" style="height:190px;">
                 <h5 class="card-title">@Model.recommends[i].productName</h5>
                     <div>
                         <p class="card-text">NTD @Model.recommends[i].unitPrice</p><p class="card-text">評價：@Model.recommends[i].commentScoreString</p>
                     </div>
                 </div>
             </a>
-
             </div>
     }
 </div>
@@ -206,10 +205,10 @@
 {
     @for (int i = 0; i < Model.browsing.Count; i++)
     {
-        <div class="card">
+            <div class="card" style="height:360px;">
             <a asp-action="Product" asp-controller="Program" asp-route-id="@Model.browsing[i].productId" class="text-secondary">
-                <img class="card-img-top" src="~/images/@Model.browsing[i].ImagePath" alt="@Model.browsing[i].productName">
-                <div class="card-body d-flex flex-column justify-content-between">
+                    <img class="card-img-top" src="~/images/@Model.browsing[i].ImagePath" alt="@Model.browsing[i].productName" style="height:170px;">
+                    <div class="card-body d-flex flex-column justify-content-between" style="height:190px;">
                     <h5 class="card-title">@Model.browsing[i].productName</h5>
                     <div>
                         <p class="card-text">NTD @Model.browsing[i].unitPrice</p><p class="card-text">評價：@Model.browsing[i].commentScoreString</p>
@@ -237,7 +236,7 @@
 else
 {
     <div class="p-4">
-        <h5 style="color:gray">尚未有瀏覽紀錄...</h5>
+        <h5 style="color:gray">目前還沒有瀏覽紀錄...</h5>
     </div>
 }
 </div>
@@ -279,22 +278,24 @@ else
             const data = await response.json();
             console.log(data);
             const list = data.map(d =>{
+                if (d.stock > 0){
                      if (d.discount==0){
                 return `<div class="row editbox">
                             <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
                             <div class="col-3 align-middle">${d.unitPrice}</div>
-                            <div class="col-3 align-middle">${d.maxNum}</div>
-                            <div class="col-3 align-middle"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
+                            <div class="col-3 align-middle">${d.stock}/${d.maxNum}</div>
+                                    <div class="col-3 align-middle"><input type="number" step="1" class="editqty text-center" min="1" max="${d.stock}" value="1" /></div>
                     <input type="hidden" class="edittripid" value="${d.tripId}">
                     </div>`}
-                     else{
+                else {
                          return  `<div class="row editbox">
                             <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
-                                    <div class="col-3 align-middle"><del>${d.unitPrice}</del><br><span class="text-danger"><b>${d.unitPrice - d.discount}</b></span></div>
-                            <div class="col-3 align-middle">${d.maxNum}</div>
-                            <div class="col-3 align-middle"><input type="number" step="1" class="editqty" min="1" max="${d.maxNum}" value="1"/></div>
+                            <div class="col-3 align-middle"><del>${d.unitPrice}</del><br><span class="text-danger"><b>${d.unitPrice - d.discount}</b></span></div>
+                            <div class="col-3 align-middle">${d.stock}/${d.maxNum}</div>
+                            <div class="col-3 align-middle"><input type="number" step="1" class="editqty text-center" min="1" max="${d.stock}" value="1"/></div>
             <input type="hidden" class="edittripid" value="${d.tripId}">
             </div>`}
+            }
                })
             document.querySelector(x).innerHTML = list.join("")
         }
@@ -364,24 +365,4 @@ else
         });
 
     </script>
-}
-
-@functions {
-    public string GetStarClass(double? rating, int index)
-    {
-        if (rating.HasValue)
-        {
-            int filledStars = (int)Math.Floor(rating.Value);
-            double remainder = rating.Value - filledStars;
-            if (index <= filledStars)
-            {
-                return "active";
-            }
-            else if (index == filledStars + 1 && remainder >= 0.5)
-            {
-                return "half-filled";
-            }
-        }
-        return "";
-    }
 }
