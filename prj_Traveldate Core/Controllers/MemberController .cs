@@ -1079,24 +1079,17 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult commentList() //我的評論new V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-                            
-            var datas = from m in context.Members
-                        from cmp in context.CommentPhotoLists
-                        join cm in context.CommentLists
-                        on m.MemberId equals cm.MemberId
-                        join pl in context.ProductLists
-                        on cm.ProductId equals pl.ProductId
-                        where m.MemberId == MemberId
-               
+
+            var datas = from Member in context.CommentLists
+                        where Member.MemberId == MemberId
                         select new CcommentListViewModel
                         {
-                            Title = cm.Title,
-                            Content = cm.Content,
-                            CommentScore = cm.CommentScore,
-                            Date =cm.Date,
-                            ProductName = pl.ProductName,
-                            CommentId=cm.CommentId,
-                            //ImagePath= cmp.ImagePath,
+                            Title = Member.Title,
+                            Content = Member.Content,
+                            CommentScore = Member.CommentScore,
+                            Date = Member.Date,
+                            ProductName = Member.Product.ProductName,
+                            CommentId = Member.CommentId
                         };
 
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
@@ -1199,7 +1192,6 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult commentList(int? id) //我的評論Delete V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            //Member mm = context.Members.FirstOrDefault(p => p.MemberId == MemberId);
             if (id != null)
             {
                 // 使用 .Where() 來選擇所有匹配特定 CommentId 的紀錄
@@ -1214,14 +1206,14 @@ namespace prj_Traveldate_Core.Controllers
             }
             if (id != null)
             {
-                CommentList ff = context.CommentLists.FirstOrDefault(p => p.CommentId == id);
-                if (ff != null)
+                CommentList ff = context.CommentLists.Where(c => c.CommentId == id).FirstOrDefault();
+                //CommentList fff = context.CommentLists.Where(c => c.Date == c.Date).FirstOrDefault();
+                if (ff != null /*&& fff!=null*/)
                 {
                     context.CommentLists.Remove(ff);
                     context.SaveChanges();
                 }
             }
-
             Thread.Sleep(3000);
             return RedirectToAction("commentList");
         }
