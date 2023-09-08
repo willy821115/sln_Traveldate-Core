@@ -124,16 +124,17 @@
         @foreach (var item in Model)
                 {
                     <tr>
-                            <td><img style="width:28px;height:28px;margin-left:16px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
+                        <td>
+                            <img style="width:28px;height:28px;margin-left:16px" src="~/icons/icon-love-1(member) 原圖.png" /></td>
                             <td>@item.ProductName</td>
                             <td>@item.Outline</td>
 
                          <form method="post" action="@Url.Action("favoriteList", "Member")">
                              @Html.Hidden("id", item.FavoriteId) <!-- 添加隐藏字段 -->
-                        <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" style="margin-left:5px"> 移除</button></td>
+                        <td><button type="submit" class="btn my-btn-primary btn-sm" id="btnFavoriteRemove" value="@item.FavoriteId" name="FavoriteId" style="margin-left:5px"> 移除</button></td>
                          </form>
-              
-@*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
+
+                        @*                           <td>@Html.ActionLink("移除", "favoriteList","Member",new{id=item.FavoriteId},new {@class="black-link"})</td>
                              <td><button type="submit" value=@item.FavoriteId class="btn my-btn-primary btn-sm" />移除</td>   *@
                              @* new{favoriteID=item.} *@
                     </tr>
@@ -179,7 +180,7 @@
             const btnFavoriteRemove = document.getElementById('btnFavoriteRemove');
 
             btnFavoriteRemove.addEventListener('click', () => {
-                swal("移除成功！", "稍後將自動為您導向", "success", { buttons: false })
+                swal("移除成功！", "稍後將自動為您導向", "success", { button: false })
 
                 // 在這裡執行其他操作，例如發送 AJAX 請求或導向頁面
             });
@@ -251,6 +252,7 @@
     <script>
         $(document).ready(function () {
             $('#table_id').DataTable({
+                        order: [[0, 'desc']],
                 // 中文化
                 'language': {
                     "processing": "處理中...",
