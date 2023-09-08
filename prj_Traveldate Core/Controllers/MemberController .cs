@@ -794,20 +794,14 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult favoriteList() //收藏清單new V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            var datas = from pl in context.ProductLists
-                        join f in context.Favorites
-                        on pl.ProductId equals f.ProductId
-                        join m in context.Members
-                        on f.MemberId equals m.MemberId
-                        where m.MemberId == MemberId
+            var datas = from Members in context.Favorites
+                        where (Members.MemberId == MemberId)
                         select new CfavoriteListViewModel
                         {
-                            ProductName = pl.ProductName,
-                            ProductId= pl.ProductId,
-                            MemberId = f.MemberId,
-                            //Description = pl.Description,
-                            Outline = pl.Outline,
-                            FavoriteId =f.FavoriteId
+                            ProductName= Members.Product.ProductName,
+                            Outline=Members.Product.Outline,
+                            FavoriteId=Members.FavoriteId,
+
                         };
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             #region 原本load二進位的頭像圖片用
@@ -902,7 +896,7 @@ namespace prj_Traveldate_Core.Controllers
             if (x.LastName == x.LastName)
                 ViewBag.LastName = x.LastName;
 
-            return View(datas.Distinct());
+            return View(datas);
         }
         [HttpPost]
         public IActionResult favoriteList(int? id)  //收藏清單Delete V

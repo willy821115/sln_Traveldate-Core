@@ -64,7 +64,7 @@
                 <span id="Phoneerr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label"></label><button type="button" class="btn btn-outline-secondary ml-2" id="demobtne">DEMO</button>
                 <input asp-for="Email" type="email" class="form-control Email"  id="Email"  />
                 <span asp-validation-for="Email" class="text-danger"></span>
                 <span id="Emailerr" class="text-danger"></span>
@@ -147,8 +147,12 @@
             $('.Idnumber').val("A137854126");
             $('.BirthDate').val("1998-07-09");
             $('.Phone').val("0935765315");
+            $('.Email').val("orQj538JNrW9XM@gmail.com");
+            $('.Password').val("123456789");
+        })
+
+        $('#demobtne').on('click', function () {
             $('.Email').val("bowenchang7979@gmail.com");
-            $('.Password').val("12345678");
         })
 
         const btn = document.querySelector('#btnSignup')

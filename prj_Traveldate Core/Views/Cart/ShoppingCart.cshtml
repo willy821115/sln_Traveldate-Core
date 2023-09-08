@@ -183,10 +183,10 @@
 <div class="card-deck">
     @for(int i = 0; i < 5; i++)
     {
-        <div class="card" style="height:360px;">
+        <div class="card" style="height:360px;border-radius:20px">
                          <a asp-action="Product" asp-controller="Program" asp-route-id="@Model.recommends[i].productId" class="text-secondary">
 
-                <img class="card-img-top" src="~/images/@Model.recommends[i].ImagePath" alt="@Model.recommends[i].productName" style="height:170px;">
+                <img class="card-img-top" src="~/images/@Model.recommends[i].ImagePath" alt="@Model.recommends[i].productName" style="height:170px;border-radius:20px 20px 0 0">
                 <div class="card-body d-flex flex-column justify-content-between" style="height:190px;">
                 <h5 class="card-title">@Model.recommends[i].productName</h5>
                     <div>
@@ -205,9 +205,9 @@
 {
     @for (int i = 0; i < Model.browsing.Count; i++)
     {
-            <div class="card" style="height:360px;">
+            <div class="card" style="height:360px;border-radius:20px">
             <a asp-action="Product" asp-controller="Program" asp-route-id="@Model.browsing[i].productId" class="text-secondary">
-                    <img class="card-img-top" src="~/images/@Model.browsing[i].ImagePath" alt="@Model.browsing[i].productName" style="height:170px;">
+                    <img class="card-img-top" src="~/images/@Model.browsing[i].ImagePath" alt="@Model.browsing[i].productName" style="height:170px;border-radius:20px 20px 0 0">
                     <div class="card-body d-flex flex-column justify-content-between" style="height:190px;">
                     <h5 class="card-title">@Model.browsing[i].productName</h5>
                     <div>
