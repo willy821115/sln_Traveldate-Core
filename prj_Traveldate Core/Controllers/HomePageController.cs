@@ -43,7 +43,7 @@ namespace prj_Traveldate_Core.Controllers
             var comment = from c in db.CommentLists
                           where (bool)!c.Product.Discontinued&&c.Product.StatusId==1
                           group c by c.Product into g
-                          orderby g.Select(c => c.CommentScore).Average()
+                          orderby g.Select(c => c.CommentScore).Average() descending
                           select new { productId = g.Key.ProductId, productName = g.Key.ProductName, commentScore = g.Select(c => c.CommentScore).Average() };
 
             List<CHomeViewModel> commentList = new List<CHomeViewModel>();
