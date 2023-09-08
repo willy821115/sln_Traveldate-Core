@@ -150,7 +150,7 @@ namespace prj_Traveldate_Core.Controllers
             }
 
             Random rnd = new Random();
-            while (idList.Count < 4)
+            while (idList.Count < 5)
             {
                 //隨機選一個tag
                 int n = rnd.Next(tags.Count);
@@ -169,7 +169,7 @@ namespace prj_Traveldate_Core.Controllers
                     break;
             }
 
-            if (idList.Count < 4)
+            if (idList.Count < 5)
             {
                 var plist = _context.OrderDetails.GroupBy(o => o.Trip.ProductId).Select(g => new { prodID = g.Key, ocount = g.Count() }).OrderByDescending(x => x.ocount).Take(4).ToList();
                 for (int i = 0; i < plist.Count(); i++)
@@ -179,8 +179,6 @@ namespace prj_Traveldate_Core.Controllers
             }
             return idList;
         }
-
-        //TODO  抓瀏覽紀錄
 
 
         //透過ID取得同行者資料

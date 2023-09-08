@@ -17,12 +17,26 @@ namespace prj_Traveldate_Core.Controllers
             if (id == null)
                 return RedirectToAction("SearchList", "Search");
 
+            //將id存入瀏覽紀錄
             List<int> visitedProducts = GetVisitedProductsFromSession();
-            visitedProducts.Add((int)id);
-            if (visitedProducts.Count > 4)
+            visitedProducts.Reverse();
+            if (!visitedProducts.Contains((int)id))
             {
-                visitedProducts.RemoveAt(0);
+                //如果不存在瀏覽紀錄中就直接加
+                visitedProducts.Add((int)id);
             }
+            else
+            {
+                //如果存在就換到最新的位置
+                visitedProducts.RemoveAt(visitedProducts.IndexOf((int)id));
+                visitedProducts.Add((int)id);
+            }
+            //瀏覽紀錄只存5個商品
+            if (visitedProducts.Count > 5)
+            {
+                visitedProducts.RemoveAt(visitedProducts.Count);
+            }
+            visitedProducts.Reverse();
             string visitedProductsString = string.Join(",", visitedProducts);
             HttpContext.Session.SetString(CDictionary.SK_PRODUCT_VISITED_ID, visitedProductsString);
 
