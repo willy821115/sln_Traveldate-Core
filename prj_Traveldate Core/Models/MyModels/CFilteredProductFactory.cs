@@ -88,7 +88,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                     item.commentCount = comments.Count();
                     item.strComment = comments.Any() ? $"{comments.Average():0.0} ({comments.Count()})" : "尚無評論";
                     //購買次數
-                    var buy = db.OrderDetails.Where(o => o.Trip.Product.ProductId == item.productID).Select(o => o.Quantity).Sum();
+                    var buy = db.OrderDetails.Where(o => o.Trip.Product.ProductId == item.productID && o.Order.IsCart==false).Select(o => o.Quantity).Sum();
                     item.orederCount = buy.HasValue ? buy : 0;
                     //trip的剩餘名額
                     CProductFactory prodFactory = new CProductFactory();
