@@ -516,7 +516,7 @@ namespace prj_Traveldate_Core.Controllers
                 { "PaymentInfoURL",  $"{website}/api/Ecpay/AddAccountInfo"},
                 { "ClientRedirectURL",  $"{website}/Ecpay/AccountInfo/{orderIdForPay}"},
                 { "MerchantID",  "2000132"},
-                { "IgnorePayment",  "GooglePay#WebATM#CVS#BARCODE"},
+                { "IgnorePayment",  ""},
                 { "PaymentType",  "aio"},
                 { "ChoosePayment",  "ALL"},
                 { "EncryptType",  "1"},
