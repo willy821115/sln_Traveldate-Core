@@ -34,7 +34,7 @@ namespace prj_Traveldate_Core.Controllers
             //瀏覽紀錄只存5個商品
             if (visitedProducts.Count > 5)
             {
-                visitedProducts.RemoveAt(visitedProducts.Count);
+                visitedProducts = visitedProducts.Take(5).ToList();
             }
             visitedProducts.Reverse();
             string visitedProductsString = string.Join(",", visitedProducts);
