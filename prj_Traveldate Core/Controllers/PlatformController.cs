@@ -291,8 +291,8 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
-                    //string sendmail = "weilunjiang3737@gmail.com";
-                    string sendmail = "traveldate3@gmail.com";
+                    string sendmail = "weilunjiang3737@gmail.com";
+                    //string sendmail = "traveldate3@gmail.com";
 
                     List<string> UserEmail = new List<string>();
                     UserEmail.Add(sendmail);
@@ -320,8 +320,8 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
-                    // string sendmail = "weilunjiang3737@gmail.com";
-                    string sendmail = "traveldate3@gmail.com";
+                     string sendmail = "weilunjiang3737@gmail.com";
+                    //string sendmail = "traveldate3@gmail.com";
 
                     List<string> UserEmail = new List<string>();
                     UserEmail.Add(sendmail);
