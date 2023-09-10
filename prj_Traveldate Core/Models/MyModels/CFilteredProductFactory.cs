@@ -12,7 +12,7 @@ namespace prj_Traveldate_Core.Models.MyModels
         {
             db = new TraveldateContext();
             confirmedId = db.Trips.Include(t=>t.OrderDetails)
-               .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false 
+               .Where(t => t.Product.ProductId == t.ProductId && t.Product.StatusId == 1 && t.Product.Discontinued == false &&t.Date>DateTime.Now 
                )
                .Select(n => n.ProductId).ToList();
         }
@@ -42,6 +42,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 .ToList();
 
                 List<CFilteredProductItem> list = new List<CFilteredProductItem>();
+               
                 foreach (var p in datas)
                 {
                     CFilteredProductItem item = new CFilteredProductItem();
@@ -117,7 +118,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                 }
                 return list;
             }
-            catch(IOException ex)
+            catch(Exception ex)
             {
                 throw new Exception("發生 IOException 異常: " + ex.Message);
             }

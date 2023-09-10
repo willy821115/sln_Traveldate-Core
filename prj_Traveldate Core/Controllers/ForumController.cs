@@ -40,7 +40,9 @@ namespace prj_Traveldate_Core.Controllers
         //要顯示文章的主要資料
         public List<ScheduleList1> ScheduleForum()
         {
-            List<ScheduleList1> data = _context.ScheduleLists
+            try
+            {
+List<ScheduleList1> data = _context.ScheduleLists
                 .Include(s => s.ForumList)
                 .Include(s => s.Trip)
                 .Include(s=>s.ForumList.ReplyLists)
@@ -62,56 +64,76 @@ namespace prj_Traveldate_Core.Controllers
 
            // var dtats = _context.ProductTagLists.Include(t => t.ProductTagDetails).ToList();
             return data;
+            }catch(Exception ex)
+            {
+                throw new Exception("發生 IOException 異常: " + ex.Message);
+            }
+            
         }
         //要顯示文章的其他資料
         private void forumInfos()
         {
-            vm.replyList = _context.ReplyLists.ToList();
+            try
+            {
+              vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m => m.ForumLists).ToList();
             vm.level = _context.LevelLists.Include(l => l.Members).ToList();
             vm.prodPhoto = forum_prodPhoto();
             vm.productTags = _context.ProductTagLists.Include(t => t.ProductTagDetails).ToList();
+            }catch(Exception ex)
+            {
+                throw new Exception("發生 IOException 異常: " + ex.Message);
+            }
+              
         }
        
         //顯示每篇文章的trip中剩餘數最少的
         private List<ScheduleList1> ScheduleStock()
         {
-            List<ScheduleList1> schedule = new List<ScheduleList1>();
-            schedule = ScheduleForum();
-            CProductFactory prodFactory = new CProductFactory();
-            foreach(var item in schedule)
+            try
             {
-                double compare = 1000;
-                int id = 0;
-                double stockRate = 0;
-                foreach (var d in item.trips)
+                List<ScheduleList1> schedule = new List<ScheduleList1>();
+                schedule = ScheduleForum();
+                CProductFactory prodFactory = new CProductFactory();
+                foreach (var item in schedule)
                 {
-                    var strStock = prodFactory.TripStock(d.TripId);
-                    double r = Convert.ToDouble(strStock.Split('/')[0]);
-                    double m = Convert.ToDouble(strStock.Split('/')[1]);
-                    
-                    if (m - r < compare)
+                    double compare = 1000;
+                    int id = 0;
+                    double stockRate = 0;
+                    foreach (var d in item.trips)
                     {
-                        compare = m - r;
-                        id = d.TripId;
-                    }
-                }
-                item.strStock = prodFactory.TripStock(id); 
-                double leave = Convert.ToDouble(item.strStock.Split('/')[0]);
-                double max = Convert.ToDouble(item.strStock.Split('/')[1]);
-                if(leave>max )
-                {
-                    leave = max;
-                    item.strStock = $"{max}/{max}";
-                }
-                stockRate = leave / max;
-                item.numStock = stockRate;
-            }
-            var available = schedule.OrderBy(s=>s.ForumList.DueDate).Where(s => s.ForumList.DueDate >= DateTime.Now);
-            var expired = schedule.OrderBy(s => s.ForumList.DueDate).Where(s => s.ForumList.DueDate < DateTime.Now);
-            schedule = available.Concat(expired).ToList();
+                        var strStock = prodFactory.TripStock(d.TripId);
+                        double r = Convert.ToDouble(strStock.Split('/')[0]);
+                        double m = Convert.ToDouble(strStock.Split('/')[1]);
 
-            return schedule;
+                        if (m - r < compare)
+                        {
+                            compare = m - r;
+                            id = d.TripId;
+                        }
+                    }
+                    item.strStock = prodFactory.TripStock(id);
+                    double leave = Convert.ToDouble(item.strStock.Split('/')[0]);
+                    double max = Convert.ToDouble(item.strStock.Split('/')[1]);
+                    if (leave > max)
+                    {
+                        leave = max;
+                        item.strStock = $"{max}/{max}";
+                    }
+                    stockRate = leave / max;
+                    item.numStock = stockRate;
+                }
+                var available = schedule.OrderBy(s => s.ForumList.DueDate).Where(s => s.ForumList.DueDate >= DateTime.Now);
+                var expired = schedule.OrderBy(s => s.ForumList.DueDate).Where(s => s.ForumList.DueDate < DateTime.Now);
+                schedule = available.Concat(expired).ToList();
+
+                return schedule;
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception("發生 IOException 異常: " + ex.Message);
+            }
+            
         }
 
         //////////////////////////////// /////////////////////////////////MVC/ ////////////////////////////////////////////////////////////////
@@ -347,76 +369,82 @@ namespace prj_Traveldate_Core.Controllers
                 return RedirectToAction("ForumList");
             }
             //將發文跟跟團的ID區隔避免衝突
-            HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY);
-            HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN);
-            CArticleViewModel vm = new CArticleViewModel();
-            vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
-            vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
-            vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
-            ScheduleList1 article = ScheduleStock().FirstOrDefault(s => s.forumListId == id);
-            vm.forum = article.ForumList;
-            //打開時加入觀看數
-            vm.forum.Watches++;
-            _context.SaveChanges();
-           vm.articleTrips = article.trips;
-            var tagDetailsId = article.productTags.Select(t => t.ProductTagDetailsId).ToList();
-            vm.trip_Tags = _context.ProductTagDetails
-                .Where(t => tagDetailsId.Contains(t.ProductTagDetailsId))
-                .Select(t=>t.ProductTagDetailsName)
-                .ToList();
-            var prodInfo = article.trips.Select(t => t.Product).ToList();
-            var prodId = prodInfo.Select(t => t.ProductId).ToList();
+            try {
+                HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY);
+                HttpContext.Session.Remove(CDictionary.SK_FORUMLISTID_FOR_PAY_JOIN);
+                CArticleViewModel vm = new CArticleViewModel();
+                vm.likes = _context.LikeLists.Where(l => l.ForumId == id).Include(l => l.Member).ToList();
+                vm.replys = _context.ReplyLists.Where(r => r.ForumListId == id).Include(r => r.Member).ToList();
+                vm.fforumAddress = _context.ScheduleLists.Include(s => s.Trip.Product).Where(s => s.ForumListId == id).Select(p => p.Trip.Product.Address).ToList();
+                ScheduleList1 article = ScheduleStock().FirstOrDefault(s => s.forumListId == id);
+                vm.forum = article.ForumList;
+                //打開時加入觀看數
+                vm.forum.Watches++;
+                _context.SaveChanges();
+                vm.articleTrips = article.trips;
+                var tagDetailsId = article.productTags.Select(t => t.ProductTagDetailsId).ToList();
+                vm.trip_Tags = _context.ProductTagDetails
+                    .Where(t => tagDetailsId.Contains(t.ProductTagDetailsId))
+                    .Select(t => t.ProductTagDetailsName)
+                    .ToList();
+                var prodInfo = article.trips.Select(t => t.Product).ToList();
+                var prodId = prodInfo.Select(t => t.ProductId).ToList();
 
-            vm.img_Paths = forum_prodPhoto().
-                Where(p=>prodId.Contains((int)p.prodId))
-                .GroupBy(p=>p.prodId)
-                .Select(g=> new CArticle_imgs
+                vm.img_Paths = forum_prodPhoto().
+                    Where(p => prodId.Contains((int)p.prodId))
+                    .GroupBy(p => p.prodId)
+                    .Select(g => new CArticle_imgs
+                    {
+                        img_prodId = g.Key,
+                        imgPaths = g.Select(path => path.prodPhotoPath).ToList(),
+
+                    })
+                 .ToList();
+                vm.avgCommentScores = _context.CommentLists
+        .Where(c => prodId.Contains((int)c.ProductId)) // 選擇包含在 prodId 中的評論
+        .GroupBy(c => c.ProductId) // 按照 ProductId 分組
+        .Select(group => new CCommentScore
+        {
+            commentProdId = group.Key, // 分組的 ProductId
+            commentScore = group.Average(c => c.CommentScore) // 計算平均分數
+        })
+        .ToList();
+
+                //沒登入的情況
+                vm.member = null;
+                //有登入的情況
+                if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
                 {
-                    img_prodId = g.Key,
-                    imgPaths = g.Select(path=>path.prodPhotoPath).ToList(),
-                   
-                })
-             .ToList();
-            vm.avgCommentScores = _context.CommentLists
-    .Where(c => prodId.Contains((int)c.ProductId)) // 選擇包含在 prodId 中的評論
-    .GroupBy(c => c.ProductId) // 按照 ProductId 分組
-    .Select(group => new CCommentScore
-    {
-        commentProdId = group.Key, // 分組的 ProductId
-        commentScore = group.Average(c => c.CommentScore) // 計算平均分數
-    })
-    .ToList();
+                    int memId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
+                    vm.member = _context.Members.Find(memId);
 
-            //沒登入的情況
-            vm.member = null;
-            //有登入的情況
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGGEDIN_USER))
-            {
-                int memId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-                vm.member = _context.Members.Find(memId);
-                
-            }
-
-            if (vm.forum != null)
-            {
-                byte[] photo = vm.forum.Member.Photo;
-                if (photo != null)
-                {
-                    string base64String = Convert.ToBase64String(photo);
-                    ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
                 }
-            };
-            //揪團發文回傳0
-            if (returnType==0)
+
+                if (vm.forum != null)
+                {
+                    byte[] photo = vm.forum.Member.Photo;
+                    if (photo != null)
+                    {
+                        string base64String = Convert.ToBase64String(photo);
+                        ViewBag.PhotoBase64 = "data:image/jpeg;base64," + base64String;
+                    }
+                };
+                //揪團發文回傳0
+                if (returnType == 0)
+                {
+                    vm.returnStatus = returnType;
+                }
+                else if (returnType == 1)
+                {
+                    //揪團跟團回傳1
+                    vm.returnStatus = 1;
+                }
+                return View(vm);
+            } catch (Exception ex)
             {
-                vm.returnStatus = returnType;
+                return RedirectToAction("Error", "Error");
             }
-            else if(returnType ==1)
-            {
-                //揪團跟團回傳1
-                vm.returnStatus =1;
-            }
-            return View(vm);
+            
         }
         /////////////////////////////////////Api/////////////////////////////////
         /////////////////////////////////////發文用/////////////////////////////////

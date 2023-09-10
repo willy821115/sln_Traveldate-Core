@@ -215,17 +215,26 @@
                             <p class="card-text fs-4 text-black fw-bolder text-light">TWD <span>@Model.articleTrips.First(t=>t.ProductId==imgs.img_prodId).UnitPrice</span><span class="card-text">起</span></p>
                                 <p class="card-title text-light text-wrap">@Model.articleTrips.First(t=>t.ProductId==imgs.img_prodId).Product.OutlineForSearch</p>
                                 <div class="rating-container">
-                                    <span class="rating-text text-light">評價：@Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value.ToString("0.0")</span>
-                                    <div class="rating">
-                                        <div class="stars">
-                                            <div class="star-container">
-                                                @for (int i = 1; i <= 5; i++)
-                                                {
-                                                    <div class="star @GetStarClass(Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value, i)"></div>
-                                                }
+                                        @if(Model.avgCommentScores.Count>0 )
+                                        {
+                                            <span class="rating-text text-light">評價：@Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value.ToString("0.0")</span>
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <div class="star-container">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <div class="star @GetStarClass(Model.avgCommentScores.First(t=>t.commentProdId==imgs.img_prodId).commentScore.Value, i)"></div>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="rating-text text-light">評價：尚無評論</span>
+                                        }
+
+                                    
                                 </div>
                         </div>
                         </div>
