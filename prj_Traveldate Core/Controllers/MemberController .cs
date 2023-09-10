@@ -305,10 +305,12 @@ namespace prj_Traveldate_Core.Controllers
         public IActionResult passwordChange() //密碼更改 先維持原版V
         {
             int MemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            CpasswordChangeViewModel prd = new CpasswordChangeViewModel();
+            //CpasswordChangeViewModel prd = new CpasswordChangeViewModel();
+            var datas = context.Members.Where(m => m.MemberId == MemberId).Select(m=>new CpasswordChangeViewModel 
+            { Password = m.Password}).FirstOrDefault();
 
-            prd.MemberId = MemberId;
-            Member x = context.Members.FirstOrDefault(m => m.MemberId == prd.MemberId);
+            //prd.MemberId = MemberId;
+            //Member x = context.Members.FirstOrDefault(m => m.MemberId ==MemberId);
             Member mem2 = (from m in context.Members where (m.MemberId == MemberId) select m).FirstOrDefault();
             #region 原本load二進位的頭像圖片用
             //原本load二進位的頭像圖片用
@@ -386,22 +388,22 @@ namespace prj_Traveldate_Core.Controllers
                           on m.LevelId equals l.LevelId
                           where MemberId == m.MemberId
                           select m.LevelId;
-            if (x.LevelId == 1)
+            if (mem2.LevelId == 1)
                 ViewBag.level = "一般會員";
-            else if (x.LevelId == 2)
+            else if (mem2.LevelId == 2)
                 ViewBag.level = "白銀會員";
-            else if (x.LevelId == 3)
+            else if (mem2.LevelId == 3)
                 ViewBag.level = "黃金會員";
             else
                 ViewBag.level = "黑鑽會員";
 
-            if (x.FirstName == x.FirstName)
-                ViewBag.firstName = x.FirstName;
+            if (mem2.FirstName == mem2.FirstName)
+                ViewBag.firstName = mem2.FirstName;
 
-            if (x.LastName == x.LastName)
-                ViewBag.LastName = x.LastName;
+            if (mem2.LastName == mem2.LastName)
+                ViewBag.LastName = mem2.LastName;
 
-            return View(prd);
+            return View(datas);
             #region 先註解掉的程式碼
             //CpasswordChangeViewModel mem = context.Members.FirstOrDefault(m => m.MemberId == MemberId);
             //Member mem=context.Members.FirstOrDefault(m=>m.MemberId==MemberId);
@@ -434,7 +436,7 @@ namespace prj_Traveldate_Core.Controllers
                     return RedirectToAction("passwordChange");
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("passwordChange");
         }
     
         public IActionResult couponList() //優惠券清單 new V

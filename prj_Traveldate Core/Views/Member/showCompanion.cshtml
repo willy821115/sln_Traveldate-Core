@@ -65,12 +65,12 @@
         <div class="cell" id="div2">
             <ul class="list-group leftarea lgmenu mt-3 ">
                 <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
-                <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link"}) </li>
+                    <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link",@style="margin-left:-5px"}) </li>
                 <li class="list-group-item menuItem">
                     @Html.ActionLink("優惠券清單", "couponList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.countscoupon</span>
                 </li>
-                <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link"}) </li>
+                    <li class="list-group-item menuItem">@Html.ActionLink("常用旅伴", "showCompanion","Member","",new {@class="black-link",@style="margin-left:-5px"}) </li>
                 <li class="list-group-item menuItem">
                     @Html.ActionLink("收藏清單", "favoriteList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.countsfavorite</span>
@@ -87,10 +87,11 @@
                     @Html.ActionLink("我的揪團", "forumList","Member","",new {@class="black-link"})
                     <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                 </li>
-                <li class="list-group-item menuItem">
-                    @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
-                    <span class="badge rounded-pill bg-danger">@*@ViewBag.ForumLists*@</span>
-                </li>
+                    <li class="list-group-item menuItem">
+                        @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link",@style="margin-left:-20px"})
+                        @* <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span> *@
+                        <span><img style="width:120px;height:70px;margin-bottom:0px;margin-left:85px; margin-top:-50px" src="~/icons/icon-chat-1.gif" /></span>
+                    </li>
             </ul>
         </div>
         </div>
