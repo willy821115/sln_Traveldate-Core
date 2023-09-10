@@ -281,63 +281,70 @@
             <div><img src="~/icons/icons8-group-64.png" />
                     @if (Model.member != null)
                     {
-                        
-                        <!-- Button trigger modal -->
-                        <button id="putInfoOnModal" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            我要跟團
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header my-bg-primary">
-                                        <h1 class="modal-title fs-5  text-white" id="exampleModalLabel">確認揪團內容</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div id="infoBody" class="modal-body">
-                                        <img src="/icons/beach-vacation.png" height="100" />
-                                        <table class="table fs-5 table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col-7">旅行項目</th>
-                                                    <th class="col-3">旅行時間</th>
-                                                    <th class="col-2">價格</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @{
-                                                    decimal? total = 0;
-                                                    decimal? discount = 0;
-                                                    foreach(var trip in Model.articleTrips)
-                                                    {
-                                                        if (trip.Discount == null)
+                        if(Model.forum.DueDate > DateTime.Now)
+                        {
+                            <!-- Button trigger modal -->
+                            <button id="putInfoOnModal" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                我要跟團
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade overlay" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header my-bg-primary">
+                                            <h1 class="modal-title fs-5  text-white" id="exampleModalLabel">確認揪團內容</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div id="infoBody" class="modal-body">
+                                            <img src="/icons/beach-vacation.png" height="100" />
+                                            <table class="table fs-5 table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-7">旅行項目</th>
+                                                        <th class="col-3">旅行時間</th>
+                                                        <th class="col-2">價格</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        decimal? total = 0;
+                                                        decimal? discount = 0;
+                                                        foreach (var trip in Model.articleTrips)
                                                         {
-                                                            discount = 0;
-                                                        }
-                                                        decimal? tripPrice = trip.UnitPrice - discount;
-                                                        total += tripPrice;
+                                                            if (trip.Discount == null)
+                                                            {
+                                                                discount = 0;
+                                                            }
+                                                            decimal? tripPrice = trip.UnitPrice - discount;
+                                                            total += tripPrice;
                                                             <tr>
-                                                            <td>@trip.Product.ProductName</td>
-                                                            <td>@trip.Date.Value.ToShortDateString()</td>
-                                                            <td>@tripPrice</td>
-                                                        </tr>
-                                                }
+                                                                <td>@trip.Product.ProductName</td>
+                                                                <td>@trip.Date.Value.ToShortDateString()</td>
+                                                                <td>@tripPrice</td>
+                                                            </tr>
+                                                        }
                                                         <tr>
                                                             <td></td>
                                                             <td class="fw-bolder">總金額</td>
                                                             <td>$    @total</td>
                                                         </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
-                                        <a asp-action="ForumCheckout" asp-controller="Cart" asp-route-ForumListID="@Model.forum.ForumListId" asp-route-from="1" class="btn my-btn-primary ml-1 fs-5">結帳去</a>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary ml-1 fs-5" data-bs-dismiss="modal">再想一下</button>
+                                            <a asp-action="ForumCheckout" asp-controller="Cart" asp-route-ForumListID="@Model.forum.ForumListId" asp-route-from="1" class="btn my-btn-primary ml-1 fs-5">結帳去</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary" disabled="disabled">已截止</button>
+                        }
+
                     }
                     else
                     {
