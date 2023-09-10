@@ -84,9 +84,9 @@
                         <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span>
                     </li>
                     <li class="list-group-item menuItem">
-                        @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link",@style="margin-left:-20px"})
+                        @Html.ActionLink("樂旅Chat", "SignalR","Member","",new {@class="black-link"})
                         @* <span class="badge rounded-pill bg-danger">@ViewBag.ForumLists</span> *@
-                        <span><img style="width:120px;height:70px;margin-bottom:0px;margin-left:85px; margin-top:-50px" src="~/icons/icon-chat-1.gif" /></span>
+                        <span><img style="width:30px;height:25px" src="~/icons/icon-chat-2.gif" /></span>
                     </li>
                 </ul>
             </div>
@@ -188,7 +188,7 @@
 
                 // 更新用戶個人連線 ID 事件
                 connection.on("UpdSelfID", function (id) {
-                    $('#SelfID').html(id);
+            $('#ConnectionID').html(id);
                 });
 
                 // 更新聊天內容事件
@@ -196,26 +196,32 @@
             $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg)); //"<li></li>"  attr("class", "list-group-item")
                 });
 
+
                 //傳送訊息
         $('#sendButton').on('click', function () {
-            let selfID = $('#SelfID').html();
+            //var connectionID = @Html.Raw(Json.Serialize(ViewBag.ConnectionID));
+            let connectionID = $('#ConnectionID').html();
             let messageInput = $('#messageInput').val();
+            let sendToID = $('#sendToID').val(); // 獲取發送目標的連接ID
 
+            // 創建一個新的消息元素
+            var messageElement = $("<li></li>").attr("class", "list-group-item");
 
-            var sendToIDInput = document.getElementById("sendToID");
-            var receiverID = sendToIDInput.value;
-            // 将接收者ID传递给 SendMessage 方法
-            connection.invoke("SendMessage", selfID, messageInput, receiverID).catch(function (err) {
+            // 將接收者ID傳遞給 SendMessage 方法
+            connection.invoke("SendMessage", messageInput, sendToID).catch(function (err) {
                 alert('傳送錯誤: ' + err.toString());
             });
-            if (selfID !== sendToID) {
+
+            if (connectionID !== sendToID) {
                 messageElement.addClass("sent-message");
             } else {
                 messageElement.addClass("received-message");
             }
-                messageElement.text(message);
-                $("#Content").append(messageElement);
-                });
+
+            //messageElement.text(connectionID+messageInput + "    " + new Date().toLocaleString()); // 將消息文本和時間添加到消息元素
+
+            //$("#Content").append(messageElement); // 將消息元素附加到聊天內容列表
+        });
     </script>
 
     <script>
