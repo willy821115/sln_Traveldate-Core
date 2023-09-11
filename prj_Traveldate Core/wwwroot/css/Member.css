@@ -10,12 +10,18 @@ h3 {
 
 .black-link {
     color: #155074;
+/*    color: red; */
     text-decoration: none;
 }
 
     .black-link:hover {
-        color: #white;
+        /*        color: #white;*/
+        /*        color: #F8FDCF;*/
+        font-size: 18px;
+        color: #6b6e85;
+        font-weight: 600;
         text-decoration: none;
+        box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;
     }
 
 .black-link2 {
@@ -87,11 +93,11 @@ height {
     border-radius: 10px;
     padding: 0 3em 1em 3em;
 }*/
-/*.col-md-8 {
+    /*.col-md-8 {
     background-color: white;
     border-radius:10px;
 }*/
-.carousel-inner {
+    .carousel-inner {
     border-radius: 10px;
     top: -100px;
 }

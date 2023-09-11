@@ -164,7 +164,17 @@
                                                     {
                                                         <tr>
                                                             <td>@Model.tripdate[i]</td>
-                                                            <td>＄@Model.tripprice[i]</td>
+                                                            @if(Model.tripdiscount[i] != null)
+                                                            {
+                                                                <td>
+                                                                    <del>＄@Model.tripprice[i]</del>
+                                                                    <span style="color:red">＄@(Model.tripprice[i] - Model.tripdiscount[i])</span>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>＄@Model.tripprice[i]</td>
+                                                            }
                                                         </tr>
                                                     }
                                                 </tbody>

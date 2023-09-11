@@ -239,11 +239,8 @@
                                 if (emailCount > 20) {
                                     clearInterval(simulateEmailSending);
                                     form.submit();
-                                    Swal.close().then(() => {
-                                        form.submit();
-                                    });
                                 }
-                            }, 400);
+                            }, 200);
                         }
                     });
                 });
