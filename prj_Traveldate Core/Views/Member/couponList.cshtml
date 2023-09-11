@@ -151,7 +151,7 @@
                             var isDueSoon = dueDate.HasValue && (dueDate - DateTime.Today).Value.TotalDays < 30;
                             if (isDueSoon)
                             {
-                                <td style="color:red">@item.DueDate?.ToString("yyyy-MM-dd") <span style="color:red;"><b>即將到期</b></span></td>
+                                <td style="color:red;">@item.DueDate?.ToString("yyyy-MM-dd") <span style="color:#ff0000;Background-color:yellow"><b>即將到期</b></span></td>
                             }
                             else
                             {

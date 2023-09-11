@@ -62,7 +62,6 @@ namespace prj_Traveldate_Core.Controllers
            
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
-               
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
