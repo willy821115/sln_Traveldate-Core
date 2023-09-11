@@ -40,11 +40,11 @@ namespace prj_Traveldate_Core.Controllers
                 _vm.countryAndCities = _products.qureyFilterCountry();  //商品國家&縣市,左邊篩選列
                 _vm.types = _products.qureyFilterTypes();//商品類型,左邊篩選列
 
-                if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
-                {
+                //if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
+                //{
                     json = JsonSerializer.Serialize(_vm.filterProducts);
                     HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
-                }
+                //}
                 int currentPage = page < 1 ? 1 : page;
                _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
                 return View(_vm);
