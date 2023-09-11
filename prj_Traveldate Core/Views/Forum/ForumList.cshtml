@@ -190,7 +190,7 @@
                                     <div class="topTen p-3 me-4 col-5">
                                         @{
                                             var f_memName = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
-                                            var f_memPhoto = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
+                                            var f_memPhoto = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.ImagePath).First();
                                             var f_memGneder = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
                                             var f_time = Model.schedules.Where(s => s.forumListId == currenSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
                                             var f_reply = Model.replyList.Where(r => r.ForumListId == currenSchedule.forumlistid).Count();
@@ -204,7 +204,7 @@
                                                         <div class="mr-2 d-flex align-items-center">
                                                             @if (f_memPhoto != null)
                                                             {
-                                                                <img src="data:image/jpg;base64,@Convert.ToBase64String(f_memPhoto)" width="64" height="64" />
+                                                                <img src="~/images/@f_memPhoto" width="64" height="64" />
                                                             }
                                                             else
                                                             {
@@ -251,7 +251,7 @@
                                     <div class="topTen p-3 col-5">
                                         @{
                                             var s_memName = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.FirstName).First();
-                                            var s_memPhoto = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Photo).First();
+                                            var s_memPhoto = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.ImagePath).First();
                                             var s_memGneder = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.Member.Gender).First();
                                             var s_time = Model.schedules.Where(s => s.forumListId == nextSchedule.forumlistid).Select(n => n.ForumList.ReleaseDatetime.Value.ToString("yyyy/MM/dd")).First();
                                             var s_reply = Model.replyList.Where(r => r.ForumListId == nextSchedule.forumlistid).Count();
@@ -265,7 +265,7 @@
                                                         <div class="mr-2 d-flex align-items-center">
                                                             @if (s_memPhoto != null)
                                                             {
-                                                                <img src="data:image/jpg;base64,@Convert.ToBase64String(s_memPhoto)" width="64" height="64" />
+                                                                <img src="~/images/@s_memPhoto" width="64" height="64" />
                                                             }
                                                             else
                                                             {

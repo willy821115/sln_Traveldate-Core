@@ -180,16 +180,16 @@ List<ScheduleList1> data = _context.ScheduleLists
             //vm.schedules = ScheduleForum();
             vm.schedules= ScheduleStock();
 
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDSCHEDULE_INFO))
-            {
+            
                 var options = new JsonSerializerOptions
                 {
+                    MaxDepth = 128,
                     NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
                 json = JsonSerializer.Serialize(vm.schedules, options);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDSCHEDULE_INFO, json);
-            }
+            
 
             vm.replyList = _context.ReplyLists.ToList();
             vm.members = _context.Members.Include(m => m.ForumLists).ToList();
@@ -709,7 +709,7 @@ var newSchedule = new ScheduleList
                     .Contains((int)tag.ProductTagDetailsId))))
                     .ToList();
                 var options = new JsonSerializerOptions
-                {
+                {MaxDepth = 128,
                     NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
@@ -721,7 +721,7 @@ var newSchedule = new ScheduleList
                 vm.schedules = vm.schedules
                                 .Where(s => s.trips.Any(t => cities.Contains(t.Product.City.City))).ToList();
                 var options = new JsonSerializerOptions
-                {
+                {MaxDepth = 128,
                     NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
@@ -733,6 +733,7 @@ var newSchedule = new ScheduleList
                 vm.schedules = vm.schedules;
                 var options = new JsonSerializerOptions
                 {
+                    MaxDepth = 128,
                     NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                     ReferenceHandler = ReferenceHandler.Preserve
                 };
@@ -758,6 +759,7 @@ var newSchedule = new ScheduleList
             ViewBag.sortType = sortType;
             var options = new JsonSerializerOptions
             {
+                MaxDepth = 128,
                 NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                 ReferenceHandler = ReferenceHandler.Preserve
             };
