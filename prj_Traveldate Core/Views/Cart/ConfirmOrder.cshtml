@@ -132,11 +132,11 @@
 *@
                                                     @if (item.ProductTypeID == 2)
                                                     {
-                                                        for(int i = 0; i < item.quantity; i++)
+                                                        for(int i = 1; i < item.quantity; i++)
                                                         {
                                                     <div class="confirm-subtitle mt-3 mb-3 d-flex ">
                                                         <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
-                                                        同行旅客-@(i+1)
+                                                        同行旅客-@(i)
                                                     </div>
                                                     <div class="Confirm-Container-Content">
                                                         <div class="radio-group">
@@ -164,7 +164,7 @@
                                                         </div>
                                                         <div class="Confirm-Container-Content">
                                                             <div class="traveler-info">
-                                                                        <button type="button" class="btn btn-outline-secondary demobtn">DEMO</button>
+                                                                        <button type="button" class="btn btn-outline-secondary demobtn">DEMO-自行填寫</button>
                                                                         <br />
                                                                 <input type="hidden" name="vm.companions[@count][@i].CompanionID" class="companionList">
                                                                 <label for="lastname">　　　姓氏　</label>
@@ -340,7 +340,7 @@
                 </div>
                 <input type="submit" asp-action="Payment" id="ConfirmAndPay" class="btn my-btn-primary btn-lg" style="margin:1em auto; width:60%" value="前往付款" />
                 @Html.ActionLink("回到購物車","ShoppingCart","Cart",null,new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
-                @Html.ActionLink("DEMO揪團結帳","ArticleView","Forum",new{id =  ViewBag.demoPay,returnType=0},new {@class="btn btn-outline-secondary btn-lg", style="margin:0 auto;width:60%"})
+                @Html.ActionLink("DEMO揪團結帳","ArticleView","Forum",new{id =  ViewBag.demoPay,returnType=0},new {@class="btn btn-outline-secondary btn-lg", style="margin:10px 0 0 0 ;width:60%"})
             </div>
 
         </div>

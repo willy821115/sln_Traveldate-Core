@@ -157,34 +157,7 @@
     <div>
     </div>
 </div>
-@* <h5>第一天：抵達台東，前往蘭嶼</h5>
-<p>上午：抵達台東機場，前往台東市區，品味當地美食。</p>
-<p>中午：搭乘船前往蘭嶼，入住蘭嶼的飯店或民宿。</p>
-<p>下午：休息，探索蘭嶼的小村莊，欣賞海灘風景。</p>
-<p>晚上：晚餐品嚐當地海鮮，休息，準備第二天的潛水活動。</p>
-<br />
-<h5>第二天：蘭嶼潛水探險</h5>
-<p>這三天將全情投入潛水活動，探索蘭嶼周圍的珊瑚礁和海底生態。</p>
-<p> 每天早上出發進行潛水，中午返回休息，享用美味午餐。</p>
-<p>下午繼續潛水活動，晚上回到住宿地點休息，或在當地品味晚餐。</p>
-<br />
-<h5>第三天：前往澎湖，SUP冒險開始</h5>
-<p>上午：退房並搭乘船返回台東，然後搭乘飛機前往澎湖。</p>
-<p>中午：抵達澎湖，入住飯店或民宿，享用當地美食。</p>
-<p>下午：參加SUP行前說明會。</p>
-<p> 晚上：品味澎湖特色料理，休息，準備明天的冒險。</p>
-<br />
-<h5>第四天：澎湖SUP探險</h5>
-<p>上午：參加SUP團，探索澎湖美麗的海灣和景點。</p>
-<p>中午：享用午餐，可以選擇當地餐廳或沙灘野餐。</p>
-  <p>晚上：晚餐品嚐當地特色美食，享受最後一晚在澎湖的寧靜。</p>
-<br />
-<h5>第五天：結束之旅</h5>
-<p>上午：退房，整理行李。</p>
-<p>中午：品嚐最後一頓澎湖美食，回顧這段美好的旅程。</p>
-<p>下午：搭乘飛機返回台灣本島，結束這次冒險之旅。</p>
-<br />
-<p>有興趣的朋友們趕快來報名!!</p> *@
+
 
 
 @section Scripts {
@@ -396,7 +369,14 @@
         //移除選取後的旅程
         $('.divAddTrips').on('click', '.btnDeleteTrip', function () {
             const delete_num = $(this).attr('id').split('-')[1];
-            $(`.d-${delete_num}`).remove();
+            $(`.d-${delete_num}`).addClass('d-none');
+            $(`#tripId-${delete_num}`).val(0);
+            // let delete_index= delete_num - 1;
+            // const divAddTrips = document.querySelector('.divAddTrips');
+            // const removedDiv = document.createElement('div');
+            // removedDiv.classList.add('d-flex', 'mb-2', `d-none`);
+            // removedDiv.innerHTML =`<input type="hidden" asp-for= "tripIds[${delete_index}]" id = "tripId-1" value="0"/>`
+            // divAddTrips.appendChild(removedDiv)
         })
         function Editor(edit_num) {
             $(`#inputTrip-${edit_num}`).removeAttr("disabled");
@@ -542,6 +522,14 @@
                 //旅程裡日期最小的前三天 , 指定月份-1(0~11月)
                 maxDate: minDate1
             });
+            var originalDate = new Date(minDate1);
+            var year = originalDate.getFullYear();
+            var month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // 加1，月份是從0開始的
+            var day = originalDate.getDate().toString().padStart(2, '0');
+
+            // 格式化日期
+            var formattedDate = year + '-' + month + '-' + day;
+            $('#dashboardcalendar').val(formattedDate)
         }
     </script>
     
