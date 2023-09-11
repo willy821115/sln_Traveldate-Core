@@ -132,11 +132,11 @@
 *@
                                                     @if (item.ProductTypeID == 2)
                                                     {
-                                                        for(int i = 0; i < item.quantity; i++)
+                                                        for(int i = 1; i < item.quantity; i++)
                                                         {
                                                     <div class="confirm-subtitle mt-3 mb-3 d-flex ">
                                                         <img src="~/icons/icons8-palm-tree-48.png" class="CartIcon">
-                                                        同行旅客-@(i+1)
+                                                        同行旅客-@(i)
                                                     </div>
                                                     <div class="Confirm-Container-Content">
                                                         <div class="radio-group">
@@ -164,7 +164,7 @@
                                                         </div>
                                                         <div class="Confirm-Container-Content">
                                                             <div class="traveler-info">
-                                                                        <button type="button" class="btn btn-outline-secondary demobtn">DEMO</button>
+                                                                        <button type="button" class="btn btn-outline-secondary demobtn">DEMO-自行填寫</button>
                                                                         <br />
                                                                 <input type="hidden" name="vm.companions[@count][@i].CompanionID" class="companionList">
                                                                 <label for="lastname">　　　姓氏　</label>
