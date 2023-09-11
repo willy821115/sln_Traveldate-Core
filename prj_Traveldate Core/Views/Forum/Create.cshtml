@@ -369,6 +369,8 @@
         //移除選取後的旅程
         $('.divAddTrips').on('click', '.btnDeleteTrip', function () {
             const delete_num = $(this).attr('id').split('-')[1];
+            $(`.d-${delete_num}`).removeClass('d-flex');
+            $(`.d-${delete_num}`).removeClass('mb-2');
             $(`.d-${delete_num}`).addClass('d-none');
             $(`#tripId-${delete_num}`).val(0);
             // let delete_index= delete_num - 1;
