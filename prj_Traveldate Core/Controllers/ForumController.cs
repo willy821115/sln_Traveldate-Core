@@ -258,14 +258,22 @@ List<ScheduleList1> data = _context.ScheduleLists
 
             foreach (int tripId in creatArticle.tripIds)
             {
-                var newSchedule = new ScheduleList
+                if (tripId != 0)
+                {
+var newSchedule = new ScheduleList
                 {
                     ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
                 _context.Add(newSchedule);
+                }
+                
             }
-
+            //如果有選形成但沒有選截止日期 先帶入最小日期的前三天
+            if(creatArticle.tripIds.Count > 0 && creatArticle.forum.DueDate == null)
+            {
+                    creatArticle.forum.DueDate = _context.Trips.Where(t => creatArticle.tripIds.Contains(t.TripId)).Min(t => t.Date).Value.AddDays(-3);   
+            }
             _context.SaveChanges();
             Task.Delay(3000).Wait();
             if (creatArticle.isSave == "儲存草稿")
@@ -351,11 +359,14 @@ List<ScheduleList1> data = _context.ScheduleLists
                 var originArticle = _context.ForumLists.Find(creatArticle.forum.ForumListId);
                 originArticle.IsPublish = true;
                 originArticle.ReleaseDatetime = DateTime.Now;
+                originArticle.DueDate = creatArticle.forum.DueDate;
+                //如果使用者沒輸入日期，自動帶入最小日期的前3天
+                if (originArticle.DueDate == null)
+                {
+                    originArticle.DueDate = _context.Trips.Where(t => creatArticle.tripIds.Contains(t.TripId)).Min(t => t.Date).Value.AddDays(-3);
+                }
                 _context.SaveChanges();
-                //if(creatArticle.forum.DueDate == null)
-                //{
-                //    creatArticle.forum.DueDate = DateTime.Now;
-                //}
+               
                 return RedirectToAction("ForumCheckout", "Cart", routeValues);
             }
             return RedirectToAction("forumList", "Member");  

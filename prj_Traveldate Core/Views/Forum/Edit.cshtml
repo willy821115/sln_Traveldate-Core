@@ -119,7 +119,7 @@
                         <i class="small text-gray-700">(請選擇最近旅行日期前三天)</i>
                         <img src="~/icons//icons8-information.gif" height="18" data-bs-toggle="tooltip" data-bs-placement="top" title="為確保行程安排順暢,本平台將截團日期限制於旅行前三日,敬請見諒" />
                     </div>
-                    <input asp-for="forum.DueDate" type="text" id="dashboardcalendar" class="form-control d-none col-5 fs-4 mt-2" value="@Model.forum.DueDate"/>
+                    <input asp-for="forum.DueDate" type="text" id="dashboardcalendar" class="form-control col-5 fs-4 mt-2" value="@Model.forum.DueDate"/>
                 </div>
                 <div class="form-group fs-5">
                     <textarea asp-for="forum.Content" id="summernote">@Html.Raw(Model.forum.Content)</textarea>
@@ -328,7 +328,9 @@
         //移除選取後的旅程
         $('.divAddTrips').on('click', '.btnDeleteTrip', function () {
             const delete_num = $(this).attr('id').split('-')[1];
-            $(`.d-${delete_num}`).remove();
+            const delete_num = $(this).attr('id').split('-')[1];
+            $(`.d-${delete_num}`).addClass('d-none');
+            $(`#tripId-${delete_num}`).val(0);
         })
         function Editor(edit_num) {
             $(`#inputTrip-${edit_num}`).removeAttr("disabled");
@@ -357,6 +359,7 @@
             updateDueDate()
         })
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         // 選取trip / tripDate
         $('.divAddTrips').on('focus', '.inputTrip', function () {
@@ -467,7 +470,7 @@
                     }
                 }
             });
-            $('#dashboardcalendar').removeClass('d-none')
+            //$('#dashboardcalendar').removeClass('d-none')
             $('#dashboardcalendar').flatpickr({
                 dateFormat: "Y-m-d",
                 minDate: "today",
@@ -477,7 +480,7 @@
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Summernote JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
