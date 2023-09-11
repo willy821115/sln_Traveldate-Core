@@ -269,7 +269,11 @@ var newSchedule = new ScheduleList
                 }
                 
             }
-
+            //如果有選形成但沒有選截止日期 先帶入最小日期的前三天
+            if(creatArticle.tripIds.Count > 0 && creatArticle.forum.DueDate == null)
+            {
+                    creatArticle.forum.DueDate = _context.Trips.Where(t => creatArticle.tripIds.Contains(t.TripId)).Min(t => t.Date).Value.AddDays(-3);   
+            }
             _context.SaveChanges();
             Task.Delay(3000).Wait();
             if (creatArticle.isSave == "儲存草稿")
@@ -356,6 +360,7 @@ var newSchedule = new ScheduleList
                 originArticle.IsPublish = true;
                 originArticle.ReleaseDatetime = DateTime.Now;
                 originArticle.DueDate = creatArticle.forum.DueDate;
+                //如果使用者沒輸入日期，自動帶入最小日期的前3天
                 if (originArticle.DueDate == null)
                 {
                     originArticle.DueDate = _context.Trips.Where(t => creatArticle.tripIds.Contains(t.TripId)).Min(t => t.Date).Value.AddDays(-3);

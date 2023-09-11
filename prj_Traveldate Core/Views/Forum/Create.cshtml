@@ -522,6 +522,14 @@
                 //旅程裡日期最小的前三天 , 指定月份-1(0~11月)
                 maxDate: minDate1
             });
+            var originalDate = new Date(minDate1);
+            var year = originalDate.getFullYear();
+            var month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // 加1，月份是從0開始的
+            var day = originalDate.getDate().toString().padStart(2, '0');
+
+            // 格式化日期
+            var formattedDate = year + '-' + month + '-' + day;
+            $('#dashboardcalendar').val(formattedDate)
         }
     </script>
     
