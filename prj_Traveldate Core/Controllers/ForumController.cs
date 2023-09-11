@@ -258,12 +258,16 @@ List<ScheduleList1> data = _context.ScheduleLists
 
             foreach (int tripId in creatArticle.tripIds)
             {
-                var newSchedule = new ScheduleList
+                if (tripId != 0)
+                {
+var newSchedule = new ScheduleList
                 {
                     ForumListId = creatArticle.forum.ForumListId,
                     TripId = tripId
                 };
                 _context.Add(newSchedule);
+                }
+                
             }
 
             _context.SaveChanges();
@@ -351,11 +355,13 @@ List<ScheduleList1> data = _context.ScheduleLists
                 var originArticle = _context.ForumLists.Find(creatArticle.forum.ForumListId);
                 originArticle.IsPublish = true;
                 originArticle.ReleaseDatetime = DateTime.Now;
+                originArticle.DueDate = creatArticle.forum.DueDate;
+                if (originArticle.DueDate == null)
+                {
+                    originArticle.DueDate = _context.Trips.Where(t => creatArticle.tripIds.Contains(t.TripId)).Min(t => t.Date).Value.AddDays(-3);
+                }
                 _context.SaveChanges();
-                //if(creatArticle.forum.DueDate == null)
-                //{
-                //    creatArticle.forum.DueDate = DateTime.Now;
-                //}
+               
                 return RedirectToAction("ForumCheckout", "Cart", routeValues);
             }
             return RedirectToAction("forumList", "Member");  
