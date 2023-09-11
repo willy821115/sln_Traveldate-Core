@@ -377,6 +377,7 @@
             // removedDiv.classList.add('d-flex', 'mb-2', `d-none`);
             // removedDiv.innerHTML =`<input type="hidden" asp-for= "tripIds[${delete_index}]" id = "tripId-1" value="0"/>`
             // divAddTrips.appendChild(removedDiv)
+            updateDueDate()
         })
         function Editor(edit_num) {
             $(`#inputTrip-${edit_num}`).removeAttr("disabled");
@@ -432,6 +433,7 @@
                 $('.divTripDate').html(""); // 清空內容
                 $('.divTripDate').removeClass('divScrollBar')
             }
+            
         });
         
 
