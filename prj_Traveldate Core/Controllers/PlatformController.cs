@@ -291,14 +291,24 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
+                    List<string> UserEmail = db.Members.Select(m => m.Email).ToList();
                     string sendmail = "weilunjiang3737@gmail.com";
+                    string sentobowen = "bowenchang7979@gmail.com";
                     //string sendmail = "traveldate3@gmail.com";
 
-                    List<string> UserEmail = new List<string>();
-                    UserEmail.Add(sendmail);
                     LoginApiController api = new LoginApiController(_configuration, HttpContext);
-
-                    mail.userName = "Hi, " + memname;
+                    if (UserEmail.Equals(sendmail))
+                    {
+                        mail.userName = "Hi, " + memname;
+                    }
+                    if (UserEmail.Equals(sentobowen))
+                    {
+                        mail.userName = "Hi, 柏文";
+                    }
+                    else
+                    {
+                        mail.userName = "Hi, " + memname;
+                    }
                     string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
 
                     string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CCouponEmailViewModel), mail);
@@ -320,14 +330,24 @@ namespace prj_Traveldate_Core.Controllers
                     mail.CouponImg = $@"cid:{res.ContentId}";
 
                     var memname = db.Members.Select(m => m.FirstName).FirstOrDefault();
+                    List<string> UserEmail = db.Members.Select(m => m.Email).ToList();
                      string sendmail = "weilunjiang3737@gmail.com";
+                    string sentobowen = "bowenchang7979@gmail.com";
                     //string sendmail = "traveldate3@gmail.com";
 
-                    List<string> UserEmail = new List<string>();
-                    UserEmail.Add(sendmail);
                     LoginApiController api = new LoginApiController(_configuration, HttpContext);
-
-                    mail.userName = "Hi, " + memname;
+                    if (UserEmail.Equals(sendmail))
+                    {
+                        mail.userName = "Hi, " + memname;
+                    }
+                   if (UserEmail.Equals(sentobowen))
+                    {
+                        mail.userName = "Hi, 柏文";
+                    }
+                    else
+                    {
+                        mail.userName = "Hi, " + memname;
+                    }
                     string mailSubject = "專屬好禮來臨！快到Traveldate享用優惠～";
 
                     string mailContent = Engine.Razor.RunCompile(System.IO.File.ReadAllText(templatePath), "getcoupon", typeof(CCouponEmailViewModel), mail);

@@ -102,7 +102,7 @@
                                         <div class="form-group">
                                              <label asp-for="UnitPrice" class="control-label">單價</label>
                                             <div class="col-md-10">
-                                            <input asp-for="UnitPrice" class="form-control" />
+                                            <input asp-for="UnitPrice" class="form-control" id="UnitPrice" />
                                             <span asp-validation-for="UnitPrice" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -110,7 +110,7 @@
                                     <div class="form-group">
                                         <label asp-for="MinNum" class="control-label">最少出團人數</label>
                                         <div class="col-md-10">
-                                            <input asp-for="MinNum" class="form-control" />
+                                            <input asp-for="MinNum" class="form-control" id="MinNum" />
                                             <span asp-validation-for="MinNum" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                     <div class="form-group">
                                         <label asp-for="MaxNum" class="control-label">最多出團人數</label>
                                         <div class="col-md-10">
-                                            <input asp-for="MaxNum" class="form-control" />
+                                            <input asp-for="MaxNum" class="form-control" id="MaxNum" />
                                             <span asp-validation-for="MaxNum" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                                     <div class="form-group">
                                         <label asp-for="Discount" class="control-label">折扣幅度</label>
                                         <div class="col-md-10">
-                                            <input asp-for="Discount" class="form-control" />
+                                            <input asp-for="Discount" class="form-control" id="Discount" />
                                             <span asp-validation-for="Discount" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -174,7 +174,9 @@
                     </div>
 
                 </form>
-
+                <div style="margin-top:20px">
+                    <input type="button" value="Demo" class="btn btn-primary" id="demo" />
+                </div>
 
 
             </div>
@@ -224,6 +226,14 @@
             
             dateFormat: "Y-m-d",
             
+        });
+        $('#demo').click(function () {
+            $('#UnitPrice').val('3000');
+            $('#MinNum').val('1');
+            $('#MaxNum').val('30');
+            $('#Discount').val('1000');
+            
+
         });
     </script>
 }

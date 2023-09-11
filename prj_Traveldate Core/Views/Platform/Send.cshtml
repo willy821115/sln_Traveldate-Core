@@ -224,8 +224,8 @@
                     event.preventDefault(); 
 
                     Swal.fire({
-                        title: 'Sending Emails',
-                        html: 'Sending <b></b>/19 emails...',
+                        title: '<span style="color:	#00BB00">發送優惠電子報</span>',
+                        html: '<span style="font-size: 18px">正在發送 <b></b>/20 封獨家優惠電子報．．．</span>',
                         timerProgressBar: true,
                         showConfirmButton: false,
                         didOpen: () => {
@@ -236,14 +236,14 @@
                             const simulateEmailSending = setInterval(() => {
                                 b.textContent = emailCount;
                                 emailCount++;
-                                if (emailCount > 19) {
+                                if (emailCount > 20) {
                                     clearInterval(simulateEmailSending);
                                     form.submit();
                                     Swal.close().then(() => {
                                         form.submit();
                                     });
                                 }
-                            }, 300);
+                            }, 400);
                         }
                     });
                 });
