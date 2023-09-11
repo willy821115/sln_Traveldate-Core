@@ -416,7 +416,7 @@ namespace prj_Traveldate_Core.Controllers
                     _context.OrderDetails.Add(newOd);
                     _context.SaveChanges();
 
-                    if (vm.companions[i] != null)
+                    if (vm.companions!=null && vm.companions[i] != null)
                     {
                         for (int j = 0; j < vm.companions[i].Count(); j++)
                         {
