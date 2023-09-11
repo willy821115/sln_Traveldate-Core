@@ -197,6 +197,7 @@
                                                     </div>
                                                     <div class="Confirm-Container-Content">
                                                         <textarea name="vm.ods[@count].Note" class="form-control" id="order_note" rows="3"></textarea>
+                                                        <button type="button" class="btn btn-outline-secondary demobtnps">DEMO</button>
                                                     </div>
                                             </div>
                                         </div>
@@ -421,6 +422,10 @@
             $(this).siblings('.idnumber').val("A224168754");
             $(this).siblings('.phone').val("0934856753");
             $(this).siblings('.bdate').val("1999-04-21");
+        })
+
+        $('.demobtnps').on('click', function(){
+            $(this).siblings('textarea').text("不要香菜");
         })
     </script>
 }

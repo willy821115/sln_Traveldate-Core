@@ -9,6 +9,9 @@ using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using Azure;
 using NuGet.Protocol.Core.Types;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
+using System.Reflection.Metadata.Ecma335;
 
 namespace prj_Traveldate_Core.Controllers
 {
@@ -18,10 +21,11 @@ namespace prj_Traveldate_Core.Controllers
         CFilteredProductFactory _products = new CFilteredProductFactory();
         CSearchListViewModel _vm = new CSearchListViewModel();
         TraveldateContext _context = null;
-
+        
         public SearchController(TraveldateContext context)
         {
             _context = context;
+            
         }
         int pageSize = 5;
         int itemsPerPage = 0; // 每頁顯示的項目數
@@ -29,32 +33,55 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult SearchList(int page = 1)
         {
-            _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
-            _vm.categoryAndTags = _products.qureyFilterCategories();//商品類別&標籤,左邊篩選列
-            _vm.countryAndCities = _products.qureyFilterCountry();  //商品國家&縣市,左邊篩選列
-            _vm.types = _products.qureyFilterTypes();//商品類型,左邊篩選列
-
-            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
+            try
             {
-                json = JsonSerializer.Serialize(_vm.filterProducts);
-                HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+                _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
+                _vm.categoryAndTags = _products.qureyFilterCategories();//商品類別&標籤,左邊篩選列
+                _vm.countryAndCities = _products.qureyFilterCountry();  //商品國家&縣市,左邊篩選列
+                _vm.types = _products.qureyFilterTypes();//商品類型,左邊篩選列
+
+                if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
+                {
+                    json = JsonSerializer.Serialize(_vm.filterProducts);
+                    HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
+                }
+                int currentPage = page < 1 ? 1 : page;
+               _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
+                return View(_vm);
             }
-            int currentPage = page < 1 ? 1 : page;
-            _vm.pages = _vm.filterProducts.ToPagedList(currentPage, pageSize);
-            return View(_vm);
+            catch (IOException)
+            {
+                return RedirectToAction("Error", "Error");
+            }
+            
         }
         public IActionResult sortBy(string sortType,int page=1)
         {
             ViewBag.SortType = sortType;
-            int currentPage = page < 1 ? 1 : page;
+            int currentPage = page < 1 ? 1 : page; 
+           
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_FILETREDPRODUCTS_INFO))
             {
+               
                 _vm.filterProducts = _products.qureyFilterProductsInfo().ToList();
                 json = JsonSerializer.Serialize(_vm.filterProducts);
                 HttpContext.Session.SetString(CDictionary.SK_FILETREDPRODUCTS_INFO, json);
             }
-            json = HttpContext.Session.GetString(CDictionary.SK_FILETREDPRODUCTS_INFO);
-            _vm.filterProducts = JsonSerializer.Deserialize<List<CFilteredProductItem>>(json);
+            
+
+            try
+            {
+                json = HttpContext.Session.GetString(CDictionary.SK_FILETREDPRODUCTS_INFO);
+                _vm.filterProducts = JsonSerializer.Deserialize<List<CFilteredProductItem>>(json);
+                // 在這裡處理成功反序列化的結果
+            }
+            catch (JsonException ex)
+            {
+                // 處理 JSON 反序列化失敗的例外，可以記錄錯誤訊息或採取適當的措施
+                Console.WriteLine("JSON 反序列化失敗：" + ex.Message);
+                return RedirectToAction("Error", "Error");
+            }
+
 
             if (sortType == "hot")
             {

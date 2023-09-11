@@ -55,6 +55,14 @@
                 </div>
             </div>*@
             </div>
+            @{
+                if (Model.cartitems.Count == 0)
+                {
+                    <div class="p-4">
+                        <h5 style="color:gray">購物車裡還沒有旅程喔！快去選購吧～</h5>
+                    </div>
+                }
+}
             @foreach(var item in Model.cartitems)
             {
                 count++;
@@ -283,7 +291,7 @@ else
                 return `<div class="row editbox">
                             <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
                             <div class="col-3 align-middle">${d.unitPrice}</div>
-                            <div class="col-3 align-middle">${d.stock}/${d.maxNum}</div>
+                            <div class="col-3 align-middle">${d.stock}</div>
                                     <div class="col-3 align-middle"><input type="number" step="1" class="editqty text-center" min="1" max="${d.stock}" value="1" /></div>
                     <input type="hidden" class="edittripid" value="${d.tripId}">
                     </div>`}
@@ -291,7 +299,7 @@ else
                          return  `<div class="row editbox">
                             <div class="col-3 align-middle">${d.date.substring(0, 10)}</div>
                             <div class="col-3 align-middle"><del>${d.unitPrice}</del><br><span class="text-danger"><b>${d.unitPrice - d.discount}</b></span></div>
-                            <div class="col-3 align-middle">${d.stock}/${d.maxNum}</div>
+                            <div class="col-3 align-middle">${d.stock}</div>
                             <div class="col-3 align-middle"><input type="number" step="1" class="editqty text-center" min="1" max="${d.stock}" value="1"/></div>
             <input type="hidden" class="edittripid" value="${d.tripId}">
             </div>`}

@@ -69,73 +69,82 @@ namespace prj_Traveldate_Core.Controllers
          {
             
             int productID = 0;
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             TraveldateContext db = new TraveldateContext();
             //存入ProductLists
             ProductList save = new ProductList();
-            save.CompanyId = pro.CompanyId;
-            save.ProductName= pro.ProductName;
-            save.CityId= pro.CityId;
-            save.Description = pro.Description;
-            save.ProductTypeId = pro.ProductTypeId;
-            save.StatusId = 2;
-            save.PlanName = pro.PlanName;
-            save.PlanDescription = pro.PlanDescription;
-            save.Discontinued = false;
-            save.Outline= pro.Outline;
-            save.OutlineForSearch   = pro.OutlineForSearch;
-            save.Address = pro.Address;
-            
-            db.ProductLists.Add(save);
-            db.SaveChanges();
-            //獲取ProductID
-            productID = db.ProductLists.Where(p => p.ProductName == pro.ProductName).Select(p => Convert.ToInt32( p.ProductId)).FirstOrDefault();
-            //存入ProductTagList
-            if (pro.Tags != null)
+            try
             {
-                foreach (int tag in pro.Tags)
+
+                save.CompanyId = pro.CompanyId;
+                save.ProductName = pro.ProductName;
+                save.CityId = pro.CityId;
+                save.Description = pro.Description;
+                save.ProductTypeId = pro.ProductTypeId;
+                save.StatusId = 2;
+                save.PlanName = pro.PlanName;
+                save.PlanDescription = pro.PlanDescription;
+                save.Discontinued = false;
+                save.Outline = pro.Outline;
+                save.OutlineForSearch = pro.OutlineForSearch;
+                save.Address = pro.Address;
+
+                db.ProductLists.Add(save);
+                db.SaveChanges();
+                //獲取ProductID
+                productID = db.ProductLists.Where(p => p.ProductName == pro.ProductName).Select(p => Convert.ToInt32(p.ProductId)).FirstOrDefault();
+                //存入ProductTagList
+                if (pro.Tags != null)
                 {
-                    ProductTagList t = new ProductTagList();
-                    t.ProductId = productID;
-                    t.ProductTagDetailsId = tag;
-                    db.ProductTagLists.Add(t);
+                    foreach (int tag in pro.Tags)
+                    {
+                        ProductTagList t = new ProductTagList();
+                        t.ProductId = productID;
+                        t.ProductTagDetailsId = tag;
+                        db.ProductTagLists.Add(t);
+                    }
                 }
-            }
-            //輪播圖
-            //存入ProductPhotoList            
-            if (pro.photos != null) 
-            {
-                foreach (IFormFile photo in pro.photos) 
+                //輪播圖
+                //存入ProductPhotoList            
+                if (pro.photos != null)
                 {
-                    ProductPhotoList photoList = new ProductPhotoList();
-                    string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
-                    photoList.ImagePath = photoName;
-                    photoList.ProductId = productID;
-                    photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
-                    db.ProductPhotoLists.Add(photoList);
+                    foreach (IFormFile photo in pro.photos)
+                    {
+                        ProductPhotoList photoList = new ProductPhotoList();
+                        string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                        photoList.ImagePath = photoName;
+                        photoList.ProductId = productID;
+                        photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                        db.ProductPhotoLists.Add(photoList);
+                    }
                 }
-            }
-            //存入TripDetail
-            foreach (TripDetailText t in pro.triptest) 
-            {
-                TripDetail trip = new TripDetail();
-                trip.TripDay = t.TripDay;
-                trip.TripDetail1 = t.TripDetail;
-                trip.ProductId = productID;
-                //照片
-                if (t.photo != null) 
+                //存入TripDetail
+                foreach (TripDetailText t in pro.triptest)
                 {
-                 string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
-                trip.ImagePath = photoName;
-                t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                    TripDetail trip = new TripDetail();
+                    trip.TripDay = t.TripDay;
+                    trip.TripDetail1 = t.TripDetail;
+                    trip.ProductId = productID;
+                    //照片
+                    if (t.photo != null)
+                    {
+                        string photoName = Guid.NewGuid().ToString() + ".jpg";//用Guid產生一個系統上不會重複的代碼，重新命名圖片
+                        trip.ImagePath = photoName;
+                        t.photo.CopyTo(new FileStream(_enviro.WebRootPath + "/images/" + photoName, FileMode.Create));
+                    }
+                    db.TripDetails.Add(trip);
                 }
-               db.TripDetails.Add(trip);
-            }
 
 
-            db.SaveChanges();
-
+                db.SaveChanges();
             return RedirectToAction("List");
+
+            }
+            catch (Exception ex) 
+            {
+                return RedirectToAction("List");
+            }
+            
         }
 
 
@@ -160,10 +169,12 @@ namespace prj_Traveldate_Core.Controllers
 
         public IActionResult Edit(CProductWrap pro) 
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             TraveldateContext db = new TraveldateContext();
             ProductList proDb=db.ProductLists.FirstOrDefault(p=>p.ProductId==pro.ProductId);
-           //存入ProductList
+            //存入ProductList
+            try
+            { 
             if (proDb != null) 
             {
                 proDb.ProductName = pro.ProductName;
@@ -280,6 +291,11 @@ namespace prj_Traveldate_Core.Controllers
 
             db.SaveChanges();
             return RedirectToAction("List");
+            }
+            catch (Exception ex) 
+            {
+                return RedirectToAction("List");
+            }
         }
 
         public IActionResult queryByType(int typeID)
@@ -346,6 +362,9 @@ namespace prj_Traveldate_Core.Controllers
             List<string> PlanDescriptionSplit = new List<string>();
             List<string> OutlineSplit = new List<string>();
             //將倫播圖轉換成Base64编码
+            try 
+            {
+           
             if (pro.photos != null && pro.photos.Count > 0) 
             {
             
@@ -404,32 +423,22 @@ namespace prj_Traveldate_Core.Controllers
             data.program.fPhotoPath = previewPhoto;
             data.product.ProductName = pro.ProductName;
             data.product.Description = pro.Description;
-            //data.program.fTripDate = ;
             data.product.PlanName = pro.PlanName;
             data.program.fPlanDescription = PlanDescriptionSplit;
             data.product.Address = pro.Address;
             data.program.fOutline = OutlineSplit;
             data.city.City = CityName;
-            //data.program.fComMem = pf.loadCommentMem((int)id);
-            //data.program.fPlanPrice = pf.loadPlanprice((int)id);
             data.program.fTripDetails = TripDescription;
             data.program.fTTripPhotoList = previewTripPhoto;
-            //data.program.fTripPrice = pf.loadPlanpriceStart((int)id);
-            //data.program.fComMemGender = pf.memgender((int)id);
-            //data.program.fCommentDate = pf.loadCommentDate((int)id);
-            //data.program.fComScore = pf.loadcommentScore((int)id);
-            //data.program.fComTitle = pf.loadCommentTitle((int)id);
-            //data.program.fComContent = pf.loadCommentContent((int)id);
-            //data.program.fStatus = pf.loadStatus((int)id);
-            //data.product.ProductId = (int)id;
             data.program.fProdTags = TagNames;
-            //data.program.fCommentPhotoList = pf.loadCommentPhotoPath((int)id);
-            //data.program.fTripId = pf.loadTripId((int)id);
-            //data.program.floggedInMemberId = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_USER));
-            //data.program.fDiscountPlanPrice = pf.loadDiscountPrice((int)id);
-            //data.program.fDiscountPriceDate = pf.loadDiscountPriceDate((int)id);
+           
 
             return View("ProductPreview", data);
+            }
+            catch (Exception ex) 
+            {
+                return View("ProductPreview", data);
+            }
         }
     }
     

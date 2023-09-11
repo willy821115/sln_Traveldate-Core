@@ -80,8 +80,12 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Create(CTripWrap trip)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             TraveldateContext db = new TraveldateContext();
+            try 
+            {
+            
+          
             if (trip.tripDates != null) 
             {
             string[] dates= trip.tripDates.Replace(" ", "").Split(",");
@@ -104,6 +108,11 @@ CProductFactory cProductFactory = new CProductFactory();
             }
            
             return RedirectToAction("List");
+            }
+            catch(Exception ex) 
+            {
+                return RedirectToAction("List");
+            }
         }
 
         public IActionResult Edit(int tripID) 
@@ -123,18 +132,28 @@ CProductFactory cProductFactory = new CProductFactory();
         [HttpPost]
         public IActionResult Edit(CTripWrap t) 
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             companyID = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_LOGGEDIN_COMPANY));
             TraveldateContext db = new TraveldateContext();
+            try 
+            {
+            
             var tripEdit = db.Trips.FirstOrDefault(tr => tr.TripId == t.TripId);
             tripEdit.UnitPrice= t.UnitPrice;
             tripEdit.Discount = t.Discount;
+                if(t.discountLimitDate!=null)
             tripEdit.DiscountExpirationDate = DateTime.Parse(t.discountLimitDate);
             tripEdit.MaxNum = t.MaxNum;
             tripEdit.MinNum = t.MinNum;
+                if(t.tripDates!=null)
             tripEdit.Date = DateTime.Parse(t.tripDates);
             db.SaveChanges();
             return RedirectToAction("List");
+            }
+            catch (Exception ex) 
+            {
+                return RedirectToAction("List");
+            }
         }
 
         public IActionResult queryByType(int typeID) 
