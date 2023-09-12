@@ -483,7 +483,10 @@ var newSchedule = new ScheduleList
         //選到的商品的日期
         public IActionResult selectDate(int? id)
         {
-            var dates = _context.Trips.Where(t => t.ProductId == id && t.Date.Value > DateTime.Now.AddDays(3)).OrderBy(t => t.Date).Select(t => new { tripDate = t.Date.Value.ToString("yyyy-MM-dd"), price = t.UnitPrice, tripId = t.TripId }).ToList();
+            var dates = _context.Trips
+                .Where(t => t.ProductId == id && t.Date.Value > DateTime.Now.AddDays(3) && t.OrderDetails.Sum(o => o.Quantity) < t.MaxNum)
+                .OrderBy(t => t.Date)
+                .Select(t => new { tripDate = t.Date.Value.ToString("yyyy-MM-dd"), price = t.UnitPrice, tripId = t.TripId }).ToList();
             return Json(dates);
         }
         /////////////////////////////////////檢視文章用/////////////////////////////////
