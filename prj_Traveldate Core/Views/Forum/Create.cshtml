@@ -65,7 +65,7 @@
     </style>
   }
 <div class="row justify-content-center pb-4">
-    <h3 class="pl-2 pr-2 my-Heading-color fw-bolder col-10">發表文章<button id="btnDemo" class="btn btn-outline-secondary w-auto">DEMO發文</button></h3>
+    <h3 class="pl-2 pr-2 my-Heading-color fw-bolder col-10">發起揪團<button id="btnDemo" class="btn btn-outline-secondary w-auto">DEMO揪團</button></h3>
     <div class="col-10 bg-white rounded-3 p-4 d-flex justify-content-center">
         
         <div class="col-11">
@@ -73,7 +73,7 @@
                 <input type="hidden" asp-for="forum.MemberId" value="@ViewBag.memberId" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group fs-5">
-                    <p class="control-label divide-line fs-3">文章標題</p>
+                    <p class="control-label divide-line fs-3">揪團標題</p>
                     <input asp-for="forum.Title" class="form-control fs-4" id="forumTitle" />
                     @*<span asp-validation-for="Title" class="text-danger"></span>*@
                 </div>
@@ -167,35 +167,22 @@
     <script>
         $('#btnDemo').on('click', function () {
             $('.note-placeholder').text("");
-            $('#forumTitle').val("蘭嶼澎湖及花蓮十天九夜親近自然遊")
+            $('#forumTitle').val("秋日風情，探訪台灣自然之美")
             var content = document.querySelector('.note-editable');
             content.innerHTML=
-                `<h5>第一天：抵達台東，前往蘭嶼</h5>
-        <p>上午：抵達台東機場，前往台東市區，品味當地美食。</p>
-        <p>中午：搭乘船前往蘭嶼，入住蘭嶼的飯店或民宿。</p>
-        <p>下午：休息，探索蘭嶼的小村莊，欣賞海灘風景。</p>
-        <p>晚上：晚餐品嚐當地海鮮，休息，準備第二天的潛水活動。</p>
+                `<p>大家好！我是你們的台灣旅遊達人瑋倫，今天要和大家分享一趟充滿冒險與美景的旅程。如果你也想體驗這個令人難以忘懷的旅程，就跟著我，一同探索台灣的自然之美吧！</p>
         <br />
-        <h5>第二天：蘭嶼潛水探險</h5>
-        <p>這三天將全情投入潛水活動，探索蘭嶼周圍的珊瑚礁和海底生態。</p>
-        <p> 每天早上出發進行潛水，中午返回休息，享用美味午餐。</p>
-        <p>下午繼續潛水活動，晚上回到住宿地點休息，或在當地品味晚餐。</p>
+                <h5>10月7日 - 鯉魚潭豪華露營</h5>
+                <p>我們的旅程從台灣東部的花蓮縣開始。抵達後，我們將前往美不勝收的鯉魚潭，這個湖泊被山脈環繞，湖光山色令人陶醉。我們將在這裡享受一晚的豪華露營，沐浴在星光下，度過一個浪漫的夜晚。</p>
         <br />
-        <h5>第三天：前往澎湖，SUP冒險開始</h5>
-        <p>上午：退房並搭乘船返回台東，然後搭乘飛機前往澎湖。</p>
-        <p>中午：抵達澎湖，入住飯店或民宿，享用當地美食。</p>
-        <p>下午：參加SUP行前說明會。</p>
-        <p> 晚上：品味澎湖特色料理，休息，準備明天的冒險。</p>
+                <h5>10月10日 - 蘭嶼三天兩夜之旅</h5>
+                <p>接著，我們將搭乘渡輪前往台灣東南方的寶藏，蘭嶼。這個小島以其原始的自然景色和友善的部落文化而聞名。在這裡，我們將有三天兩夜的時間，探索島上的美景，包括壯觀的海岸線、古老的石屋、以及擁有悠久歷史的蘭嶼文化村落。當然，我們也不能錯過蘭嶼的浮潛體驗，探索五光十色的珊瑚世界，這絕對是一個令人難以置信的冒險！</p>
         <br />
-        <h5>第四天：澎湖SUP探險</h5>
-        <p>上午：參加SUP團，探索澎湖美麗的海灣和景點。</p>
-        <p>中午：享用午餐，可以選擇當地餐廳或沙灘野餐。</p>
-          <p>晚上：晚餐品嚐當地特色美食，享受最後一晚在澎湖的寧靜。</p>
+                <h5>10月15日 - 澎湖SUP體驗</h5>
+                <p>接著我們將前往台灣西部的澎湖，這個美麗的群島以其清澈的海水和多樣化的水上活動而聞名。在澎湖，我們將體驗到令人興奮的SUP（立式划槳衝浪）活動。這是一個極具挑戰性的水上運動，但也是一種讓你盡情享受大自然之美的方式。我們將在碧海藍天下，划過湛藍的海水，感受海風拂面的清新。如果你是水上運動愛好者，這將是一個難以忘懷的體驗！</p>
         <br />
-        <h5>第五天：結束之旅</h5>
-        <p>上午：退房，整理行李。</p>
-        <p>中午：品嚐最後一頓澎湖美食，回顧這段美好的旅程。</p>
-        <p>下午：搭乘飛機返回台灣本島，結束這次冒險之旅。</p>
+                <h5>結束 - 返回台灣本島</h5>
+                <p>我們的冒險之旅即將結束，但我們將滿載回憶和美麗的風景回到台灣本島。這趟旅程將讓你深刻體驗到台灣多樣的自然景色和文化，我們已經準備好迎接下一次的冒險了！</p>
         <br />
         <p>有興趣的朋友們趕快來報名!!</p>`
         })
