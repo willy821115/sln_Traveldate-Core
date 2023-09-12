@@ -332,6 +332,9 @@ var newSchedule = new ScheduleList
                 _context.Add(newSchedule);
             }
 
+            var origin_forum = _context.ForumLists.Find(creatArticle.forum.ForumListId);
+            origin_forum.Content = creatArticle.forum.Content;
+
             _context.SaveChanges();
             Task.Delay(3000).Wait();
             if (creatArticle.isSave == "儲存草稿")
@@ -360,6 +363,7 @@ var newSchedule = new ScheduleList
                 originArticle.IsPublish = true;
                 originArticle.ReleaseDatetime = DateTime.Now;
                 originArticle.DueDate = creatArticle.forum.DueDate;
+                originArticle.Content = creatArticle.forum.Content;
                 //如果使用者沒輸入日期，自動帶入最小日期的前3天
                 if (originArticle.DueDate == null)
                 {
