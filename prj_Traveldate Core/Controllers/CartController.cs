@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECPAYTEST.Domain;
+using ECPAYTEST.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.Extensions.Caching.Memory;
 using prj_Traveldate_Core.Models;
 using prj_Traveldate_Core.Models.MyModels;
 using prj_Traveldate_Core.ViewModels;
@@ -23,12 +26,16 @@ namespace prj_Traveldate_Core.Controllers
         TraveldateContext _context;
         private IWebHostEnvironment _enviro;
         private readonly IConfiguration _configuration;
+        private readonly LinePayService _linePayService;
+        private readonly IMemoryCache _cache;
 
-        public CartController(IWebHostEnvironment p, IConfiguration configuration)
+        public CartController(IWebHostEnvironment p, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _enviro = p;
             _configuration = configuration;
+            _cache = memoryCache;
             _context = new TraveldateContext();
+            _linePayService = new LinePayService(_cache);
 
             ////////////////////////////////
             ////先填入所有sellingprice
@@ -673,6 +680,67 @@ namespace prj_Traveldate_Core.Controllers
             string mailSubject = "您的 Traveldate 訂單明細";
             api.SimplySendMail(mailSubject, UserEmail, altView);
 
+        }
+
+        public async Task<IActionResult> LinePay()
+        {
+            int oid = Convert.ToInt32(HttpContext.Session.GetString(CDictionary.SK_PAID_ORDER_ID));
+            string website = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+
+            Order o = _context.Orders.Find(oid);
+
+            PaymentRequestDto dto = new PaymentRequestDto();
+            dto.Amount = 0;
+            dto.Currency = "TWD";
+            dto.OrderId = DateTime.Now.ToString(); //使用 Timestamp 當作 orderId
+            dto.Packages = new List<PackageDto>();
+            dto.RedirectUrls = new RedirectUrlsDto();
+
+            var packages = new PackageDto()
+            {
+                Id = oid.ToString(),
+                Amount = 0,
+                Name = "購買的旅程",
+                Products = new List<LinePayProductDto>(),
+            };
+
+            var ods = _context.OrderDetails.Where(o => o.OrderId == oid).ToList();
+
+            foreach(var od in ods)
+            {
+                LinePayProductDto pds = new LinePayProductDto();
+                pds.Name = _context.OrderDetails.Where(o=>o.OrderDetailsId==od.OrderDetailsId).Select(o=>o.Trip.Product.ProductName).First();
+                pds.Quantity = (int)od.Quantity;
+                pds.OriginalPrice = (int)od.SellingPrice;
+                pds.Price = (int)od.SellingPrice;
+                int pid = _context.OrderDetails.Where(o => o.OrderDetailsId == od.OrderDetailsId).Select(o => o.Trip.ProductId).First();
+                pds.ImageUrl = _enviro.WebRootPath + "/images/" + _context.ProductPhotoLists.Where(p => p.ProductId == pid).Select(p => p.ImagePath).First();
+
+                packages.Products.Add(pds);
+                packages.Amount += pds.Price * pds.Quantity;
+                dto.Amount += pds.Price * pds.Quantity;
+            }
+            dto.Packages.Add(packages);
+
+            dto.RedirectUrls.ConfirmUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + "/Cart/ConfirmLPPayment";
+
+            _cache.Set<Int32>("amount", dto.Amount);
+
+            var r = await _linePayService.SendPaymentRequest(dto);
+            return Redirect(r.Info.PaymentUrl.Web);
+
+        }
+
+        public async Task<IActionResult> CreatePayment(PaymentRequestDto dto)
+        {
+            var r = await _linePayService.SendPaymentRequest(dto);
+            return Redirect(r.Info.PaymentUrl.Web);
+        }
+
+        public async Task<IActionResult> ConfirmLPPayment([FromQuery] string transactionId, [FromQuery] string orderId)
+        {
+            var result =  await _linePayService.ConfirmPayment(transactionId, orderId);
+            return RedirectToAction("CompleteOrder");
         }
 
     }

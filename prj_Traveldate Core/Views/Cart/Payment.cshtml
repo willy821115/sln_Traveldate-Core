@@ -23,33 +23,15 @@
                 <div id="collapseFour" class="accordion-collapse collapse show">
                     <div class="accordion-body Confirm-Container-Content">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_credit" checked>
+                        <input class="form-check-input payment-option" type="radio" name="radio_payment" id="payment_credit" checked>
                             <label class="form-check-label" for="payment_credit">
-                                信用卡付款（綠界金流）
+                                綠界金流（信用卡、網路ATM）
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_linepay">
+                        <input class="form-check-input payment-option" type="radio" name="radio_payment" id="payment_linepay">
                             <label class="form-check-label" for="payment_linepay">
                                 LINE Pay
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_jko">
-                            <label class="form-check-label" for="payment_jko">
-                                街口支付
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_cvs">
-                            <label class="form-check-label" for="payment_cvs">
-                                超商付款
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radio_payment" id="payment_paypal">
-                            <label class="form-check-label" for="payment_paypal">
-                                PayPal
                             </label>
                         </div>
                     </div>
@@ -79,7 +61,30 @@
 @section Scripts{
     <script src="~/js/jsCart.js"></script>
     <script>
+        $(document).ready(function () {
+            $(".payment-option").change(function () {
+                var selectedOption = $("input[name='radio_payment']:checked").attr("id");
+
+                var newAction = "";
+
+                switch (selectedOption) {
+                    case "payment_credit":
+                        newAction = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"; 
+                        break;
+                    case "payment_linepay":
+                        newAction = "LinePay";
+                        break;
+                    default:
+                        newAction = "";
+                }
+
+                $("#form").attr("action", newAction);
+            });
+        });
+
         $("#checkoutBtn").on('click', (e) => {
+            var selectedOption = $("input[name='radio_payment']:checked").attr("id");
+            if (selectedOption == 'payment_credit'){
             //e.preventDefault(); //因為送出就跳轉到綠界，這個可以停住確認自己的console.log的內容
             let formData = $("#form").serializeArray();
             var json = {};
@@ -99,6 +104,7 @@
                 },
                 error: function (err) { console.log(err); },
             });
+            }
         });
     </script>
 }
