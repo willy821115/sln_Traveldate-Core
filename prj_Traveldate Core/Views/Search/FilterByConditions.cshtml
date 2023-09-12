@@ -49,13 +49,14 @@
                                     <p class="card-text  mb-2 my-fs-md">@Html.DisplayFor(modelItem => item.outlineForSearch) </p>
                                     <p class="card-text">
                                         <span class="text-body-secondary bg-gradient-secondary text-white fw-bolder rounded p-1">@Html.DisplayFor(modelItem => item.date) 後</span>
-                                        | <img src="~/icons/icons8-position-16.png"><span class="text-body-secondary bg-gradient-warning text-white fw-bolder rounded p-1">@Html.DisplayFor(modelItem => item.city) </span>
+                                         <img src="~/icons/icons8-position-16.png"><span class="text-body-secondary bg-gradient-warning text-white fw-bolder rounded p-1">@Html.DisplayFor(modelItem => item.city) </span>
                                         <span class="text-body-secondary">
-                                            | <img src="~/icons/icons8-tag-16.png"> @foreach (var t in item.productTags)
+                                             <img src="~/icons/icons8-tag-16.png"> @foreach (var t in item.productTags)
                                             {
                                                 <label class="bg-gradient-info rounded m-0 pr-1 pl-1 text-white fw-bolder">#@t&thinsp;</label>
                                             }
                                         </span>
+                                        <img src="~/icons/icons8-category-24.png" /><label class="bg-gradient-success rounded m-0 pr-1 pl-1 text-white fw-bolder">@item.type</label>
                                     </p>
                                 </div>
                                 <div class="row align-items-end">
