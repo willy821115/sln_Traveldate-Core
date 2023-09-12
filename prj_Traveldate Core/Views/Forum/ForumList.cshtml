@@ -442,7 +442,9 @@
                     </div>
                     <div class="rounded bg-gray-100 col-2 m-1 pt-1 ">
                         <p class="  fw-bolder text-black">回覆數 : @article.ForumList.ReplyLists.Where(r=>r.ForumListId==article.forumListId ).Count()</p>
-                        @if(article.numStock == 1)
+                        @if (article.ForumList.DueDate.HasValue && article.ForumList.DueDate.Value >= DateTime.Now)
+                        {
+                            if(article.numStock == 1)
                         {
                             <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
                             <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1 fs-6">額滿</span>
@@ -453,8 +455,10 @@
                             <span class="fw-bolder bg-gradient-info text-white rounded-pill p-1 fs-6">即將額滿</span>
                         }
                         else{
-                            <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
-                         }
+                                <p class="pt-1  fw-bolder text-black">名額現況 : @article.strStock</p>
+                            }
+                        }
+                     
                      </div>
                     <div class="rounded bg-gray-100 col-2 m-1">
                         <p class="pt-1  fw-bolder text-black">截團日期 : </p>
