@@ -577,7 +577,8 @@ var newSchedule = new ScheduleList
         {
             List<CForumList_prodPhoto>? prodPhoto = forum_prodPhoto();
             var forumInfos = _context.ScheduleLists.Include(s => s.ForumList).Include(s => s.Trip).Include(s => s.ForumList.Member).Include(s => s.Trip.Product)
-                .Where(s => s.ForumList.MemberId == memberId)
+                .Where(s => s.ForumList.MemberId == memberId
+                && s.ForumList.IsPublish == true)
                 .Select(n => new
                 {
                     n.ForumListId,
