@@ -32,7 +32,7 @@ namespace prj_Traveldate_Core.Hubs
         {
             Random RAM = new Random();
             int min = 11;
-            int max = 100;
+            int max = 5999;
             string ConnectionID = RAM.Next(min, max + 1).ToString();
 
             if (ConnIDList.Where(p => p == Context.ConnectionId).FirstOrDefault() == null)
