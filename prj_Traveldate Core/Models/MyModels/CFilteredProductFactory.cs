@@ -106,7 +106,7 @@ namespace prj_Traveldate_Core.Models.MyModels
                     {
                         item.strProdStock = $"已額滿   名額:{r}/{m}";
                     }
-                    else if (item.prodStock > 0.1)
+                    else if (item.prodStock > 0.5)
                     {
                         item.strProdStock = $"即將額滿   名額:{r}/{m}";
                     }
