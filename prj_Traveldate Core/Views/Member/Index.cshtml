@@ -9,7 +9,7 @@
     <div class="col-md-3">
         <div id="div1">
             <div class="cell" id="div3">
-                <div class="cell d-flex flex-column">
+                <div class="cell d-flex flex-column" >
                         @*                      原本load二進位的頭像圖片用
                         @{
                         if (ViewBag.photo != null)
@@ -39,8 +39,8 @@
                     }
                     </div>
 
-                        <ul class="list-group leftarea mt-3">
-                            <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:19px;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
+                <ul class="list-group leftarea mt-3" style="font-size:18px;font-weight:600">
+                    <li class="list-group-item menuItem" data-content="subItem1"> <span><img style="height:50px;width:45px;padding-bottom:5px" src="~/icons/icon-hi-2(member).gif" /></span><b style="font-weight:bolder;font-size:20px;font-weight:600 ;padding-top:-50px">@ViewBag.LastName@ViewBag.firstName</b></li>
 
                             @{
                                 if (ViewBag.level == "黑鑽會員")
@@ -64,7 +64,7 @@
 
                     </div>
                     <div class="cell" id="div2">
-                            <ul class="list-group leftarea lgmenu mt-3 ">
+                <ul class="list-group leftarea lgmenu mt-3 " style="font-size:20px;font-weight:600">
                                 <li class="list-group-item menuItem">@Html.ActionLink("基本資料設定", "basicInfo","Member","",new {@class="black-link"})</li>
                     <li class="list-group-item menuItem">@Html.ActionLink("密碼更改", "passwordChange","Member","",new {@class="black-link",@style="margin-left:-5px"}) </li>
                                 <li class="list-group-item menuItem">
@@ -148,16 +148,16 @@
                         <option value="Hsinchu">新竹市</option>
                         <option value="Chiayi">嘉義市</option>
                     </select>
-                    <li style="list-style:none;width:300;font-size:15px;color: #7B7B7B;margin-left:10px;margin-top:10px;">數據時間 <span id="dt"></span></li>
+                    <li style="list-style:none;width:500;font-size:16px;color: #7B7B7B;margin-left:10px;margin-top:10px;">數據時間 <span id="dt"></span></li>
                     <div id="name">
                         台北
                     </div>
                     <div>
                         <img src="" id="img" alt="" />
-                        <li style="list-style:none;text-align:center;width:500;font-size:50px;color:#3C3C3C;margin:0;padding:0"> <span id="temp"></span><span>°C</span></li>
+                        <li style="list-style:none;text-align:center;width:500;font-size:55px;color:#3C3C3C;margin:0;padding:0"> <span id="temp"></span><span>°C</span></li>
                         <div style="color:	#7B7B7B">
-                            <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-bottom:0px;margin-top: -5px;"><span id="description"></span></li>
-                            <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-top:0px;margin-bottom: 10px;">體感 <span id="feels_like"></span><span>°C</span></li>
+                    <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-bottom:0px;margin-top: -5px;font-size:15px"><span id="description"></span></li>
+                            <li style="list-style:none;text-align:center;width:450;font-size:15px;padding-top:0px;margin-bottom: 10px;font-size:15px">體感 <span id="feels_like"></span><span>°C</span></li>
                         </div>
                     </div>
                     <ul id="grid">
@@ -217,7 +217,7 @@
             padding:10px;
 
             width: 805px;
-            height:610px;
+            height:665px;
             box-shadow: 25px 0 25px -15px #e9ecef, 0 25px 25px -15px #e9ecef, -25px 0 25px -15px #e9ecef, 0 -25px 25px -15px #e9ecef;
             font: "Noto Sans TC"
         }
@@ -268,7 +268,7 @@
             grid-template-rows: auto;
             gap: 5px;
             font:500;
-            height:130px;
+            height:175px;
             justify-content: center; 
             align-items: center;
 
@@ -277,6 +277,7 @@
         }
         #grid li{
             text-align:center;
+            font-size:18px;
         }
 </style>
 }
