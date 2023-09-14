@@ -200,7 +200,7 @@ List<ScheduleList1> data = _context.ScheduleLists
             vm.topTen = _context.ScheduleLists
                 .Include(s => s.ForumList)
                 .Where(s => s.ForumList.IsPublish == true)
-                .Where(s=>s.ForumList.DueDate>DateTime.Now)
+                .Where(s=>s.ForumList.DueDate>=DateTime.Now)
                 .GroupBy(s => s.ForumListId)
                  .Select(group => new CForumList_topTen
                  {

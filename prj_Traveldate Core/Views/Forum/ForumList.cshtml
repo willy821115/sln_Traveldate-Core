@@ -471,7 +471,7 @@
                                 <span class="fw-bolder bg-gradient-secondary text-white rounded-pill p-1">已截止報名</span>
                             </div>
                         }
-                        else if (article.ForumList.DueDate > DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
+                        else if (article.ForumList.DueDate >= DateTime.Now && (article.ForumList.DueDate.Value - DateTime.Now).TotalDays < 15)
                         {
                             <div class="d-flex justify-content-center fw-bolder"><img src="~/icons/icons8-hourglass-32.png" width="24" height="24" /><p class=" text-danger">@article.ForumList.DueDate.Value.ToString("yyyy/MM/d")</p></div>
                             <div>
